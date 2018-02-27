@@ -1,0 +1,65 @@
+
+@font-face {
+    font-family: 'Vazir';
+    src: url('/fonts/vazir/Vazir-Medium-FD.eot');
+    src: url('/fonts/vazir/Vazir-Medium-FD.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/vazir/Vazir-Medium-FD.woff') format('woff'),
+       url('/fonts/vazir/Vazir-Medium-FD.ttf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Vazir';
+    src: url('/fonts/vazir/Vazir-Bold-FD.eot');
+    src: url('/fonts/vazir/Vazir-Bold-FD.eot?#iefix') format('embedded-opentype'),
+       url('/fonts/vazir/Vazir-Bold-FD.woff') format('woff'),
+       url('/fonts/vazir/Vazir-Bold-FD.ttf') format('truetype');
+    font-weight: bold;
+}
+
+body{
+    font-family: 'Vazir';
+}
+
+
+// Sidebar
+.sidebar .nav{
+    padding-right: 0px;
+    padding-left: 0px;
+    text-align: right;
+}
+
+
+// Header
+.app-header.navbar .navbar-brand{
+    background-size: 100%;
+}
+
+
+// Media Queries
+@media screen and (max-width: 425px) {
+
+    // Container
+    .main .container-fluid{
+        padding: 0px 15px;
+    }
+
+    // Header
+    .app-header.navbar .navbar-brand{
+        position: fixed;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// END
