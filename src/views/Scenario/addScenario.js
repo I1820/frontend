@@ -27,7 +27,7 @@ class AddScenario extends Component {
                     </CardBody>
                     <CardFooter>
                         <Button className="ml-1" color="primary" size="md">ارسال سناریو</Button>
-                        <Button className="ml-1" color="warning" size="md">چک کردن سناریو</Button>
+                        <Button className="ml-1" color="warning" size="md">بررسی سناریو</Button>
                     </CardFooter>
                 </Card>
                 <Card className="text-justify">

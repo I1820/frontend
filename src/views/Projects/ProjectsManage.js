@@ -80,8 +80,8 @@ class ProjectsManage extends Component {
                         </Table>
                     </CardBody>
                     <CardFooter>
-                        <Button className="ml-1" color="primary">افزودن شی</Button>
-                        <Button className="ml-1" color="success">افزودن دسته ای شی</Button>
+                        <Button onClick={this.addThing} className="ml-1" color="primary">افزودن شی</Button>
+                        <Button onClick={this.uploadExcel} className="ml-1" color="success">افزودن دسته ای شی</Button>
                     </CardFooter>
                 </Card>
 
@@ -98,7 +98,7 @@ class ProjectsManage extends Component {
                         </ListGroup>
                     </CardBody>
                     <CardFooter>
-                        <Button color="primary">افزودن سناریو</Button>
+                        <Button onClick={this.addScenario} color="primary">افزودن سناریو</Button>
                     </CardFooter>
                 </Card>
             </div>
@@ -130,6 +130,18 @@ class ProjectsManage extends Component {
                 </td>
             </tr>
         )
+    }
+
+    uploadExcel() {
+        window.location = "#/things/excel"
+    }
+
+    addThing() {
+        window.location = "#/things/new"
+    }
+
+    addScenario() {
+        window.location = "#/scenario/new"
     }
 }
 
