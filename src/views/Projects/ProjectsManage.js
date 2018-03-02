@@ -14,9 +14,10 @@ import {
     ListGroupItem,
     Button,
     ButtonGroup,
+    ModalFooter,
     Label,
     Input,
-    Table
+    Table, Modal, ModalHeader, ModalBody
 } from 'reactstrap';
 
 
@@ -24,12 +25,87 @@ class ProjectsManage extends Component {
 
     constructor(props) {
         super(props);
+
+        this.toggleABP = this.toggleABP.bind(this)
+        this.toggleOTAA = this.toggleOTAA.bind(this)
+
+        this.state = {
+            OTAAmodal: false,
+            ABPmodel: false,
+        }
     }
 
 
     render() {
         return (
             <div>
+
+                <Modal isOpen={this.state.OTAAmodal} toggle={this.toggleOTAA} className="text-right">
+                    <ModalHeader>OTAA</ModalHeader>
+                    <ModalBody>
+                        <Form>
+                            <FormGroup row>
+                                <Label sm={3}> appKey : </Label>
+                                <Col sm={9}>
+                                    <Input type="text"/>
+                                </Col>
+                            </FormGroup>
+                        </Form>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" className="ml-1" onClick={this.toggle}>ذخیره</Button>
+                        <Button color="danger" onClick={this.toggle}>انصراف</Button>
+                    </ModalFooter>
+                </Modal>
+
+                <Modal isOpen={this.state.ABPmodel} toggle={this.toggleABP} className="text-right">
+                    <ModalHeader>ABP</ModalHeader>
+                    <ModalBody>
+                        <Form>
+                            <FormGroup row>
+                                <Label sm={3}>appSKey : </Label>
+                                <Col sm={9}>
+                                    <Input type="text"/>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label sm={3}>devAddr : </Label>
+                                <Col sm={9}>
+                                    <Input type="text"/>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label sm={3}>fCntDown : </Label>
+                                <Col sm={9}>
+                                    <Input type="text"/>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label sm={3}>fCntUp : </Label>
+                                <Col sm={9}>
+                                    <Input type="text"/>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label sm={3}>nwkSKey : </Label>
+                                <Col sm={9}>
+                                    <Input type="text"/>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label sm={3}>skipFCntCheck : </Label>
+                                <Col sm={9}>
+                                    <Input type="text"/>
+                                </Col>
+                            </FormGroup>
+                        </Form>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" className="ml-1" onClick={this.toggle}>ذخیره</Button>
+                        <Button color="danger" onClick={this.toggle}>انصراف</Button>
+                    </ModalFooter>
+                </Modal>
+
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">تغییر اطلاعات پروژه</CardTitle>
@@ -124,7 +200,7 @@ class ProjectsManage extends Component {
                 <td>آدرس شی اینجاست</td>
                 <td>ATTO</td>
                 <td>
-                    <Button className="ml-1" color="success" size="sm">فعال سازی</Button>
+                    <Button className="ml-1" onClick={this.toggleABP} color="success" size="sm">فعال سازی</Button>
                     <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
                     <Button className="ml-1" color="danger" size="sm">حذف</Button>
                 </td>
@@ -143,6 +219,20 @@ class ProjectsManage extends Component {
     addScenario() {
         window.location = "#/scenario/new"
     }
+
+
+    toggleOTAA() {
+        this.setState({
+            OTAAmodal: !this.state.OTAAmodal
+        });
+    }
+
+    toggleABP() {
+        this.setState({
+            ABPmodel: !this.state.ABPmodel
+        });
+    }
+
 }
 
 export default ProjectsManage;
