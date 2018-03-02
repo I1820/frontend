@@ -28,6 +28,7 @@ class ProjectsList extends Component {
         super(props);
 
         this.toggle = this.toggle.bind(this)
+        this.showProject = this.showProject.bind(this)
 
         this.state = {
             modal: false
@@ -111,7 +112,7 @@ class ProjectsList extends Component {
                                 <td><Badge color="success">فعال</Badge></td>
                                 <td>احمد احمدی</td>
                                 <td>
-                                    <Button className="ml-1" color="success" size="sm">نمایش</Button>
+                                    <Button onClick={this.showProject} className="ml-1" color="success" size="sm">نمایش</Button>
                                     <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
                                     <Button className="ml-1" color="danger" size="sm">حذف</Button>
                                 </td>
@@ -132,6 +133,10 @@ class ProjectsList extends Component {
         this.setState({
             modal: !this.state.modal
         });
+    }
+
+    showProject() {
+        window.location = "#/projects/view"
     }
 
 }
