@@ -71,7 +71,7 @@ class ThingsExcel extends Component {
                         </Table>
                         <Pagination>
                             <PaginationItem>
-                                <PaginationLink previous href="#"></PaginationLink>
+                                <PaginationLink previous href="#"/>
                             </PaginationItem>
                             <PaginationItem active>
                                 <PaginationLink href="#">1</PaginationLink>
@@ -86,7 +86,7 @@ class ThingsExcel extends Component {
                                 <PaginationLink href="#">4</PaginationLink>
                             </PaginationItem>
                             <PaginationItem>
-                                <PaginationLink next href="#"></PaginationLink>
+                                <PaginationLink next href="#"/>
                             </PaginationItem>
                         </Pagination>
                     </CardBody>
