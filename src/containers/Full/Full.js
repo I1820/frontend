@@ -14,11 +14,14 @@ import News from '../../views/News/';
 import Profile from '../../views/Profile/';
 
 import ProjectsList from '../../views/Projects/ProjectsList.js';
-import ProjectsNew from '../../views/Projects/ProjectsNew.js';
+import ProjectsManage from '../../views/Projects/ProjectsManage.js';
 import ProjectsView from '../../views/Projects/ProjectsView.js';
 
 import ThingsExcel from '../../views/Things/ThingsExcel.js';
 import ThingsList from '../../views/Things/ThingsList.js'
+import CreateThing from '../../views/Things/CreateThing.js'
+
+import addScenario from '../../views/Scenario/addScenario'
 
 import Colors from '../../views/Theme/Colors/';
 import Typography from '../../views/Theme/Typography/';
@@ -75,10 +78,12 @@ class Full extends Component {
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                 <Route path="/news" name="News" component={News}/>
                 <Route path="/profile" name="Profile" component={Profile}/>
+                <Route path="/scenario/new" name="addScenario" component={addScenario}/>
                 <Route path="/projects/list" name="ProjectsList" component={ProjectsList}/>
-                <Route path="/projects/new" name="ProjectsNew" component={ProjectsNew}/>
+                <Route path="/projects/manage" name="ProjectsManage" component={ProjectsManage}/>
                 <Route path="/projects/view" name="ProjectsView" component={ProjectsView}/>
                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
+                <Route path="/things/new" name="ThingsExcel" component={CreateThing}/>
                 <Route path="/things/list" name="ThingsList" component={ThingsList}/>
                 <Route path="/theme/colors" name="Colors" component={Colors}/>
                 <Route path="/theme/typography" name="Typography" component={Typography}/>

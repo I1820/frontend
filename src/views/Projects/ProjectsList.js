@@ -28,6 +28,7 @@ class ProjectsList extends Component {
         super(props);
 
         this.toggle = this.toggle.bind(this)
+        this.showProject = this.showProject.bind(this)
 
         this.state = {
             modal: false
@@ -80,42 +81,7 @@ class ProjectsList extends Component {
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th>1</th>
-                                <td>عنوان تست پروژه اینجا</td>
-                                <td>توضیحات تست اینجاست</td>
-                                <td><Badge color="success">فعال</Badge></td>
-                                <td>احمد احمدی</td>
-                                <td>
-                                    <Button className="ml-1" color="success" size="sm">نمایش</Button>
-                                    <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
-                                    <Button className="ml-1" color="danger" size="sm">حذف</Button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>2</th>
-                                <td>عنوان تست پروژه اینجا</td>
-                                <td>توضیحات تست اینجاست</td>
-                                <td><Badge color="danger">غیر فعال</Badge></td>
-                                <td>احمد احمدی</td>
-                                <td>
-                                    <Button className="ml-1" color="success" size="sm">نمایش</Button>
-                                    <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
-                                    <Button className="ml-1" color="danger" size="sm">حذف</Button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>3</th>
-                                <td>عنوان تست پروژه اینجا</td>
-                                <td>توضیحات تست اینجاست</td>
-                                <td><Badge color="success">فعال</Badge></td>
-                                <td>احمد احمدی</td>
-                                <td>
-                                    <Button className="ml-1" color="success" size="sm">نمایش</Button>
-                                    <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
-                                    <Button className="ml-1" color="danger" size="sm">حذف</Button>
-                                </td>
-                            </tr>
+                            {this.renderItem()}
                             </tbody>
                         </Table>
                     </CardBody>
@@ -128,12 +94,36 @@ class ProjectsList extends Component {
     }
 
 
+    renderItem() {
+        return(
+            <tr>
+                <th>1</th>
+                <td>عنوان تست پروژه اینجا</td>
+                <td>توضیحات تست اینجاست</td>
+                <td><Badge color="success">فعال</Badge></td>
+                <td>احمد احمدی</td>
+                <td>
+                    <Button onClick={this.showProject} className="ml-1" color="success" size="sm">نمایش</Button>
+                    <Button onClick={this.manageProject} className="ml-1" color="warning" size="sm">مدیریت</Button>
+                    <Button className="ml-1" color="danger" size="sm">حذف</Button>
+                </td>
+            </tr>
+        )
+    }
+
     toggle() {
         this.setState({
             modal: !this.state.modal
         });
     }
 
+    showProject() {
+        window.location = "#/projects/view"
+    }
+
+    manageProject() {
+        window.location = "#/projects/manage"
+    }
 }
 
 
