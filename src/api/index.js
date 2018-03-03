@@ -95,6 +95,10 @@ module.exports.login = function (email, password, captcha, dispatch) {
     return fetchData(endpoints.login, config, dispatch)
 }
 
+module.exports.listProject = function (dispatch) {
+    return fetchData(endpoints.listProject, getConfig(), dispatch)
+}
+
 //
 // module.exports.register = function (data, dispatch) {
 //     const config = loginConfig
@@ -119,9 +123,6 @@ module.exports.login = function (email, password, captcha, dispatch) {
 //     return fetchData(endpoints.createProject, projectControler.create, config, dispatch)
 // }
 //
-// module.exports.listProject = function (dispatch) {
-//     return fetchData(endpoints.listProject, projectControler.list, getConfig(), dispatch)
-// }
 //
 // module.exports.getProject = function (id, dispatch) {
 //     return fetchData(endpoints.getProject + '/' + id, projectControler.find, getConfig(), dispatch)
