@@ -21,20 +21,32 @@ import {
     Table
 } from 'reactstrap';
 
+import {connect} from 'react-redux';
+import {getProjects} from "../../actions/AppActions";
 
 class ProjectsList extends Component {
 
     constructor(props) {
         super(props);
-
         this.toggle = this.toggle.bind(this)
         this.showProject = this.showProject.bind(this)
-
         this.state = {
-            modal: false
+            modal: false,
+            projects: [{}]
         }
     }
 
+    componentWillMount() {
+        this.props.dispatch(getProjects())
+    }
+
+    componentWillReceiveProps(props) {
+        if (props.projects !== undefined) {
+            this.setState({
+                projects: props.projects
+            })
+        }
+    }
 
     render() {
         return (
@@ -47,13 +59,13 @@ class ProjectsList extends Component {
                             <FormGroup row>
                                 <Label sm={3}>نام پروژه : </Label>
                                 <Col sm={9}>
-                                    <Input type="text" />
+                                    <Input type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={3}>توضیحات :‌ </Label>
                                 <Col sm={9}>
-                                    <Input type="textarea" name="" rows="2" />
+                                    <Input type="textarea" name="" rows="2"/>
                                 </Col>
                             </FormGroup>
                         </Form>
@@ -81,7 +93,12 @@ class ProjectsList extends Component {
                             </tr>
                             </thead>
                             <tbody>
-                            {this.renderItem()}
+                            {
+                                this.props.projects.map((project, key) => {
+                                    console.log('project', project)
+                                    return (this.renderItem(project, key))
+                                })
+                            }
                             </tbody>
                         </Table>
                     </CardBody>
@@ -93,15 +110,14 @@ class ProjectsList extends Component {
         );
     }
 
-
-    renderItem() {
-        return(
+    renderItem(project = {}, key = 0) {
+        return (
             <tr>
-                <th>1</th>
-                <td>عنوان تست پروژه اینجا</td>
-                <td>توضیحات تست اینجاست</td>
-                <td><Badge color="success">فعال</Badge></td>
-                <td>احمد احمدی</td>
+                <th>{key+1}</th>
+                <td>{project.name}</td>
+                <td>{project.description}</td>
+                <td><Badge color="success">{project.active === true ? 'فعال' : 'غیرفعال'}</Badge></td>
+                <td>{project.owner.name}</td>
                 <td>
                     <Button onClick={this.showProject} className="ml-1" color="success" size="sm">نمایش</Button>
                     <Button onClick={this.manageProject} className="ml-1" color="warning" size="sm">مدیریت</Button>
@@ -126,5 +142,11 @@ class ProjectsList extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        projects: state.projectReducer
+    };
+}
 
-export default ProjectsList;
+
+export default connect(mapStateToProps)(ProjectsList);
