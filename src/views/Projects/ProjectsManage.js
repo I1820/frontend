@@ -166,7 +166,7 @@ class ProjectsManage extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">انتخاب سناریو پروژه</CardTitle>
                     </CardHeader>
                     <CardBody>
-                        <ListGroup>
+                        <ListGroup className="p-0">
                             {this.renderScenarioItem()}
                             {this.renderScenarioItem()}
                             {this.renderScenarioItem()}

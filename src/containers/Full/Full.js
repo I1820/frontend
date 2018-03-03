@@ -11,6 +11,8 @@ import Dashboard from '../../views/Dashboard/';
 
 import News from '../../views/News/';
 
+import Gateways from '../../views/Gateways/';
+
 import Profile from '../../views/Profile/';
 
 import ProjectsList from '../../views/Projects/ProjectsList.js';
@@ -78,6 +80,7 @@ class Full extends Component {
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                 <Route path="/news" name="News" component={News}/>
                 <Route path="/profile" name="Profile" component={Profile}/>
+                <Route path="/gateways" name="Gateways" component={Gateways}/>
                 <Route path="/scenario/new" name="addScenario" component={addScenario}/>
                 <Route path="/projects/list" name="ProjectsList" component={ProjectsList}/>
                 <Route path="/projects/manage" name="ProjectsManage" component={ProjectsManage}/>
