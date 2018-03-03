@@ -22,7 +22,7 @@ import {
 } from 'reactstrap';
 
 import {connect} from 'react-redux';
-import {getProjects} from "../../actions/AppActions";
+import {createProject, getProjects} from "../../actions/AppActions";
 
 class ProjectsList extends Component {
 
@@ -43,7 +43,10 @@ class ProjectsList extends Component {
     componentWillReceiveProps(props) {
         if (props.projects !== undefined) {
             this.setState({
-                projects: props.projects
+                projects: props.projects,
+                projectName: "",
+                projectDesc: ""
+
             })
         }
     }
@@ -59,19 +62,31 @@ class ProjectsList extends Component {
                             <FormGroup row>
                                 <Label sm={3}>نام پروژه : </Label>
                                 <Col sm={9}>
-                                    <Input type="text"/>
+                                    <Input type="text"
+                                           onChange={event => this.setState({
+                                               projectName: event.target.value
+                                           })}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={3}>توضیحات :‌ </Label>
                                 <Col sm={9}>
-                                    <Input type="textarea" name="" rows="2"/>
+                                    <Input type="textarea" name=""
+                                           rows="2"
+                                           onChange={event => this.setState({
+                                               projectDesc: event.target.value
+                                           })}/>
                                 </Col>
                             </FormGroup>
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" className="ml-1" onClick={this.toggle}>ذخیره</Button>
+                        <Button color="primary" className="ml-1" onClick={() => {
+                            this.props.dispatch(createProject({
+                                'name': this.state.projectName,
+                                'description': this.state.projectDesc,
+                            }))
+                        }}>ذخیره</Button>
                         <Button color="danger" onClick={this.toggle}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
@@ -113,7 +128,7 @@ class ProjectsList extends Component {
     renderItem(project = {}, key = 0) {
         return (
             <tr>
-                <th>{key+1}</th>
+                <th>{key + 1}</th>
                 <td>{project.name}</td>
                 <td>{project.description}</td>
                 <td><Badge color="success">{project.active === true ? 'فعال' : 'غیرفعال'}</Badge></td>
