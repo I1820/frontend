@@ -19,6 +19,12 @@ export default {
         icon: 'icon-layers',
     },
 
+    {
+        name: 'Gateways',
+        url: '/gateways',
+        icon: 'icon-direction',
+    },
+
     // {
     //     name: 'اشیاء',
     //     url: '/things',
