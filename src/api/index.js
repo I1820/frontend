@@ -117,11 +117,11 @@ module.exports.listProject = function (dispatch) {
 // }
 //
 //
-// module.exports.createProject = function (data, dispatch) {
-//     const config = postConfig()
-//     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(endpoints.createProject, projectControler.create, config, dispatch)
-// }
+module.exports.createProject = function (data, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(endpoints.createProject, config, dispatch)
+}
 //
 //
 // module.exports.getProject = function (id, dispatch) {
