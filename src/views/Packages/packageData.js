@@ -71,14 +71,5 @@ export default{
         startTime: "1994-11-05",
         endTime: "1994-12-05",
         status: "Expired"
-    },
-    package9: {
-        packageName: "بسته نهم",
-        cost: "200",
-        time: "3",
-        sensor: "1",
-        startTime: "1994-11-05",
-        endTime: "1994-12-05",
-        status: "Suspend"
     }
 }
