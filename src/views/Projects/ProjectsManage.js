@@ -19,7 +19,7 @@ import {
     Input,
     Table, Modal, ModalHeader, ModalBody
 } from 'reactstrap';
-
+import {connect} from 'react-redux';
 
 class ProjectsManage extends Component {
 
@@ -235,4 +235,11 @@ class ProjectsManage extends Component {
 
 }
 
-export default ProjectsManage;
+function mapStateToProps(state) {
+    return {
+        projects: state.projectReducer
+    };
+}
+
+
+export default connect(mapStateToProps)(ProjectsManage);
