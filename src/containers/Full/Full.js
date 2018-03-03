@@ -17,6 +17,9 @@ import ProjectsList from '../../views/Projects/ProjectsList.js';
 import ProjectsManage from '../../views/Projects/ProjectsManage.js';
 import ProjectsView from '../../views/Projects/ProjectsView.js';
 
+//package
+import ShowPackages from '../../views/Packages'
+
 import ThingsExcel from '../../views/Things/ThingsExcel.js';
 import ThingsList from '../../views/Things/ThingsList.js'
 import CreateThing from '../../views/Things/CreateThing.js'
@@ -82,6 +85,9 @@ class Full extends Component {
                 <Route path="/projects/list" name="ProjectsList" component={ProjectsList}/>
                 <Route path="/projects/manage" name="ProjectsManage" component={ProjectsManage}/>
                 <Route path="/projects/view" name="ProjectsView" component={ProjectsView}/>
+
+                <Route path="/packages" name="packages" component={ShowPackages}/>
+
                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
                 <Route path="/things/new" name="ThingsExcel" component={CreateThing}/>
                 <Route path="/things/list" name="ThingsList" component={ThingsList}/>

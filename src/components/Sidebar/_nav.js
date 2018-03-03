@@ -18,7 +18,12 @@ export default {
         url: '/projects/list',
         icon: 'icon-layers',
     },
-
+    {
+        name: 'بسته‌ها',
+        url: '/packages',
+        icon: 'icon-puzzle',
+    },
+    
     // {
     //     name: 'اشیاء',
     //     url: '/things',
