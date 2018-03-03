@@ -75,6 +75,7 @@ class Gateways extends Component {
                                 <th>#</th>
                                 <th>اسم</th>
                                 <th>آدرس</th>
+                                <th>امکانات</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -97,6 +98,9 @@ class Gateways extends Component {
                 <th>1</th>
                 <td>اسم اینجاست</td>
                 <td>توضیحات تست اینجاست</td>
+                <td>
+                    <Button color="danger">حذف</Button>
+                </td>
             </tr>
         )
     }
