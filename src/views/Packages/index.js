@@ -44,12 +44,6 @@ class PackagesPage extends Component {
                         <Col md='6'><span>{details.cost} </span><span> ریال</span></Col>
                       </Row>  
                  </ListGroupItem>
-                 <ListGroupItem>
-                      <Row>
-                        <Col md='6'><strong>زمان خرید بسته</strong></Col>
-                        <Col md='6'><span>{details.startTime}</span></Col>
-                      </Row>  
-                  </ListGroupItem>
                   <ListGroupItem>
                       <Row>
                         <Col md='6'><strong>تعداد سنسور</strong></Col>
