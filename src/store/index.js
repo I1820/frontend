@@ -10,7 +10,9 @@ const enhancer = compose(
         slicer: (paths) => {
             return (state) => {
                 /*Custom logic goes here*/
-                return {homeReducer: state.homeReducer, userReducer: state.userReducer,}
+                return {homeReducer: state.homeReducer,
+                        userReducer: state.userReducer,
+                }
             }
         }
     }),

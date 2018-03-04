@@ -11,7 +11,6 @@ export function projectReducer (state = [], action) {
         ...action.newState.projects
       ]
     case FETCH_PROJECT:
-            // console.log(_.find(state, {_id: action.newState.project._id}))
       if (_.find(state, {_id: action.newState.project._id}) !== undefined) {
         return state.map((currentItem, index) => {
           if (action.newState.project._id === currentItem._id) {

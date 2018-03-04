@@ -20,6 +20,7 @@ import {
     Table, Modal, ModalHeader, ModalBody
 } from 'reactstrap';
 import {connect} from 'react-redux';
+import {getProject} from "../../actions/AppActions";
 
 class ProjectsManage extends Component {
 
@@ -32,9 +33,37 @@ class ProjectsManage extends Component {
         this.state = {
             OTAAmodal: false,
             ABPmodel: false,
+            id: "",
+            project: {}
         }
     }
 
+    componentWillMount() {
+        this.loadProject()
+    }
+
+    componentWillReceiveProps(props) {
+        const splitedUrl = window.location.href.split('/');
+        const me = this;
+        if (splitedUrl[splitedUrl.length - 1]) {
+            props.projects.forEach((project) => {
+
+                if (project._id === splitedUrl[splitedUrl.length - 1]) {
+                    console.log('findddd', project)
+                    this.setState({
+                        project
+                    })
+                }
+            })
+        }
+    }
+
+    loadProject() {
+        const splitedUrl = window.location.href.split('/');
+        if (splitedUrl[splitedUrl.length - 1]) {
+            this.props.dispatch(getProject(splitedUrl[splitedUrl.length - 1]))
+        }
+    }
 
     render() {
         return (
@@ -115,13 +144,13 @@ class ProjectsManage extends Component {
                             <FormGroup row>
                                 <Label sm={2}>نام پروژه : </Label>
                                 <Col sm={5}>
-                                    <Input type="text"/>
+                                    <Input type="text" value={this.state.project.name}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>توضیحات :‌ </Label>
                                 <Col sm={5}>
-                                    <Input type="textarea" name="" rows="2"/>
+                                    <Input value={this.state.project.description} type="textarea" name="" rows="2"/>
                                 </Col>
                             </FormGroup>
                         </Form>
@@ -147,11 +176,11 @@ class ProjectsManage extends Component {
                             </tr>
                             </thead>
                             <tbody>
-                            {this.renderThingItem()}
-                            {this.renderThingItem()}
-                            {this.renderThingItem()}
-                            {this.renderThingItem()}
-                            {this.renderThingItem()}
+                            {
+                                this.state.project.things.map(() => {
+                                    return(this.renderThingItem())
+                                })
+                            }
                             </tbody>
                         </Table>
                     </CardBody>

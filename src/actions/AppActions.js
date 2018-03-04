@@ -110,7 +110,6 @@ export function getProject(id) {
     return (dispatch) => {
         const promise = getProjectAPI(id, dispatch)
         promise.then((response) => {
-            console.log('promise', response)
             if (response.status === 'OK') {
                 dispatch(setProject(response.result))
             } else {
