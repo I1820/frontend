@@ -22,6 +22,13 @@ import {
     Collapse
 } from 'reactstrap';
 
+import AceEditor from 'react-ace';
+
+import 'brace/theme/monokai';
+import 'brace/mode/python';
+import 'brace/snippets/python';
+import 'brace/ext/language_tools';
+
 
 class DeviceProfileNew extends Component {
 
@@ -202,6 +209,25 @@ class DeviceProfileNew extends Component {
                                 </FormGroup>
 
                             </Collapse>
+
+                            <AceEditor
+                                mode="python"
+                                theme="monokai"
+                                className="col-12 mt-5"
+                                name="UNIQUE_ID_OF_DIV"
+                                fontSize={14}
+                                showPrintMargin={true}
+                                showGutter={true}
+                                highlightActiveLine={true}
+                                editorProps={{$blockScrolling: true}}
+                                setOptions={{
+                                    enableBasicAutocompletion: true,
+                                    enableLiveAutocompletion: true,
+                                    enableSnippets: true,
+                                    showLineNumbers: true,
+                                    tabSize: 2,
+                                }}
+                            />
 
                         </Form>
                     </CardBody>
