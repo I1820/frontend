@@ -11,7 +11,11 @@ import Dashboard from '../../views/Dashboard/';
 
 import News from '../../views/News/';
 
-import Gateways from '../../views/Gateways/';
+import Gateways from '../../views/Gateways/Gateways.js';
+import GatewaysNew from '../../views/Gateways/GatewaysNew.js';
+import GatewaysView from '../../views/Gateways/GatewaysView.js';
+
+import DeviceProfile from '../../views/DeviceProfile/';
 
 import Profile from '../../views/Profile/';
 
@@ -80,7 +84,10 @@ class Full extends Component {
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                 <Route path="/news" name="News" component={News}/>
                 <Route path="/profile" name="Profile" component={Profile}/>
-                <Route path="/gateways" name="Gateways" component={Gateways}/>
+                <Route path="/gateways/new" name="GatewaysNew" component={GatewaysNew}/>
+                <Route path="/gateways/list" name="Gateways" component={Gateways}/>
+                <Route path="/gateways/view" name="GatewaysView" component={GatewaysView}/>
+                <Route path="/device-profile" name="DeviceProfile" component={DeviceProfile}/>
                 <Route path="/scenario/new" name="addScenario" component={addScenario}/>
                 <Route path="/projects/list" name="ProjectsList" component={ProjectsList}/>
                 <Route path="/projects/manage" name="ProjectsManage" component={ProjectsManage}/>

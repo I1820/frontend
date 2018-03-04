@@ -43,6 +43,9 @@ const routes = {
   '/projects/view': 'نمایش پروژه',
   '/things/excel': 'آپلود فایل Excel',
   '/things/list': 'لیست اشیاء',
-  '/gateways': 'Gateways',
+  '/gateways/list': 'لیست Gateways',
+  '/gateways/new': 'ساخت Gateway',
+  '/gateways/view': 'نمایش Gateway',
+  '/device-profile': 'پروفایل اشیاء',
 };
 export default routes;
