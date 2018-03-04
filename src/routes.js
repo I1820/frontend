@@ -46,6 +46,7 @@ const routes = {
   '/gateways/list': 'لیست Gateways',
   '/gateways/new': 'ساخت Gateway',
   '/gateways/view': 'نمایش Gateway',
-  '/device-profile': 'پروفایل اشیاء',
+  '/device-profile/list': 'پروفایل اشیاء',
+  '/device-profile/new': 'ساخت پروفایل جدید',
 };
 export default routes;

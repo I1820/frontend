@@ -27,9 +27,7 @@ class DeviceProfile extends Component {
     constructor(props) {
         super(props);
 
-        this.toggle = this.toggle.bind(this)
-        this.showProject = this.showProject.bind(this)
-
+        this.newDeviceProfile = this.newDeviceProfile.bind(this)
         this.state = {
             modal: false
         }
@@ -59,7 +57,7 @@ class DeviceProfile extends Component {
                         </Table>
                     </CardBody>
                     <CardFooter>
-                        <Button onClick={this.toggle} color="primary">ساخت پروفایل</Button>
+                        <Button onClick={this.newDeviceProfile} color="primary">ساخت پروفایل</Button>
                     </CardFooter>
                 </Card>
             </div>
@@ -80,19 +78,11 @@ class DeviceProfile extends Component {
         )
     }
 
-    toggle() {
-        this.setState({
-            modal: !this.state.modal
-        });
+    newDeviceProfile() {
+        window.location = '#/device-profile/new';
     }
 
-    showProject() {
-        window.location = "#/projects/view"
-    }
 
-    manageProject() {
-        window.location = "#/projects/manage"
-    }
 }
 
 

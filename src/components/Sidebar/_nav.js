@@ -27,7 +27,7 @@ export default {
 
     {
         name: 'Device Profile',
-        url: '/device-profile',
+        url: '/device-profile/list',
         icon: 'icon-grid',
     },
 

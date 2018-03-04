@@ -15,7 +15,8 @@ import Gateways from '../../views/Gateways/Gateways.js';
 import GatewaysNew from '../../views/Gateways/GatewaysNew.js';
 import GatewaysView from '../../views/Gateways/GatewaysView.js';
 
-import DeviceProfile from '../../views/DeviceProfile/';
+import DeviceProfile from '../../views/DeviceProfile/DeviceProfile.js';
+import DeviceProfileNew from '../../views/DeviceProfile/DeviceProfileNew.js';
 
 import Profile from '../../views/Profile/';
 
@@ -87,7 +88,8 @@ class Full extends Component {
                 <Route path="/gateways/new" name="GatewaysNew" component={GatewaysNew}/>
                 <Route path="/gateways/list" name="Gateways" component={Gateways}/>
                 <Route path="/gateways/view" name="GatewaysView" component={GatewaysView}/>
-                <Route path="/device-profile" name="DeviceProfile" component={DeviceProfile}/>
+                <Route path="/device-profile/list" name="DeviceProfile" component={DeviceProfile}/>
+                <Route path="/device-profile/new" name="DeviceProfileNew" component={DeviceProfileNew}/>
                 <Route path="/scenario/new" name="addScenario" component={addScenario}/>
                 <Route path="/projects/list" name="ProjectsList" component={ProjectsList}/>
                 <Route path="/projects/manage" name="ProjectsManage" component={ProjectsManage}/>
