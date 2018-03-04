@@ -36,6 +36,14 @@ body{
 }
 
 
+
+// Modal
+.modal-open .modal{
+    background: rgba(0,0,0,0.5);
+}
+
+
+
 // Media Queries
 @media screen and (max-width: 425px) {
 
