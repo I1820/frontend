@@ -137,6 +137,70 @@ class News extends Component {
     render() {
         return(
             <div>
+
+
+            <Card className="text-justify">
+                <CardHeader>
+                    <CardTitle className="mb-0 font-weight-bold">نمونه پکیج</CardTitle>
+                </CardHeader>
+                <CardBody>
+
+                    <Row>
+                    
+                        <Col xs="12" sm="6" md="4">
+                            <Card>
+                                <CardHeader>بسته طلایی</CardHeader>
+                                <CardBody>
+                                    <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
+                                </CardBody>
+                                <CardFooter>
+                                    <Button color="primary">خرید بسته</Button>
+                                </CardFooter>
+                            </Card>
+                        </Col>
+
+                        <Col xs="12" sm="6" md="4">
+                            <Card>
+                                <CardHeader>بسته طلایی</CardHeader>
+                                <CardBody>
+                                    <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
+                                </CardBody>
+                                <CardFooter>
+                                    <Button color="primary">خرید بسته</Button>
+                                </CardFooter>
+                            </Card>
+                        </Col>
+
+                        <Col xs="12" sm="6" md="4">
+                            <Card>
+                                <CardHeader>بسته طلایی</CardHeader>
+                                <CardBody>
+                                    <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
+                                </CardBody>
+                                <CardFooter>
+                                    <Button color="primary">خرید بسته</Button>
+                                </CardFooter>
+                            </Card>
+                        </Col>
+
+                        <Col xs="12" sm="6" md="4">
+                            <Card>
+                                <CardHeader>بسته طلایی</CardHeader>
+                                <CardBody>
+                                    <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. </p>
+                                </CardBody>
+                                <CardFooter>
+                                    <Button color="primary">خرید بسته</Button>
+                                </CardFooter>
+                            </Card>
+                        </Col>
+
+                    </Row>
+
+                </CardBody>
+            </Card>
+
+
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold">نمونه چارت</CardTitle>

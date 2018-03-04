@@ -22,22 +22,24 @@ import {
 } from 'reactstrap';
 
 
-class Gateways extends Component {
+class DeviceProfile extends Component {
 
     constructor(props) {
         super(props);
-        this.newGateway = this.newGateway.bind(this);
-        this.viewGateway = this.viewGateway.bind(this);
+
+        this.newDeviceProfile = this.newDeviceProfile.bind(this)
+        this.state = {
+            modal: false
+        }
     }
 
 
     render() {
         return (
             <div>
-
                 <Card className="text-justify">
                     <CardHeader>
-                        <CardTitle className="mb-0 font-weight-bold h6">لیست پروژه ها</CardTitle>
+                        <CardTitle className="mb-0 font-weight-bold h6">لیست پروفایل اشیاء</CardTitle>
                     </CardHeader>
                     <CardBody>
                         <Table hover responsive className="table-outline">
@@ -55,7 +57,7 @@ class Gateways extends Component {
                         </Table>
                     </CardBody>
                     <CardFooter>
-                        <Button onClick={this.newGateway} color="primary">ساخت جدید</Button>
+                        <Button onClick={this.newDeviceProfile} color="primary">ساخت پروفایل</Button>
                     </CardFooter>
                 </Card>
             </div>
@@ -70,22 +72,18 @@ class Gateways extends Component {
                 <td>اسم اینجاست</td>
                 <td>توضیحات تست اینجاست</td>
                 <td>
-                    <Button color="success" onClick={this.viewGateway} className="ml-1">نمایش</Button>
                     <Button color="danger">حذف</Button>
                 </td>
             </tr>
         )
     }
 
-    newGateway() {
-        window.location = "#/gateways/new"
+    newDeviceProfile() {
+        window.location = '#/device-profile/new';
     }
 
-    viewGateway() {
-        window.location = "#/gateways/view"
-    }
 
 }
 
 
-export default Gateways;
+export default DeviceProfile;
