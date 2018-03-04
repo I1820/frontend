@@ -13,9 +13,14 @@ class HeaderDropdown extends Component {
     super(props);
 
     this.toggle = this.toggle.bind(this);
+    this.profileLink = this.profileLink.bind(this);
     this.state = {
       dropdownOpen: false
     };
+  }
+
+  profileLink() {
+      window.location = '#/profile';
   }
 
   toggle() {
@@ -32,7 +37,7 @@ class HeaderDropdown extends Component {
         </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem header tag="div" className="text-center"><strong>منوی کاربری</strong></DropdownItem>
-          <DropdownItem><i className="fa fa-user-o text-primary"></i>حساب کاربری</DropdownItem>
+          <DropdownItem onClick={this.profileLink}><i className="fa fa-user-o text-primary"></i>حساب کاربری</DropdownItem>
           <DropdownItem><i className="fa fa-power-off text-danger"></i>خروج</DropdownItem>
         </DropdownMenu>
       </Dropdown>

@@ -29,11 +29,15 @@ class ProjectsList extends Component {
     constructor(props) {
         super(props);
         this.toggle = this.toggle.bind(this)
+        this.modalAddable = this.modalAddable.bind(this)
+        this.dataModalToggle = this.dataModalToggle.bind(this)
         this.showProject = this.showProject.bind(this)
         this.onCreateProject = this.onCreateProject.bind(this)
         this.state = {
             modal: false,
-            projects: [{}]
+            dataModal: false,
+            projects: [{}],
+            modalAddableItems: []
         }
     }
 
@@ -47,7 +51,6 @@ class ProjectsList extends Component {
                 projects: props.projects,
                 projectName: "",
                 projectDesc: ""
-
             })
         }
     }
@@ -91,6 +94,21 @@ class ProjectsList extends Component {
                         <Button color="danger" onClick={this.toggle}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
+
+
+                <Modal isOpen={this.state.dataModal} toggle={this.dataModalToggle} className="text-right">
+                    <ModalHeader>ارسال داده</ModalHeader>
+                    <ModalBody>
+                        {this.state.modalAddableItems}
+                        <Button color="success" onClick={this.modalAddable}>+ اضافه</Button>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" className="ml-1" onClick={this.dataModalToggle}>ثبت</Button>
+                        <Button color="danger" onClick={this.dataModalToggle}>انصراف</Button>
+                    </ModalFooter>
+                </Modal>
+
+
 
                 <Card className="text-justify">
                     <CardHeader>
@@ -136,6 +154,7 @@ class ProjectsList extends Component {
                 <td>
                     <Button onClick={() => this.showProject(project._id)} className="ml-1" color="success" size="sm">نمایش</Button>
                     <Button onClick={()=>this.manageProject(project._id)} className="ml-1" color="warning" size="sm">مدیریت</Button>
+                    <Button onClick={this.dataModalToggle} className="ml-1" color="primary" size="sm">ارسال داده</Button>
                     <Button className="ml-1" color="danger" size="sm">حذف</Button>
                 </td>
             </tr>
@@ -145,6 +164,16 @@ class ProjectsList extends Component {
     toggle() {
         this.setState({
             modal: !this.state.modal
+        });
+    }
+
+    showProject() {
+        window.location = "#/projects/view"
+    }
+
+    dataModalToggle() {
+        this.setState({
+            dataModal: !this.state.dataModal
         });
     }
 
@@ -168,6 +197,25 @@ class ProjectsList extends Component {
     manageProject(id) {
         window.location = `#/projects/manage/${id}`
     }
+
+    modalAddable() {
+        let newItem = (
+            <FormGroup row>
+                <Col sm={5}>
+                    <Input type="text" placeholder="پیشفرض" />
+                </Col>
+                <Col sm={1} className="text-center"> : </Col>
+                <Col sm={5}>
+                    <Input type="text" placeholder="پیشفرض" />
+                </Col>
+            </FormGroup>
+        )
+
+        this.setState(prevState => ({
+            modalAddableItems: [...prevState.modalAddableItems, newItem]
+        }))
+    }
+
 }
 
 function mapStateToProps(state) {

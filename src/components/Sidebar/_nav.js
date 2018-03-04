@@ -21,8 +21,14 @@ export default {
 
     {
         name: 'Gateways',
-        url: '/gateways',
+        url: '/gateways/list',
         icon: 'icon-direction',
+    },
+
+    {
+        name: 'Device Profile',
+        url: '/device-profile/list',
+        icon: 'icon-grid',
     },
 
     // {
