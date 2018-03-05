@@ -177,9 +177,11 @@ class ProjectsManage extends Component {
                             </thead>
                             <tbody>
                             {
-                                this.state.project.things.map(() => {
-                                    return(this.renderThingItem())
-                                })
+                                this.state.project.things !== undefined ?
+                                    this.state.project.things.map(() => {
+                                        return (this.renderThingItem())
+                                    }) :
+                                    <br/>
                             }
                             </tbody>
                         </Table>
