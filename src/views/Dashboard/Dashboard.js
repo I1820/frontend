@@ -18,11 +18,36 @@ import {
 } from 'reactstrap';
 
 import Spinner from '../Spinner/Spinner.js';
+import { ToastContainer, toast } from 'react-toastify';
+import { css } from 'glamor';
+import { style } from "react-toastify";
+
+style({
+    colorProgressDefault: 'white'
+});
 
 class Dashboard extends Component {
 
     constructor(props) {
         super(props);
+        this.showAlert = this.showAlert.bind(this);
+    }
+
+    showAlert() {
+        toast('اطلاعات با موفقیت ارسال شد', {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                className: css({
+                    background: 'green',
+                    color: 'white',
+                })
+        });
+        toast('اطلاعات با موفقیت ارسال نشد', {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                className: css({
+                    background: 'crimson',
+                    color: 'white',
+                })
+        });
     }
 
     render() {
@@ -32,14 +57,20 @@ class Dashboard extends Component {
             <div>
                 <Card className="text-justify">
                     <CardHeader>
+                        <CardTitle className="mb-0 font-weight-bold h6">تست Alert</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                        <Button color="primary" onClick={this.showAlert}>نمایش</Button>
+                        <ToastContainer />
+                    </CardBody>
+                </Card>
+                <Card className="text-justify">
+                    <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">داشبورد</CardTitle>
                     </CardHeader>
                     <CardBody>
-
                         <Spinner display={true} />
-
-                        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-
+                        <br /><br /><br /><br /><br /><br /><br /><br /><br />
                     </CardBody>
                 </Card>
             </div>
