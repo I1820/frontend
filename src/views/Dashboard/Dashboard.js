@@ -17,6 +17,8 @@ import {
   Table
 } from 'reactstrap';
 
+import Spinner from '../Spinner/Spinner.js';
+
 class Dashboard extends Component {
 
     constructor(props) {
@@ -33,6 +35,11 @@ class Dashboard extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">داشبورد</CardTitle>
                     </CardHeader>
                     <CardBody>
+
+                        <Spinner display={true} />
+
+                        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
                     </CardBody>
                 </Card>
             </div>

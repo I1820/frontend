@@ -119,7 +119,7 @@ class Login extends Component {
     renderAlert() {
         if (this.state.showAlert) {
             return (
-                <Alert color="danger">
+                <Alert color="danger" className="text-right">
                     {this.state.alert}
                 </Alert>
             )
