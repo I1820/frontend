@@ -37,15 +37,21 @@ class Dashboard extends Component {
         toast('اطلاعات با موفقیت ارسال شد', {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 className: css({
-                    background: 'green',
-                    color: 'white',
+                    background: '#dbf2e3',
+                    color: '#28623c'
+                }),
+                progressClassName: css({
+                    background: '#28623c'
                 })
         });
         toast('اطلاعات با موفقیت ارسال نشد', {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 className: css({
-                    background: 'crimson',
-                    color: 'white',
+                    background: '#fee2e1',
+                    color: '#813838',
+                }),
+                progressClassName: css({
+                    background: '#813838'
                 })
         });
     }
