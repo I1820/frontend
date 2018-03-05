@@ -25,7 +25,8 @@
 
 import {
     SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
-    UPDATE_USER, FREE, GET_THINGS, FETCH_THING
+    UPDATE_USER, FREE, GET_THINGS, FETCH_THING,
+    SELECT_PACKAGE
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -437,6 +438,11 @@ export function selectProject(newState = NEW_OBJECT) {
 export function selectThing(newState = NEW_OBJECT) {
     newState !== NEW_OBJECT ? forwardTo('thing/' + newState) : forwardTo('thing/new')
     return {type: SELECT_PROJECT, newState}
+}
+
+export function selectPackage(newState = NEW_OBJECT) {
+    forwardTo('selectedPackage/' + newState) 
+    return {type: SELECT_PACKAGE, newState}
 }
 
 /**

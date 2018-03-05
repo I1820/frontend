@@ -18,3 +18,6 @@ export const UPDATE_USER = 'UPDATE_USER'
 export const FREE = 'FREE'
 export const GET_THINGS = 'GET_THINGS'
 export const FETCH_THING = 'FETCH_THING'
+
+//
+export const SELECT_PACKAGE = 'SELECT_PACKAGE'

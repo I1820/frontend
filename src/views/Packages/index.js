@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import Data from './packageData'
+import {selectPackage} from '../../actions/AppActions'
 import {
     Row,
     Col,
@@ -15,12 +16,12 @@ import {
     ListGroupItem
 
 } from 'reactstrap'
+import { connect } from 'react-redux';
 
 class PackagesPage extends Component {
     constructor(props) {
         super(props);
         this.renderPackage = this.renderPackage.bind(this)
-        this.selectedPackage = this.selectedPackage.bind(this)
         this.state = {
             orders :[],
             packages: Data,
@@ -28,7 +29,7 @@ class PackagesPage extends Component {
             warning: false,
         };
     }
-    renderPackage( key) {
+    renderPackage(key) {
         let details = this.state.packages[key];
         return (
             <Col xs="12" sm="6" md="4">
@@ -59,8 +60,8 @@ class PackagesPage extends Component {
                 </ListGroup>
             </CardBody>
             <CardFooter>
-            {/* onClick={() => this.props.dispatch(selectPackage(key))} */}
-                    <Button  color="primary" onClick={this.selectedPackage}> 
+            {/* onClick={() => this.props.dispatch(selectPackage(key))}     onClick={this.selectedPackage}*/}
+                    <Button  color="primary"  onClick={() => this.props.dispatch(selectPackage(key))} > 
                      <i className="icon-basket-loaded icons"></i> خرید
                     </Button>
             </CardFooter>
@@ -74,10 +75,7 @@ class PackagesPage extends Component {
         return (
            
             <div className="animated fadeIn">
-             
-              {/* <Packages packages={this.state.packages} /> */}
-
- <Row>
+            <Row>
               <Col>
 
                 <Card className="text-justify">
@@ -107,10 +105,15 @@ class PackagesPage extends Component {
         )
     }
 
-    selectedPackage() {
-        window.location = "#/selectedPackage/"
-    }
+    // selectedPackage() {
+    //     window.location = "#/selectedPackage/"
+    // }
 }
+function select(state) {
 
-export default PackagesPage;
+    return {
+    };
+  }
+  
+  export default connect(select)(PackagesPage);
 
