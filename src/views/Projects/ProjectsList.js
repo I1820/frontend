@@ -32,6 +32,7 @@ class ProjectsList extends Component {
         this.modalAddable = this.modalAddable.bind(this)
         this.dataModalToggle = this.dataModalToggle.bind(this)
         this.showProject = this.showProject.bind(this)
+        this.onCreateProject = this.onCreateProject.bind(this)
         this.state = {
             modal: false,
             dataModal: false,
@@ -41,7 +42,7 @@ class ProjectsList extends Component {
     }
 
     componentWillMount() {
-        this.props.dispatch(getProjects())
+       this.loadProjects()
     }
 
     componentWillReceiveProps(props) {
@@ -88,7 +89,7 @@ class ProjectsList extends Component {
                             this.props.dispatch(createProject({
                                 'name': this.state.projectName,
                                 'description': this.state.projectDesc,
-                            }))
+                            },this.onCreateProject))
                         }}>ذخیره</Button>
                         <Button color="danger" onClick={this.toggle}>انصراف</Button>
                     </ModalFooter>
@@ -128,7 +129,6 @@ class ProjectsList extends Component {
                             <tbody>
                             {
                                 this.props.projects.map((project, key) => {
-                                    console.log('project', project)
                                     return (this.renderItem(project, key))
                                 })
                             }
@@ -152,8 +152,8 @@ class ProjectsList extends Component {
                 <td><Badge color="success">{project.active === true ? 'فعال' : 'غیرفعال'}</Badge></td>
                 <td>{project.owner.name}</td>
                 <td>
-                    <Button onClick={this.showProject} className="ml-1" color="success" size="sm">نمایش</Button>
-                    <Button onClick={this.manageProject} className="ml-1" color="warning" size="sm">مدیریت</Button>
+                    <Button onClick={() => this.showProject(project._id)} className="ml-1" color="success" size="sm">نمایش</Button>
+                    <Button onClick={()=>this.manageProject(project._id)} className="ml-1" color="warning" size="sm">مدیریت</Button>
                     <Button onClick={this.dataModalToggle} className="ml-1" color="primary" size="sm">ارسال داده</Button>
                     <Button className="ml-1" color="danger" size="sm">حذف</Button>
                 </td>
@@ -167,18 +167,35 @@ class ProjectsList extends Component {
         });
     }
 
+    showProject() {
+        window.location = "#/projects/view"
+    }
+
     dataModalToggle() {
         this.setState({
             dataModal: !this.state.dataModal
         });
     }
 
-    showProject() {
-        window.location = "#/projects/view"
+    onCreateProject(status){
+        if(status){
+            this.toggle()
+            this.loadProjects()
+        }else{
+            //TODO Alert
+        }
     }
 
-    manageProject() {
-        window.location = "#/projects/manage"
+    loadProjects() {
+        this.props.dispatch(getProjects())
+    }
+
+    showProject(id) {
+        window.location = `#/projects/view/${id}`
+    }
+
+    manageProject(id) {
+        window.location = `#/projects/manage/${id}`
     }
 
     modalAddable() {

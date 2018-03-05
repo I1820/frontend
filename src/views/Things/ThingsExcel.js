@@ -47,7 +47,7 @@ class ThingsExcel extends Component {
                         </Form>
                     </CardBody>
                     <CardFooter>
-                        <Button color="primary">بارگزاری</Button>
+                        <Button color="primary">بارگذاری</Button>
                     </CardFooter>
                 </Card>
                 <Card className="text-justify">

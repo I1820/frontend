@@ -110,7 +110,6 @@ export function getProject(id) {
     return (dispatch) => {
         const promise = getProjectAPI(id, dispatch)
         promise.then((response) => {
-            console.log('promise', response)
             if (response.status === 'OK') {
                 dispatch(setProject(response.result))
             } else {
@@ -157,16 +156,16 @@ export function uploadExcel(file,cb) {
     }
 }
 
-export function createProject(state) {
+export function createProject(state,cb) {
     return (dispatch) => {
-        console.log(state)
         const promise = createProjectAPI(state, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 console.log('response.result', response.result)
                 dispatch(setProject(response.result))
-                forwardTo('projects')
+                cb(true)
             } else {
+                cb(false)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         })

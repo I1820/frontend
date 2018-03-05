@@ -124,9 +124,9 @@ module.exports.createProject = function (data, dispatch) {
 }
 //
 //
-// module.exports.getProject = function (id, dispatch) {
-//     return fetchData(endpoints.getProject + '/' + id, projectControler.find, getConfig(), dispatch)
-// }
+module.exports.getProject = function (id, dispatch) {
+    return fetchData(endpoints.getProject + '/' + id, getConfig(), dispatch)
+}
 //
 //
 //

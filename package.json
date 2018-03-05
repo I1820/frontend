@@ -53,11 +53,12 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "simple-line-icons": "2.4.1",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "url-parse": "^1.2.0"
   },
   "scripts": {
     "dev": "webpack -d --progress --watch --profile --json > compilation-stats.json --env.dev",
-    "start": "webpack-dev-server --progress --color --inline --env.dev",
+    "start": "webpack-dev-server --progress --color --inline --env.dev --host=0.0.0.0",
     "build": "webpack -p --progress --env.prod",
     "clean": "rimraf ./build"
   },
