@@ -68,11 +68,6 @@ class DeviceProfileNew extends Component {
                                 </Col>
                             </FormGroup>
 
-                            <Button outline color="success" size="sm" onClick={this.advancedFields}>
-                                <i className="icon-check ml-2"></i>
-                                فیلدهای بیشتر
-                            </Button>
-
                             <Collapse isOpen={this.state.collapse} className="mt-3">
 
                                 <FormGroup row>
@@ -210,31 +205,50 @@ class DeviceProfileNew extends Component {
 
                             </Collapse>
 
-                            <AceEditor
-                                mode="python"
-                                theme="monokai"
-                                className="col-12 mt-5"
-                                name="UNIQUE_ID_OF_DIV"
-                                fontSize={14}
-                                showPrintMargin={true}
-                                showGutter={true}
-                                highlightActiveLine={true}
-                                editorProps={{$blockScrolling: true}}
-                                setOptions={{
-                                    enableBasicAutocompletion: true,
-                                    enableLiveAutocompletion: true,
-                                    enableSnippets: true,
-                                    showLineNumbers: true,
-                                    tabSize: 2,
-                                }}
-                            />
-
+                            <Button outline color="success" size="sm" onClick={this.advancedFields}>
+                                <i className="icon-check ml-2"></i>
+                                فیلدهای بیشتر
+                            </Button>
                         </Form>
                     </CardBody>
                     <CardFooter>
                         <Button color="primary">ثبت اطلاعات</Button>
                     </CardFooter>
                 </Card>
+
+                <Card className="text-justify">
+                    <CardHeader>
+                        <CardTitle className="mb-0 font-weight-bold h6">ویرایشگر decoder</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                        <Form>
+                            <FormGroup row>
+                                <AceEditor
+                                    mode="python"
+                                    theme="monokai"
+                                    className="col-md-12"
+                                    name="UNIQUE_ID_OF_DIV"
+                                    fontSize={14}
+                                    showPrintMargin={true}
+                                    showGutter={true}
+                                    highlightActiveLine={true}
+                                    editorProps={{$blockScrolling: true}}
+                                    setOptions={{
+                                        enableBasicAutocompletion: true,
+                                        enableLiveAutocompletion: true,
+                                        enableSnippets: true,
+                                        showLineNumbers: true,
+                                        tabSize: 2,
+                                    }}
+                                />
+                            </FormGroup>
+                        </Form>
+                    </CardBody>
+                    <CardFooter>
+                        <Button className="ml-1" color="primary" size="md">ارسال decoder</Button>
+                    </CardFooter>
+                </Card>
+
             </div>
         );
     }
