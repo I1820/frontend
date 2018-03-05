@@ -30,7 +30,8 @@ class Login extends Component {
             email: "",
             password: "",
             showAlert: false,
-            alert: ""
+            alert: "",
+            showLoading: true
         }
     }
 
@@ -73,7 +74,11 @@ class Login extends Component {
                                                    placeholder="کلمه عبور"/>
                                         </InputGroup>
                                         <Row>
-                                            <Col xs="12">
+                                            <Col xs="6" className="text-right">
+                                                <img style={{display: this.state.showLoading ? 'block' : 'none'}}
+                                                src={'img/loading.gif'} />
+                                            </Col>
+                                            <Col xs="6">
                                                 <Button onClick={this.submit} color="primary"
                                                         className="px-4 float-left">ورود</Button>
                                             </Col>
@@ -114,7 +119,7 @@ class Login extends Component {
     renderAlert() {
         if (this.state.showAlert) {
             return (
-                <Alert color="danger">
+                <Alert color="danger" className="text-right">
                     {this.state.alert}
                 </Alert>
             )
