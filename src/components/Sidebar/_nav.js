@@ -24,6 +24,19 @@ export default {
         icon: 'icon-puzzle',
     },
     
+
+    {
+        name: 'Gateways',
+        url: '/gateways/list',
+        icon: 'icon-direction',
+    },
+
+    {
+        name: 'Device Profile',
+        url: '/device-profile/list',
+        icon: 'icon-grid',
+    },
+
     // {
     //     name: 'اشیاء',
     //     url: '/things',

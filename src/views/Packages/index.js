@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import Packages from './Packages';
 import Data from './packageData'
 import {
     Row,
