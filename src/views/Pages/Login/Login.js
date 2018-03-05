@@ -31,9 +31,9 @@ class Login extends Component {
             password: "",
             showAlert: false,
             alert: "",
-            showLoading: true
         }
     }
+
 
     render() {
         return (
@@ -75,7 +75,7 @@ class Login extends Component {
                                         </InputGroup>
                                         <Row>
                                             <Col xs="6" className="text-right">
-                                                <img style={{display: this.state.showLoading ? 'block' : 'none'}}
+                                                <img style={{display: this.props.currentlySending ? 'block' : 'none'}}
                                                 src={'img/loading.gif'} />
                                             </Col>
                                             <Col xs="6">

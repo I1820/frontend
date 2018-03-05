@@ -6,7 +6,7 @@ import {sendingRequest, logout} from '../actions/AppActions'
 // import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://172.23.132.51:8080/api/v1'
+const BASE_URL = 'http://backback.ceit.aut.ac.ir:50024/api/v1'
 
 const endpoints = {
     login: '/login',
@@ -108,9 +108,9 @@ module.exports.listProject = function (dispatch) {
 //     return fetchData(endpoints.register, registerControler, config, dispatch)
 // }
 //
-// module.exports.logout = function (dispatch) {
-//     return fetchData(endpoints.logout, logoutControler, postConfig(), dispatch)
-// }
+module.exports.logout = function (dispatch) {
+    return fetchData(endpoints.logout, postConfig(), dispatch)
+}
 //
 // module.exports.viewProfile = function () {
 //     return fetchData(endpoints.viewProfile, profileControler, getConfig())
