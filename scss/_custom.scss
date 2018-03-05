@@ -63,6 +63,91 @@ body{
 
 
 
+.payment-gateway-style{
+    position: relative;
+    /* padding: 5px; */
+    margin: 10px;
+    text-align: center;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2), 0 -1px 10px rgba(0, 0, 0, .05);
+    /* -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; */
+    -webkit-transition: box-shadow .2s ease-in-out;
+    transition: box-shadow .2s ease-in-out;
+    cursor: pointer;
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    background-position: 0 0, 100% 0;
+    background-repeat: no-repeat;
+    background-size: 2px 100%;
+  }
+
+.pay-input-style{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    position: relative;
+    height: 120px;
+    width: 120px;
+    transition: all 0.15s ease-out 0s;
+    /* margin: -20px; */
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 1px 2px rgba(95, 93, 93, 0.2), 0 -1px 10px rgba(0, 0, 0, .05);
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.pay-input-style2{
+    text-align: center;
+    background: #fff;
+    height: 130px;
+    width: 130px;
+    overflow: hidden;
+    
+  }
+  .pay-input-style:checked {
+    /* background: #40e0d0; */
+    border:2px solid  #569730;
+    border-radius: 3px;
+  }
+  .pay-input-style:checked::before {
+ 
+    position: absolute;
+    // content: '\2713';
+    color: #569730;
+    // font-size: 80px;
+    // text-align: right;
+    // line-height: 80px;
+  }
+
+  .back1{
+    background-image: url('https://upload.wikimedia.org/wikipedia/en/0/01/Parsian_Bank_logo.png');
+    background-repeat: no-repeat;
+    background-size: 120px 110px;
+    text-align: center;
+  }
+
+  .back2{
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Bank_Mellat_logo.svg/620px-Bank_Mellat_logo.svg.png');
+    background-repeat: no-repeat;
+    background-size: 120px 110px;
+    text-align: center;
+  }
+
+  .back3{
+    background-image: url('https://www.sarina724.com/frontend/web/upload/200-200/20161008021954.jpg');
+    background-repeat: no-repeat;
+    background-size: 120px 110px;
+    text-align: center;
+  }
 
 
 

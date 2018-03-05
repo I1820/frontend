@@ -20,6 +20,7 @@ class PackagesPage extends Component {
     constructor(props) {
         super(props);
         this.renderPackage = this.renderPackage.bind(this)
+        this.selectedPackage = this.selectedPackage.bind(this)
         this.state = {
             orders :[],
             packages: Data,
@@ -59,7 +60,7 @@ class PackagesPage extends Component {
             </CardBody>
             <CardFooter>
             {/* onClick={() => this.props.dispatch(selectPackage(key))} */}
-                    <Button  color="primary"> 
+                    <Button  color="primary" onClick={this.selectedPackage}> 
                      <i className="icon-basket-loaded icons"></i> خرید
                     </Button>
             </CardFooter>
@@ -102,11 +103,12 @@ class PackagesPage extends Component {
               </Col>
             </Row>
     
-
-
-
             </div>
         )
+    }
+
+    selectedPackage() {
+        window.location = "#/selectedPackage/"
     }
 }
 
