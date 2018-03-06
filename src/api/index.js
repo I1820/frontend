@@ -99,15 +99,13 @@ module.exports.listProject = function (dispatch) {
     return fetchData(endpoints.listProject, getConfig(), dispatch)
 }
 
-//
-// module.exports.register = function (data, dispatch) {
-//     const config = loginConfig
-//
-//
-//     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(endpoints.register, registerControler, config, dispatch)
-// }
-//
+
+module.exports.register = function (data, dispatch) {
+    const config = loginConfig
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(endpoints.register, config, dispatch)
+}
+
 module.exports.logout = function (dispatch) {
     return fetchData(endpoints.logout, postConfig(), dispatch)
 }

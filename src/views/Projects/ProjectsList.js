@@ -23,6 +23,7 @@ import {
 
 import {connect} from 'react-redux';
 import {createProject, getProjects} from "../../actions/AppActions";
+import Spinner from "../Spinner/Spinner";
 
 class ProjectsList extends Component {
 
@@ -58,7 +59,7 @@ class ProjectsList extends Component {
     render() {
         return (
             <div>
-
+                <Spinner display={this.props.loading} />
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className="text-right">
                     <ModalHeader>پروژه جدید</ModalHeader>
                     <ModalBody>
@@ -220,7 +221,8 @@ class ProjectsList extends Component {
 
 function mapStateToProps(state) {
     return {
-        projects: state.projectReducer
+        projects: state.projectReducer,
+        loading : state.homeReducer.currentlySending
     };
 }
 

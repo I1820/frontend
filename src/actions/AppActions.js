@@ -296,15 +296,10 @@ export function register(data, cb) {
         const promise = registerAPI(data, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                dispatch(changeForm({
-                    password: ''
-                }))
                 cb(true)
-
                 setTimeout(() => {
                     forwardTo('/login')
                 }, 2000)
-
             } else {
                 dispatch(setErrorMessage(response.result))
                 cb(false)
