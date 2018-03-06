@@ -57,14 +57,18 @@ class DeviceProfileNew extends Component {
                             <FormGroup row>
                                 <Label sm={2}>اسم :‌ </Label>
                                 <Col sm={4}>
-                                    <Input type="text" />
+                                    <Input type="text"/>
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label sm={2}>supportsJoin :‌ </Label>
                                 <Col sm={4}>
-                                    <Input type="text" />
+                                    <Input type="select" name="select" id="select">
+                                        <option value="">نوع شی را انتخاب کنید</option>
+                                        <option value="1">OTAA</option>
+                                        <option value="0">ABP</option>
+                                    </Input>
                                 </Col>
                             </FormGroup>
 
@@ -73,133 +77,133 @@ class DeviceProfileNew extends Component {
                                 <FormGroup row>
                                     <Label sm={2}>classBTimeout :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input name={"classBTimeout"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>classCTimeout :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input name={"classCTimeout"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>factoryPresetFreqs :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"factoryPresetFreqs"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>macVersion :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input name={"macVersion"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>maxDutyCycle :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"maxDutyCycle"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>maxEIRP :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"maxEIRP"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>pingSlotDR :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"pingSlotDR"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>pingSlotFreq :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input   name={"pingSlotFreq"} innerRef={ref => this.setRef(ref)}type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>pingSlotPeriod :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"pingSlotPeriod"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>regParamsRevision :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"regParamsRevision"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>rfRegion :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"rfRegion"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>rxDROffset1 :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"rxDROffset1"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>rxDataRate2 :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input   name={"rxDataRate2"} innerRef={ref => this.setRef(ref)}type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>rxDelay1 :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"rxDelay1"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>rxFreq2 :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"rxFreq2"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>supports32bitFCnt :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"supports32bitFCnt"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>supportsClassB :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"supportsClassB"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>supportsClassC :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"supportsClassC"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>supports32bitFCnt :‌ </Label>
                                     <Col sm={4}>
-                                        <Input type="text" />
+                                        <Input  name={"supports32bitFCnt"} innerRef={ref => this.setRef(ref)} type="text"/>
                                     </Col>
                                 </FormGroup>
 
@@ -212,7 +216,7 @@ class DeviceProfileNew extends Component {
                         </Form>
                     </CardBody>
                     <CardFooter>
-                        <Button color="primary">ثبت اطلاعات</Button>
+                        <Button onClick={()=>console.log(this.state)} color="primary">ثبت اطلاعات</Button>
                     </CardFooter>
                 </Card>
 
@@ -254,6 +258,20 @@ class DeviceProfileNew extends Component {
     }
 
 
+    setRef(ref) {
+        if (ref !== null){
+            let state = {
+
+            }
+            state[ref.name] = ref.value;
+            this.setState({
+                form:{
+                    ...this.state.form,
+                    ...state
+                }
+            })
+        }
+    }
 }
 
 

@@ -6,6 +6,9 @@ import {
   DropdownToggle,
   Dropdown
 } from 'reactstrap';
+import connect from "react-redux/es/connect/connect";
+import {logout} from "../../actions/AppActions";
+
 
 class HeaderDropdown extends Component {
 
@@ -38,7 +41,7 @@ class HeaderDropdown extends Component {
         <DropdownMenu right>
           <DropdownItem header tag="div" className="text-center"><strong>منوی کاربری</strong></DropdownItem>
           <DropdownItem onClick={this.profileLink}><i className="fa fa-user-o text-primary"></i>حساب کاربری</DropdownItem>
-          <DropdownItem><i className="fa fa-power-off text-danger"></i>خروج</DropdownItem>
+          <DropdownItem onClick={() => this.props.dispatch(logout())}><i className="fa fa-power-off text-danger"></i>خروج</DropdownItem>
         </DropdownMenu>
       </Dropdown>
     );
@@ -52,4 +55,4 @@ class HeaderDropdown extends Component {
   }
 }
 
-export default HeaderDropdown;
+export default connect(()=>{})(HeaderDropdown);
