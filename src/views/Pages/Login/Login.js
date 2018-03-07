@@ -25,6 +25,7 @@ class Login extends Component {
         this.submit = this.submit.bind(this)
         this.onRespond = this.onRespond.bind(this)
         this.renderAlert = this.renderAlert.bind(this)
+        this.goToRegisterPage = this.goToRegisterPage.bind(this)
 
         this.state = {
             email: "",
@@ -74,13 +75,13 @@ class Login extends Component {
                                                    placeholder="کلمه عبور"/>
                                         </InputGroup>
                                         <Row>
-                                            <Col xs="6" className="text-right">
+                                            <Col xs="3" className="text-right">
                                                 <img style={{display: this.props.currentlySending ? 'block' : 'none'}}
                                                 src={'img/loading.gif'} />
                                             </Col>
-                                            <Col xs="6">
-                                                <Button onClick={this.submit} color="primary"
-                                                        className="px-4 float-left">ورود</Button>
+                                            <Col xs="9">
+                                                <Button onClick={this.goToRegisterPage} color="success" className="px-4 float-left">ثبت نام</Button>
+                                                <Button onClick={this.submit} color="primary" className="px-4 ml-1 float-left">ورود</Button>
                                             </Col>
                                         </Row>
                                     </CardBody>
@@ -91,6 +92,10 @@ class Login extends Component {
                 </Container>
             </div>
         );
+    }
+
+    goToRegisterPage() {
+        window.location = '#/register'
     }
 
     mergeWithState(newState = {}) {
