@@ -15,11 +15,27 @@ import 'brace/theme/monokai';
 import 'brace/mode/python';
 import 'brace/snippets/python';
 import 'brace/ext/language_tools';
+import {connectThing, createScenario, getThingProfileListAction} from "../../actions/AppActions";
+import connect from "react-redux/es/connect/connect";
 
 class AddScenario extends Component {
 
     constructor(props) {
         super(props);
+
+        this.sendScenario = this.sendScenario.bind(this)
+
+        this.state = {
+            code: ""
+        }
+    }
+
+
+    componentWillMount() {
+        const splitedUrl = window.location.href.split('/');
+        this.setState({
+            project: splitedUrl[5]
+        })
     }
 
 
@@ -35,11 +51,14 @@ class AddScenario extends Component {
                             <FormGroup row>
                                 <Label sm={1}>نام سناریو:</Label>
                                 <Col sm={5}>
-                                    <Input type="text"/>
+                                    <Input onChange={(event) => {
+                                        this.setState({name: event.target.value})
+                                    }} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <AceEditor
+                                    onChange={(code) => this.state.code = code}
                                     mode="python"
                                     theme="monokai"
                                     className="col-md-12"
@@ -61,7 +80,8 @@ class AddScenario extends Component {
                         </Form>
                     </CardBody>
                     <CardFooter>
-                        <Button className="ml-1" color="primary" size="md">ارسال سناریو</Button>
+                        <Button onClick={this.sendScenario} className="ml-1" color="primary" size="md">ارسال
+                            سناریو</Button>
                         <Button className="ml-1" color="warning" size="md">بررسی سناریو</Button>
                     </CardFooter>
                 </Card>
@@ -76,6 +96,19 @@ class AddScenario extends Component {
         );
     }
 
+
+    sendScenario() {
+        this.props.dispatch(createScenario(this.state.project, {
+            name: this.state.name,
+            code: this.state.code
+        }))
+    }
 }
 
-export default AddScenario;
+function mapStateToProps(state) {
+    return ({
+        loading: state.homeReducer.currentlySending,
+    })
+}
+
+export default connect(mapStateToProps)(AddScenario);

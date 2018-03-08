@@ -30,6 +30,8 @@ class ProjectsManage extends Component {
         this.toggleABP = this.toggleABP.bind(this)
         this.toggleOTAA = this.toggleOTAA.bind(this)
         this.addThing = this.addThing.bind(this)
+        this.addScenario = this.addScenario.bind(this)
+
 
         this.state = {
             OTAAmodal: false,
@@ -179,8 +181,8 @@ class ProjectsManage extends Component {
                             <tbody>
                             {
                                 this.state.project.things !== undefined ?
-                                    this.state.project.things.map(() => {
-                                        return (this.renderThingItem())
+                                    this.state.project.things.map((thing, key) => {
+                                        return (this.renderThingItem(thing, key))
                                     }) :
                                     <br/>
                             }
@@ -199,10 +201,13 @@ class ProjectsManage extends Component {
                     </CardHeader>
                     <CardBody>
                         <ListGroup className="p-0">
-                            {this.renderScenarioItem()}
-                            {this.renderScenarioItem()}
-                            {this.renderScenarioItem()}
-                            {this.renderScenarioItem()}
+                            {
+                                this.state.project.scenarios !== undefined ?
+                                    this.state.project.scenarios.map(() => {
+                                        return (this.renderScenarioItem())
+                                    }) :
+                                    <br/>
+                            }
                         </ListGroup>
                     </CardBody>
                     <CardFooter>
@@ -224,15 +229,16 @@ class ProjectsManage extends Component {
         )
     }
 
-    renderThingItem() {
+    renderThingItem(thing, key) {
         return (
-            <tr>
-                <th>1</th>
-                <td>عنوان شی اینجاست</td>
-                <td>آدرس شی اینجاست</td>
-                <td>ATTO</td>
+            <tr id={key}>
+                <th>{key + 1}</th>
+                <td>{thing.name}</td>
+                <td>{thing.interface.devEUI}</td>
+                <td>{thing.type}</td>
                 <td>
-                    <Button className="ml-1" onClick={this.toggleABP} color="success" size="sm">فعال سازی</Button>
+                    <Button className="ml-1" onClick={thing.type === 'ABP' ? this.toggleABP : this.toggleOTAA}
+                            color="success" size="sm">فعال سازی</Button>
                     <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
                     <Button className="ml-1" color="danger" size="sm">حذف</Button>
                 </td>
@@ -249,7 +255,7 @@ class ProjectsManage extends Component {
     }
 
     addScenario() {
-        window.location = "#/scenario/new"
+        window.location = `#/scenario/${this.state.project._id}/new`
     }
 
 

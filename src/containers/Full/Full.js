@@ -90,7 +90,7 @@ class Full extends Component {
                 <Route path="/gateways/view" name="GatewaysView" component={GatewaysView}/>
                 <Route path="/device-profile/list" name="DeviceProfile" component={DeviceProfile}/>
                 <Route path="/device-profile/new" name="DeviceProfileNew" component={DeviceProfileNew}/>
-                <Route path="/scenario/new" name="addScenario" component={addScenario}/>
+                <Route path="/scenario" name="addScenario" component={addScenario}/>
                 <Route path="/projects/list" name="ProjectsList" component={ProjectsList}/>
                 <Route path="/projects/manage" name="ProjectsManage" component={ProjectsManage}/>
                 <Route path="/projects/view" name="ProjectsView" component={ProjectsView}/>

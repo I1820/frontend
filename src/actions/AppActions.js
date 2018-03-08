@@ -343,23 +343,6 @@ export function createCodec(thingId, code, cb) {
     }
 }
 
-export function createScenario(thingId, code, cb) {
-    return (dispatch) => {
-        const promise = createScenarioAPI({code, name: 'scenario'}, thingId, dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                // dispatch(getProject(projectId))
-                cb(true)
-            } else {
-                cb(false, response.result)
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        }).catch((err) => {
-            cb(false, err)
-            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-        })
-    }
-}
 
 /**
  * Sets the authentication state of the application
@@ -551,6 +534,24 @@ export function createThingAction(data, project, cb) {
                 cb(false, response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
+        })
+    }
+}
+
+/*  project actions */
+
+export function createScenario(projectId, data) {
+    return (dispatch) => {
+        const promise = createScenarioAPI(data, projectId, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((err) => {
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
         })
     }
 }

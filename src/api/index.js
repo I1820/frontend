@@ -185,12 +185,6 @@ module.exports.createThing = function (data, projectId, dispatch) {
 //     return fetchData(`/thing/${id}/codec`, projectControler.create, config, dispatch)
 // }
 //
-// module.exports.createScenario = function (data,id, dispatch) {
-//     const config = postConfig()
-//     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(`/project/${id}/scenario`, projectControler.create, config, dispatch)
-// }
-//
 //
 // module.exports.createGateway = function (data, dispatch) {
 //     const config = postConfig()
@@ -220,4 +214,10 @@ module.exports.createThingProfile = function (data, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
     return fetchData(`/thing-profile`, config, dispatch)
+}
+
+module.exports.createScenario = function (data,id, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/project/${id}/scenario`, config, dispatch)
 }
