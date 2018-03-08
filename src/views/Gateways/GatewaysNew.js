@@ -1,37 +1,32 @@
 import React, {Component} from 'react';
 import {
-    Row,
     Col,
     Card,
     Form,
-    Badge,
-    Modal,
     FormGroup,
     CardHeader,
     CardBody,
     CardFooter,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
     CardTitle,
     Button,
-    ButtonGroup,
     Label,
-    Input,
-    Table
+    Input
 } from 'reactstrap';
 
 import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
+import {createGatewayAction} from "../../actions/AppActions";
+import connect from "react-redux/es/connect/connect";
+
 const _ = require("lodash");
-const { compose, withProps, lifecycle } = require("recompose");
+const {compose, withProps, lifecycle} = require("recompose");
 const {SearchBox} = require("react-google-maps/lib/components/places/SearchBox");
 
 const MapWithASearchBox = compose(
     withProps({
         googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
-        loadingElement: <div style={{ height: `100%` }} />,
-        containerElement: <div style={{ height: `400px` }} />,
-        mapElement: <div style={{ height: `100%` }} />,
+        loadingElement: <div style={{height: `100%`}}/>,
+        containerElement: <div style={{height: `400px`}}/>,
+        mapElement: <div style={{height: `100%`}}/>,
     }),
     lifecycle({
         componentWillMount() {
@@ -114,7 +109,7 @@ const MapWithASearchBox = compose(
             />
         </SearchBox>
         {props.markers.map((marker, index) =>
-            <Marker key={index} position={marker.position} />
+            <Marker key={index} position={marker.position}/>
         )}
     </GoogleMap>
 );
@@ -124,6 +119,18 @@ class GatewaysNew extends Component {
 
     constructor(props) {
         super(props);
+
+        this.changeForm = this.changeForm.bind(this)
+        this.submitForm = this.submitForm.bind(this)
+
+        this.state = {
+            form: {
+                latitude: 0,
+                longitude: 0,
+                altitude: 0,
+                ping:0
+            }
+        }
     }
 
 
@@ -135,33 +142,58 @@ class GatewaysNew extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">افزودن Gateway</CardTitle>
                     </CardHeader>
                     <CardBody>
-                    <Form>
-                        <FormGroup row>
-                            <Label sm={2}>اسم : </Label>
-                            <Col sm={5}>
-                                <Input type="text"/>
-                            </Col>
-                        </FormGroup>
-                        <FormGroup row>
-                            <Label sm={2}>آدرس : </Label>
-                            <Col sm={5}>
-                                <Input type="text"/>
-                            </Col>
-                        </FormGroup>
+                        <Form>
+                            <FormGroup row>
+                                <Label sm={2}>اسم : </Label>
+                                <Col sm={5}>
+                                    <Input name="name" onChange={this.changeForm} type="text"/>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label sm={2}>آدرس : </Label>
+                                <Col sm={5}>
+                                    <Input name="mac" onChange={this.changeForm} type="text"/>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label sm={2}>توضیحات : </Label>
+                                <Col sm={5}>
+                                    <Input name="description" onChange={this.changeForm} type="textarea"/>
+                                </Col>
+                            </FormGroup>
+                            <MapWithASearchBox/>
 
-                        <MapWithASearchBox />
-
-                    </Form>
+                        </Form>
                     </CardBody>
                     <CardFooter>
-                        <Button color="primary">ثبت اطلاعات</Button>
+                        <Button color="primary" onClick={this.submitForm}>ثبت اطلاعات</Button>
                     </CardFooter>
                 </Card>
             </div>
         );
     }
 
+    changeForm(event) {
+        let state = {}
+        state[event.target.name] = event.target.value
+        this.setState({
+            form: {
+                ...this.state.form,
+                ...state
+            }
+        })
+    }
+
+    submitForm() {
+        this.props.dispatch(createGatewayAction(this.state.form))
+    }
+
 }
 
+function mapStateToProps(state) {
+    return ({
+        loading: state.homeReducer.currentlySending
+    })
+}
 
-export default GatewaysNew;
+export default connect(mapStateToProps)(GatewaysNew);

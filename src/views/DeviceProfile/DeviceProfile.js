@@ -10,6 +10,7 @@ import {
 } from 'reactstrap';
 import {getThingProfileListAction} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
+import Spinner from "../Spinner/Spinner";
 
 
 class DeviceProfile extends Component {
@@ -28,9 +29,9 @@ class DeviceProfile extends Component {
     }
 
     render() {
-        console.log(this.props.profiles)
         return (
             <div>
+                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">لیست پروفایل اشیاء</CardTitle>
@@ -85,7 +86,8 @@ class DeviceProfile extends Component {
 
 function mapStateToProps(state) {
     return {
-        profiles: state.thingProfileReducer
+        profiles: state.thingProfileReducer,
+        loading: state.homeReducer.currentlySending
     }
 }
 

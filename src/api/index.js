@@ -161,10 +161,10 @@ module.exports.editProfile = function (data, dispatch) {
 //     return fetchData(endpoints.getThing + '/' + id, projectControler.find, getConfig(), dispatch)
 // }
 //
-// module.exports.getGAteways = function (dispatch) {
-//     return fetchData('/gateway/', projectControler.find, getConfig(), dispatch)
-// }
-//
+module.exports.getGateways = function (dispatch) {
+    return fetchData('/gateway',getConfig(), dispatch)
+}
+
 module.exports.createThing = function (data, projectId, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
@@ -186,11 +186,11 @@ module.exports.createThing = function (data, projectId, dispatch) {
 // }
 //
 //
-// module.exports.createGateway = function (data, dispatch) {
-//     const config = postConfig()
-//     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(`/gateway`, projectControler.create, config, dispatch)
-// }
+module.exports.createGateway = function (data, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/gateway`, config, dispatch)
+}
 //
 // module.exports.uploadExcel = function (data, dispatch) {
 //     const url = BASE_URL + `/thing/from-excel`
@@ -216,7 +216,7 @@ module.exports.createThingProfile = function (data, dispatch) {
     return fetchData(`/thing-profile`, config, dispatch)
 }
 
-module.exports.createScenario = function (data,id, dispatch) {
+module.exports.createScenario = function (data, id, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
     return fetchData(`/project/${id}/scenario`, config, dispatch)

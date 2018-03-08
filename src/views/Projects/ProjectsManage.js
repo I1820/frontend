@@ -21,6 +21,7 @@ import {
 } from 'reactstrap';
 import {connect} from 'react-redux';
 import {getProject} from "../../actions/AppActions";
+import Spinner from "../Spinner/Spinner";
 
 class ProjectsManage extends Component {
 
@@ -71,7 +72,7 @@ class ProjectsManage extends Component {
     render() {
         return (
             <div>
-
+                <Spinner display={this.props.loading}/>
                 <Modal isOpen={this.state.OTAAmodal} toggle={this.toggleOTAA} className="text-right">
                     <ModalHeader>OTAA</ModalHeader>
                     <ModalBody>
@@ -275,7 +276,8 @@ class ProjectsManage extends Component {
 
 function mapStateToProps(state) {
     return {
-        projects: state.projectReducer
+        projects: state.projectReducer,
+        loading:state.homeReducer.currentlySending
     };
 }
 

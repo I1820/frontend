@@ -25,7 +25,7 @@
 
 import {
     SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
-    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE
+    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE,GET_GATEWAYS
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -37,7 +37,7 @@ import {
     createThing as createThingAPI, editThing as editThingAPI,
     getProjectData as getThingDataAPI, createCodec as createCodecAPI,
     createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
-    createGateway as createGatewayAPI, getGAteways as getGAtewaysAPI
+    createGateway as createGatewayAPI, getGateways
 } from '../api/index'
 import {createThingProfile, getThingProfileList} from "../api";
 
@@ -209,34 +209,7 @@ export function getThing(id) {
     }
 }
 
-export function createGateway(data, cb) {
-    return (dispatch) => {
-        const promise = createGatewayAPI(data, dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                window.location.reload()
-                cb(true)
-            } else {
-                cb(false, response.result)
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        })
-    }
-}
 
-export function getGateways() {
-    return (dispatch) => {
-        const promise = getGAtewaysAPI(dispatch)
-        promise.then((response) => {
-            console.log('promise', response.result.gateway)
-            if (response.status === 'OK') {
-                dispatch(setGws(response.result.gateway))
-            } else {
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        })
-    }
-}
 
 
 export function editThing(id, data) {
@@ -258,10 +231,6 @@ function setThings(newState) {
     return {type: GET_THINGS, newState}
 }
 
-
-function setGws(newState) {
-    return {type: 'GET_GWs', newState}
-}
 
 function setGateway(newState) {
     return {type: 'FETCH_GATE', newState}
@@ -552,6 +521,36 @@ export function createScenario(projectId, data) {
             }
         }).catch((err) => {
             dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
+}
+
+
+/*  gateway actions */
+
+export function getGatewaysAction() {
+    return (dispatch) => {
+        const promise = getGateways(dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch({type: GET_GATEWAYS, newState:response.result.gateways})
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+export function createGatewayAction(data) {
+    return (dispatch) => {
+        const promise = createGatewayAPI(data, dispatch)
+        promise.then((response) => {
+            console.log(response);
+            if (response.status === 'OK') {
+                forwardTo('/gateways')
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
         })
     }
 }
