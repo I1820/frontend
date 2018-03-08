@@ -27,6 +27,8 @@ import ProjectsView from '../../views/Projects/ProjectsView.js';
 //package
 import ShowPackages from '../../views/Packages'
 import SelectedPackage from '../../views/Packages/SelectedPackage'
+import SuccessPayment from '../../views/Packages/SuccessPayment'
+import UnSuccessPayment from '../../views/Packages/FailurePayment'
 
 import ThingsExcel from '../../views/Things/ThingsExcel.js';
 import ThingsList from '../../views/Things/ThingsList.js'
@@ -101,6 +103,9 @@ class Full extends Component {
 
                 <Route path="/packages" name="packages" component={ShowPackages}/>
                 <Route path="/selectedPackage/" name="selectedPackage" component={SelectedPackage}/>
+                <Route path="/paymentResult/S/" name="SuccessPayment" component={SuccessPayment}/>
+                <Route path="/paymentResult/F/" name="UnSuccessPayment" component={UnSuccessPayment}/>
+           
 
                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
                 <Route path="/things/new" name="ThingsExcel" component={CreateThing}/>

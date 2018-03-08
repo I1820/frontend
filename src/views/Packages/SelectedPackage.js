@@ -24,6 +24,7 @@ import {
     ListGroupItem,
     Alert
 } from 'reactstrap';
+import {resultOfPay} from '../../actions/AppActions'
 
 
 class SelectedPackage extends Component {
@@ -32,7 +33,7 @@ class SelectedPackage extends Component {
         super(props);
         this.state = {
             result: 'failure',
-            // 'succsess',
+            // 'success failure',
             yourPick: ''
           };
     }
@@ -177,7 +178,9 @@ class SelectedPackage extends Component {
                                 <div >
                                     <Row >
                                         <Col md='3'>
-                                            <Button color="success">پرداخت از طریق بانک</Button>{' '}
+                                            <Button color="success" onClick={() => this.props.dispatch(resultOfPay(this.state.result))}>
+                                                پرداخت از طریق بانک
+                                            </Button>{' '}
                                         </Col>
                                         <Col md='3'>
                                           <Button color="secondary">انصراف</Button>{' '}

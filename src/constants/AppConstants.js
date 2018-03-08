@@ -21,3 +21,4 @@ export const FETCH_THING = 'FETCH_THING'
 
 //
 export const SELECT_PACKAGE = 'SELECT_PACKAGE'
+export const PAYMENT_RESULT = 'PAYMENT_RESULT'
