@@ -32,13 +32,16 @@ class ProjectsManage extends Component {
         this.toggleOTAA = this.toggleOTAA.bind(this)
         this.addThing = this.addThing.bind(this)
         this.addScenario = this.addScenario.bind(this)
-
+        this.dataModalToggle = this.dataModalToggle.bind(this)
+        this.modalAddable = this.modalAddable.bind(this)
 
         this.state = {
             OTAAmodal: false,
             ABPmodel: false,
             id: "",
-            project: {}
+            project: {},
+            dataModal: false,
+            modalAddableItems: []
         }
     }
 
@@ -73,6 +76,20 @@ class ProjectsManage extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
+
+
+                <Modal isOpen={this.state.dataModal} toggle={this.dataModalToggle} className="text-right">
+                    <ModalHeader>ارسال داده</ModalHeader>
+                    <ModalBody>
+                        {this.state.modalAddableItems}
+                        <Button color="success" onClick={this.modalAddable}>+ اضافه</Button>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" className="ml-1" onClick={this.dataModalToggle}>ثبت</Button>
+                        <Button color="danger" onClick={this.dataModalToggle}>انصراف</Button>
+                    </ModalFooter>
+                </Modal>
+
                 <Modal isOpen={this.state.OTAAmodal} toggle={this.toggleOTAA} className="text-right">
                     <ModalHeader>OTAA</ModalHeader>
                     <ModalBody>
@@ -241,10 +258,19 @@ class ProjectsManage extends Component {
                     <Button className="ml-1" onClick={thing.type === 'ABP' ? this.toggleABP : this.toggleOTAA}
                             color="success" size="sm">فعال سازی</Button>
                     <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
+                    <Button onClick={this.dataModalToggle} className="ml-1" color="primary" size="sm">ارسال
+                        داده</Button>
                     <Button className="ml-1" color="danger" size="sm">حذف</Button>
                 </td>
             </tr>
         )
+    }
+
+
+    dataModalToggle() {
+        this.setState({
+            dataModal: !this.state.dataModal
+        });
     }
 
     uploadExcel() {
@@ -272,12 +298,30 @@ class ProjectsManage extends Component {
         });
     }
 
+    modalAddable() {
+        let newItem = (
+            <FormGroup row>
+                <Col sm={5}>
+                    <Input type="text" placeholder="کلید"/>
+                </Col>
+                <Col sm={1} className="text-center"> : </Col>
+                <Col sm={5}>
+                    <Input type="text" placeholder="مقدار"/>
+                </Col>
+            </FormGroup>
+        )
+
+        this.setState(prevState => ({
+            modalAddableItems: [...prevState.modalAddableItems, newItem]
+        }))
+    }
+
 }
 
 function mapStateToProps(state) {
     return {
         projects: state.projectReducer,
-        loading:state.homeReducer.currentlySending
+        loading: state.homeReducer.currentlySending
     };
 }
 
