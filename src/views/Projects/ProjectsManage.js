@@ -29,6 +29,7 @@ class ProjectsManage extends Component {
 
         this.toggleABP = this.toggleABP.bind(this)
         this.toggleOTAA = this.toggleOTAA.bind(this)
+        this.addThing = this.addThing.bind(this)
 
         this.state = {
             OTAAmodal: false,
@@ -244,7 +245,7 @@ class ProjectsManage extends Component {
     }
 
     addThing() {
-        window.location = "#/things/new"
+        window.location = `#/things/${this.state.project._id}/new`
     }
 
     addScenario() {

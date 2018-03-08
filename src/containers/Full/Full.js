@@ -95,8 +95,7 @@ class Full extends Component {
                 <Route path="/projects/manage" name="ProjectsManage" component={ProjectsManage}/>
                 <Route path="/projects/view" name="ProjectsView" component={ProjectsView}/>
                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
-                <Route path="/things/new" name="ThingsExcel" component={CreateThing}/>
-                <Route path="/things/list" name="ThingsList" component={ThingsList}/>
+                <Route path="/things" name="createThing" component={CreateThing}/>
                 <Route path="/theme/colors" name="Colors" component={Colors}/>
                 <Route path="/theme/typography" name="Typography" component={Typography}/>
                 <Route path="/base/cards" name="Cards" component={Cards}/>

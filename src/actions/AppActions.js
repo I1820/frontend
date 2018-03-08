@@ -209,22 +209,6 @@ export function getThing(id) {
     }
 }
 
-export function createThing(data, cb) {
-    return (dispatch) => {
-        const promise = createThingAPI(data, dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                dispatch(setThing(response.result))
-                forwardTo('things')
-                cb(true)
-            } else {
-                cb(false, response.result)
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        })
-    }
-}
-
 export function createGateway(data, cb) {
     return (dispatch) => {
         const promise = createGatewayAPI(data, dispatch)
@@ -523,6 +507,7 @@ export function getData(id, offset, limit, callback) {
     }
 }
 
+/* thing profile actions */
 
 export function getThingProfileListAction() {
     return (dispatch) => {
@@ -551,3 +536,21 @@ export function createThingProfileAction(data) {
     }
 }
 
+/* things actions */
+
+export function createThingAction(data, project, cb) {
+    return (dispatch) => {
+        const promise = createThingAPI(data, project, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch(setThing(response.result))
+                forwardTo(`/projects/manage/${project}`)
+                cb(true)
+            } else {
+                console.log(response)
+                cb(false, response.result)
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}

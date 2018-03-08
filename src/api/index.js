@@ -165,11 +165,11 @@ module.exports.editProfile = function (data, dispatch) {
 //     return fetchData('/gateway/', projectControler.find, getConfig(), dispatch)
 // }
 //
-// module.exports.createThing = function (data, dispatch) {
-//     const config = postConfig()
-//     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(endpoints.createThing, projectControler.create, config, dispatch)
-// }
+module.exports.createThing = function (data, projectId, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/project/${projectId}/things`, config, dispatch)
+}
 //
 // module.exports.connectThing = function (thingId, projectId, dispatch) {
 //     return fetchData('/project/' + projectId + '/things/' + thingId, projectControler.find, getConfig(), dispatch)
