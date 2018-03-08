@@ -28,6 +28,8 @@ import 'brace/theme/monokai';
 import 'brace/mode/python';
 import 'brace/snippets/python';
 import 'brace/ext/language_tools';
+import {createThingProfileAction} from "../../actions/AppActions";
+import connect from "react-redux/es/connect/connect";
 
 
 class DeviceProfileNew extends Component {
@@ -35,8 +37,31 @@ class DeviceProfileNew extends Component {
     constructor(props) {
         super(props);
         this.advancedFields = this.advancedFields.bind(this);
+        this.setForm = this.setForm.bind(this);
+        this.submitForm = this.submitForm.bind(this);
         this.state = {
-            collapse: false
+            collapse: false,
+            form: {
+                name: "",
+                classBTimeout: 0,
+                classCTimeout: 0,
+                'factoryPresetFreqs[]': 0,
+                macVersion: 'version - 1',
+                maxDutyCycle: 0,
+                maxEIRP: 0,
+                pingSlotDR: 0,
+                pingSlotFreq: 0,
+                pingSlotPeriod: 0,
+                regParamsRevision: 'reg - p - rev',
+                rfRegion: 'rf - region',
+                rxDROffset1: 0,
+                rxDataRate2: 0,
+                rxDelay1: 0,
+                rxFreq2: 0,
+                supportsClassB: 1,
+                supportsClassC: 1,
+                supports32bitFCnt: 1,
+            }
         }
     }
 
@@ -57,14 +82,14 @@ class DeviceProfileNew extends Component {
                             <FormGroup row>
                                 <Label sm={2}>اسم :‌ </Label>
                                 <Col sm={4}>
-                                    <Input type="text"/>
+                                    <Input onChange={this.setForm} name={"name"} type="text"/>
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label sm={2}>supportsJoin :‌ </Label>
                                 <Col sm={4}>
-                                    <Input type="select" name="select" id="select">
+                                    <Input type="select" name="supportsJoin" id="select" onChange={this.setForm}>
                                         <option value="">نوع شی را انتخاب کنید</option>
                                         <option value="1">OTAA</option>
                                         <option value="0">ABP</option>
@@ -77,133 +102,156 @@ class DeviceProfileNew extends Component {
                                 <FormGroup row>
                                     <Label sm={2}>classBTimeout :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"classBTimeout"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input defaultValue={this.state.form.classBTimeout} name={"classBTimeout"}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>classCTimeout :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"classCTimeout"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input defaultValue={this.state.form.classCTimeout} name={"classCTimeout"}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>factoryPresetFreqs :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"factoryPresetFreqs"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input defaultValue={this.state.form['factoryPresetFreqs[]']}
+                                               name={"factoryPresetFreqs"}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>macVersion :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"macVersion"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input defaultValue={this.state.form.macVersion} name={"macVersion"}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>maxDutyCycle :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"maxDutyCycle"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input defaultValue={this.state.form.maxDutyCycle} name={"maxDutyCycle"}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>maxEIRP :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"maxEIRP"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input name={"maxEIRP"} defaultValue={this.state.form.maxEIRP}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>pingSlotDR :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"pingSlotDR"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input name={"pingSlotDR"} defaultValue={this.state.form.pingSlotDR}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>pingSlotFreq :‌ </Label>
                                     <Col sm={4}>
-                                        <Input   name={"pingSlotFreq"} innerRef={ref => this.setRef(ref)}type="text"/>
+                                        <Input name={"pingSlotFreq"} defaultValue={this.state.form.pingSlotFreq}
+                                               type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>pingSlotPeriod :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"pingSlotPeriod"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input name={"pingSlotPeriod"} defaultValue={this.state.form.pingSlotPeriod}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>regParamsRevision :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"regParamsRevision"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input name={"regParamsRevision"}
+                                               defaultValue={this.state.form.regParamsRevision}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>rfRegion :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"rfRegion"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input name={"rfRegion"} defaultValue={this.state.form.rfRegion}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>rxDROffset1 :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"rxDROffset1"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input name={"rxDROffset1"} defaultValue={this.state.form.rxDROffset1}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>rxDataRate2 :‌ </Label>
                                     <Col sm={4}>
-                                        <Input   name={"rxDataRate2"} innerRef={ref => this.setRef(ref)}type="text"/>
+                                        <Input name={"rxDataRate2"} defaultValue={this.state.form.rxDataRate2}
+                                               type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>rxDelay1 :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"rxDelay1"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input name={"rxDelay1"} defaultValue={this.state.form.rxDelay1}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>rxFreq2 :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"rxFreq2"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input name={"rxFreq2"} defaultValue={this.state.form.rxFreq2}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>supports32bitFCnt :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"supports32bitFCnt"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input name={"supports32bitFCnt"}
+                                               defaultValue={this.state.form.supports32bitFCnt} onChange={this.setForm}
+                                               type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>supportsClassB :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"supportsClassB"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input name={"supportsClassB"} defaultValue={this.state.form.supportsClassB}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>supportsClassC :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"supportsClassC"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input name={"supportsClassC"} defaultValue={this.state.form.supportsClassC}
+                                               onChange={this.setForm} type="text"/>
                                     </Col>
                                 </FormGroup>
 
                                 <FormGroup row>
                                     <Label sm={2}>supports32bitFCnt :‌ </Label>
                                     <Col sm={4}>
-                                        <Input  name={"supports32bitFCnt"} innerRef={ref => this.setRef(ref)} type="text"/>
+                                        <Input name={"supports32bitFCnt"}
+                                               defaultValue={this.state.form.supports32bitFCnt} onChange={this.setForm}
+                                               type="text"/>
                                     </Col>
                                 </FormGroup>
 
@@ -216,7 +264,7 @@ class DeviceProfileNew extends Component {
                         </Form>
                     </CardBody>
                     <CardFooter>
-                        <Button onClick={()=>console.log(this.state)} color="primary">ثبت اطلاعات</Button>
+                        <Button onClick={this.submitForm} color="primary">ثبت اطلاعات</Button>
                     </CardFooter>
                 </Card>
 
@@ -249,7 +297,8 @@ class DeviceProfileNew extends Component {
                         </Form>
                     </CardBody>
                     <CardFooter>
-                        <Button className="ml-1" color="primary" size="md">ارسال decoder</Button>
+                        <Button  className="ml-1" color="primary" size="md">ارسال
+                            decoder</Button>
                     </CardFooter>
                 </Card>
 
@@ -258,21 +307,29 @@ class DeviceProfileNew extends Component {
     }
 
 
-    setRef(ref) {
-        if (ref !== null){
-            let state = {
-
+    setForm(event) {
+        let newState = {}
+        newState[event.target.name] = event.target.value
+        this.setState({
+            form: {
+                ...this.state.form,
+                ...newState
             }
-            state[ref.name] = ref.value;
-            this.setState({
-                form:{
-                    ...this.state.form,
-                    ...state
-                }
-            })
-        }
+        })
+        console.log(this.state)
     }
+
+    submitForm() {
+        console.log("dispatch")
+        const form = this.state.form
+        this.props.dispatch(createThingProfileAction(form));
+    }
+
+}
+
+function mapStateToProps(state) {
+    return ({})
 }
 
 
-export default DeviceProfileNew;
+export default connect(mapStateToProps)(DeviceProfileNew);

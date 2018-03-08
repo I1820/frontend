@@ -1,25 +1,15 @@
 import React, {Component} from 'react';
 import {
-    Row,
-    Col,
     Card,
-    Form,
-    Badge,
-    Modal,
-    FormGroup,
     CardHeader,
     CardBody,
     CardFooter,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
     CardTitle,
     Button,
-    ButtonGroup,
-    Label,
-    Input,
     Table
 } from 'reactstrap';
+import {getThingProfileListAction} from "../../actions/AppActions";
+import connect from "react-redux/es/connect/connect";
 
 
 class DeviceProfile extends Component {
@@ -33,8 +23,12 @@ class DeviceProfile extends Component {
         }
     }
 
+    componentWillMount() {
+        this.props.dispatch(getThingProfileListAction())
+    }
 
     render() {
+        console.log(this.props.profiles)
         return (
             <div>
                 <Card className="text-justify">
@@ -52,7 +46,11 @@ class DeviceProfile extends Component {
                             </tr>
                             </thead>
                             <tbody>
-                            {this.renderItem()}
+                            {
+                                this.props.profiles.map((profile, key) => {
+                                    return (this.renderItem(profile, key))
+                                })
+                            }
                             </tbody>
                         </Table>
                     </CardBody>
@@ -65,12 +63,12 @@ class DeviceProfile extends Component {
     }
 
 
-    renderItem() {
-        return(
+    renderItem(profile, key) {
+        return (
             <tr>
-                <th>1</th>
-                <td>اسم اینجاست</td>
-                <td>توضیحات تست اینجاست</td>
+                <th>{key + 1}</th>
+                <td>{profile.name}</td>
+                <td>{profile.thing_profile_slug}</td>
                 <td>
                     <Button color="danger">حذف</Button>
                 </td>
@@ -85,5 +83,11 @@ class DeviceProfile extends Component {
 
 }
 
+function mapStateToProps(state) {
+    return {
+        profiles: state.thingProfileReducer
+    }
+}
 
-export default DeviceProfile;
+
+export default connect(mapStateToProps)(DeviceProfile);

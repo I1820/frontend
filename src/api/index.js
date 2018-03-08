@@ -1,4 +1,4 @@
-import {loginConfig, postConfig, getConfig, patchConfig,uploadConfig} from './config'
+import {loginConfig, postConfig, getConfig, patchConfig, uploadConfig} from './config'
 
 import _ from 'underscore'
 import {sendingRequest, logout} from '../actions/AppActions'
@@ -35,7 +35,7 @@ const Errors = {
     'invalid credentials': 'ایمیل و یا رمز عبور صحیح نمی باشد'
 }
 
-function controler (json = {}){
+function controler(json = {}) {
     if (json === {}) {
         return {status: false, message: Errors.EMPTY_JSON_RESPONSE}
     }
@@ -46,7 +46,7 @@ function controler (json = {}){
             return {status: false, message: Errors.SOMETHING_IS_NOT_OK, code: json.code}
         }
     }
-    return {status:true}
+    return {status: true}
 }
 
 const translate = (error) => {
@@ -142,17 +142,16 @@ module.exports.getProject = function (id, dispatch) {
 //     return fetchData(endpoints.editProject + '/' + id, projectControler.edit, config, dispatch)
 // }
 //
-// module.exports.editProfile = function (data, dispatch) {
-//
-//     console.log('data --->',data)
-//     const config = patchConfig()
-//     if(data.other_info !== undefined) {
-//         data.other_info = JSON.stringify(data.other_info)
-//     }
-//     console.log('profile ----> ',data)
-//     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(endpoints.editProfile, profileControler.edit, config, dispatch)
-// }
+module.exports.editProfile = function (data, dispatch) {
+
+    console.log('data --->', data)
+    const config = patchConfig()
+    if (data.other_info !== undefined) {
+        data.other_info = JSON.stringify(data.other_info)
+    }
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(endpoints.editProfile, config, dispatch)
+}
 //
 // module.exports.listThings = function (dispatch) {
 //     return fetchData(endpoints.listThings, projectControler.list, getConfig(), dispatch)
@@ -211,3 +210,14 @@ module.exports.getProject = function (id, dispatch) {
 //     }
 //     return  post(url, formData,config)
 // }
+
+
+module.exports.getThingProfileList = function (dispatch) {
+    return fetchData('/thing-profile', getConfig(), dispatch)
+}
+
+module.exports.createThingProfile = function (data, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/thing-profile`, config, dispatch)
+}

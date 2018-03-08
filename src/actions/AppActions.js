@@ -25,7 +25,7 @@
 
 import {
     SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
-    UPDATE_USER, FREE, GET_THINGS, FETCH_THING
+    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -39,6 +39,7 @@ import {
     createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
     createGateway as createGatewayAPI, getGAteways as getGAtewaysAPI
 } from '../api/index'
+import {createThingProfile, getThingProfileList} from "../api";
 
 /**
  * Logs an user in
@@ -119,7 +120,7 @@ export function getProject(id) {
     }
 }
 
-export function editProject(id, state,cb) {
+export function editProject(id, state, cb) {
     return (dispatch) => {
         const promise = editProjectAPI(id, state, dispatch)
         promise.then((response) => {
@@ -127,16 +128,16 @@ export function editProject(id, state,cb) {
                 cb(true)
                 dispatch(setProject(response.result))
             } else {
-                cb(false,response.result)
+                cb(false, response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
-        }).catch((e) =>{
-            cb(false,e)
+        }).catch((e) => {
+            cb(false, e)
         })
     }
 }
 
-export function uploadExcel(file,cb) {
+export function uploadExcel(file, cb) {
     return (dispatch) => {
 
         const promise = uploadExcelAPI(file, dispatch)
@@ -149,14 +150,14 @@ export function uploadExcel(file,cb) {
                 // cb(false,response.result)
                 // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
-        }).catch((e) =>{
+        }).catch((e) => {
             console.log(e)
             // cb(false,e)
         })
     }
 }
 
-export function createProject(state,cb) {
+export function createProject(state, cb) {
     return (dispatch) => {
         const promise = createProjectAPI(state, dispatch)
         promise.then((response) => {
@@ -254,7 +255,6 @@ export function getGateways() {
 }
 
 
-
 export function editThing(id, data) {
     return (dispatch) => {
         const promise = editThingAPI(id, data, dispatch)
@@ -343,7 +343,7 @@ export function connectThing(thingId, projectId) {
 
 export function createCodec(thingId, code, cb) {
     return (dispatch) => {
-        const promise = createCodecAPI({code,name:'codec'}, thingId, dispatch)
+        const promise = createCodecAPI({code, name: 'codec'}, thingId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 // dispatch(getProject(projectId))
@@ -361,7 +361,7 @@ export function createCodec(thingId, code, cb) {
 
 export function createScenario(thingId, code, cb) {
     return (dispatch) => {
-        const promise = createScenarioAPI({code,name:'scenario'}, thingId, dispatch)
+        const promise = createScenarioAPI({code, name: 'scenario'}, thingId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 // dispatch(getProject(projectId))
@@ -522,3 +522,32 @@ export function getData(id, offset, limit, callback) {
         })
     }
 }
+
+
+export function getThingProfileListAction() {
+    return (dispatch) => {
+        const promise = getThingProfileList(dispatch);
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch({type: GET_THINGS_PROFILE, newState: response.result})
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+export function createThingProfileAction(data) {
+    return (dispatch) => {
+        const promise = createThingProfile(data, dispatch);
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                dispatch({type: FETCH_THING_PROFILE, newState: response.result})
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
