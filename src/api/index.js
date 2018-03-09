@@ -1,9 +1,9 @@
-import {loginConfig, postConfig, getConfig, patchConfig,uploadConfig} from './config'
+import {loginConfig, postConfig, getConfig, patchConfig, uploadConfig} from './config'
 
 import _ from 'underscore'
 import {sendingRequest, logout} from '../actions/AppActions'
-// import axios, { post } from 'axios';
-// import store from '../store'
+import axios, { post } from 'axios';
+import store from '../store'
 /* global fetch */
 
 const BASE_URL = 'http://backback.ceit.aut.ac.ir:50024/api/v1'
@@ -35,7 +35,7 @@ const Errors = {
     'invalid credentials': 'ایمیل و یا رمز عبور صحیح نمی باشد'
 }
 
-function controler (json = {}){
+function controler(json = {}) {
     if (json === {}) {
         return {status: false, message: Errors.EMPTY_JSON_RESPONSE}
     }
@@ -46,7 +46,7 @@ function controler (json = {}){
             return {status: false, message: Errors.SOMETHING_IS_NOT_OK, code: json.code}
         }
     }
-    return {status:true}
+    return {status: true}
 }
 
 const translate = (error) => {
@@ -134,24 +134,20 @@ module.exports.getProject = function (id, dispatch) {
 //     return fetchData(endpoints.editThing + '/' + id, projectControler.edit, config, dispatch)
 // }
 //
-// module.exports.editProject = function (id, data, dispatch) {
-//     const config = patchConfig()
-//     if (data.other_info)
-//         data.other_info = data.other_info.toString()
-//     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(endpoints.editProject + '/' + id, projectControler.edit, config, dispatch)
-// }
-//
+module.exports.editProject = function (id, data, dispatch) {
+    const config = patchConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData('/project/' + id, config, dispatch)
+}
 // module.exports.editProfile = function (data, dispatch) {
 //
-//     console.log('data --->',data)
+//     console.log('data --->', data)
 //     const config = patchConfig()
-//     if(data.other_info !== undefined) {
+//     if (data.other_info !== undefined) {
 //         data.other_info = JSON.stringify(data.other_info)
 //     }
-//     console.log('profile ----> ',data)
 //     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(endpoints.editProfile, profileControler.edit, config, dispatch)
+//     return fetchData(endpoints.editProfile, config, dispatch)
 // }
 //
 // module.exports.listThings = function (dispatch) {
@@ -162,15 +158,15 @@ module.exports.getProject = function (id, dispatch) {
 //     return fetchData(endpoints.getThing + '/' + id, projectControler.find, getConfig(), dispatch)
 // }
 //
-// module.exports.getGAteways = function (dispatch) {
-//     return fetchData('/gateway/', projectControler.find, getConfig(), dispatch)
-// }
-//
-// module.exports.createThing = function (data, dispatch) {
-//     const config = postConfig()
-//     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(endpoints.createThing, projectControler.create, config, dispatch)
-// }
+module.exports.getGateways = function (dispatch) {
+    return fetchData('/gateway', getConfig(), dispatch)
+}
+
+module.exports.createThing = function (data, projectId, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/project/${projectId}/things`, config, dispatch)
+}
 //
 // module.exports.connectThing = function (thingId, projectId, dispatch) {
 //     return fetchData('/project/' + projectId + '/things/' + thingId, projectControler.find, getConfig(), dispatch)
@@ -186,28 +182,45 @@ module.exports.getProject = function (id, dispatch) {
 //     return fetchData(`/thing/${id}/codec`, projectControler.create, config, dispatch)
 // }
 //
-// module.exports.createScenario = function (data,id, dispatch) {
-//     const config = postConfig()
-//     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(`/project/${id}/scenario`, projectControler.create, config, dispatch)
-// }
 //
-//
-// module.exports.createGateway = function (data, dispatch) {
-//     const config = postConfig()
-//     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(`/gateway`, projectControler.create, config, dispatch)
-// }
-//
-// module.exports.uploadExcel = function (data, dispatch) {
-//     const url = BASE_URL + `/thing/from-excel`
-//     const formData = new FormData();
-//     formData.append('things',data)
-//     const config = {
-//         headers: {
-//             'Authorization': 'Bearer ' + store.getState().userReducer.token,
-//             'Content-Type': 'multipart/form-data'
-//         }
-//     }
-//     return  post(url, formData,config)
-// }
+module.exports.createGateway = function (data, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/gateway`, config, dispatch)
+}
+
+module.exports.uploadExcel = function (data,projectId, dispatch) {
+    const url = `${BASE_URL}/project/${projectId}/things/from-excel`
+    const formData = new FormData();
+    formData.append('things',data)
+    const config = {
+        headers: {
+            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Content-Type': 'multipart/form-data'
+        }
+    }
+    return  post(url, formData,config)
+}
+
+
+module.exports.getThingProfileList = function (dispatch) {
+    return fetchData('/thing-profile', getConfig(), dispatch)
+}
+
+module.exports.createThingProfile = function (data, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/thing-profile`, config, dispatch)
+}
+
+module.exports.createScenario = function (data, id, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/project/${id}/scenario`, config, dispatch)
+}
+
+module.exports.activeThing = function (data, thingId, projectId, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/project/${projectId}/things/${thingId}/activate`, config, dispatch)
+}

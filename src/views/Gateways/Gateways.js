@@ -1,25 +1,16 @@
 import React, {Component} from 'react';
 import {
-    Row,
-    Col,
     Card,
-    Form,
-    Badge,
-    Modal,
-    FormGroup,
     CardHeader,
     CardBody,
     CardFooter,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
     CardTitle,
     Button,
-    ButtonGroup,
-    Label,
-    Input,
     Table
 } from 'reactstrap';
+import connect from "react-redux/es/connect/connect";
+import {getGatewaysAction} from "../../actions/AppActions";
+import Spinner from "../Spinner/Spinner";
 
 
 class Gateways extends Component {
@@ -31,10 +22,14 @@ class Gateways extends Component {
     }
 
 
+    componentWillMount() {
+        this.props.dispatch(getGatewaysAction())
+    }
+
     render() {
         return (
             <div>
-
+                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">لیست پروژه ها</CardTitle>
@@ -50,7 +45,11 @@ class Gateways extends Component {
                             </tr>
                             </thead>
                             <tbody>
-                            {this.renderItem()}
+                            {
+                                this.props.gateways.map((gateway, key) => {
+                                    return (this.renderItem(gateway, key))
+                                })
+                            }
                             </tbody>
                         </Table>
                     </CardBody>
@@ -63,12 +62,12 @@ class Gateways extends Component {
     }
 
 
-    renderItem() {
-        return(
-            <tr>
-                <th>1</th>
-                <td>اسم اینجاست</td>
-                <td>توضیحات تست اینجاست</td>
+    renderItem(gateway, key) {
+        return (
+            <tr id={key}>
+                <th>{key + 1}</th>
+                <td>{gateway.name}</td>
+                <td>{gateway.mac}</td>
                 <td>
                     <Button color="success" onClick={this.viewGateway} className="ml-1">نمایش</Button>
                     <Button color="danger">حذف</Button>
@@ -87,5 +86,12 @@ class Gateways extends Component {
 
 }
 
+function mapStateToProps(state) {
+    return ({
+        gateways: state.gatewayReducer,
+        loading: state.homeReducer.currentlySending
+    })
+}
 
-export default Gateways;
+
+export default connect(mapStateToProps)(Gateways);

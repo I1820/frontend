@@ -25,7 +25,7 @@
 
 import {
     SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
-    UPDATE_USER, FREE, GET_THINGS, FETCH_THING
+    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -37,8 +37,9 @@ import {
     createThing as createThingAPI, editThing as editThingAPI,
     getProjectData as getThingDataAPI, createCodec as createCodecAPI,
     createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
-    createGateway as createGatewayAPI, getGAteways as getGAtewaysAPI
+    createGateway as createGatewayAPI, getGateways
 } from '../api/index'
+import {activeThing, createThingProfile, getThingProfileList} from "../api";
 
 /**
  * Logs an user in
@@ -119,44 +120,8 @@ export function getProject(id) {
     }
 }
 
-export function editProject(id, state,cb) {
-    return (dispatch) => {
-        const promise = editProjectAPI(id, state, dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                cb(true)
-                dispatch(setProject(response.result))
-            } else {
-                cb(false,response.result)
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        }).catch((e) =>{
-            cb(false,e)
-        })
-    }
-}
 
-export function uploadExcel(file,cb) {
-    return (dispatch) => {
-
-        const promise = uploadExcelAPI(file, dispatch)
-        promise.then((response) => {
-            console.log(response)
-            if (response.status === 200) {
-                window.location.reload()
-                // dispatch(setProject(response.result))
-            } else {
-                // cb(false,response.result)
-                // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        }).catch((e) =>{
-            console.log(e)
-            // cb(false,e)
-        })
-    }
-}
-
-export function createProject(state,cb) {
+export function createProject(state, cb) {
     return (dispatch) => {
         const promise = createProjectAPI(state, dispatch)
         promise.then((response) => {
@@ -208,52 +173,6 @@ export function getThing(id) {
     }
 }
 
-export function createThing(data, cb) {
-    return (dispatch) => {
-        const promise = createThingAPI(data, dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                dispatch(setThing(response.result))
-                forwardTo('things')
-                cb(true)
-            } else {
-                cb(false, response.result)
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        })
-    }
-}
-
-export function createGateway(data, cb) {
-    return (dispatch) => {
-        const promise = createGatewayAPI(data, dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                window.location.reload()
-                cb(true)
-            } else {
-                cb(false, response.result)
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        })
-    }
-}
-
-export function getGateways() {
-    return (dispatch) => {
-        const promise = getGAtewaysAPI(dispatch)
-        promise.then((response) => {
-            console.log('promise', response.result.gateway)
-            if (response.status === 'OK') {
-                dispatch(setGws(response.result.gateway))
-            } else {
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        })
-    }
-}
-
-
 
 export function editThing(id, data) {
     return (dispatch) => {
@@ -274,10 +193,6 @@ function setThings(newState) {
     return {type: GET_THINGS, newState}
 }
 
-
-function setGws(newState) {
-    return {type: 'GET_GWs', newState}
-}
 
 function setGateway(newState) {
     return {type: 'FETCH_GATE', newState}
@@ -343,7 +258,7 @@ export function connectThing(thingId, projectId) {
 
 export function createCodec(thingId, code, cb) {
     return (dispatch) => {
-        const promise = createCodecAPI({code,name:'codec'}, thingId, dispatch)
+        const promise = createCodecAPI({code, name: 'codec'}, thingId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 // dispatch(getProject(projectId))
@@ -359,23 +274,6 @@ export function createCodec(thingId, code, cb) {
     }
 }
 
-export function createScenario(thingId, code, cb) {
-    return (dispatch) => {
-        const promise = createScenarioAPI({code,name:'scenario'}, thingId, dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                // dispatch(getProject(projectId))
-                cb(true)
-            } else {
-                cb(false, response.result)
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        }).catch((err) => {
-            cb(false, err)
-            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-        })
-    }
-}
 
 /**
  * Sets the authentication state of the application
@@ -522,3 +420,154 @@ export function getData(id, offset, limit, callback) {
         })
     }
 }
+
+/* thing profile actions */
+
+export function getThingProfileListAction() {
+    return (dispatch) => {
+        const promise = getThingProfileList(dispatch);
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch({type: GET_THINGS_PROFILE, newState: response.result})
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+export function createThingProfileAction(data,cb) {
+    return (dispatch) => {
+        const promise = createThingProfile(data, dispatch);
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                dispatch({type: FETCH_THING_PROFILE, newState: response.result})
+                forwardTo('device-profile/list')
+            } else {
+                cb(false,response.result)
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+/* things actions */
+
+export function createThingAction(data, project, cb) {
+    return (dispatch) => {
+        const promise = createThingAPI(data, project, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch(setThing(response.result))
+                forwardTo(`projects/manage/${project}`)
+                cb(true)
+            } else {
+                console.log(response)
+                cb(false, response.result)
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+export function activeThingAction(data, projectId, thingId) {
+    return (dispatch) => {
+        const promise = activeThing(data, projectId, thingId, dispatch)
+        promise.then((response) => {
+            console.log(response);
+            if (response.status === 'OK') {
+                // forwardTo('/gateways')
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+
+export function uploadExcelAction(file,projectId, cb) {
+    return (dispatch) => {
+
+        const promise = uploadExcelAPI(file,projectId, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 200) {
+                window.location.reload()
+                // dispatch(setProject(response.result))
+            } else {
+                // cb(false,response.result)
+                // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((e) => {
+            console.log(e)
+            // cb(false,e)
+        })
+    }
+}
+
+/*  project actions */
+
+export function createScenario(projectId, data) {
+    return (dispatch) => {
+        const promise = createScenarioAPI(data, projectId, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                forwardTo(`projects/manage/${projectId}`)
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((err) => {
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
+}
+
+export function editProjectAction(id, state) {
+    return (dispatch) => {
+        const promise = editProjectAPI(id, state, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                dispatch(setProject(response.result))
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((e) => {
+        })
+    }
+}
+
+
+
+/*  gateway actions */
+
+export function getGatewaysAction() {
+    return (dispatch) => {
+        const promise = getGateways(dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch({type: GET_GATEWAYS, newState: response.result.gateways})
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+export function createGatewayAction(data) {
+    return (dispatch) => {
+        const promise = createGatewayAPI(data, dispatch)
+        promise.then((response) => {
+            console.log(response);
+            if (response.status === 'OK') {
+                forwardTo('/gateways')
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+

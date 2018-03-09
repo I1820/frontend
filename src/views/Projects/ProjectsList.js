@@ -29,21 +29,22 @@ class ProjectsList extends Component {
 
     constructor(props) {
         super(props);
+
         this.toggle = this.toggle.bind(this)
-        this.modalAddable = this.modalAddable.bind(this)
-        this.dataModalToggle = this.dataModalToggle.bind(this)
         this.showProject = this.showProject.bind(this)
         this.onCreateProject = this.onCreateProject.bind(this)
+        this.onCreateProject = this.onCreateProject.bind(this)
+        this.deleteModalToggle = this.deleteModalToggle.bind(this)
+
         this.state = {
             modal: false,
-            dataModal: false,
+            deleteModal: false,
             projects: [{}],
-            modalAddableItems: []
         }
     }
 
     componentWillMount() {
-       this.loadProjects()
+        this.loadProjects()
     }
 
     componentWillReceiveProps(props) {
@@ -59,7 +60,22 @@ class ProjectsList extends Component {
     render() {
         return (
             <div>
-                <Spinner display={this.props.loading} />
+                <Spinner display={this.props.loading}/>
+                <Modal isOpen={this.state.deleteModal} toggle={this.deleteModalToggle} className="text-right">
+                    <ModalHeader>حذف پروژه</ModalHeader>
+                    <ModalBody>
+                        <h1>آیا از حذف پروژه مطمئن هستید؟</h1>
+                        <h2>پس از حذف پروژه امکان بازگرداندن آن وجود ندارد.</h2>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" className="ml-1" onClick={() => {
+                            this.deleteModalToggle()
+                        }}>حذف</Button>
+                        <Button color="danger" onClick={this.deleteModalToggle}>انصراف</Button>
+                    </ModalFooter>
+                </Modal>
+
+
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className="text-right">
                     <ModalHeader>پروژه جدید</ModalHeader>
                     <ModalBody>
@@ -90,25 +106,11 @@ class ProjectsList extends Component {
                             this.props.dispatch(createProject({
                                 'name': this.state.projectName,
                                 'description': this.state.projectDesc,
-                            },this.onCreateProject))
+                            }, this.onCreateProject))
                         }}>ذخیره</Button>
                         <Button color="danger" onClick={this.toggle}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
-
-
-                <Modal isOpen={this.state.dataModal} toggle={this.dataModalToggle} className="text-right">
-                    <ModalHeader>ارسال داده</ModalHeader>
-                    <ModalBody>
-                        {this.state.modalAddableItems}
-                        <Button color="success" onClick={this.modalAddable}>+ اضافه</Button>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" className="ml-1" onClick={this.dataModalToggle}>ثبت</Button>
-                        <Button color="danger" onClick={this.dataModalToggle}>انصراف</Button>
-                    </ModalFooter>
-                </Modal>
-
 
 
                 <Card className="text-justify">
@@ -153,10 +155,11 @@ class ProjectsList extends Component {
                 <td><Badge color="success">{project.active === true ? 'فعال' : 'غیرفعال'}</Badge></td>
                 <td>{project.owner.name}</td>
                 <td>
-                    <Button onClick={() => this.showProject(project._id)} className="ml-1" color="success" size="sm">نمایش</Button>
-                    <Button onClick={()=>this.manageProject(project._id)} className="ml-1" color="warning" size="sm">مدیریت</Button>
-                    <Button onClick={this.dataModalToggle} className="ml-1" color="primary" size="sm">ارسال داده</Button>
-                    <Button className="ml-1" color="danger" size="sm">حذف</Button>
+                    <Button onClick={() => this.showProject(project._id)} className="ml-1" color="success"
+                            size="sm">نمایش</Button>
+                    <Button onClick={() => this.manageProject(project._id)} className="ml-1" color="warning"
+                            size="sm">مدیریت</Button>
+                    <Button onClick={this.deleteModalToggle} className="ml-1" color="danger" size="sm">حذف</Button>
                 </td>
             </tr>
         )
@@ -168,21 +171,22 @@ class ProjectsList extends Component {
         });
     }
 
+    deleteModalToggle() {
+        this.setState({
+            deleteModal: !this.state.deleteModal
+        });
+    }
+
     showProject() {
         window.location = "#/projects/view"
     }
 
-    dataModalToggle() {
-        this.setState({
-            dataModal: !this.state.dataModal
-        });
-    }
 
-    onCreateProject(status){
-        if(status){
+    onCreateProject(status) {
+        if (status) {
             this.toggle()
             this.loadProjects()
-        }else{
+        } else {
             //TODO Alert
         }
     }
@@ -199,30 +203,13 @@ class ProjectsList extends Component {
         window.location = `#/projects/manage/${id}`
     }
 
-    modalAddable() {
-        let newItem = (
-            <FormGroup row>
-                <Col sm={5}>
-                    <Input type="text" placeholder="پیشفرض" />
-                </Col>
-                <Col sm={1} className="text-center"> : </Col>
-                <Col sm={5}>
-                    <Input type="text" placeholder="پیشفرض" />
-                </Col>
-            </FormGroup>
-        )
-
-        this.setState(prevState => ({
-            modalAddableItems: [...prevState.modalAddableItems, newItem]
-        }))
-    }
 
 }
 
 function mapStateToProps(state) {
     return {
         projects: state.projectReducer,
-        loading : state.homeReducer.currentlySending
+        loading: state.homeReducer.currentlySending
     };
 }
 

@@ -4,13 +4,15 @@ import {userReducer} from './userReducer'
 import {projectReducer} from './projectReducer'
 import {thingReducer} from './thingReducer'
 import {gatewayReducer} from './gatewayReducer'
+import {thingProfileReducer} from "./thingProfileReducer";
 
 const rootReducer = combineReducers({
-  homeReducer,
-  userReducer,
-  projectReducer,
-  thingReducer,
-  gatewayReducer
+    homeReducer,
+    userReducer,
+    projectReducer,
+    thingReducer,
+    gatewayReducer,
+    thingProfileReducer
 })
 
 export default rootReducer
