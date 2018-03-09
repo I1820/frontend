@@ -100,6 +100,7 @@ class BuyedPackage extends Component {
                                 
  
                         </Row>
+
         
                     </div>    
             
