@@ -29,12 +29,16 @@ class ProjectsList extends Component {
 
     constructor(props) {
         super(props);
+
         this.toggle = this.toggle.bind(this)
         this.showProject = this.showProject.bind(this)
         this.onCreateProject = this.onCreateProject.bind(this)
+        this.onCreateProject = this.onCreateProject.bind(this)
+        this.deleteModalToggle = this.deleteModalToggle.bind(this)
+
         this.state = {
             modal: false,
-            dataModal: false,
+            deleteModal: false,
             projects: [{}],
         }
     }
@@ -57,6 +61,21 @@ class ProjectsList extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
+                <Modal isOpen={this.state.deleteModal} toggle={this.deleteModalToggle} className="text-right">
+                    <ModalHeader>حذف پروژه</ModalHeader>
+                    <ModalBody>
+                        <h1>آیا از حذف پروژه مطمئن هستید؟</h1>
+                        <h2>پس از حذف پروژه امکان بازگرداندن آن وجود ندارد.</h2>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" className="ml-1" onClick={() => {
+                            this.deleteModalToggle()
+                        }}>حذف</Button>
+                        <Button color="danger" onClick={this.deleteModalToggle}>انصراف</Button>
+                    </ModalFooter>
+                </Modal>
+
+
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className="text-right">
                     <ModalHeader>پروژه جدید</ModalHeader>
                     <ModalBody>
@@ -92,6 +111,7 @@ class ProjectsList extends Component {
                         <Button color="danger" onClick={this.toggle}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
+
 
                 <Card className="text-justify">
                     <CardHeader>
@@ -139,7 +159,7 @@ class ProjectsList extends Component {
                             size="sm">نمایش</Button>
                     <Button onClick={() => this.manageProject(project._id)} className="ml-1" color="warning"
                             size="sm">مدیریت</Button>
-                    <Button className="ml-1" color="danger" size="sm">حذف</Button>
+                    <Button onClick={this.deleteModalToggle} className="ml-1" color="danger" size="sm">حذف</Button>
                 </td>
             </tr>
         )
@@ -148,6 +168,12 @@ class ProjectsList extends Component {
     toggle() {
         this.setState({
             modal: !this.state.modal
+        });
+    }
+
+    deleteModalToggle() {
+        this.setState({
+            deleteModal: !this.state.deleteModal
         });
     }
 

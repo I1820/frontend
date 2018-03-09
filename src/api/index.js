@@ -134,24 +134,21 @@ module.exports.getProject = function (id, dispatch) {
 //     return fetchData(endpoints.editThing + '/' + id, projectControler.edit, config, dispatch)
 // }
 //
-// module.exports.editProject = function (id, data, dispatch) {
-//     const config = patchConfig()
-//     if (data.other_info)
-//         data.other_info = data.other_info.toString()
-//     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(endpoints.editProject + '/' + id, projectControler.edit, config, dispatch)
-// }
-//
-module.exports.editProfile = function (data, dispatch) {
-
-    console.log('data --->', data)
+module.exports.editProject = function (id, data, dispatch) {
     const config = patchConfig()
-    if (data.other_info !== undefined) {
-        data.other_info = JSON.stringify(data.other_info)
-    }
     Object.assign(config, {body: getFormData(data)})
-    return fetchData(endpoints.editProfile, config, dispatch)
+    return fetchData('/project/' + id, config, dispatch)
 }
+// module.exports.editProfile = function (data, dispatch) {
+//
+//     console.log('data --->', data)
+//     const config = patchConfig()
+//     if (data.other_info !== undefined) {
+//         data.other_info = JSON.stringify(data.other_info)
+//     }
+//     Object.assign(config, {body: getFormData(data)})
+//     return fetchData(endpoints.editProfile, config, dispatch)
+// }
 //
 // module.exports.listThings = function (dispatch) {
 //     return fetchData(endpoints.listThings, projectControler.list, getConfig(), dispatch)
@@ -162,7 +159,7 @@ module.exports.editProfile = function (data, dispatch) {
 // }
 //
 module.exports.getGateways = function (dispatch) {
-    return fetchData('/gateway',getConfig(), dispatch)
+    return fetchData('/gateway', getConfig(), dispatch)
 }
 
 module.exports.createThing = function (data, projectId, dispatch) {
@@ -220,4 +217,10 @@ module.exports.createScenario = function (data, id, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
     return fetchData(`/project/${id}/scenario`, config, dispatch)
+}
+
+module.exports.activeThing = function (data, thingId, projectId, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/project/${projectId}/things/${thingId}/activate`, config, dispatch)
 }

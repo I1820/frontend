@@ -20,7 +20,7 @@ import {
     Table, Modal, ModalHeader, ModalBody
 } from 'reactstrap';
 import {connect} from 'react-redux';
-import {getProject} from "../../actions/AppActions";
+import {activeThingAction, editProjectAction, getProject} from "../../actions/AppActions";
 import Spinner from "../Spinner/Spinner";
 
 class ProjectsManage extends Component {
@@ -41,7 +41,9 @@ class ProjectsManage extends Component {
             id: "",
             project: {},
             dataModal: false,
-            modalAddableItems: []
+            modalAddableItems: [],
+            OTAA: {},
+            ABP: {}
         }
     }
 
@@ -97,13 +99,23 @@ class ProjectsManage extends Component {
                             <FormGroup row>
                                 <Label sm={3}> appKey : </Label>
                                 <Col sm={9}>
-                                    <Input type="text"/>
+                                    <Input onChange={(event) => {
+                                        this.setState({
+                                            OTTA: {
+                                                appKey: event.target.value
+                                            }
+                                        })
+                                    }} type="text"/>
                                 </Col>
                             </FormGroup>
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" className="ml-1" onClick={this.toggle}>ذخیره</Button>
+                        <Button color="primary" className="ml-1" onClick={() => {
+                            this.toggleOTAA()
+                            this.props.dispatch(activeThingAction(this.state.OTTA, this.state.selectedThing,
+                                this.state.project._id))
+                        }}>ارسال</Button>
                         <Button color="danger" onClick={this.toggle}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
@@ -115,44 +127,103 @@ class ProjectsManage extends Component {
                             <FormGroup row>
                                 <Label sm={3}>appSKey : </Label>
                                 <Col sm={9}>
-                                    <Input type="text"/>
+                                    <Input name="appSKey"
+                                           onChange={(event) => {
+                                               let state = {}
+                                               state[event.target.name] = event.target.value
+                                               this.setState({
+                                                   ABP: {
+                                                       ...this.setState.ABP,
+                                                   }
+                                               })
+                                           }} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={3}>devAddr : </Label>
                                 <Col sm={9}>
-                                    <Input type="text"/>
+                                    <Input name="devAddr"
+                                           onChange={(event) => {
+                                               let state = {}
+                                               state[event.target.name] = event.target.value
+                                               this.setState({
+                                                   ABP: {
+                                                       ...this.setState.ABP,
+                                                   }
+                                               })
+                                           }} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={3}>fCntDown : </Label>
                                 <Col sm={9}>
-                                    <Input type="text"/>
+                                    <Input name="fCntDown"
+                                           onChange={(event) => {
+                                               let state = {}
+                                               state[event.target.name] = event.target.value
+                                               this.setState({
+                                                   ABP: {
+                                                       ...this.setState.ABP,
+                                                   }
+                                               })
+                                           }} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={3}>fCntUp : </Label>
                                 <Col sm={9}>
-                                    <Input type="text"/>
+                                    <Input name="fCntUp"
+                                           onChange={(event) => {
+                                               let state = {}
+                                               state[event.target.name] = event.target.value
+                                               this.setState({
+                                                   ABP: {
+                                                       ...this.setState.ABP,
+                                                   }
+                                               })
+                                           }} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={3}>nwkSKey : </Label>
                                 <Col sm={9}>
-                                    <Input type="text"/>
+                                    <Input name="nwkSKey"
+                                           onChange={(event) => {
+                                               let state = {}
+                                               state[event.target.name] = event.target.value
+                                               this.setState({
+                                                   ABP: {
+                                                       ...this.setState.ABP,
+                                                   }
+                                               })
+                                           }} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={3}>skipFCntCheck : </Label>
                                 <Col sm={9}>
-                                    <Input type="text"/>
+                                    <Input name="skipFCntCheck"
+                                           onChange={(event) => {
+                                               let state = {}
+                                               state[event.target.name] = event.target.value
+                                               this.setState({
+                                                   ABP: {
+                                                       ...this.setState.ABP,
+                                                       ...state
+                                                   }
+                                               })
+                                           }} type="text"/>
                                 </Col>
                             </FormGroup>
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" className="ml-1" onClick={this.toggle}>ذخیره</Button>
-                        <Button color="danger" onClick={this.toggle}>انصراف</Button>
+                        <Button color="primary" className="ml-1" onClick={() => {
+                            this.toggleABP()
+                            this.props.dispatch(activeThingAction(this.state.ABP,
+                                this.state.selectedThing, this.state.project._id))
+                        }}>ارسال</Button>
+                        <Button color="danger" onClick={this.toggleABP}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
 
@@ -165,19 +236,38 @@ class ProjectsManage extends Component {
                             <FormGroup row>
                                 <Label sm={2}>نام پروژه : </Label>
                                 <Col sm={5}>
-                                    <Input type="text" value={this.state.project.name}/>
+                                    <Input type="text" onChange={(event) => {
+                                        this.setState({
+                                            project: {
+                                                ...this.state.project,
+                                                name: event.target.value
+                                            }
+                                        })
+                                    }} value={this.state.project.name}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>توضیحات :‌ </Label>
                                 <Col sm={5}>
-                                    <Input value={this.state.project.description} type="textarea" name="" rows="2"/>
+                                    <Input value={this.state.project.description} onChange={(event) => {
+                                        this.setState({
+                                            project: {
+                                                ...this.state.project,
+                                                description: event.target.value
+                                            }
+                                        })
+                                    }} type="textarea" name="" rows="2"/>
                                 </Col>
                             </FormGroup>
                         </Form>
                     </CardBody>
                     <CardFooter>
-                        <Button color="primary">ثبت اطلاعات</Button>
+                        <Button onClick={() => {
+                            this.props.dispatch(editProjectAction(this.state.project._id, {
+                                name: this.state.project.name,
+                                description: this.state.project.description
+                            }))
+                        }} color="primary">ثبت اطلاعات</Button>
                     </CardFooter>
                 </Card>
 
@@ -220,11 +310,7 @@ class ProjectsManage extends Component {
                     <CardBody>
                         <ListGroup className="p-0">
                             {
-                                this.state.project.scenarios !== undefined ?
-                                    this.state.project.scenarios.map(() => {
-                                        return (this.renderScenarioItem())
-                                    }) :
-                                    <br/>
+                                this.state.project.scenario !== undefined ? this.renderScenarioItem() : <br/>
                             }
                         </ListGroup>
                     </CardBody>
@@ -240,7 +326,7 @@ class ProjectsManage extends Component {
     renderScenarioItem() {
         return (
             <ListGroupItem className="justify-content-between">
-                Cras justo odio
+                {this.state.project.scenario.name}
                 <Button className="ml-1 float-left" color="warning" size="sm">ویرایش</Button>
                 <Button className="ml-1 float-left" color="success" size="sm">نمایش</Button>
             </ListGroupItem>
@@ -255,7 +341,12 @@ class ProjectsManage extends Component {
                 <td>{thing.interface.devEUI}</td>
                 <td>{thing.type}</td>
                 <td>
-                    <Button className="ml-1" onClick={thing.type === 'ABP' ? this.toggleABP : this.toggleOTAA}
+                    <Button className="ml-1" onClick={() => {
+                        thing.type === 'ABP' ? this.toggleABP() : this.toggleOTAA()
+                        this.setState({
+                            selectedThing: thing._id
+                        })
+                    }}
                             color="success" size="sm">فعال سازی</Button>
                     <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
                     <Button onClick={this.dataModalToggle} className="ml-1" color="primary" size="sm">ارسال

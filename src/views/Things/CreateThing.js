@@ -89,6 +89,12 @@ class CreateThing extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
+                                <Label sm={2}> devEUI : </Label>
+                                <Col sm={5}>
+                                    <Input name="devEUI" onChange={this.changeForm} type="text"/>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
                                 <Label sm={2} htmlFor="select">پروفایل شی :</Label>
                                 <Col md="5">
                                     <Input type="select" name="thing_profile_slug" onChange={this.changeForm}

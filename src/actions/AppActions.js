@@ -25,7 +25,7 @@
 
 import {
     SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
-    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE,GET_GATEWAYS
+    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -39,7 +39,7 @@ import {
     createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
     createGateway as createGatewayAPI, getGateways
 } from '../api/index'
-import {createThingProfile, getThingProfileList} from "../api";
+import {activeThing, createThingProfile, getThingProfileList} from "../api";
 
 /**
  * Logs an user in
@@ -120,22 +120,6 @@ export function getProject(id) {
     }
 }
 
-export function editProject(id, state, cb) {
-    return (dispatch) => {
-        const promise = editProjectAPI(id, state, dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                cb(true)
-                dispatch(setProject(response.result))
-            } else {
-                cb(false, response.result)
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        }).catch((e) => {
-            cb(false, e)
-        })
-    }
-}
 
 export function uploadExcel(file, cb) {
     return (dispatch) => {
@@ -208,8 +192,6 @@ export function getThing(id) {
         })
     }
 }
-
-
 
 
 export function editThing(id, data) {
@@ -507,6 +489,20 @@ export function createThingAction(data, project, cb) {
     }
 }
 
+export function activeThingAction(data, projectId, thingId) {
+    return (dispatch) => {
+        const promise = activeThing(data, projectId, thingId, dispatch)
+        promise.then((response) => {
+            console.log(response);
+            if (response.status === 'OK') {
+                // forwardTo('/gateways')
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
 /*  project actions */
 
 export function createScenario(projectId, data) {
@@ -525,6 +521,22 @@ export function createScenario(projectId, data) {
     }
 }
 
+export function editProjectAction(id, state) {
+    return (dispatch) => {
+        const promise = editProjectAPI(id, state, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                dispatch(setProject(response.result))
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((e) => {
+        })
+    }
+}
+
+
 
 /*  gateway actions */
 
@@ -533,7 +545,7 @@ export function getGatewaysAction() {
         const promise = getGateways(dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                dispatch({type: GET_GATEWAYS, newState:response.result.gateways})
+                dispatch({type: GET_GATEWAYS, newState: response.result.gateways})
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
@@ -554,3 +566,5 @@ export function createGatewayAction(data) {
         })
     }
 }
+
+
