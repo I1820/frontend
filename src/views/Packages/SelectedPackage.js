@@ -131,9 +131,9 @@ class SelectedPackage extends Component {
                                 <CardTitle className="mb-0 font-weight-bold h6">   <i className="icon-basket-loaded icons"></i>  درگاه پرداخت   {isCurrent}   </CardTitle>
                             </CardHeader>
                             <CardBody>
-                                    <Row>
+                                    {/* <Row>
                                         <Col md='2'>
-                                            {/* <div className="p-3 mb-3 bg-primary">Primary</div> */}
+                                          
                                             <div>
                                                 <Input className="pay-input-style back2" type="radio" id="radio2"  
                                                        value="ملت"
@@ -156,8 +156,37 @@ class SelectedPackage extends Component {
                                                        onChange={this.paymentGateway.bind(this)}/>
                                                 <Label check htmlFor="radio3"> </Label>
                                             </div>
+                                            
                                         </Col> 
-                                    </Row>  
+                                    </Row>   */}
+
+
+                                    <Row>
+                                        <Col md="3">
+                                        <div  >
+                                            <Input className="pay-input-style back1" type="radio"  name="radios" 
+                                                    value='پارسیان'
+                                                    onChange={this.paymentGateway.bind(this)}/>
+                                            <Label check className="" htmlFor="radio1">  </Label>
+                                        </div>
+                                        </Col> 
+                                        <Col md="3">
+                                        <div>
+                                            <Input className="pay-input-style back2" type="radio" id="radio2" name="radios" value="ملت"
+                                                    onChange={this.paymentGateway.bind(this)}/>
+                                            <Label check className="" htmlFor="radio2"> </Label>
+                                        </div>
+                                        </Col>   
+                                        <Col md="3">
+                                      
+                                            <Input className="pay-input-style back3" type="radio" id="radio3" name="radios" value="آینده"
+                                                onChange={this.paymentGateway.bind(this)}/>
+                                            <Label check className="" htmlFor="radio3"> </Label>
+                                      
+                                        </Col>
+                                        <Col md="3"> </Col>
+                                    </Row>
+
                             </CardBody>    
                             </Card>
 

@@ -105,14 +105,7 @@ body{
     border-radius: 4px;
     overflow: hidden;
 }
-.pay-input-style2{
-    text-align: center;
-    background: #fff;
-    height: 130px;
-    width: 130px;
-    overflow: hidden;
-    
-  }
+
   .pay-input-style:checked {
     /* background: #40e0d0; */
     border:2px solid  #569730;
@@ -123,9 +116,9 @@ body{
     position: absolute;
     // content: '\2713';
     color: #569730;
-    // font-size: 80px;
-    // text-align: right;
-    // line-height: 80px;
+    font-size: 80px;
+    text-align: right;
+    line-height: 80px;
   }
 
   .back1{
