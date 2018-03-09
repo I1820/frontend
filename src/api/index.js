@@ -6,7 +6,8 @@ import {sendingRequest, logout} from '../actions/AppActions'
 // import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://172.23.132.51:8080/api/v1'
+const BASE_URL = 'http://iot.felfel.ml/api/v1'
+//  'http://172.23.132.51:8080/api/v1'
 
 const endpoints = {
     login: '/login',

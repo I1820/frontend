@@ -23,8 +23,11 @@ export default {
         url: '/packages',
         icon: 'icon-puzzle',
     },
-    
-
+    {
+        name: 'تراکنش‌ها',
+        url: '/transactions',
+        icon: 'icon-puzzle',
+    },
     {
         name: 'Gateways',
         url: '/gateways/list',
