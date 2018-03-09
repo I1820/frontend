@@ -24,6 +24,11 @@ export default {
         icon: 'icon-puzzle',
     },
     {
+        name: 'بسته‌های خریداری شده',
+        url: '/buyedPackages',
+        icon: 'icon-puzzle',
+    },
+    {
         name: 'تراکنش‌ها',
         url: '/transactions',
         icon: 'icon-puzzle',

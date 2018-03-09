@@ -30,6 +30,7 @@ import SelectedPackage from '../../views/Packages/SelectedPackage'
 import SuccessPayment from '../../views/Packages/SuccessPayment'
 import UnSuccessPayment from '../../views/Packages/FailurePayment'
 import Transactions from '../../views/Packages/Transactions'
+import BuyedPackages from '../../views/Packages/BuyedPackage'
 
 import ThingsExcel from '../../views/Things/ThingsExcel.js';
 import ThingsList from '../../views/Things/ThingsList.js'
@@ -107,7 +108,7 @@ class Full extends Component {
                 <Route path="/paymentResult/S/" name="SuccessPayment" component={SuccessPayment}/>
                 <Route path="/paymentResult/F/" name="UnSuccessPayment" component={UnSuccessPayment}/>
                 <Route path="/transactions" name="Transactions" component={Transactions}/>
-
+                <Route path="/buyedPackages" name="BuyedPackages" component={BuyedPackages}/>
 
                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
                 <Route path="/things/new" name="ThingsExcel" component={CreateThing}/>

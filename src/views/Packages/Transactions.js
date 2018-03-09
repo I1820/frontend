@@ -79,8 +79,7 @@ class Transactions extends Component {
                 <td>{el._date}</td>
                 <td>{el.cost} <span> تومان</span></td>
                 <td>{el.status === true ? <Badge color="success"> موفق</Badge> :  <Badge color="danger"> نا‌موفق</Badge> }</td>
-                {/* <td><Badge color="success">{el.status === true ? 'موفق' : 'نا موفق'}</Badge></td> */}
-                
+                 
             </tr>
         )
     }
