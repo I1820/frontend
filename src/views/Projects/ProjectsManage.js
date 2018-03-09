@@ -34,6 +34,7 @@ class ProjectsManage extends Component {
         this.addScenario = this.addScenario.bind(this)
         this.dataModalToggle = this.dataModalToggle.bind(this)
         this.modalAddable = this.modalAddable.bind(this)
+        this.uploadExcel = this.uploadExcel.bind(this)
 
         this.state = {
             OTAAmodal: false,
@@ -365,7 +366,7 @@ class ProjectsManage extends Component {
     }
 
     uploadExcel() {
-        window.location = "#/things/excel"
+        window.location = `#/things/excel/${this.state.project._id}`
     }
 
     addThing() {

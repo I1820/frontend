@@ -19,12 +19,22 @@ import {
     PaginationItem,
     PaginationLink
 } from 'reactstrap';
+import {getThingProfileListAction, uploadExcelAction} from "../../actions/AppActions";
+import connect from "react-redux/es/connect/connect";
 
 
 class ThingsExcel extends Component {
 
     constructor(props) {
         super(props);
+    }
+
+
+    componentWillMount() {
+        const splitedUrl = window.location.href.split('/');
+        this.setState({
+            project:splitedUrl[6]
+        })
     }
 
 
@@ -41,13 +51,19 @@ class ThingsExcel extends Component {
                             <br/>
                             <FormGroup row>
                                 <Col sm={12}>
-                                    <Input type="file"/>
+                                    <Input onChange={
+                                        (e) => {
+                                            this.setState({file: e.target.files[0]})
+                                        }
+                                    } type="file"/>
                                 </Col>
                             </FormGroup>
                         </Form>
                     </CardBody>
                     <CardFooter>
-                        <Button color="primary">بارگذاری</Button>
+                        <Button onClick={() => {
+                            this.props.dispatch(uploadExcelAction(this.state.file,this.state.project))
+                        }} color="primary">بارگذاری</Button>
                     </CardFooter>
                 </Card>
                 <Card className="text-justify">
@@ -96,7 +112,7 @@ class ThingsExcel extends Component {
     }
 
     renderLog() {
-        return(
+        return (
             <tr>
                 <td>1</td>
                 <td>شی تستی</td>
@@ -109,4 +125,8 @@ class ThingsExcel extends Component {
     }
 }
 
-export default ThingsExcel;
+function mapStateToProps(state) {
+    return {}
+}
+
+export default connect(mapStateToProps)(ThingsExcel);

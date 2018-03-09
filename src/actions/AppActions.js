@@ -121,26 +121,6 @@ export function getProject(id) {
 }
 
 
-export function uploadExcel(file, cb) {
-    return (dispatch) => {
-
-        const promise = uploadExcelAPI(file, dispatch)
-        promise.then((response) => {
-            console.log(response)
-            if (response.status === 200) {
-                window.location.reload()
-                // dispatch(setProject(response.result))
-            } else {
-                // cb(false,response.result)
-                // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        }).catch((e) => {
-            console.log(e)
-            // cb(false,e)
-        })
-    }
-}
-
 export function createProject(state, cb) {
     return (dispatch) => {
         const promise = createProjectAPI(state, dispatch)
@@ -456,14 +436,16 @@ export function getThingProfileListAction() {
     }
 }
 
-export function createThingProfileAction(data) {
+export function createThingProfileAction(data,cb) {
     return (dispatch) => {
         const promise = createThingProfile(data, dispatch);
         promise.then((response) => {
             console.log(response)
             if (response.status === 'OK') {
                 dispatch({type: FETCH_THING_PROFILE, newState: response.result})
+                forwardTo('device-profile/list')
             } else {
+                cb(false,response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         })
@@ -478,7 +460,7 @@ export function createThingAction(data, project, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 dispatch(setThing(response.result))
-                forwardTo(`/projects/manage/${project}`)
+                forwardTo(`projects/manage/${project}`)
                 cb(true)
             } else {
                 console.log(response)
@@ -503,6 +485,27 @@ export function activeThingAction(data, projectId, thingId) {
     }
 }
 
+
+export function uploadExcelAction(file,projectId, cb) {
+    return (dispatch) => {
+
+        const promise = uploadExcelAPI(file,projectId, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 200) {
+                window.location.reload()
+                // dispatch(setProject(response.result))
+            } else {
+                // cb(false,response.result)
+                // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((e) => {
+            console.log(e)
+            // cb(false,e)
+        })
+    }
+}
+
 /*  project actions */
 
 export function createScenario(projectId, data) {
@@ -511,7 +514,7 @@ export function createScenario(projectId, data) {
         promise.then((response) => {
             console.log(response)
             if (response.status === 'OK') {
-
+                forwardTo(`projects/manage/${projectId}`)
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }

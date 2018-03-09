@@ -30,6 +30,7 @@ import 'brace/snippets/python';
 import 'brace/ext/language_tools';
 import {createThingProfileAction} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
+import Spinner from "../Spinner/Spinner";
 
 
 class DeviceProfileNew extends Component {
@@ -46,14 +47,14 @@ class DeviceProfileNew extends Component {
                 classBTimeout: 0,
                 classCTimeout: 0,
                 'factoryPresetFreqs[]': 0,
-                macVersion: 'version - 1',
+                macVersion: 'version-1',
                 maxDutyCycle: 0,
                 maxEIRP: 0,
                 pingSlotDR: 0,
                 pingSlotFreq: 0,
                 pingSlotPeriod: 0,
-                regParamsRevision: 'reg - p - rev',
-                rfRegion: 'rf - region',
+                regParamsRevision: 'reg-p-rev',
+                rfRegion: 'rf-region',
                 rxDROffset1: 0,
                 rxDataRate2: 0,
                 rxDelay1: 0,
@@ -72,6 +73,7 @@ class DeviceProfileNew extends Component {
     render() {
         return (
             <div>
+                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">ساخت پروفایل جدید</CardTitle>
@@ -322,13 +324,19 @@ class DeviceProfileNew extends Component {
     submitForm() {
         console.log("dispatch")
         const form = this.state.form
-        this.props.dispatch(createThingProfileAction(form));
+        this.props.dispatch(createThingProfileAction(form,this.callBack))
+    }
+
+    callBack(){
+
     }
 
 }
 
 function mapStateToProps(state) {
-    return ({})
+    return ({
+        loading:state.homeReducer.currentlySending
+    })
 }
 
 

@@ -2,8 +2,8 @@ import {loginConfig, postConfig, getConfig, patchConfig, uploadConfig} from './c
 
 import _ from 'underscore'
 import {sendingRequest, logout} from '../actions/AppActions'
-// import axios, { post } from 'axios';
-// import store from '../store'
+import axios, { post } from 'axios';
+import store from '../store'
 /* global fetch */
 
 const BASE_URL = 'http://backback.ceit.aut.ac.ir:50024/api/v1'
@@ -188,19 +188,19 @@ module.exports.createGateway = function (data, dispatch) {
     Object.assign(config, {body: getFormData(data)})
     return fetchData(`/gateway`, config, dispatch)
 }
-//
-// module.exports.uploadExcel = function (data, dispatch) {
-//     const url = BASE_URL + `/thing/from-excel`
-//     const formData = new FormData();
-//     formData.append('things',data)
-//     const config = {
-//         headers: {
-//             'Authorization': 'Bearer ' + store.getState().userReducer.token,
-//             'Content-Type': 'multipart/form-data'
-//         }
-//     }
-//     return  post(url, formData,config)
-// }
+
+module.exports.uploadExcel = function (data,projectId, dispatch) {
+    const url = `${BASE_URL}/project/${projectId}/things/from-excel`
+    const formData = new FormData();
+    formData.append('things',data)
+    const config = {
+        headers: {
+            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Content-Type': 'multipart/form-data'
+        }
+    }
+    return  post(url, formData,config)
+}
 
 
 module.exports.getThingProfileList = function (dispatch) {
