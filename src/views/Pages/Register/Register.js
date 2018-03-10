@@ -1,7 +1,33 @@
-import React, {Component} from 'react';
-import {Container, Row, Col, Card, CardBody, CardFooter, Button, Input, InputGroup, InputGroupAddon, InputGroupText
-, TabContent, TabPane, Nav, NavItem, NavLink, Label} from 'reactstrap';
+import React, { Component } from 'react';
+import {
+    Container,
+    Row,
+    Col,
+    Card,
+    CardBody,
+    CardFooter,
+    Button,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupText,
+    TabContent,
+    TabPane,
+    Nav,
+    NavItem,
+    NavLink,
+    Label
+} from 'reactstrap';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
+import { register } from "../../../actions/AppActions";
+import { ToastContainer, toast } from 'react-toastify';
+import { css } from 'glamor';
+import { style } from "react-toastify";
+
+style({
+    colorProgressDefault: 'white'
+});
 
 class Register extends Component {
 
@@ -9,9 +35,70 @@ class Register extends Component {
         super(props);
 
         this.toggle = this.toggle.bind(this);
+        this.realRegister = this.realRegister.bind(this);
+        this.legalRegister = this.legalRegister.bind(this);
+        this.goTologinPage = this.goTologinPage.bind(this);
+
         this.state = {
-            activeTab: '1'
+            activeTab: '1',
         };
+    }
+
+    realRegister() {
+        this.props.dispatch(register({
+            'legal': 0,
+            'name': this.state.realFirstName + ' ' + this.state.realLastName,
+            'email': this.state.realEmail,
+            'mobile': this.state.realMobile,
+            'password': this.state.realPassword,
+            'other_info': JSON.stringify({
+                'phone': this.state.realTel,
+                'address': this.state.realAddress,
+            })
+        }, this.manageToastAlerts))
+    }
+
+    legalRegister() {
+        this.props.dispatch(register({
+            'legal': 1,
+            'email': this.state.legalEmail,
+            'password': this.state.legalPassword,
+            'mobile': this.state.legalMobile,
+            'org_interface_name': this.state.legalFirstName,
+            'org_interface_last_name': this.state.legalLastName,
+            'org_interface_phone': this.state.legalPhone,
+            'org_interface_mobile': this.state.legalMobile,
+            'type': this.state.legalOrgType,
+            'org_name': this.state.legalOrgName,
+            'reg_number': this.state.legalOrgRegName,
+            'ec_code': this.state.legalEcCode,
+        }, this.manageToastAlerts))
+    }
+
+    manageToastAlerts(status) {
+        if(status === true) {
+            toast('ثبت نام با موفقیت انجام شد', {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                className: css({
+                    background: '#dbf2e3',
+                    color: '#28623c'
+                }),
+                progressClassName: css({
+                    background: '#28623c'
+                })
+            });
+        } else {
+            toast(status, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                className: css({
+                    background: '#fee2e1',
+                    color: '#813838',
+                }),
+                progressClassName: css({
+                    background: '#813838'
+                })
+            });
+        }
     }
 
     toggle(tab) {
@@ -22,9 +109,14 @@ class Register extends Component {
         }
     }
 
+    goTologinPage() {
+        window.location = '#/login'
+    }
+
   render() {
     return (
       <div className="app flex-row align-items-center mt-4">
+        <ToastContainer className="text-right" />
         <Container>
           <Row className="justify-content-center">
             <Col md="6">
@@ -52,7 +144,7 @@ class Register extends Component {
                     </NavItem>
                 </Nav>
 
-                <br /><br />
+                <br />
 
                 <TabContent activeTab={this.state.activeTab} className="border-0">
 
@@ -64,14 +156,16 @@ class Register extends Component {
                               <i className="icon-user"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="نام"/>
+                          <Input type="text" placeholder="نام"
+                          onChange={event => this.setState({realFirstName: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText><i className="icon-user"></i></InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="نام خانوادگی"/>
+                          <Input type="text" placeholder="نام خانوادگی"
+                          onChange={event => this.setState({realLastName: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-3">
@@ -80,7 +174,8 @@ class Register extends Component {
                               <i className="icon-phone"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="تلفن ثابت"/>
+                          <Input type="text" placeholder="تلفن ثابت"
+                          onChange={event => this.setState({realTel: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-4">
@@ -89,7 +184,8 @@ class Register extends Component {
                               <i className="icon-screen-smartphone"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="موبایل"/>
+                          <Input type="text" placeholder="تلفن همراه"
+                          onChange={event => this.setState({realMobile: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-4">
@@ -98,7 +194,8 @@ class Register extends Component {
                               <i className="icon-location-pin"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="آدرس"/>
+                          <Input type="text" placeholder="آدرس"
+                          onChange={event => this.setState({realAddress: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-4">
@@ -107,7 +204,8 @@ class Register extends Component {
                               @
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="email" placeholder="ایمیل"/>
+                          <Input type="text" placeholder="پست الکترونیکی"
+                          onChange={event => this.setState({realEmail: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-4">
@@ -116,9 +214,17 @@ class Register extends Component {
                               <i className="icon-lock"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="password" placeholder="کلمه عبور"/>
+                          <Input type="password" placeholder="کلمه عبور"
+                          onChange={event => this.setState({realPassword: event.target.value})} />
                         </InputGroup>
+
+                        <Button color="success" onClick={this.realRegister} block>ثبت نام</Button>
+                        <Button color="primary" onClick={this.goTologinPage} block>بازگشت به لاگین</Button>
+
                     </TabPane>
+
+
+
 
                     <TabPane tabId="2">
                         {/* حقوقی */}
@@ -128,14 +234,16 @@ class Register extends Component {
                               <i className="icon-user"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="نام رابط"/>
+                          <Input type="text" placeholder="نام رابط"
+                          onChange={event => this.setState({legalFirstName: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText><i className="icon-user"></i></InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="نام خانوادگی رابط"/>
+                          <Input type="text" placeholder="نام خانوادگی رابط"
+                          onChange={event => this.setState({legalLastName: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-3">
@@ -144,7 +252,8 @@ class Register extends Component {
                               <i className="icon-phone"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="تلفن رابط"/>
+                          <Input type="text" placeholder="تلفن رابط"
+                          onChange={event => this.setState({legalPhone: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-4">
@@ -153,7 +262,8 @@ class Register extends Component {
                               <i className="icon-screen-smartphone"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="موبایل شخصی"/>
+                          <Input type="text" placeholder="موبایل شخصی"
+                          onChange={event => this.setState({legalMobile: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-4">
@@ -162,7 +272,8 @@ class Register extends Component {
                               @
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="email" placeholder="ایمیل رابط"/>
+                          <Input type="email" placeholder="ایمیل رابط"
+                          onChange={event => this.setState({legalEmail: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-4">
@@ -171,7 +282,8 @@ class Register extends Component {
                               <i className="icon-home"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="اسم مجموعه"/>
+                          <Input type="text" placeholder="اسم مجموعه"
+                          onChange={event => this.setState({legalOrgName: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-4">
@@ -180,12 +292,12 @@ class Register extends Component {
                               <i className="icon-folder-alt"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                            <Input type="select">
+                            <Input type="select" onChange={event => this.setState({legalOrgType: event.target.value})}>
                                 <option value="0">انتخاب نوع مجموعه</option>
-                                <option>سازمانی</option>
-                                <option>شرکت</option>
-                                <option>نظامی</option>
-                                <option>NGO</option>
+                                <option value="سازمانی">سازمانی</option>
+                                <option value="شرکت">شرکت</option>
+                                <option value="نظامی">نظامی</option>
+                                <option value="NGO">NGO</option>
                             </Input>
                         </InputGroup>
 
@@ -195,7 +307,8 @@ class Register extends Component {
                               <i className="icon-layers"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="شماره ثبت"/>
+                          <Input type="text" placeholder="شماره ثبت"
+                          onChange={event => this.setState({legalOrgRegName: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-4">
@@ -204,7 +317,8 @@ class Register extends Component {
                               <i className="icon-notebook"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="text" placeholder="کد اقتصادی"/>
+                          <Input type="text" placeholder="کد اقتصادی"
+                          onChange={event => this.setState({legalEcCode: event.target.value})} />
                         </InputGroup>
 
                         <InputGroup className="mb-4">
@@ -213,17 +327,16 @@ class Register extends Component {
                               <i className="icon-lock"></i>
                             </InputGroupText>
                           </InputGroupAddon>
-                          <Input type="password" placeholder="کلمه عبور"/>
+                          <Input type="password" placeholder="کلمه عبور"
+                          onChange={event => this.setState({legalPassword: event.target.value})} />
                         </InputGroup>
+
+                        <Button color="success" onClick={this.legalRegister} block>ثبت نام</Button>
+                        <Button color="primary" onClick={this.loginPage} block>بازگشت به لاگین</Button>
+
                     </TabPane>
 
-
                 </TabContent>
-
-
-
-                  <Button color="success" block>ثبت نام</Button>
-                  <Button color="primary" block>بازگشت به لاگین</Button>
 
                 </CardBody>
               </Card>
@@ -235,4 +348,9 @@ class Register extends Component {
   }
 }
 
-export default Register;
+
+function mapStateToProps(state) {
+    return {};
+}
+
+export default connect(mapStateToProps)(Register);

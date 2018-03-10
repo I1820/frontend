@@ -209,15 +209,15 @@ function setThing(newState) {
 export function register(data, cb) {
     return (dispatch) => {
         const promise = registerAPI(data, dispatch)
-        promise.then((response) => {
+        promise.then((response, data) => {
             if (response.status === 'OK') {
                 cb(true)
                 setTimeout(() => {
                     forwardTo('/login')
                 }, 2000)
             } else {
-                dispatch(setErrorMessage(response.result))
-                cb(false)
+                //dispatch(setErrorMessage(response.result))
+                cb(response.result)
             }
         })
     }
