@@ -30,6 +30,11 @@ export default {
         url: '/device-profile/list',
         icon: 'icon-grid',
     },
+    {
+        name: 'مدیریت بسته‌ها',
+        url: '/Package/Managment',
+        icon: 'icon-grid',
+    },
 
     // {
     //     name: 'اشیاء',

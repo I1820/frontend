@@ -6,7 +6,8 @@ import axios, { post } from 'axios';
 import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://backback.ceit.aut.ac.ir:50024/api/v1'
+const BASE_URL = 'http://iot.felfel.ml/api/v1'
+// 'http://backback.ceit.aut.ac.ir:50024/api/v1'
 
 const endpoints = {
     login: '/login',
