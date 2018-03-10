@@ -9,18 +9,22 @@ import {
 import connect from "react-redux/es/connect/connect";
 import {logout} from "../../actions/AppActions";
 
+const md5 = require('js-md5');
+
 
 class HeaderDropdown extends Component {
 
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.toggle = this.toggle.bind(this);
-    this.profileLink = this.profileLink.bind(this);
-    this.state = {
-      dropdownOpen: false
-    };
-  }
+        this.toggle = this.toggle.bind(this);
+        this.profileLink = this.profileLink.bind(this);
+
+        this.state = {
+            dropdownOpen: false,
+            activeUserInfo: this.props.userInfo
+        };
+    }
 
   profileLink() {
       window.location = '#/profile';
@@ -33,13 +37,18 @@ class HeaderDropdown extends Component {
   }
 
   dropAccnt() {
+
+      var gravatar_url = "https://www.gravatar.com/avatar/";
+      gravatar_url += md5(this.state.activeUserInfo.email);
+      gravatar_url += "?s=240";
+
     return (
       <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle nav>
-          <img src={'img/avatars/8.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
+          <img src={gravatar_url} className="img-avatar" alt=""/>
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem header tag="div" className="text-center"><strong>منوی کاربری</strong></DropdownItem>
+          <DropdownItem header tag="div" className="text-center"><strong>{this.state.activeUserInfo.username}</strong></DropdownItem>
           <DropdownItem onClick={this.profileLink}><i className="fa fa-user-o text-primary"></i>حساب کاربری</DropdownItem>
           <DropdownItem onClick={() => this.props.dispatch(logout())}><i className="fa fa-power-off text-danger"></i>خروج</DropdownItem>
         </DropdownMenu>
@@ -55,4 +64,11 @@ class HeaderDropdown extends Component {
   }
 }
 
-export default connect(()=>{})(HeaderDropdown);
+
+function mapStateToProps(state) {
+    return {
+        userInfo: state.userReducer,
+    };
+}
+
+export default connect(mapStateToProps)(HeaderDropdown);
