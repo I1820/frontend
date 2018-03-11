@@ -20,6 +20,7 @@ export function userReducer(state = initialState, action) {
                 return assign({}, state, {
                     type: 'REAL',
                     username: action.newState.user.name,
+                    mobile: action.newState.user.mobile,
                     email: action.newState.user.email,
                     other_info: action.newState.user.other_info,
                     token: action.newState.token

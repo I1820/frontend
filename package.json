@@ -37,6 +37,7 @@
     "flag-icon-css": "2.9.0",
     "font-awesome": "4.7.0",
     "history": "4.7.2",
+    "js-md5": "^0.7.3",
     "lodash": "^4.17.5",
     "object.assign": "^4.1.0",
     "prop-types": "^15.6.1",
