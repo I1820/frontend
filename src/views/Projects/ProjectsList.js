@@ -69,7 +69,7 @@ class ProjectsList extends Component {
         }
     }
 
-    deleteProject(id) {
+    deleteProject() {
         this.props.dispatch(deleteProjectAction(
             this.state.deleteRowId,
             this.manageToastAlerts

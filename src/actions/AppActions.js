@@ -39,6 +39,7 @@ import {
     createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
     createGateway as createGatewayAPI, getGateways,
     deleteProject as deleteProjectAPI,
+    deleteDeviceProfile as deleteDeviceProfileAPI,
 } from '../api/index'
 import {activeThing, createThingProfile, getThingProfileList} from "../api";
 
@@ -228,10 +229,8 @@ export function editProfile(data, cb) {
         const promise = editProfileAPI(JSON.parse(JSON.stringify(data)), dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                dispatch(updateUser(response.result))
                 cb(true)
             } else {
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
                 cb(false)
             }
         }).catch((err) => {
@@ -570,13 +569,26 @@ export function createGatewayAction(data) {
     }
 }
 
-
 export function deleteProjectAction(projectId, cb) {
     return (dispatch) => {
         const promise = deleteProjectAPI(projectId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 window.location = '#/projects/list'
+                cb(true)
+            } else {
+                cb(response.result)
+            }
+        })
+    }
+}
+
+export function deleteDeviceProfileAction(profileId, cb) {
+    return (dispatch) => {
+        const promise = deleteDeviceProfileAPI(profileId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                window.location = '#/device-profile/list'
                 cb(true)
             } else {
                 cb(response.result)

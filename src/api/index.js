@@ -146,9 +146,8 @@ module.exports.editProject = function (id, data, dispatch) {
     Object.assign(config, {body: getFormData(data)})
     return fetchData('/project/' + id, config, dispatch)
 }
+
 // module.exports.editProfile = function (data, dispatch) {
-//
-//     console.log('data --->', data)
 //     const config = patchConfig()
 //     if (data.other_info !== undefined) {
 //         data.other_info = JSON.stringify(data.other_info)
@@ -156,6 +155,7 @@ module.exports.editProject = function (id, data, dispatch) {
 //     Object.assign(config, {body: getFormData(data)})
 //     return fetchData(endpoints.editProfile, config, dispatch)
 // }
+
 //
 // module.exports.listThings = function (dispatch) {
 //     return fetchData(endpoints.listThings, projectControler.list, getConfig(), dispatch)
@@ -235,4 +235,15 @@ module.exports.activeThing = function (data, thingId, projectId, dispatch) {
 module.exports.deleteProject = function (projectId, dispatch) {
     const config = deleteConfig()
     return fetchData(`/project/${projectId}`, config, dispatch)
+};
+
+module.exports.editProfile = function (data, dispatch) {
+    const config = patchConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/user/update`, config, dispatch)
+}
+
+module.exports.deleteDeviceProfile = function (profileId, dispatch) {
+    const config = deleteConfig()
+    return fetchData(`/thing-profile/${profileId}`, config, dispatch)
 };
