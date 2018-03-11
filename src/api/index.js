@@ -237,6 +237,11 @@ module.exports.deleteProject = function (projectId, dispatch) {
     return fetchData(`/project/${projectId}`, config, dispatch)
 };
 
+module.exports.deleteGateway = function (gatewayId, dispatch) {
+    const config = deleteConfig()
+    return fetchData(`/gateway/${gatewayId}`, config, dispatch)
+};
+
 module.exports.editProfile = function (data, dispatch) {
     const config = patchConfig()
     Object.assign(config, {body: getFormData(data)})

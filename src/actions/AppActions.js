@@ -40,6 +40,7 @@ import {
     createGateway as createGatewayAPI, getGateways,
     deleteProject as deleteProjectAPI,
     deleteDeviceProfile as deleteDeviceProfileAPI,
+    deleteGateway as deleteGatewaysAPI,
 } from '../api/index'
 import {activeThing, createThingProfile, getThingProfileList} from "../api";
 
@@ -561,7 +562,7 @@ export function createGatewayAction(data) {
         promise.then((response) => {
             console.log(response);
             if (response.status === 'OK') {
-                forwardTo('/gateways')
+                window.location = '#/gateways/list'
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
@@ -589,6 +590,20 @@ export function deleteDeviceProfileAction(profileId, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 window.location = '#/device-profile/list'
+                cb(true)
+            } else {
+                cb(response.result)
+            }
+        })
+    }
+}
+
+export function deleteGatewaysAction(profileId, cb) {
+    return (dispatch) => {
+        const promise = deleteGatewaysAPI(profileId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                window.location = '#/gateways/list'
                 cb(true)
             } else {
                 cb(response.result)
