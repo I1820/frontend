@@ -15,14 +15,17 @@ import {
   Input,
   Table
 } from 'reactstrap';
+import {connect} from 'react-redux';
 
 
 class Profile extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            activeUserInfo: this.props.userInfo
+        }
     }
-
 
     render() {
         return(
@@ -33,46 +36,44 @@ class Profile extends Component {
                     </CardHeader>
                     <CardBody>
                         <Form>
-
                             <FormGroup row>
                                 <Label sm={2}>نام و نام خانوادگی :‌ </Label>
                                 <Col sm={5}>
-                                    <Input type="text" />
-                                </Col>
-                            </FormGroup>
-
-                            <FormGroup row>
-                                <Label sm={2}>پست الکترونیکی :‌ </Label>
-                                <Col sm={5}>
-                                    <Input type="email" dir="ltr" />
+                                    <Input type="text" value
+                                    value={this.state.activeUserInfo.username}
+                                    onChange={event => this.setState({userFullName: event.target.value})} />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label sm={2}>تلفن ثابت : </Label>
                                 <Col sm={5}>
-                                    <Input type="text" dir="ltr" />
+                                    <Input type="text"
+                                    onChange={event => this.setState({userTel: event.target.value})} />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label sm={2}>تلفن همراه : </Label>
                                 <Col sm={5}>
-                                    <Input type="text" dir="ltr" />
+                                    <Input type="text"
+                                    onChange={event => this.setState({userMobile: event.target.value})} />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label sm={2}>نشانی :‌ </Label>
                                 <Col sm={5}>
-                                    <Input type="textarea" name="" rows="4" />
+                                    <Input type="textarea" rows="4"
+                                    onChange={event => this.setState({realAddress: event.target.value})} />
                                 </Col>
                             </FormGroup>
 
-                            <FormGroup row>
+                            {/*<FormGroup row>
                                 <Label sm={2}>نوع مجموعه :‌ </Label>
                                 <Col sm={5}>
-                                    <Input type="select">
+                                    <Input type="select"
+                                    onChange={event => this.setState({userOrgType: event.target.value})}>
                                         <option>سازمانی</option>
                                         <option>شرکت</option>
                                         <option>نظامی</option>
@@ -84,23 +85,26 @@ class Profile extends Component {
                             <FormGroup row>
                                 <Label sm={2}>اسم مجموعه :‌ </Label>
                                 <Col sm={5}>
-                                    <Input type="text"/>
+                                    <Input type="text"
+                                    onChange={event => this.setState({userOrgName: event.target.value})} />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label sm={2}>شماره ثبت :‌ </Label>
                                 <Col sm={5}>
-                                    <Input type="text"/>
+                                    <Input type="text"
+                                    onChange={event => this.setState({userOrgRegName: event.target.value})} />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label sm={2}>کد اقتصادی :‌ </Label>
                                 <Col sm={5}>
-                                    <Input type="text"/>
+                                    <Input type="text"
+                                    onChange={event => this.setState({userEcCode: event.target.value})} />
                                 </Col>
-                            </FormGroup>
+                            </FormGroup>*/}
 
                         </Form>
                     </CardBody>
@@ -114,4 +118,10 @@ class Profile extends Component {
 
 }
 
-export default Profile;
+function mapStateToProps(state) {
+    return {
+        userInfo: state.userReducer,
+    };
+}
+
+export default connect(mapStateToProps)(Profile);

@@ -1,4 +1,11 @@
-import {loginConfig, postConfig, getConfig, patchConfig, uploadConfig} from './config'
+import {
+    loginConfig,
+    postConfig,
+    getConfig,
+    patchConfig,
+    uploadConfig,
+    deleteConfig
+} from './config'
 
 import _ from 'underscore'
 import {sendingRequest, logout} from '../actions/AppActions'
@@ -224,3 +231,8 @@ module.exports.activeThing = function (data, thingId, projectId, dispatch) {
     Object.assign(config, {body: getFormData(data)})
     return fetchData(`/project/${projectId}/things/${thingId}/activate`, config, dispatch)
 }
+
+module.exports.deleteProject = function (projectId, dispatch) {
+    const config = deleteConfig()
+    return fetchData(`/project/${projectId}`, config, dispatch)
+};

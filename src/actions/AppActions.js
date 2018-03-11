@@ -37,7 +37,8 @@ import {
     createThing as createThingAPI, editThing as editThingAPI,
     getProjectData as getThingDataAPI, createCodec as createCodecAPI,
     createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
-    createGateway as createGatewayAPI, getGateways
+    createGateway as createGatewayAPI, getGateways,
+    deleteProject as deleteProjectAPI,
 } from '../api/index'
 import {activeThing, createThingProfile, getThingProfileList} from "../api";
 
@@ -209,14 +210,13 @@ function setThing(newState) {
 export function register(data, cb) {
     return (dispatch) => {
         const promise = registerAPI(data, dispatch)
-        promise.then((response, data) => {
+        promise.then((response) => {
             if (response.status === 'OK') {
                 cb(true)
                 setTimeout(() => {
                     forwardTo('/login')
                 }, 2000)
             } else {
-                //dispatch(setErrorMessage(response.result))
                 cb(response.result)
             }
         })
@@ -571,3 +571,16 @@ export function createGatewayAction(data) {
 }
 
 
+export function deleteProjectAction(projectId, cb) {
+    return (dispatch) => {
+        const promise = deleteProjectAPI(projectId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                window.location = '#/projects/list'
+                cb(true)
+            } else {
+                cb(response.result)
+            }
+        })
+    }
+}
