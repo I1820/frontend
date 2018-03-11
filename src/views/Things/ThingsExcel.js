@@ -33,7 +33,8 @@ class ThingsExcel extends Component {
     componentWillMount() {
         const splitedUrl = window.location.href.split('/');
         this.setState({
-            project:splitedUrl[6]
+            project: splitedUrl[6],
+            result: []
         })
     }
 
@@ -62,7 +63,7 @@ class ThingsExcel extends Component {
                     </CardBody>
                     <CardFooter>
                         <Button onClick={() => {
-                            this.props.dispatch(uploadExcelAction(this.state.file,this.state.project))
+                            this.props.dispatch(uploadExcelAction(this.state.file, this.state.project, this.callback))
                         }} color="primary">بارگذاری</Button>
                     </CardFooter>
                 </Card>
@@ -82,7 +83,11 @@ class ThingsExcel extends Component {
                             </tr>
                             </thead>
                             <tbody>
-                            {this.renderLog()}
+                            {
+                                this.state.result.map((res) => {
+                                    return (this.renderLog(res))
+                                })
+                            }
                             </tbody>
                         </Table>
                         <Pagination>
@@ -111,7 +116,7 @@ class ThingsExcel extends Component {
         );
     }
 
-    renderLog() {
+    renderLog(result) {
         return (
             <tr>
                 <td>1</td>
@@ -122,6 +127,13 @@ class ThingsExcel extends Component {
                 </td>
             </tr>
         )
+    }
+
+    callback(result) {
+        if (result)
+            this.setState({
+                result
+            })
     }
 }
 

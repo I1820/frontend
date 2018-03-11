@@ -34,7 +34,7 @@ class ProjectsList extends Component {
         this.showProject = this.showProject.bind(this)
         this.onCreateProject = this.onCreateProject.bind(this)
         this.onCreateProject = this.onCreateProject.bind(this)
-        this.deleteModalToggle = this.deleteModalToggle.bind(this)
+        this.deleteModalToggle = this.onCreateProject.bind(this)
 
         this.state = {
             modal: false,
@@ -61,7 +61,7 @@ class ProjectsList extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
-                <Modal isOpen={this.state.deleteModal} toggle={this.deleteModalToggle} className="text-right">
+                <Modal isOpen={this.state.modal} toggle={this.toggle} className="text-right">
                     <ModalHeader>حذف پروژه</ModalHeader>
                     <ModalBody>
                         <h1>آیا از حذف پروژه مطمئن هستید؟</h1>
@@ -76,7 +76,7 @@ class ProjectsList extends Component {
                 </Modal>
 
 
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className="text-right">
+                <Modal isOpen={this.state.deleteModal} toggle={this.toggle} className="text-right">
                     <ModalHeader>پروژه جدید</ModalHeader>
                     <ModalBody>
                         <Form>

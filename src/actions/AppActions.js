@@ -471,15 +471,16 @@ export function createThingAction(data, project, cb) {
     }
 }
 
-export function activeThingAction(data, projectId, thingId) {
+export function activeThingAction(data, projectId, thingId,cb) {
     return (dispatch) => {
         const promise = activeThing(data, projectId, thingId, dispatch)
         promise.then((response) => {
             console.log(response);
             if (response.status === 'OK') {
-                // forwardTo('/gateways')
+                cb(true)
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+                cb(false,response.result)
             }
         })
     }
@@ -493,8 +494,8 @@ export function uploadExcelAction(file,projectId, cb) {
         promise.then((response) => {
             console.log(response)
             if (response.status === 200) {
-                window.location.reload()
-                // dispatch(setProject(response.result))
+                // window.location.reload()
+                cb(response.result.res)
             } else {
                 // cb(false,response.result)
                 // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
