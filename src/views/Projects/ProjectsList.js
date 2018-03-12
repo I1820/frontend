@@ -22,8 +22,16 @@ import {
 } from 'reactstrap';
 
 import {connect} from 'react-redux';
-import {createProject, getProjects} from "../../actions/AppActions";
+import {createProject, getProjects, deleteProjectAction} from "../../actions/AppActions";
 import Spinner from "../Spinner/Spinner";
+import classnames from 'classnames';
+import { ToastContainer, toast } from 'react-toastify';
+import { css } from 'glamor';
+import { style } from "react-toastify";
+
+style({
+    colorProgressDefault: 'white'
+});
 
 class ProjectsList extends Component {
 
@@ -34,12 +42,16 @@ class ProjectsList extends Component {
         this.showProject = this.showProject.bind(this)
         this.onCreateProject = this.onCreateProject.bind(this)
         this.onCreateProject = this.onCreateProject.bind(this)
-        this.deleteModalToggle = this.onCreateProject.bind(this)
+        this.deleteModalToggle = this.deleteModalToggle.bind(this)
+        this.deleteProject = this.deleteProject.bind(this)
+        this.manageToastAlerts = this.manageToastAlerts.bind(this)
+        this.loadProjects = this.loadProjects.bind(this)
 
         this.state = {
             modal: false,
             deleteModal: false,
             projects: [{}],
+            deleteRowId: 0
         }
     }
 
@@ -57,19 +69,57 @@ class ProjectsList extends Component {
         }
     }
 
+    deleteProject() {
+        this.props.dispatch(deleteProjectAction(
+            this.state.deleteRowId,
+            this.manageToastAlerts
+        ))
+    }
+
+    manageToastAlerts(status) {
+        if(status === true) {
+            this.loadProjects()
+            this.deleteModalToggle()
+
+            toast('پروژه مورد نظر با موفقیت حذف شد', {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                className: css({
+                    background: '#dbf2e3',
+                    color: '#28623c'
+                }),
+                progressClassName: css({
+                    background: '#28623c'
+                })
+            });
+        } else {
+            toast(status, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                className: css({
+                    background: '#fee2e1',
+                    color: '#813838',
+                }),
+                progressClassName: css({
+                    background: '#813838'
+                })
+            });
+        }
+    }
+
     render() {
         return (
             <div>
+                <ToastContainer className="text-right" />
                 <Spinner display={this.props.loading}/>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className="text-right">
                     <ModalHeader>حذف پروژه</ModalHeader>
                     <ModalBody>
-                        <h1>آیا از حذف پروژه مطمئن هستید؟</h1>
-                        <h2>پس از حذف پروژه امکان بازگرداندن آن وجود ندارد.</h2>
+                        <h3>آیا از حذف پروژه مطمئن هستید؟</h3>
+                        <br />
+                        <h5>پس از حذف پروژه امکان بازگرداندن آن وجود ندارد.</h5>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
-                            this.deleteModalToggle()
+                            this.deleteProject(this.state.deleteRowId)
                         }}>حذف</Button>
                         <Button color="danger" onClick={this.deleteModalToggle}>انصراف</Button>
                     </ModalFooter>
@@ -159,7 +209,8 @@ class ProjectsList extends Component {
                             size="sm">نمایش</Button>
                     <Button onClick={() => this.manageProject(project._id)} className="ml-1" color="warning"
                             size="sm">مدیریت</Button>
-                    <Button onClick={this.deleteModalToggle} className="ml-1" color="danger" size="sm">حذف</Button>
+                    <Button onClick={() => this.deleteModalToggle(project._id)} className="ml-1" color="danger"
+                            size="sm">حذف</Button>
                 </td>
             </tr>
         )
@@ -171,9 +222,10 @@ class ProjectsList extends Component {
         });
     }
 
-    deleteModalToggle() {
+    deleteModalToggle(id) {
         this.setState({
-            deleteModal: !this.state.deleteModal
+            deleteModal: !this.state.deleteModal,
+            deleteRowId: id
         });
     }
 

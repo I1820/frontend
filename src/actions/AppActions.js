@@ -37,7 +37,10 @@ import {
     createThing as createThingAPI, editThing as editThingAPI,
     getProjectData as getThingDataAPI, createCodec as createCodecAPI,
     createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
-    createGateway as createGatewayAPI, getGateways
+    createGateway as createGatewayAPI, getGateways,
+    deleteProject as deleteProjectAPI,
+    deleteDeviceProfile as deleteDeviceProfileAPI,
+    deleteGateway as deleteGatewaysAPI,
 } from '../api/index'
 import {activeThing, createThingProfile, getThingProfileList} from "../api";
 
@@ -209,14 +212,13 @@ function setThing(newState) {
 export function register(data, cb) {
     return (dispatch) => {
         const promise = registerAPI(data, dispatch)
-        promise.then((response, data) => {
+        promise.then((response) => {
             if (response.status === 'OK') {
                 cb(true)
                 setTimeout(() => {
                     forwardTo('/login')
                 }, 2000)
             } else {
-                //dispatch(setErrorMessage(response.result))
                 cb(response.result)
             }
         })
@@ -228,10 +230,8 @@ export function editProfile(data, cb) {
         const promise = editProfileAPI(JSON.parse(JSON.stringify(data)), dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                dispatch(updateUser(response.result))
                 cb(true)
             } else {
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
                 cb(false)
             }
         }).catch((err) => {
@@ -563,7 +563,7 @@ export function createGatewayAction(data) {
         promise.then((response) => {
             console.log(response);
             if (response.status === 'OK') {
-                forwardTo('/gateways')
+                window.location = '#/gateways/list'
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
@@ -571,4 +571,44 @@ export function createGatewayAction(data) {
     }
 }
 
+export function deleteProjectAction(projectId, cb) {
+    return (dispatch) => {
+        const promise = deleteProjectAPI(projectId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                window.location = '#/projects/list'
+                cb(true)
+            } else {
+                cb(response.result)
+            }
+        })
+    }
+}
 
+export function deleteDeviceProfileAction(profileId, cb) {
+    return (dispatch) => {
+        const promise = deleteDeviceProfileAPI(profileId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                window.location = '#/device-profile/list'
+                cb(true)
+            } else {
+                cb(response.result)
+            }
+        })
+    }
+}
+
+export function deleteGatewaysAction(profileId, cb) {
+    return (dispatch) => {
+        const promise = deleteGatewaysAPI(profileId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                window.location = '#/gateways/list'
+                cb(true)
+            } else {
+                cb(response.result)
+            }
+        })
+    }
+}

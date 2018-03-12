@@ -43,3 +43,11 @@ module.exports.patchConfig = () => ({
     'Content-Type': 'application/x-www-form-urlencoded'
   }
 })
+
+module.exports.deleteConfig = () => ({
+  method: 'DELETE',
+  headers: {
+    'Authorization': getAuth(),
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+})
