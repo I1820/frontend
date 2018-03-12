@@ -47,6 +47,12 @@ const MapWithASearchBox = compose(
                         center: refs.map.getCenter(),
                     })
                 },
+                onClick: data => {
+                    this.setState({
+                        latitude: data.latLng.lat(),
+                        longitude: data.latLng.lng(),
+                    })
+                },
                 onSearchBoxMounted: ref => {
                     refs.searchBox = ref;
                 },
@@ -84,6 +90,7 @@ const MapWithASearchBox = compose(
         center={props.center}
         center={props.center}
         onBoundsChanged={props.onBoundsChanged}
+        onClick={props.onClick}
     >
         <SearchBox
             ref={props.onSearchBoxMounted}
@@ -123,7 +130,10 @@ class GatewaysNew extends Component {
 
         this.submitForm = this.submitForm.bind(this)
 
-        this.state = {}
+        this.state = {
+            latitude: 0,
+            longitude: 0,
+        }
     }
 
 
@@ -160,14 +170,14 @@ class GatewaysNew extends Component {
                             <FormGroup row>
                                 <Label sm={2}>مقدار Lat : </Label>
                                 <Col sm={5}>
-                                    <Input type="text"
+                                    <Input type="text" value={this.state.latitude}
                                     onChange={event => this.setState({latitude: event.target.value})} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>مقدار Long : </Label>
                                 <Col sm={5}>
-                                    <Input type="text"
+                                    <Input type="text" value={this.state.longitude}
                                     onChange={event => this.setState({longitude: event.target.value})} />
                                 </Col>
                             </FormGroup>
