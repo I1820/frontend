@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
 import {
-    Row,
-    Col,
     Card,
-    Form,
-    Badge,
     Modal,
-    FormGroup,
     CardHeader,
     CardBody,
     CardFooter,
@@ -15,18 +10,14 @@ import {
     ModalFooter,
     CardTitle,
     Button,
-    ButtonGroup,
-    Label,
-    Input,
     Table
 } from 'reactstrap';
 import connect from "react-redux/es/connect/connect";
 import {getGatewaysAction, deleteGatewaysAction} from "../../actions/AppActions";
 import Spinner from "../Spinner/Spinner";
-import classnames from 'classnames';
 import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
-import { style } from "react-toastify";
+
 
 
 class Gateways extends Component {

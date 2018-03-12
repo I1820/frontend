@@ -9,7 +9,7 @@ import {
 
 import _ from 'underscore'
 import {sendingRequest, logout} from '../actions/AppActions'
-import axios, { post } from 'axios';
+import axios, {post} from 'axios';
 import store from '../store'
 /* global fetch */
 
@@ -71,7 +71,7 @@ function fetchData(endpoint = '/404', config = {}, dispatch) {
                 dispatch(sendingRequest(false))
                 const {status, message, code} = controler(json)
                 console.log(code)
-                if (code === 703) {
+                if (code === 703 || code === 704 ) {
                     dispatch(logout())
                 }
                 if (!status) {
@@ -116,12 +116,11 @@ module.exports.register = function (data, dispatch) {
 module.exports.logout = function (dispatch) {
     return fetchData(endpoints.logout, postConfig(), dispatch)
 }
-//
-// module.exports.viewProfile = function () {
-//     return fetchData(endpoints.viewProfile, profileControler, getConfig())
-// }
-//
-//
+
+module.exports.viewProfile = function (dispatch) {
+    return fetchData('/user', getConfig(),dispatch)
+}
+
 module.exports.createProject = function (data, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
@@ -196,17 +195,17 @@ module.exports.createGateway = function (data, dispatch) {
     return fetchData(`/gateway`, config, dispatch)
 }
 
-module.exports.uploadExcel = function (data,projectId, dispatch) {
+module.exports.uploadExcel = function (data, projectId, dispatch) {
     const url = `${BASE_URL}/project/${projectId}/things/from-excel`
     const formData = new FormData();
-    formData.append('things',data)
+    formData.append('things', data)
     const config = {
         headers: {
             'Authorization': 'Bearer ' + store.getState().userReducer.token,
             'Content-Type': 'multipart/form-data'
         }
     }
-    return  post(url, formData,config)
+    return post(url, formData, config)
 }
 
 

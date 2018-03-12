@@ -27,6 +27,7 @@ class ThingsExcel extends Component {
 
     constructor(props) {
         super(props);
+        this.callback = this.callback.bind(this)
     }
 
 
@@ -77,15 +78,14 @@ class ThingsExcel extends Component {
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>نام</th>
                                 <th>آدرس فیزیکی</th>
                                 <th>وضعیت افزوده شدن</th>
                             </tr>
                             </thead>
                             <tbody>
                             {
-                                this.state.result.map((res) => {
-                                    return (this.renderLog(res))
+                                Object.keys(this.state.result).map((res, key) => {
+                                    return (this.renderLog(res, key))
                                 })
                             }
                             </tbody>
@@ -98,15 +98,6 @@ class ThingsExcel extends Component {
                                 <PaginationLink href="#">1</PaginationLink>
                             </PaginationItem>
                             <PaginationItem>
-                                <PaginationLink href="#">2</PaginationLink>
-                            </PaginationItem>
-                            <PaginationItem>
-                                <PaginationLink href="#">3</PaginationLink>
-                            </PaginationItem>
-                            <PaginationItem>
-                                <PaginationLink href="#">4</PaginationLink>
-                            </PaginationItem>
-                            <PaginationItem>
                                 <PaginationLink next href="#"/>
                             </PaginationItem>
                         </Pagination>
@@ -116,20 +107,22 @@ class ThingsExcel extends Component {
         );
     }
 
-    renderLog(result) {
+    renderLog(res, key) {
         return (
-            <tr>
-                <td>1</td>
-                <td>شی تستی</td>
-                <td>آدرس شی</td>
+            <tr id={key}>
+                <td>{key + 1}</td>
+                <td>{res}</td>
                 <td>
-                    <Badge color="success">موفق</Badge>
+                    <Badge
+                        color={this.state.result[res].indexOf('Error') !== -1
+                            ? 'danger' : 'success'}>{this.state.result[res]}</Badge>
                 </td>
             </tr>
         )
     }
 
     callback(result) {
+        console.log(result)
         if (result)
             this.setState({
                 result
