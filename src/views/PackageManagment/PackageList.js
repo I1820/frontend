@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Data from './packageData'
-import {selectPackage} from '../../actions/AppActions'
+import {selectPackage, NewPackage} from '../../actions/AppActions'
 import {
     Row,
     Col,
@@ -20,8 +20,6 @@ import {
     ModalFooter
 
 } from 'reactstrap'
-
-import {NewPackage} from "../../actions/AppActions";
 import { connect } from 'react-redux';
 import Spinner from "../Spinner/Spinner";
 
@@ -76,7 +74,6 @@ class PackageList extends Component {
         )
     }
     render() {
-        console.log(this.state.packages)
         return (
            
             <div className="animated fadeIn">

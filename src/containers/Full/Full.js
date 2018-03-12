@@ -14,6 +14,9 @@ import News from '../../views/News/';
 //PackageManagment
 import PackageManagment from '../../views/PackageManagment/PackageList'
 import NewPackage from '../../views/PackageManagment/PackageManage'
+//usersManagement
+import UsersList from '../../views/UserPaymentManagment/UsersList'
+import UserInfo from '../../views/UserPaymentManagment/UserInfo'
 
 import Gateways from '../../views/Gateways/Gateways.js';
 import GatewaysNew from '../../views/Gateways/GatewaysNew.js';
@@ -92,6 +95,8 @@ class Full extends Component {
 
                 <Route path="/Package/Managment" name="PackageManagment" component={PackageManagment}/>
                 <Route path="/Package/New" name="NewPackage" component={NewPackage}/>
+                <Route path="/Users/Managment" name="UsersList" component={UsersList}/>
+                <Route path="/user/info/" name="UserInfo" component={UserInfo}/>
 
                 <Route path="/gateways/new" name="GatewaysNew" component={GatewaysNew}/>
                 <Route path="/gateways/list" name="Gateways" component={Gateways}/>

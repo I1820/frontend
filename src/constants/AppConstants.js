@@ -25,3 +25,4 @@ export const GET_GATEWAYS = 'GET_GATEWAYS'
 
 //
 export const NEW_PACKAGE = 'NEW_PACKAGE'
+export const SELECT_USER = "SELECT_USER"

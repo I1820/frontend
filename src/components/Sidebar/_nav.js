@@ -35,7 +35,11 @@ export default {
         url: '/Package/Managment',
         icon: 'icon-grid',
     },
-
+    {
+        name: 'مدیریت کاربران',
+        url: '/Users/Managment',
+        icon: 'icon-grid',
+    },
     // {
     //     name: 'اشیاء',
     //     url: '/things',
