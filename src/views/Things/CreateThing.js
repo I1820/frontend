@@ -25,6 +25,14 @@ const _ = require("lodash");
 const {compose, withProps, lifecycle} = require("recompose");
 const {SearchBox} = require("react-google-maps/lib/components/places/SearchBox");
 
+import { ToastContainer, toast } from 'react-toastify';
+import { css } from 'glamor';
+import { style } from "react-toastify";
+style({
+    colorProgressDefault: 'white'
+});
+
+
 class CreateThing extends Component {
 
     constructor(props) {
@@ -54,6 +62,7 @@ class CreateThing extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
+                <ToastContainer className="text-right" />
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">اطلاعات شی</CardTitle>
@@ -141,11 +150,21 @@ class CreateThing extends Component {
     }
 
     submitForm(){
-        this.props.dispatch(createThingAction(this.state.form,this.state.project,this.callBack))
+        this.props.dispatch(createThingAction(this.state.form,this.state.project,this.callback))
     }
 
-    callBack(){
-
+    callback(status,message){
+        if(!status)
+        toast(message, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            className: css({
+                background: '#fee2e1',
+                color: '#813838',
+            }),
+            progressClassName: css({
+                background: '#813838'
+            })
+        });
     }
 }
 

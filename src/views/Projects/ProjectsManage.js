@@ -23,6 +23,14 @@ import {connect} from 'react-redux';
 import {activeThingAction, editProjectAction, getProject} from "../../actions/AppActions";
 import Spinner from "../Spinner/Spinner";
 
+import {ToastContainer, toast} from 'react-toastify';
+import {css} from 'glamor';
+import {style} from "react-toastify";
+
+style({
+    colorProgressDefault: 'white'
+});
+
 class ProjectsManage extends Component {
 
     constructor(props) {
@@ -79,8 +87,7 @@ class ProjectsManage extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
-
-
+                <ToastContainer className="text-right"/>
                 <Modal isOpen={this.state.dataModal} toggle={this.dataModalToggle} className="text-right">
                     <ModalHeader>ارسال داده</ModalHeader>
                     <ModalBody>
@@ -115,7 +122,7 @@ class ProjectsManage extends Component {
                         <Button color="primary" className="ml-1" onClick={() => {
                             this.toggleOTAA()
                             this.props.dispatch(activeThingAction(this.state.OTTA, this.state.selectedThing,
-                                this.state.project._id))
+                                this.state.project._id, this.callback))
                         }}>ارسال</Button>
                         <Button color="danger" onClick={this.toggle}>انصراف</Button>
                     </ModalFooter>
@@ -222,7 +229,7 @@ class ProjectsManage extends Component {
                         <Button color="primary" className="ml-1" onClick={() => {
                             this.toggleABP()
                             this.props.dispatch(activeThingAction(this.state.ABP,
-                                this.state.selectedThing, this.state.project._id))
+                                this.state.selectedThing, this.state.project._id, this.callback))
                         }}>ارسال</Button>
                         <Button color="danger" onClick={this.toggleABP}>انصراف</Button>
                     </ModalFooter>
@@ -406,6 +413,31 @@ class ProjectsManage extends Component {
         this.setState(prevState => ({
             modalAddableItems: [...prevState.modalAddableItems, newItem]
         }))
+    }
+
+    callback(status, message) {
+        if (!status)
+            toast(message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                className: css({
+                    background: '#fee2e1',
+                    color: '#813838',
+                }),
+                progressClassName: css({
+                    background: '#813838'
+                })
+            });
+        else
+            toast('ف با موفقیت انجام شد', {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                className: css({
+                    background: '#dbf2e3',
+                    color: '#28623c'
+                }),
+                progressClassName: css({
+                    background: '#28623c'
+                })
+            });
     }
 
 }
