@@ -110,7 +110,7 @@ class ProjectsList extends Component {
             <div>
                 <ToastContainer className="text-right" />
                 <Spinner display={this.props.loading}/>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className="text-right">
+                <Modal isOpen={this.state.deleteModal} toggle={this.deleteModal} className="text-right">
                     <ModalHeader>حذف پروژه</ModalHeader>
                     <ModalBody>
                         <h3>آیا از حذف پروژه مطمئن هستید؟</h3>
@@ -126,7 +126,7 @@ class ProjectsList extends Component {
                 </Modal>
 
 
-                <Modal isOpen={this.state.deleteModal} toggle={this.toggle} className="text-right">
+                <Modal isOpen={this.state.modal} toggle={this.toggle} className="text-right">
                     <ModalHeader>پروژه جدید</ModalHeader>
                     <ModalBody>
                         <Form>

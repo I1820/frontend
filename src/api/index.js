@@ -25,6 +25,8 @@ const endpoints = {
     getProject: '/project',
     editProject: '/project',
 
+    getProject: '/gateway',
+
     editProfile: '/user/update',
 
     listThings: '/thing',
@@ -251,4 +253,13 @@ module.exports.editProfile = function (data, dispatch) {
 module.exports.deleteDeviceProfile = function (profileId, dispatch) {
     const config = deleteConfig()
     return fetchData(`/thing-profile/${profileId}`, config, dispatch)
+};
+
+module.exports.getSingleGateway = function (id, dispatch) {
+    return fetchData(endpoints.getGateway + '/' + id, getConfig(), dispatch)
+}
+
+module.exports.deleteThing = function (projectId, thingId, dispatch) {
+    const config = deleteConfig()
+    return fetchData(`/project/${projectId}/things/${thingId}`, config, dispatch)
 };

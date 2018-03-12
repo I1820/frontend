@@ -37,10 +37,13 @@ import {
     createThing as createThingAPI, editThing as editThingAPI,
     getProjectData as getThingDataAPI, createCodec as createCodecAPI,
     createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
-    createGateway as createGatewayAPI, getGateways,
+    createGateway as createGatewayAPI,
     deleteProject as deleteProjectAPI,
     deleteDeviceProfile as deleteDeviceProfileAPI,
     deleteGateway as deleteGatewaysAPI,
+    getSingleGateway as getSingleGatewayAPI,
+    getGateways,
+    deleteThing as deleteThingAPI,
 } from '../api/index'
 import {activeThing, createThingProfile, getThingProfileList} from "../api";
 
@@ -605,6 +608,36 @@ export function deleteGatewaysAction(profileId, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 window.location = '#/gateways/list'
+                cb(true)
+            } else {
+                cb(response.result)
+            }
+        })
+    }
+}
+
+function setSingleGateway(newState) {
+    return {type: GET_GATEWAYS, newState}
+}
+
+export function getSingleGatewayAction(id) {
+    return (dispatch) => {
+        const promise = getSingleGatewayAPI(id, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch(setSingleGateway(response.result))
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+export function deleteThingAction(projectId, thingId, cb) {
+    return (dispatch) => {
+        const promise = deleteThingAPI(projectId, thingId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
                 cb(true)
             } else {
                 cb(response.result)

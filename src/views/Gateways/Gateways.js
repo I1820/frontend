@@ -148,7 +148,8 @@ class Gateways extends Component {
                 <td>{gateway.name}</td>
                 <td>{gateway.mac}</td>
                 <td>
-                    <Button color="success" size="sm" onClick={this.viewGateway} className="ml-1">نمایش</Button>
+                    <Button onClick={() => this.viewGateway(gateway._id)} className="ml-1" color="success"
+                            size="sm">نمایش</Button>
                     <Button onClick={() => this.deleteModalToggle(gateway._id)} className="ml-1" color="danger"
                             size="sm">حذف</Button>
                 </td>
@@ -167,8 +168,8 @@ class Gateways extends Component {
         window.location = "#/gateways/new"
     }
 
-    viewGateway() {
-        window.location = "#/gateways/view"
+    viewGateway(id) {
+        window.location = `#/gateways/view/${id}`
     }
 
 }

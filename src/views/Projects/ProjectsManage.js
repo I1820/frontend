@@ -20,7 +20,7 @@ import {
     Table, Modal, ModalHeader, ModalBody
 } from 'reactstrap';
 import {connect} from 'react-redux';
-import {activeThingAction, editProjectAction, getProject} from "../../actions/AppActions";
+import {activeThingAction, editProjectAction, getProject, deleteThingAction} from "../../actions/AppActions";
 import Spinner from "../Spinner/Spinner";
 
 import {ToastContainer, toast} from 'react-toastify';
@@ -43,6 +43,10 @@ class ProjectsManage extends Component {
         this.dataModalToggle = this.dataModalToggle.bind(this)
         this.modalAddable = this.modalAddable.bind(this)
         this.uploadExcel = this.uploadExcel.bind(this)
+        this.deleteThingModalToggle = this.deleteThingModalToggle.bind(this)
+        this.deleteThing = this.deleteThing.bind(this)
+        this.manageToastAlerts = this.manageToastAlerts.bind(this)
+        this.loadProject = this.loadProject.bind(this)
 
         this.state = {
             OTAAmodal: false,
@@ -52,7 +56,46 @@ class ProjectsManage extends Component {
             dataModal: false,
             modalAddableItems: [],
             OTAA: {},
-            ABP: {}
+            ABP: {},
+            deleteThingModal: false,
+            deleteThingRowId: 0
+        }
+    }
+
+    deleteThing() {
+        this.props.dispatch(deleteThingAction(
+            this.state.project._id,
+            this.state.deleteThingRowId,
+            this.manageToastAlerts
+        ))
+    }
+
+    manageToastAlerts(status) {
+        if(status === true) {
+            this.deleteThingModalToggle()
+            this.loadProject()
+
+            toast('شی مورد نظر حذف شد', {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                className: css({
+                    background: '#dbf2e3',
+                    color: '#28623c'
+                }),
+                progressClassName: css({
+                    background: '#28623c'
+                })
+            });
+        } else {
+            toast(status, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                className: css({
+                    background: '#fee2e1',
+                    color: '#813838',
+                }),
+                progressClassName: css({
+                    background: '#813838'
+                })
+            });
         }
     }
 
@@ -76,6 +119,13 @@ class ProjectsManage extends Component {
         }
     }
 
+    deleteThingModalToggle(id) {
+        this.setState({
+            deleteThingModal: !this.state.deleteThingModal,
+            deleteThingRowId: id
+        });
+    }
+
     loadProject() {
         const splitedUrl = window.location.href.split('/');
         if (splitedUrl[splitedUrl.length - 1]) {
@@ -88,6 +138,22 @@ class ProjectsManage extends Component {
             <div>
                 <Spinner display={this.props.loading}/>
                 <ToastContainer className="text-right"/>
+
+                <Modal isOpen={this.state.deleteThingModal} toggle={this.deleteThingModalToggle} className="text-right">
+                    <ModalHeader>حذف شی</ModalHeader>
+                    <ModalBody>
+                        <h3>آیا از حذف شی مطمئن هستید ؟</h3>
+                        <br />
+                        <h5>پس از حذف امکان برگشت اطلاعات وجود ندارد.</h5>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" className="ml-1" onClick={() => {
+                            this.deleteThing(this.state.deleteRowId)
+                        }}>حذف</Button>
+                        <Button color="danger" onClick={this.deleteThingModalToggle}>انصراف</Button>
+                    </ModalFooter>
+                </Modal>
+
                 <Modal isOpen={this.state.dataModal} toggle={this.dataModalToggle} className="text-right">
                     <ModalHeader>ارسال داده</ModalHeader>
                     <ModalBody>
@@ -359,7 +425,8 @@ class ProjectsManage extends Component {
                     <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
                     <Button onClick={this.dataModalToggle} className="ml-1" color="primary" size="sm">ارسال
                         داده</Button>
-                    <Button className="ml-1" color="danger" size="sm">حذف</Button>
+                    <Button onClick={() => this.deleteThingModalToggle(thing._id)} className="ml-1" color="danger"
+                        size="sm">حذف</Button>
                 </td>
             </tr>
         )

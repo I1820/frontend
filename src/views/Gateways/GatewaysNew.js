@@ -35,7 +35,7 @@ const MapWithASearchBox = compose(
             this.setState({
                 bounds: null,
                 center: {
-                    lat: 41.9, lng: -87.624
+                    lat: 35.6882326, lng: 51.3841292
                 },
                 markers: [],
                 onMapMounted: ref => {
@@ -80,7 +80,8 @@ const MapWithASearchBox = compose(
 )(props =>
     <GoogleMap
         ref={props.onMapMounted}
-        defaultZoom={15}
+        defaultZoom={12}
+        center={props.center}
         center={props.center}
         onBoundsChanged={props.onBoundsChanged}
     >
@@ -88,7 +89,6 @@ const MapWithASearchBox = compose(
             ref={props.onSearchBoxMounted}
             bounds={props.bounds}
             controlPosition={google.maps.ControlPosition.TOP_LEFT}
-            onPlacesChanged={props.onPlacesChanged}
         >
             <input
                 type="text"
@@ -96,15 +96,16 @@ const MapWithASearchBox = compose(
                 style={{
                     boxSizing: `border-box`,
                     border: `1px solid transparent`,
-                    width: `240px`,
+                    width: `250px`,
                     height: `32px`,
-                    marginTop: `27px`,
+                    marginTop: `10px`,
                     padding: `0 12px`,
                     borderRadius: `3px`,
                     boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
                     fontSize: `14px`,
                     outline: `none`,
                     textOverflow: `ellipses`,
+                    textAlign: `left`,
                 }}
             />
         </SearchBox>
@@ -120,17 +121,9 @@ class GatewaysNew extends Component {
     constructor(props) {
         super(props);
 
-        this.changeForm = this.changeForm.bind(this)
         this.submitForm = this.submitForm.bind(this)
 
-        this.state = {
-            form: {
-                latitude: 0,
-                longitude: 0,
-                altitude: 0,
-                ping:0
-            }
-        }
+        this.state = {}
     }
 
 
@@ -146,21 +139,46 @@ class GatewaysNew extends Component {
                             <FormGroup row>
                                 <Label sm={2}>اسم : </Label>
                                 <Col sm={5}>
-                                    <Input name="name" onChange={this.changeForm} type="text"/>
+                                    <Input type="text"
+                                    onChange={event => this.setState({name: event.target.value})} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}>آدرس : </Label>
+                                <Label sm={2}>آدرس Mac : </Label>
                                 <Col sm={5}>
-                                    <Input name="mac" onChange={this.changeForm} type="text"/>
+                                    <Input type="text"
+                                    onChange={event => this.setState({mac: event.target.value})} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>توضیحات : </Label>
                                 <Col sm={5}>
-                                    <Input name="description" onChange={this.changeForm} type="textarea"/>
+                                    <Input type="textarea"
+                                    onChange={event => this.setState({description: event.target.value})} />
                                 </Col>
                             </FormGroup>
+                            <FormGroup row>
+                                <Label sm={2}>مقدار Lat : </Label>
+                                <Col sm={5}>
+                                    <Input type="text"
+                                    onChange={event => this.setState({latitude: event.target.value})} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label sm={2}>مقدار Long : </Label>
+                                <Col sm={5}>
+                                    <Input type="text"
+                                    onChange={event => this.setState({longitude: event.target.value})} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label sm={2}>مقدار Altitude : </Label>
+                                <Col sm={5}>
+                                    <Input type="text"
+                                    onChange={event => this.setState({altitude: event.target.value})} />
+                                </Col>
+                            </FormGroup>
+
                             <MapWithASearchBox/>
 
                         </Form>
@@ -173,19 +191,16 @@ class GatewaysNew extends Component {
         );
     }
 
-    changeForm(event) {
-        let state = {}
-        state[event.target.name] = event.target.value
-        this.setState({
-            form: {
-                ...this.state.form,
-                ...state
-            }
-        })
-    }
-
     submitForm() {
-        this.props.dispatch(createGatewayAction(this.state.form))
+        let fields = {
+            name: this.state.name,
+            mac: this.state.mac,
+            description: this.state.description,
+            latitude: this.state.latitude,
+            longitude: this.state.longitude,
+            altitude: this.state.altitude,
+        }
+        this.props.dispatch(createGatewayAction(fields))
     }
 
 }
