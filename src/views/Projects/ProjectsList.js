@@ -110,7 +110,7 @@ class ProjectsList extends Component {
             <div>
                 <ToastContainer className="text-right" />
                 <Spinner display={this.props.loading}/>
-                <Modal isOpen={this.state.deleteModal} toggle={this.deleteModal} className="text-right">
+                <Modal isOpen={this.state.deleteModal} toggle={this.deleteModalToggle} className="text-right">
                     <ModalHeader>حذف پروژه</ModalHeader>
                     <ModalBody>
                         <h3>آیا از حذف پروژه مطمئن هستید؟</h3>
@@ -119,6 +119,7 @@ class ProjectsList extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
+                            this.deleteModalToggle()
                             this.deleteProject(this.state.deleteRowId)
                         }}>حذف</Button>
                         <Button color="danger" onClick={this.deleteModalToggle}>انصراف</Button>
@@ -153,6 +154,7 @@ class ProjectsList extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
+                            this.toggle()
                             this.props.dispatch(createProject({
                                 'name': this.state.projectName,
                                 'description': this.state.projectDesc,

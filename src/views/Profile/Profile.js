@@ -21,7 +21,7 @@ import classnames from 'classnames';
 import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from "react-toastify";
-import { editProfile } from "../../actions/AppActions";
+import {editProfile, getProfileAction} from "../../actions/AppActions";
 
 style({
     colorProgressDefault: 'white'
@@ -44,6 +44,11 @@ class Profile extends Component {
                 mobile: this.props.userInfo.mobile,
             }
         }
+    }
+
+
+    componentWillMount() {
+        this.props.dispatch(getProfileAction());
     }
 
     editUserProfile() {
@@ -167,6 +172,7 @@ class Profile extends Component {
 function mapStateToProps(state) {
     return {
         userInfo: state.userReducer,
+        loading:state.homeReducer.currentlySending
     };
 }
 

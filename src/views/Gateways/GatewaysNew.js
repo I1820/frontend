@@ -16,10 +16,14 @@ import {
 import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
 import {createGatewayAction} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
+import Spinner from "../Spinner/Spinner";
 
 const _ = require("lodash");
 const {compose, withProps, lifecycle} = require("recompose");
 const {SearchBox} = require("react-google-maps/lib/components/places/SearchBox");
+import { ToastContainer, toast } from 'react-toastify';
+import { css } from 'glamor';
+
 
 const MapWithASearchBox = compose(
     withProps({
@@ -128,6 +132,7 @@ class GatewaysNew extends Component {
     constructor(props) {
         super(props);
 
+        this.changeForm = this.changeForm.bind(this)
         this.submitForm = this.submitForm.bind(this)
 
         this.state = {
@@ -137,9 +142,13 @@ class GatewaysNew extends Component {
     }
 
 
+
+
     render() {
         return (
             <div>
+                <Spinner display={this.props.loading}/>
+                <ToastContainer className="text-right" />
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">افزودن Gateway</CardTitle>
@@ -201,6 +210,17 @@ class GatewaysNew extends Component {
         );
     }
 
+    changeForm(event) {
+        let state = {}
+        state[event.target.name] = event.target.value
+        this.setState({
+            form: {
+                ...this.state.form,
+                ...state
+            }
+        })
+    }
+
     submitForm() {
         let fields = {
             name: this.state.name,
@@ -210,7 +230,21 @@ class GatewaysNew extends Component {
             longitude: this.state.longitude,
             altitude: this.state.altitude,
         }
-        this.props.dispatch(createGatewayAction(fields))
+        this.props.dispatch(createGatewayAction(fields),this.callback)
+    }
+
+    callback(status,message){
+        if(!status)
+        toast(message, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            className: css({
+                background: '#fee2e1',
+                color: '#813838',
+            }),
+            progressClassName: css({
+                background: '#813838'
+            })
+        });
     }
 
 }

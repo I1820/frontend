@@ -45,7 +45,7 @@ import {
     getGateways,
     deleteThing as deleteThingAPI,
 } from '../api/index'
-import {activeThing, createThingProfile, getThingProfileList} from "../api";
+import {activeThing, createThingProfile, getThingProfileList, viewProfile} from "../api";
 
 /**
  * Logs an user in
@@ -224,21 +224,6 @@ export function register(data, cb) {
             } else {
                 cb(response.result)
             }
-        })
-    }
-}
-
-export function editProfile(data, cb) {
-    return (dispatch) => {
-        const promise = editProfileAPI(JSON.parse(JSON.stringify(data)), dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                cb(true)
-            } else {
-                cb(false)
-            }
-        }).catch((err) => {
-            console.log(err)
         })
     }
 }
@@ -439,7 +424,7 @@ export function getThingProfileListAction() {
     }
 }
 
-export function createThingProfileAction(data,cb) {
+export function createThingProfileAction(data, cb) {
     return (dispatch) => {
         const promise = createThingProfile(data, dispatch);
         promise.then((response) => {
@@ -448,7 +433,7 @@ export function createThingProfileAction(data,cb) {
                 dispatch({type: FETCH_THING_PROFILE, newState: response.result})
                 forwardTo('device-profile/list')
             } else {
-                cb(false,response.result)
+                cb(false, response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         })
@@ -474,7 +459,7 @@ export function createThingAction(data, project, cb) {
     }
 }
 
-export function activeThingAction(data, projectId, thingId,cb) {
+export function activeThingAction(data, projectId, thingId, cb) {
     return (dispatch) => {
         const promise = activeThing(data, projectId, thingId, dispatch)
         promise.then((response) => {
@@ -483,22 +468,21 @@ export function activeThingAction(data, projectId, thingId,cb) {
                 cb(true)
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-                cb(false,response.result)
+                cb(false, response.result)
             }
         })
     }
 }
 
 
-export function uploadExcelAction(file,projectId, cb) {
+export function uploadExcelAction(file, projectId, cb) {
     return (dispatch) => {
 
-        const promise = uploadExcelAPI(file,projectId, dispatch)
+        const promise = uploadExcelAPI(file, projectId, dispatch)
         promise.then((response) => {
-            console.log(response)
             if (response.status === 200) {
                 // window.location.reload()
-                cb(response.result.res)
+                cb(response.data.result.res)
             } else {
                 // cb(false,response.result)
                 // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -544,7 +528,6 @@ export function editProjectAction(id, state) {
 }
 
 
-
 /*  gateway actions */
 
 export function getGatewaysAction() {
@@ -560,14 +543,16 @@ export function getGatewaysAction() {
     }
 }
 
-export function createGatewayAction(data) {
+export function createGatewayAction(data,cb) {
     return (dispatch) => {
         const promise = createGatewayAPI(data, dispatch)
         promise.then((response) => {
             console.log(response);
             if (response.status === 'OK') {
                 window.location = '#/gateways/list'
+                cb(true)
             } else {
+                cb(false,response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         })
@@ -612,6 +597,38 @@ export function deleteGatewaysAction(profileId, cb) {
             } else {
                 cb(response.result)
             }
+        })
+    }
+}
+
+//user action
+
+export function getProfileAction() {
+    return (dispatch) => {
+        const promise = viewProfile(dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                dispatch(updateUser(response.result))
+            } else {
+            }
+        })
+    }
+}
+
+export function editProfile(data, cb) {
+    return (dispatch) => {
+        const promise = editProfileAPI(data, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                cb(true)
+                dispatch(updateUser(response.result))
+            } else {
+                cb(false)
+            }
+        }).catch((err) => {
+            console.log(err)
         })
     }
 }
