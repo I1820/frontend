@@ -107,7 +107,7 @@ class Gateways extends Component {
                             <tr>
                                 <th>#</th>
                                 <th>اسم</th>
-                                <th>آدرس</th>
+                                <th>آدرس Mac</th>
                                 <th>امکانات</th>
                             </tr>
                             </thead>
@@ -137,7 +137,7 @@ class Gateways extends Component {
             <tr id={key}>
                 <th>{key + 1}</th>
                 <td>{gateway.name}</td>
-                <td>{gateway.mac}</td>
+                <td className="english">{gateway.mac}</td>
                 <td>
                     <Button onClick={() => this.viewGateway(gateway._id)} className="ml-1" color="success"
                             size="sm">نمایش</Button>
