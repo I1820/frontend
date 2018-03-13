@@ -47,6 +47,7 @@ class ProjectsManage extends Component {
         this.deleteThing = this.deleteThing.bind(this)
         this.manageToastAlerts = this.manageToastAlerts.bind(this)
         this.loadProject = this.loadProject.bind(this)
+        this.downLinksAdd = this.downLinksAdd.bind(this)
 
         this.state = {
             OTAAmodal: false,
@@ -60,6 +61,10 @@ class ProjectsManage extends Component {
             deleteThingModal: false,
             deleteThingRowId: 0
         }
+    }
+
+    downLinksAdd() {
+        alert()
     }
 
     deleteThing() {
@@ -161,7 +166,7 @@ class ProjectsManage extends Component {
                         <Button color="success" onClick={this.modalAddable}>+ اضافه</Button>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" className="ml-1" onClick={this.dataModalToggle}>ثبت</Button>
+                        <Button color="primary" className="ml-1" onClick={this.downLinksAdd}>ثبت</Button>
                         <Button color="danger" onClick={this.dataModalToggle}>انصراف</Button>
                     </ModalFooter>
                 </Modal>

@@ -165,7 +165,7 @@ class ProjectsList extends Component {
 
                 <Card className="text-justify">
                     <CardHeader>
-                        <CardTitle className="mb-0 font-weight-bold h6">لیست پروژه ها</CardTitle>
+                        <CardTitle className="mb-0 font-weight-bold h6">Projects List</CardTitle>
                     </CardHeader>
                     <CardBody>
                         <Table hover responsive className="table-outline">

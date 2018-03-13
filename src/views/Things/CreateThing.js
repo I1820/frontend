@@ -70,19 +70,19 @@ class CreateThing extends Component {
                     <CardBody>
                         <Form>
                             <FormGroup row>
-                                <Label sm={2}>نام شی : </Label>
+                                <Label sm={3}>نام شی : </Label>
                                 <Col sm={5}>
                                     <Input name="name" onChange={this.changeForm} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}>توضیحات شی : </Label>
+                                <Label sm={3}>توضیحات شی : </Label>
                                 <Col sm={5}>
                                     <Input name="description" onChange={this.changeForm} type="textarea"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}> نوع اتصال :</Label>
+                                <Label sm={3}> نوع اتصال :</Label>
                                 <Col md="5">
                                     <Input type="select" name="type" onChange={this.changeForm} id="select">
                                         <option value="0"> انتخاب کنید</option>
@@ -92,19 +92,19 @@ class CreateThing extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}> پریود ارسال داده : </Label>
+                                <Label sm={3}> پریود ارسال داده : </Label>
                                 <Col sm={5}>
-                                    <Input name="period" onChange={this.changeForm} type="text"/>
+                                    <Input name="period" dir="ltr" onChange={this.changeForm} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}> devEUI : </Label>
+                                <Label sm={3}> devEUI : </Label>
                                 <Col sm={5}>
-                                    <Input name="devEUI" onChange={this.changeForm} type="text"/>
+                                    <Input name="devEUI" dir="ltr" onChange={this.changeForm} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2} htmlFor="select">پروفایل شی :</Label>
+                                <Label sm={3} htmlFor="select">پروفایل شی :</Label>
                                 <Col md="5">
                                     <Input type="select" name="thing_profile_slug" onChange={this.changeForm}
                                            id="select">

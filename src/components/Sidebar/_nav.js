@@ -14,7 +14,7 @@ export default {
     },
 
     {
-        name: 'پروژه ها',
+        name: 'Projects',
         url: '/projects/list',
         icon: 'icon-layers',
     },

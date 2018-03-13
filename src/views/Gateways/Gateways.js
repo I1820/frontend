@@ -108,7 +108,7 @@ class Gateways extends Component {
                 </Modal>
                 <Card className="text-justify">
                     <CardHeader>
-                        <CardTitle className="mb-0 font-weight-bold h6">لیست Gateways</CardTitle>
+                        <CardTitle className="mb-0 font-weight-bold h6">Gateways List</CardTitle>
                     </CardHeader>
                     <CardBody>
                         <Table hover responsive className="table-outline">
