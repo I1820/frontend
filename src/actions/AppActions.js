@@ -44,6 +44,7 @@ import {
     getSingleGateway as getSingleGatewayAPI,
     getGateways,
     deleteThing as deleteThingAPI,
+    newDownlink as newDownlinkAPI,
 } from '../api/index'
 import {activeThing, createThingProfile, getThingProfileList, viewProfile} from "../api";
 
@@ -658,6 +659,19 @@ export function deleteThingAction(projectId, thingId, cb) {
                 cb(true)
             } else {
                 cb(response.result)
+            }
+        })
+    }
+}
+
+export function newDownlinkAction(projectId, thingId, data, cb) {
+    return (dispatch) => {
+        const promise = newDownlinkAPI(projectId, thingId, data, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb(true)
+            } else {
+                cb(false)
             }
         })
     }

@@ -20,7 +20,13 @@ import {
     Table, Modal, ModalHeader, ModalBody
 } from 'reactstrap';
 import {connect} from 'react-redux';
-import {activeThingAction, editProjectAction, getProject, deleteThingAction} from "../../actions/AppActions";
+import {
+    activeThingAction,
+    editProjectAction,
+    getProject,
+    deleteThingAction,
+    newDownlinkAction,
+} from "../../actions/AppActions";
 import Spinner from "../Spinner/Spinner";
 
 import {ToastContainer, toast} from 'react-toastify';
@@ -59,7 +65,7 @@ class ProjectsManage extends Component {
             OTAA: {},
             ABP: {},
             deleteThingModal: false,
-            deleteThingRowId: 0
+            deleteThingRowId: 0,
         }
     }
 
