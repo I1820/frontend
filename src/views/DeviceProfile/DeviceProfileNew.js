@@ -82,179 +82,178 @@ class DeviceProfileNew extends Component {
                         <Form>
 
                             <FormGroup row>
-                                <Label sm={2}>اسم :‌ </Label>
                                 <Col sm={4}>
                                     <Input onChange={this.setForm} name={"name"} type="text"/>
                                 </Col>
+                                <Label sm={3}>Name </Label>
                             </FormGroup>
 
                             <FormGroup row>
-                                <Label sm={2}>supportsJoin :‌ </Label>
                                 <Col sm={4}>
-                                    <Input type="select" name="supportsJoin" id="select" onChange={this.setForm}>
-                                        <option value="">نوع شی را انتخاب کنید</option>
+                                    <Input type="select" dir="ltr" name="supportsJoin" id="select" onChange={this.setForm}>
                                         <option value="1">OTAA</option>
                                         <option value="0">ABP</option>
                                     </Input>
                                 </Col>
+                                <Label sm={3}>supportsJoin‌ </Label>
                             </FormGroup>
 
                             <Collapse isOpen={this.state.collapse} className="mt-3">
 
                                 <FormGroup row>
-                                    <Label sm={2}>classBTimeout :‌ </Label>
                                     <Col sm={4}>
-                                        <Input defaultValue={this.state.form.classBTimeout} name={"classBTimeout"}
+                                        <Input dir="ltr" defaultValue={this.state.form.classBTimeout} name={"classBTimeout"}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>classBTimeout‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>classCTimeout :‌ </Label>
                                     <Col sm={4}>
-                                        <Input defaultValue={this.state.form.classCTimeout} name={"classCTimeout"}
+                                        <Input dir="ltr" defaultValue={this.state.form.classCTimeout} name={"classCTimeout"}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>classCTimeout </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>factoryPresetFreqs :‌ </Label>
                                     <Col sm={4}>
-                                        <Input defaultValue={this.state.form['factoryPresetFreqs[]']}
+                                        <Input dir="ltr" defaultValue={this.state.form['factoryPresetFreqs[]']}
                                                name={"factoryPresetFreqs"}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>factoryPresetFreqs‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>macVersion :‌ </Label>
                                     <Col sm={4}>
-                                        <Input defaultValue={this.state.form.macVersion} name={"macVersion"}
+                                        <Input dir="ltr" defaultValue={this.state.form.macVersion} name={"macVersion"}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>macVersion‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>maxDutyCycle :‌ </Label>
                                     <Col sm={4}>
-                                        <Input defaultValue={this.state.form.maxDutyCycle} name={"maxDutyCycle"}
+                                        <Input dir="ltr" defaultValue={this.state.form.maxDutyCycle} name={"maxDutyCycle"}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>maxDutyCycle </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>maxEIRP :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"maxEIRP"} defaultValue={this.state.form.maxEIRP}
+                                        <Input dir="ltr" name={"maxEIRP"} defaultValue={this.state.form.maxEIRP}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>maxEIRP </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>pingSlotDR :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"pingSlotDR"} defaultValue={this.state.form.pingSlotDR}
+                                        <Input dir="ltr" name={"pingSlotDR"} defaultValue={this.state.form.pingSlotDR}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>pingSlotDR‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>pingSlotFreq :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"pingSlotFreq"} defaultValue={this.state.form.pingSlotFreq}
+                                        <Input dir="ltr" name={"pingSlotFreq"} defaultValue={this.state.form.pingSlotFreq}
                                                type="text"/>
                                     </Col>
+                                    <Label sm={3}>pingSlotFreq‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>pingSlotPeriod :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"pingSlotPeriod"} defaultValue={this.state.form.pingSlotPeriod}
+                                        <Input dir="ltr" name={"pingSlotPeriod"} defaultValue={this.state.form.pingSlotPeriod}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>pingSlotPeriod‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>regParamsRevision :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"regParamsRevision"}
+                                        <Input dir="ltr" name={"regParamsRevision"}
                                                defaultValue={this.state.form.regParamsRevision}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>regParamsRevision‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>rfRegion :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"rfRegion"} defaultValue={this.state.form.rfRegion}
+                                        <Input dir="ltr" name={"rfRegion"} defaultValue={this.state.form.rfRegion}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>rfRegion‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>rxDROffset1 :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"rxDROffset1"} defaultValue={this.state.form.rxDROffset1}
+                                        <Input dir="ltr" name={"rxDROffset1"} defaultValue={this.state.form.rxDROffset1}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>rxDROffset1‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>rxDataRate2 :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"rxDataRate2"} defaultValue={this.state.form.rxDataRate2}
+                                        <Input dir="ltr" name={"rxDataRate2"} defaultValue={this.state.form.rxDataRate2}
                                                type="text"/>
                                     </Col>
+                                    <Label sm={3}>rxDataRate2‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>rxDelay1 :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"rxDelay1"} defaultValue={this.state.form.rxDelay1}
+                                        <Input dir="ltr" name={"rxDelay1"} defaultValue={this.state.form.rxDelay1}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>rxDelay1‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>rxFreq2 :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"rxFreq2"} defaultValue={this.state.form.rxFreq2}
+                                        <Input dir="ltr" name={"rxFreq2"} defaultValue={this.state.form.rxFreq2}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>rxFreq2‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>supports32bitFCnt :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"supports32bitFCnt"}
+                                        <Input dir="ltr" name={"supports32bitFCnt"}
                                                defaultValue={this.state.form.supports32bitFCnt} onChange={this.setForm}
                                                type="text"/>
                                     </Col>
+                                    <Label sm={3}>supports32bitFCnt </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>supportsClassB :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"supportsClassB"} defaultValue={this.state.form.supportsClassB}
+                                        <Input dir="ltr" name={"supportsClassB"} defaultValue={this.state.form.supportsClassB}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>supportsClassB‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>supportsClassC :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"supportsClassC"} defaultValue={this.state.form.supportsClassC}
+                                        <Input dir="ltr" name={"supportsClassC"} defaultValue={this.state.form.supportsClassC}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
+                                    <Label sm={3}>supportsClassC </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
-                                    <Label sm={2}>supports32bitFCnt :‌ </Label>
                                     <Col sm={4}>
-                                        <Input name={"supports32bitFCnt"}
+                                        <Input dir="ltr" name={"supports32bitFCnt"}
                                                defaultValue={this.state.form.supports32bitFCnt} onChange={this.setForm}
                                                type="text"/>
                                     </Col>
+                                    <Label sm={3}>supports32bitFCnt‌ </Label>
                                 </FormGroup>
 
                             </Collapse>
