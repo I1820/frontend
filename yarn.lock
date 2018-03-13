@@ -2720,6 +2720,10 @@ he@1.1.x:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
+highcharts@^6.0.4:
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-6.0.7.tgz#fd5c4f24fdc61a04ae155a5b70830a96c8f70919"
+
 history@4.7.2, history@^4.7.2:
   version "4.7.2"
   resolved "https://registry.yarnpkg.com/history/-/history-4.7.2.tgz#22b5c7f31633c5b8021c7f4a8a954ac139ee8d5b"
@@ -3256,6 +3260,10 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
+jalaali-js@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/jalaali-js/-/jalaali-js-1.1.0.tgz#f0e942049273d11f7298a992356fc36ce2784863"
+
 js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.3.tgz#2e545ec2b0f2957f41356510205214e98fad6582"
@@ -3732,7 +3740,15 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
-moment@~2.18.0:
+moment-jalaali@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/moment-jalaali/-/moment-jalaali-0.7.2.tgz#b26505ba6c5af4785a7fee132a193405e60f21ba"
+  dependencies:
+    jalaali-js "^1.0.0"
+    moment "^2.18.1"
+    rimraf "^2.6.1"
+
+moment@^2.18.1, moment@~2.18.0:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 
@@ -4740,6 +4756,12 @@ react-google-maps@^9.4.5:
     recompose "^0.26.0"
     scriptjs "^2.5.8"
     warning "^3.0.0"
+
+react-highcharts@^16.0.2:
+  version "16.0.2"
+  resolved "https://registry.yarnpkg.com/react-highcharts/-/react-highcharts-16.0.2.tgz#7bdae039f9abb3f753ba88b6578d52630c18537a"
+  dependencies:
+    highcharts "^6.0.4"
 
 react-modal-dialog@^4.0.7:
   version "4.0.7"
