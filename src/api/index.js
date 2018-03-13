@@ -262,3 +262,9 @@ module.exports.deleteThing = function (projectId, thingId, dispatch) {
     const config = deleteConfig()
     return fetchData(`/project/${projectId}/things/${thingId}`, config, dispatch)
 };
+
+module.exports.newDownlink = function (projectId, thingId, data, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`project/${projectId}/things/${thingId}/send`, config, dispatch)
+}

@@ -102,7 +102,7 @@ class Profile extends Component {
                     <CardBody>
                         <Form>
                             <FormGroup row>
-                                <Label sm={2}>نام و نام خانوادگی :‌ </Label>
+                                <Label sm={3}>نام و نام خانوادگی :‌ </Label>
                                 <Col sm={5}>
                                     <Input type="text" onChange={(event) => {
                                         this.setState({
@@ -116,9 +116,9 @@ class Profile extends Component {
                             </FormGroup>
 
                             <FormGroup row>
-                                <Label sm={2}>تلفن ثابت : </Label>
+                                <Label sm={3}>تلفن ثابت : </Label>
                                 <Col sm={5}>
-                                    <Input type="text" onChange={(event) => {
+                                    <Input type="text" dir="ltr" onChange={(event) => {
                                         this.setState({
                                             fetchUserInfo: {
                                                 ...this.state.phone,
@@ -130,9 +130,9 @@ class Profile extends Component {
                             </FormGroup>
 
                             <FormGroup row>
-                                <Label sm={2}>تلفن همراه : </Label>
+                                <Label sm={3}>تلفن همراه : </Label>
                                 <Col sm={5}>
-                                    <Input type="text" onChange={(event) => {
+                                    <Input type="text" dir="ltr" onChange={(event) => {
                                         this.setState({
                                             fetchUserInfo: {
                                                 ...this.state.mobile,
@@ -144,7 +144,7 @@ class Profile extends Component {
                             </FormGroup>
 
                             <FormGroup row>
-                                <Label sm={2}>نشانی :‌ </Label>
+                                <Label sm={3}>نشانی :‌ </Label>
                                 <Col sm={5}>
                                     <Input type="textarea" rows="4" onChange={(event) => {
                                         this.setState({
