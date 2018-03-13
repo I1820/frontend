@@ -20,9 +20,11 @@ import {
     Input,
     Table
 } from 'reactstrap';
-
-
 import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
+import connect from "react-redux/es/connect/connect";
+import { getSingleGatewayAction } from "../../actions/AppActions";
+
+
 const _ = require("lodash");
 const { compose, withProps, lifecycle } = require("recompose");
 const {SearchBox} = require("react-google-maps/lib/components/places/SearchBox");
@@ -42,7 +44,7 @@ const MapWithASearchBox = compose(
             this.setState({
                 bounds: null,
                 center: {
-                    lat: 41.9, lng: -87.624
+                    lat: 35.6882326, lng: 51.3841292
                 },
                 markers: [],
                 onMapMounted: ref => {
@@ -87,7 +89,7 @@ const MapWithASearchBox = compose(
 )(props =>
     <GoogleMap
         ref={props.onMapMounted}
-        defaultZoom={15}
+        defaultZoom={12}
         center={props.center}
         onBoundsChanged={props.onBoundsChanged}
     >
@@ -103,15 +105,16 @@ const MapWithASearchBox = compose(
                 style={{
                     boxSizing: `border-box`,
                     border: `1px solid transparent`,
-                    width: `240px`,
+                    width: `250px`,
                     height: `32px`,
-                    marginTop: `27px`,
+                    marginTop: `10px`,
                     padding: `0 12px`,
                     borderRadius: `3px`,
                     boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
                     fontSize: `14px`,
                     outline: `none`,
                     textOverflow: `ellipses`,
+                    textAlign: `left`,
                 }}
             />
         </SearchBox>
@@ -126,8 +129,34 @@ class GatewaysView extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            gateway: {},
+        }
     }
 
+    componentWillReceiveProps(props) {
+        const splitedUrl = window.location.href.split('/');
+        const me = this;
+        if (splitedUrl[splitedUrl.length - 1]) {
+            props.gateway.forEach((project) => {
+
+                if (gateway._id === splitedUrl[splitedUrl.length - 1]) {
+                    console.log('findddd', gateway)
+                    this.setState({
+                        gateway
+                    })
+                }
+            })
+        }
+    }
+
+    componentWillMount() {
+        const splitedUrl = window.location.href.split('/');
+        if (splitedUrl[splitedUrl.length - 1]) {
+            this.props.dispatch(getSingleGatewayAction(splitedUrl[splitedUrl.length - 1]))
+        }
+    }
 
     render() {
         return (
@@ -162,5 +191,10 @@ class GatewaysView extends Component {
 
 }
 
+function mapStateToProps(state) {
+    return ({
+        gateWay: state.gatewayReducer
+    })
+}
 
-export default GatewaysView;
+export default connect(mapStateToProps)(GatewaysView);

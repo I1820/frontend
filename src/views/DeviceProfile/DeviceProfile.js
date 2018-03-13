@@ -42,6 +42,7 @@ class DeviceProfile extends Component {
         this.deleteModalToggle = this.deleteModalToggle.bind(this)
         this.manageToastAlerts = this.manageToastAlerts.bind(this)
         this.deleteProfile = this.deleteProfile.bind(this)
+        this.loadProfiles = this.loadProfiles.bind(this)
 
         this.state = {
             modal: false,
@@ -59,7 +60,8 @@ class DeviceProfile extends Component {
 
     manageToastAlerts(status) {
         this.deleteModalToggle()
-        
+        this.loadProfiles()
+
         if(status === true) {
             toast('پروفایل مورد نظر حذف گردید', {
                 position: toast.POSITION.BOTTOM_RIGHT,
@@ -86,6 +88,10 @@ class DeviceProfile extends Component {
     }
 
     componentWillMount() {
+        this.loadProfiles()
+    }
+
+    loadProfiles() {
         this.props.dispatch(getThingProfileListAction())
     }
 

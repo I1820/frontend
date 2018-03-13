@@ -16,10 +16,14 @@ import {
 import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
 import {createGatewayAction} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
+import Spinner from "../Spinner/Spinner";
 
 const _ = require("lodash");
 const {compose, withProps, lifecycle} = require("recompose");
 const {SearchBox} = require("react-google-maps/lib/components/places/SearchBox");
+import { ToastContainer, toast } from 'react-toastify';
+import { css } from 'glamor';
+
 
 const MapWithASearchBox = compose(
     withProps({
@@ -35,7 +39,7 @@ const MapWithASearchBox = compose(
             this.setState({
                 bounds: null,
                 center: {
-                    lat: 41.9, lng: -87.624
+                    lat: 35.6882326, lng: 51.3841292
                 },
                 markers: [],
                 onMapMounted: ref => {
@@ -45,6 +49,12 @@ const MapWithASearchBox = compose(
                     this.setState({
                         bounds: refs.map.getBounds(),
                         center: refs.map.getCenter(),
+                    })
+                },
+                onClick: data => {
+                    this.setState({
+                        latitude: data.latLng.lat(),
+                        longitude: data.latLng.lng(),
                     })
                 },
                 onSearchBoxMounted: ref => {
@@ -80,15 +90,16 @@ const MapWithASearchBox = compose(
 )(props =>
     <GoogleMap
         ref={props.onMapMounted}
-        defaultZoom={15}
+        defaultZoom={12}
+        center={props.center}
         center={props.center}
         onBoundsChanged={props.onBoundsChanged}
+        onClick={props.onClick}
     >
         <SearchBox
             ref={props.onSearchBoxMounted}
             bounds={props.bounds}
             controlPosition={google.maps.ControlPosition.TOP_LEFT}
-            onPlacesChanged={props.onPlacesChanged}
         >
             <input
                 type="text"
@@ -96,15 +107,16 @@ const MapWithASearchBox = compose(
                 style={{
                     boxSizing: `border-box`,
                     border: `1px solid transparent`,
-                    width: `240px`,
+                    width: `250px`,
                     height: `32px`,
-                    marginTop: `27px`,
+                    marginTop: `10px`,
                     padding: `0 12px`,
                     borderRadius: `3px`,
                     boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
                     fontSize: `14px`,
                     outline: `none`,
                     textOverflow: `ellipses`,
+                    textAlign: `left`,
                 }}
             />
         </SearchBox>
@@ -124,19 +136,19 @@ class GatewaysNew extends Component {
         this.submitForm = this.submitForm.bind(this)
 
         this.state = {
-            form: {
-                latitude: 0,
-                longitude: 0,
-                altitude: 0,
-                ping:0
-            }
+            latitude: 0,
+            longitude: 0,
         }
     }
+
+
 
 
     render() {
         return (
             <div>
+                <Spinner display={this.props.loading}/>
+                <ToastContainer className="text-right" />
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">افزودن Gateway</CardTitle>
@@ -146,21 +158,46 @@ class GatewaysNew extends Component {
                             <FormGroup row>
                                 <Label sm={2}>اسم : </Label>
                                 <Col sm={5}>
-                                    <Input name="name" onChange={this.changeForm} type="text"/>
+                                    <Input type="text"
+                                    onChange={event => this.setState({name: event.target.value})} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}>آدرس : </Label>
+                                <Label sm={2}>آدرس Mac : </Label>
                                 <Col sm={5}>
-                                    <Input name="mac" onChange={this.changeForm} type="text"/>
+                                    <Input type="text"
+                                    onChange={event => this.setState({mac: event.target.value})} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>توضیحات : </Label>
                                 <Col sm={5}>
-                                    <Input name="description" onChange={this.changeForm} type="textarea"/>
+                                    <Input type="textarea"
+                                    onChange={event => this.setState({description: event.target.value})} />
                                 </Col>
                             </FormGroup>
+                            <FormGroup row>
+                                <Label sm={2}>مقدار Lat : </Label>
+                                <Col sm={5}>
+                                    <Input type="text" value={this.state.latitude}
+                                    onChange={event => this.setState({latitude: event.target.value})} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label sm={2}>مقدار Long : </Label>
+                                <Col sm={5}>
+                                    <Input type="text" value={this.state.longitude}
+                                    onChange={event => this.setState({longitude: event.target.value})} />
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label sm={2}>مقدار Altitude : </Label>
+                                <Col sm={5}>
+                                    <Input type="text"
+                                    onChange={event => this.setState({altitude: event.target.value})} />
+                                </Col>
+                            </FormGroup>
+
                             <MapWithASearchBox/>
 
                         </Form>
@@ -185,7 +222,29 @@ class GatewaysNew extends Component {
     }
 
     submitForm() {
-        this.props.dispatch(createGatewayAction(this.state.form))
+        let fields = {
+            name: this.state.name,
+            mac: this.state.mac,
+            description: this.state.description,
+            latitude: this.state.latitude,
+            longitude: this.state.longitude,
+            altitude: this.state.altitude,
+        }
+        this.props.dispatch(createGatewayAction(fields),this.callback)
+    }
+
+    callback(status,message){
+        if(!status)
+        toast(message, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            className: css({
+                background: '#fee2e1',
+                color: '#813838',
+            }),
+            progressClassName: css({
+                background: '#813838'
+            })
+        });
     }
 
 }
