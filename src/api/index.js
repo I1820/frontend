@@ -25,7 +25,6 @@ const endpoints = {
     getProject: '/project',
     editProject: '/project',
 
-    getProject: '/gateway',
 
     editProfile: '/user/update',
 
@@ -73,7 +72,7 @@ function fetchData(endpoint = '/404', config = {}, dispatch) {
                 dispatch(sendingRequest(false))
                 const {status, message, code} = controler(json)
                 console.log(code)
-                if (code === 703 || code === 704 ) {
+                if (code === 703 || code === 704) {
                     dispatch(logout())
                 }
                 if (!status) {
@@ -120,7 +119,7 @@ module.exports.logout = function (dispatch) {
 }
 
 module.exports.viewProfile = function (dispatch) {
-    return fetchData('/user', getConfig(),dispatch)
+    return fetchData('/user', getConfig(), dispatch)
 }
 
 module.exports.createProject = function (data, dispatch) {
@@ -184,13 +183,12 @@ module.exports.createThing = function (data, projectId, dispatch) {
 //     return fetchData('/thing/' + thingId +'/data?offset='+offset+'&count='+limit, projectControler.find, getConfig(), dispatch)
 // }
 //
-// module.exports.createCodec = function (data,id, dispatch) {
-//     const config = postConfig()
-//     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(`/thing/${id}/codec`, projectControler.create, config, dispatch)
-// }
-//
-//
+
+module.exports.createCodec = function (data, thingId, projectId, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/project/${projectId}/things/${thingId}/codec`, config, dispatch)
+}
 module.exports.createGateway = function (data, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
@@ -266,5 +264,15 @@ module.exports.deleteThing = function (projectId, thingId, dispatch) {
 module.exports.newDownlink = function (projectId, thingId, data, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
-    return fetchData(`project/${projectId}/things/${thingId}/send`, config, dispatch)
+    return fetchData(`/project/${projectId}/things/${thingId}/send`, config, dispatch)
+}
+
+module.exports.createTemplate = function (projectId,data, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/project/${projectId}/codec`, config, dispatch)
+}
+
+module.exports.getCodecTemplateList = function (projectId, dispatch) {
+    return fetchData(`/project/${projectId}/codec`, getConfig(), dispatch)
 }

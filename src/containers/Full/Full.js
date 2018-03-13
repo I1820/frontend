@@ -28,7 +28,7 @@ import ThingsExcel from '../../views/Things/ThingsExcel.js';
 import ThingsList from '../../views/Things/ThingsList.js'
 import CreateThing from '../../views/Things/CreateThing.js'
 
-import addScenario from '../../views/Scenario/addScenario'
+import addScenario from '../../views/Editros/addScenario'
 
 import Colors from '../../views/Theme/Colors/';
 import Typography from '../../views/Theme/Typography/';
@@ -70,6 +70,8 @@ import SimpleLineIcons from '../../views/Icons/SimpleLineIcons/';
 import Alerts from '../../views/Notifications/Alerts/';
 import Badges from '../../views/Notifications/Badges/';
 import Modals from '../../views/Notifications/Modals/';
+import addCodec from "../../views/Editros/addCodec";
+import addTemplate from "../../views/Editros/addTemplate";
 
 class Full extends Component {
   render() {
@@ -90,7 +92,11 @@ class Full extends Component {
                 <Route path="/gateways/view" name="GatewaysView" component={GatewaysView}/>
                 <Route path="/device-profile/list" name="DeviceProfile" component={DeviceProfile}/>
                 <Route path="/device-profile/new" name="DeviceProfileNew" component={DeviceProfileNew}/>
+
                 <Route path="/scenario" name="addScenario" component={addScenario}/>
+                <Route path="/codec" name="addScenario" component={addCodec}/>
+                <Route path="/template" name="addScenario" component={addTemplate}/>
+
                 <Route path="/projects/list" name="ProjectsList" component={ProjectsList}/>
                 <Route path="/projects/manage" name="ProjectsManage" component={ProjectsManage}/>
                 <Route path="/projects/view" name="ProjectsView" component={ProjectsView}/>
