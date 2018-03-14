@@ -71,7 +71,7 @@ class ProjectsManage extends Component {
     }
 
     downLinksAdd() {
-        alert()
+        // alert()
     }
 
     deleteThing() {
