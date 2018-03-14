@@ -579,12 +579,8 @@ export function createGatewayAction(data, cb) {
             if (response.status === 'OK') {
                 cb(true)
             } else {
-<<<<<<< HEAD
-                cb(false,response.result)
-=======
                 cb(false, response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
->>>>>>> 8f65d8833f39874eb5e41f15cc199e466c732126
             }
         })
     }
