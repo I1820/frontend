@@ -238,7 +238,6 @@ class ProjectsList extends Component {
 
     onCreateProject(status) {
         if (status) {
-            this.toggle()
             this.loadProjects()
         } else {
             //TODO Alert
