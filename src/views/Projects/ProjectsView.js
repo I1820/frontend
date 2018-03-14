@@ -22,7 +22,7 @@ import _ from 'underscore'
 
 const ReactHighcharts = require('react-highcharts');
 import moment from 'moment-jalaali'
-
+import JSONPretty from 'react-json-pretty';
 const brandPrimary = '#20a8d8';
 const brandSuccess = '#4dbd74';
 const brandInfo = '#63c2de';
@@ -471,6 +471,15 @@ class ProjectsView extends Component {
             <div>
                 <Card className="text-justify">
                     <CardHeader>
+                        <CardTitle className="mb-0 font-weight-bold h6">نمودار داده ها</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                        {/*<Line data={mainChart} options={mainChartOpts} height={300}/>*/}
+                        <ReactHighcharts config={this.state.config}></ReactHighcharts>
+                    </CardBody>
+                </Card>
+                <Card className="text-justify">
+                    <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">داده های جمع آوری شده</CardTitle>
                     </CardHeader>
                     <CardBody>
@@ -486,41 +495,21 @@ class ProjectsView extends Component {
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th>1</th>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                            </tr>
-                            <tr>
-                                <th>2</th>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                            </tr>
-                            <tr>
-                                <th>3</th>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                            </tr>
+                            {this.state.data.map((data,key)=>{
+                                return(
+                                    <tr>
+                                        <th>{key+1}</th>
+                                        <td>{data.timestamp.$date}</td>
+                                        <td style={{textAlign:'left'}}><JSONPretty id="json-pretty" json={data.data}/></td>
+                                        <td>مقدار</td>
+                                        <td>مقدار</td>
+                                        <td>مقدار</td>
+                                    </tr>
+
+                                )
+                            })}
                             </tbody>
                         </Table>
-                    </CardBody>
-                </Card>
-                <Card className="text-justify">
-                    <CardHeader>
-                        <CardTitle className="mb-0 font-weight-bold h6">نمودار داده ها</CardTitle>
-                    </CardHeader>
-                    <CardBody>
-                        {/*<Line data={mainChart} options={mainChartOpts} height={300}/>*/}
-                        <ReactHighcharts config={this.state.config}></ReactHighcharts>
                     </CardBody>
                 </Card>
             </div>
