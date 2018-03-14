@@ -127,7 +127,7 @@ class DeviceProfile extends Component {
                             <tr>
                                 <th>#</th>
                                 <th>اسم</th>
-                                <th>آدرس</th>
+                                <th>آدرس Mac</th>
                                 <th>امکانات</th>
                             </tr>
                             </thead>
@@ -161,7 +161,7 @@ class DeviceProfile extends Component {
             <tr>
                 <th>{key + 1}</th>
                 <td>{profile.name}</td>
-                <td>{profile.thing_profile_slug}</td>
+                <td className="english">{profile.thing_profile_slug}</td>
                 <td>
                     <Button onClick={() => this.deleteModalToggle(profile._id)} className="ml-1" color="danger"
                      size="sm">حذف</Button>

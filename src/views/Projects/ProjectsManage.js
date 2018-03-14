@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import {
-    Row,
     Col,
     Card,
     Form,
-    Badge,
     FormGroup,
     CardHeader,
     CardBody,
@@ -13,7 +11,6 @@ import {
     ListGroup,
     ListGroupItem,
     Button,
-    ButtonGroup,
     ModalFooter,
     Label,
     Input,
@@ -25,7 +22,7 @@ import {
     editProjectAction,
     getProject,
     deleteThingAction,
-    newDownlinkAction,
+    getCodecTemplateListAction, activateScenarioAction,
 } from "../../actions/AppActions";
 import Spinner from "../Spinner/Spinner";
 
@@ -48,12 +45,16 @@ class ProjectsManage extends Component {
         this.addScenario = this.addScenario.bind(this)
         this.dataModalToggle = this.dataModalToggle.bind(this)
         this.modalAddable = this.modalAddable.bind(this)
+        this.addTemplate = this.addTemplate.bind(this)
         this.uploadExcel = this.uploadExcel.bind(this)
+        this.renderTemplateItem = this.renderTemplateItem.bind(this)
         this.deleteThingModalToggle = this.deleteThingModalToggle.bind(this)
         this.deleteThing = this.deleteThing.bind(this)
         this.manageToastAlerts = this.manageToastAlerts.bind(this)
         this.loadProject = this.loadProject.bind(this)
         this.downLinksAdd = this.downLinksAdd.bind(this)
+        this.renderScenarios = this.renderScenarios.bind(this)
+        this.renderCodecs = this.renderCodecs.bind(this)
 
         this.state = {
             OTAAmodal: false,
@@ -82,7 +83,7 @@ class ProjectsManage extends Component {
     }
 
     manageToastAlerts(status) {
-        if(status === true) {
+        if (status === true) {
             this.deleteThingModalToggle()
             this.loadProject()
 
@@ -140,7 +141,10 @@ class ProjectsManage extends Component {
     loadProject() {
         const splitedUrl = window.location.href.split('/');
         if (splitedUrl[splitedUrl.length - 1]) {
-            this.props.dispatch(getProject(splitedUrl[splitedUrl.length - 1]))
+            this.props.dispatch(getProject(splitedUrl[splitedUrl.length - 1], (status) => {
+                if (status)
+                    this.props.dispatch(getCodecTemplateListAction(splitedUrl[splitedUrl.length - 1]))
+            }))
         }
     }
 
@@ -154,7 +158,7 @@ class ProjectsManage extends Component {
                     <ModalHeader>حذف شی</ModalHeader>
                     <ModalBody>
                         <h3>آیا از حذف شی مطمئن هستید ؟</h3>
-                        <br />
+                        <br/>
                         <h5>پس از حذف امکان برگشت اطلاعات وجود ندارد.</h5>
                     </ModalBody>
                     <ModalFooter>
@@ -395,7 +399,7 @@ class ProjectsManage extends Component {
                     <CardBody>
                         <ListGroup className="p-0">
                             {
-                                this.state.project.scenario !== undefined ? this.renderScenarioItem() : <br/>
+                                this.renderScenarios()
                             }
                         </ListGroup>
                     </CardBody>
@@ -403,17 +407,49 @@ class ProjectsManage extends Component {
                         <Button onClick={this.addScenario} color="primary">افزودن سناریو</Button>
                     </CardFooter>
                 </Card>
+
+
+                <Card className="text-justify">
+                    <CardHeader>
+                        <CardTitle className="mb-0 font-weight-bold h6">لیست قالب های codec</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                        <ListGroup className="p-0">
+                            {
+                                this.renderCodecs()
+                            }
+                        </ListGroup>
+                    </CardBody>
+                    <CardFooter>
+                        <Button onClick={this.addTemplate} color="primary">افزودن قالب</Button>
+                    </CardFooter>
+                </Card>
             </div>
         );
     }
 
+    renderScenarioItem(scenario) {
+        return (
+            <ListGroupItem active={scenario.is_active} className="justify-content-between">
+                {scenario.name}
+                <Button className="ml-1 float-left" onClick={() => {
+                    window.location = '#/scenario'
+                }} color="warning" size="sm">ویرایش</Button>
+                <Button onClick={() => {
+                    this.props.dispatch(activateScenarioAction(this.state.project._id, scenario._id))
+                }} disabled={scenario.is_active} className="ml-1 float-left" color="success" size="sm">فعال
+                    سازی</Button>
+            </ListGroupItem>
+        )
+    }
 
-    renderScenarioItem() {
+
+    renderTemplateItem(template) {
         return (
             <ListGroupItem className="justify-content-between">
-                {this.state.project.scenario.name}
+                {template.name}
+                <Button className="ml-1 float-left" color="danger" size="sm">حذف</Button>
                 <Button className="ml-1 float-left" color="warning" size="sm">ویرایش</Button>
-                <Button className="ml-1 float-left" color="success" size="sm">نمایش</Button>
             </ListGroupItem>
         )
     }
@@ -433,16 +469,20 @@ class ProjectsManage extends Component {
                         })
                     }}
                             color="success" size="sm">فعال سازی</Button>
-                    <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
+                    <Button onClick={() => {
+                        window.location = `#/things/${thing._id}/${thing._id}`
+                    }} className="ml-1" color="warning" size="sm">ویرایش</Button>
+                    <Button onClick={() => {
+                        window.location = `#/codec/${this.state.project._id}/${thing._id}`
+                    }} className="ml-1" color="secondary" size="sm">ارسال codec</Button>
                     <Button onClick={this.dataModalToggle} className="ml-1" color="primary" size="sm">ارسال
                         داده</Button>
                     <Button onClick={() => this.deleteThingModalToggle(thing._id)} className="ml-1" color="danger"
-                        size="sm">حذف</Button>
+                            size="sm">حذف</Button>
                 </td>
             </tr>
         )
     }
-
 
     dataModalToggle() {
         this.setState({
@@ -461,7 +501,6 @@ class ProjectsManage extends Component {
     addScenario() {
         window.location = `#/scenario/${this.state.project._id}/new`
     }
-
 
     toggleOTAA() {
         this.setState({
@@ -518,6 +557,24 @@ class ProjectsManage extends Component {
             });
     }
 
+    renderScenarios() {
+        console.log('this.state.project.scenarios', this.state.project)
+        if (this.state.project.scenarios)
+            return (this.state.project.scenarios.map(scenario => {
+                return (this.renderScenarioItem(scenario))
+            }))
+    }
+
+    renderCodecs() {
+        if (this.state.project.templates)
+            return (this.state.project.templates.map(template => {
+                return (this.renderTemplateItem(template))
+            }))
+    }
+
+    addTemplate() {
+        window.location = `#/template/${this.state.project._id}/new`
+    }
 }
 
 function mapStateToProps(state) {

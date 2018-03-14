@@ -25,7 +25,7 @@
 
 import {
     SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
-    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS
+    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -46,7 +46,11 @@ import {
     deleteThing as deleteThingAPI,
     newDownlink as newDownlinkAPI,
 } from '../api/index'
-import {activeThing, createThingProfile, getThingProfileList, viewProfile} from "../api";
+import {
+    activateScenario,
+    activeThing, createTemplate, createThingProfile, getCodecTemplateList, getThingProfileList,
+    viewProfile
+} from "../api";
 
 /**
  * Logs an user in
@@ -114,14 +118,16 @@ function setProjects(newState) {
     return {type: GET_PROJECTS, newState}
 }
 
-export function getProject(id) {
+export function getProject(id, cb) {
     return (dispatch) => {
         const promise = getProjectAPI(id, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 dispatch(setProject(response.result))
+                cb(true)
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+                cb(false)
             }
         })
     }
@@ -240,24 +246,6 @@ export function connectThing(thingId, projectId) {
             }
         }).catch((err) => {
             console.log(err)
-            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-        })
-    }
-}
-
-export function createCodec(thingId, code, cb) {
-    return (dispatch) => {
-        const promise = createCodecAPI({code, name: 'codec'}, thingId, dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                // dispatch(getProject(projectId))
-                cb(true)
-            } else {
-                cb(false, response.result)
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        }).catch((err) => {
-            cb(false, err)
             dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
         })
     }
@@ -425,6 +413,20 @@ export function getThingProfileListAction() {
     }
 }
 
+export function deleteDeviceProfileAction(profileId, cb) {
+    return (dispatch) => {
+        const promise = deleteDeviceProfileAPI(profileId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                window.location = '#/device-profile/list'
+                cb(true)
+            } else {
+                cb(response.result)
+            }
+        })
+    }
+}
+
 export function createThingProfileAction(data, cb) {
     return (dispatch) => {
         const promise = createThingProfile(data, dispatch);
@@ -470,6 +472,19 @@ export function activeThingAction(data, projectId, thingId, cb) {
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
                 cb(false, response.result)
+            }
+        })
+    }
+}
+
+export function deleteThingAction(projectId, thingId, cb) {
+    return (dispatch) => {
+        const promise = deleteThingAPI(projectId, thingId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb(true)
+            } else {
+                cb(response.result)
             }
         })
     }
@@ -528,6 +543,19 @@ export function editProjectAction(id, state) {
     }
 }
 
+export function deleteProjectAction(projectId, cb) {
+    return (dispatch) => {
+        const promise = deleteProjectAPI(projectId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                window.location = '#/projects/list'
+                cb(true)
+            } else {
+                cb(response.result)
+            }
+        })
+    }
+}
 
 /*  gateway actions */
 
@@ -551,35 +579,29 @@ export function createGatewayAction(data, cb) {
             if (response.status === 'OK') {
                 cb(true)
             } else {
+<<<<<<< HEAD
                 cb(false,response.result)
+=======
+                cb(false, response.result)
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+>>>>>>> 8f65d8833f39874eb5e41f15cc199e466c732126
             }
         })
     }
 }
 
-export function deleteProjectAction(projectId, cb) {
-    return (dispatch) => {
-        const promise = deleteProjectAPI(projectId, dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                window.location = '#/projects/list'
-                cb(true)
-            } else {
-                cb(response.result)
-            }
-        })
-    }
+function setSingleGateway(newState) {
+    return {type: GET_GATEWAYS, newState}
 }
 
-export function deleteDeviceProfileAction(profileId, cb) {
+export function getSingleGatewayAction(id) {
     return (dispatch) => {
-        const promise = deleteDeviceProfileAPI(profileId, dispatch)
+        const promise = getSingleGatewayAPI(id, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                window.location = '#/device-profile/list'
-                cb(true)
+                dispatch(setSingleGateway(response.result))
             } else {
-                cb(response.result)
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         })
     }
@@ -631,35 +653,8 @@ export function editProfile(data, cb) {
     }
 }
 
-function setSingleGateway(newState) {
-    return {type: GET_GATEWAYS, newState}
-}
 
-export function getSingleGatewayAction(id) {
-    return (dispatch) => {
-        const promise = getSingleGatewayAPI(id, dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                dispatch(setSingleGateway(response.result))
-            } else {
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        })
-    }
-}
-
-export function deleteThingAction(projectId, thingId, cb) {
-    return (dispatch) => {
-        const promise = deleteThingAPI(projectId, thingId, dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                cb(true)
-            } else {
-                cb(response.result)
-            }
-        })
-    }
-}
+/* downlink actions */
 
 export function newDownlinkAction(projectId, thingId, data, cb) {
     return (dispatch) => {
@@ -670,6 +665,73 @@ export function newDownlinkAction(projectId, thingId, data, cb) {
             } else {
                 cb(false)
             }
+        })
+    }
+}
+
+
+/*  codec actions */
+
+export function getCodecTemplateListAction(projectId, cb) {
+    return (dispatch) => {
+        const promise = getCodecTemplateList(projectId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch({type: FETCH_CODEC_LIST, newState: response.result, id: projectId})
+                if (cb)
+                    cb(true, response.result.codecs)
+            } else {
+            }
+        })
+    }
+}
+
+export function createCodecAction(thingId, projectId, code, cb) {
+    return (dispatch) => {
+        const promise = createCodecAPI({code}, thingId, projectId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb(true)
+                forwardTo(`projects/manage/${projectId}`)
+            } else {
+                cb(false, response.result)
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((err) => {
+            cb(false, err)
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
+}
+
+export function createTemplateAction(projectId, data) {
+    return (dispatch) => {
+        const promise = createTemplate(projectId,data, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                forwardTo(`projects/manage/${projectId}`)
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((err) => {
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
+}
+
+export function activateScenarioAction(projectId,scenarioId) {
+    return (dispatch) => {
+        const promise = activateScenario(projectId,scenarioId, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                forwardTo(`projects/manage/${projectId}`)
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((err) => {
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
         })
     }
 }

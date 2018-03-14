@@ -21,6 +21,7 @@ import {
 } from 'reactstrap';
 import {getThingProfileListAction, uploadExcelAction} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
+import Spinner from "../Spinner/Spinner";
 
 
 class ThingsExcel extends Component {
@@ -43,6 +44,7 @@ class ThingsExcel extends Component {
     render() {
         return (
             <div>
+                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">آپلود فایل Excel</CardTitle>
@@ -114,8 +116,9 @@ class ThingsExcel extends Component {
                 <td>{res}</td>
                 <td>
                     <Badge
-                        color={this.state.result[res].indexOf('Error') !== -1
-                            ? 'danger' : 'success'}>{this.state.result[res]}</Badge>
+                        color={typeof(this.state.result[res]) === 'string'
+                            ? 'danger' : 'success'}>{typeof(this.state.result[res]) === 'string' ?
+                        this.state.result[res] : 'OK'}</Badge>
                 </td>
             </tr>
         )
@@ -131,7 +134,9 @@ class ThingsExcel extends Component {
 }
 
 function mapStateToProps(state) {
-    return {}
+    return {
+        loading:state.homeReducer.currentlySending
+    }
 }
 
 export default connect(mapStateToProps)(ThingsExcel);

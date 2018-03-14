@@ -16,6 +16,7 @@ import {
 import {connect} from 'react-redux';
 
 import {login} from '../../../actions/AppActions';
+const ReCAPTCHA = require("react-google-recaptcha");
 
 class Login extends Component {
 
@@ -74,6 +75,7 @@ class Login extends Component {
                                                    }}
                                                    placeholder="کلمه عبور"/>
                                         </InputGroup>
+
                                         <Row>
                                             <Col xs="3" className="text-right">
                                                 <img style={{display: this.props.currentlySending ? 'block' : 'none'}}

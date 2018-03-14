@@ -72,7 +72,7 @@ class CreateThing extends Component {
                             <FormGroup row>
                                 <Label sm={3}>نام شی : </Label>
                                 <Col sm={5}>
-                                    <Input name="name" onChange={this.changeForm} type="text"/>
+                                    <Input name="name"  onChange={this.changeForm} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>

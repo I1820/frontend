@@ -18,7 +18,11 @@ import {
     Table
 } from 'reactstrap';
 
+import _ from 'underscore'
 
+const ReactHighcharts = require('react-highcharts');
+import moment from 'moment-jalaali'
+import JSONPretty from 'react-json-pretty';
 const brandPrimary = '#20a8d8';
 const brandSuccess = '#4dbd74';
 const brandInfo = '#63c2de';
@@ -45,11 +49,17 @@ function random(min, max) {
 
 var elements = 27;
 var data1 = [];
-// var data2 = [];
+var data2 = [];
 // var data3 = [];
 
 for (var i = 0; i <= elements; i++) {
     data1.push(random(50, 500));
+    // data2.push(random(80, 100));
+    // data3.push(65);
+}
+
+for (var i = 0; i <= elements; i++) {
+    data2.push(random(5000, 50000));
     // data2.push(random(80, 100));
     // data3.push(65);
 }
@@ -65,8 +75,17 @@ const mainChart = {
             borderWidth: 2,
             data: data1
         },
+        {
+            label: 'My Second dataset',
+            backgroundColor: convertHex(brandWarning, 10),
+            borderColor: brandWarning,
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 3,
+            data: data2
+        },
     ]
 }
+
 
 const mainChartOpts = {
     maintainAspectRatio: false,
@@ -88,7 +107,7 @@ const mainChartOpts = {
                 beginAtZero: true,
                 maxTicksLimit: 5,
                 stepSize: Math.ceil(500 / 5),
-                max: 500
+                max: 50000
             }
         }]
     },
@@ -108,6 +127,20 @@ class ProjectsView extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            config: {
+                xAxis: {
+                    categories: [],
+
+                },
+                series: [{
+                    data: []
+                }],
+                yAxis: {
+                    title: {
+                        text: 'تعداد'
+                    }
+                },
+            },
             data: [{
                 "_id": {"$oid": "5a3f5acfa65dcdcecbdd4ea8"},
                 "data": {"241": 30.0, "242": 27.34375, "243": 0.0, "244": 0.0, "245": 0.0},
@@ -128,7 +161,7 @@ class ProjectsView extends Component {
                 }
                 , {
                     "_id": {"$oid": "5a3f5ae8a65dcdcecbdd4eb8"},
-                    "data": {"1": 21.62975311279297, "2": 24.70831298828125},
+                    "data": {"1": 22221.62975311279297, "2": 24.70831298828125},
                     "timestamp": {"$date": "2017-12-24T07:44:40.928Z"},
                     "thingid": "isrc-sensor"
                 }
@@ -362,13 +395,89 @@ class ProjectsView extends Component {
                 }
             ]
         }
+        this.draw = this.draw.bind(this)
+    }
 
+
+    componentWillMount() {
+        this.draw()
+    }
+
+
+    draw() {
+        const config = {
+            xAxis: {
+                categories: []
+            },
+            series: [{
+                data: []
+            }],
+            title: {
+                text: 'داده های دریافتی'
+            },
+            tooltip: {
+                backgroundColor: 'lightgray',
+                borderColor: '#7CB5EC',
+                borderRadius: 10,
+                borderWidth: 3,
+                useHTML: true,
+                formatter: function () {
+                    const res =
+                        '<div>' +
+                        '<div style="text-align: center;direction: rtl">' + this.x + '</div>' +
+                        '<div style="text-align: center">' + this.series.name +
+                        ': <span style="font-weight: bold; ">' + this.y + '</span></div>' +
+                        '</div>';
+                    return res;
+                }
+            },
+        }
+
+
+        let sensors = []
+        this.state.data.map((d, i) => {
+            _.allKeys(d.data).map((k, i2) => {
+                if (_.find(sensors, {name: k}) === undefined) {
+                    sensors.push({
+                        name: k,
+                        data:[]
+                    })
+                }
+            })
+        })
+
+        this.state.data.map((d) => {
+
+          config.xAxis.categories.push(moment(d.timestamp.$date, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'))
+            sensors.map((dataset, index) => {
+                if (d.data[dataset.name] === undefined) {
+                    dataset.data.push(dataset.data.length > 0 ? dataset.data[dataset.data.length - 1] : 0)
+                } else {
+                    dataset.data.push(d.data[dataset.name])
+                }
+            })
+        })
+
+        config.series = sensors
+
+        this.setState({
+            config
+        })
     }
 
 
     render() {
         return (
             <div>
+                <Card className="text-justify">
+                    <CardHeader>
+                        <CardTitle className="mb-0 font-weight-bold h6">نمودار داده ها</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                        {/*<Line data={mainChart} options={mainChartOpts} height={300}/>*/}
+                        <ReactHighcharts config={this.state.config}></ReactHighcharts>
+                    </CardBody>
+                </Card>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">داده های جمع آوری شده</CardTitle>
@@ -386,42 +495,21 @@ class ProjectsView extends Component {
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th>1</th>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                            </tr>
-                            <tr>
-                                <th>2</th>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                            </tr>
-                            <tr>
-                                <th>3</th>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                                <td>مقدار</td>
-                            </tr>
+                            {this.state.data.map((data,key)=>{
+                                return(
+                                    <tr>
+                                        <th>{key+1}</th>
+                                        <td>{data.timestamp.$date}</td>
+                                        <td style={{textAlign:'left'}}><JSONPretty id="json-pretty" json={data.data}/></td>
+                                        <td>مقدار</td>
+                                        <td>مقدار</td>
+                                        <td>مقدار</td>
+                                    </tr>
+
+                                )
+                            })}
                             </tbody>
                         </Table>
-                    </CardBody>
-                </Card>
-                <Card className="text-justify">
-                    <CardHeader>
-                        <CardTitle className="mb-0 font-weight-bold h6">نمودار داده ها</CardTitle>
-                    </CardHeader>
-                    <CardBody>
-                        <div className="chart-wrapper" style={{height: 300 + 'px', marginTop: 40 + 'px'}}>
-                            <Line data={mainChart} options={mainChartOpts} height={300}/>
-                        </div>
                     </CardBody>
                 </Card>
             </div>
