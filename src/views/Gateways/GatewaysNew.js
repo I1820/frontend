@@ -17,9 +17,11 @@ import { GoogleMap, Marker, withGoogleMap, withScriptjs } from "react-google-map
 import { createGatewayAction } from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
 import Spinner from "../Spinner/Spinner";
+
 import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from "react-toastify";
+
 
 style({
     colorProgressDefault: 'white'
@@ -153,6 +155,7 @@ class GatewaysNew extends Component {
         if(status === true) {
             window.location = '#/gateways/list'
 
+
             toast('gateway جدید ساخته شد', {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 className: css({
@@ -182,7 +185,7 @@ class GatewaysNew extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
-                <ToastContainer className="text-right" />
+                <ToastContainer className="text-right"/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">افزودن Gateway</CardTitle>
@@ -193,21 +196,22 @@ class GatewaysNew extends Component {
                                 <Label sm={2}>اسم : </Label>
                                 <Col sm={5}>
                                     <Input type="text"
-                                    onChange={event => this.setState({name: event.target.value})} />
+                                           onChange={event => this.setState({name: event.target.value})}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>آدرس Mac : </Label>
                                 <Col sm={5}>
-                                    <Input type="text" dir="ltr"
-                                    onChange={event => this.setState({mac: event.target.value})} />
+                                    <Input type="text"
+                                           value={this.formatMAC(this.state.mac)}
+                                           onChange={event => this.setState({mac: event.target.value})}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>توضیحات : </Label>
                                 <Col sm={5}>
                                     <Input type="textarea"
-                                    onChange={event => this.setState({description: event.target.value})} />
+                                           onChange={event => this.setState({description: event.target.value})}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -242,6 +246,20 @@ class GatewaysNew extends Component {
         );
     }
 
+    formatMAC(value) {
+        if (value == undefined)
+            value = ""
+        const r = /([a-f0-9]{2})([a-f0-9]{2})/i
+        let str = value.replace(/[^a-f0-9]/ig, "");
+
+        while (r.test(str)) {
+            str = str.replace(r, '$1' + ':' + '$2');
+        }
+
+        console.log(str.slice(0, 17))
+        return str.slice(0, 17);
+    }
+
     changeForm(event) {
         let state = {}
         state[event.target.name] = event.target.value
@@ -256,14 +274,13 @@ class GatewaysNew extends Component {
     submitForm() {
         this.props.dispatch(createGatewayAction({
             name: this.state.name,
-            mac: this.state.mac,
+            mac: this.formatMAC(this.state.mac).replace(/:/g,''),
             description: this.state.description,
             latitude: document.getElementById('fld_lng').value,
             longitude: document.getElementById('fld_lng').value,
             altitude: this.state.altitude,
         }, this.manageToastAlerts))
     }
-
 }
 
 function mapStateToProps(state) {

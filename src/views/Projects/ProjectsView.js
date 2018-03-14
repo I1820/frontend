@@ -23,103 +23,8 @@ import _ from 'underscore'
 const ReactHighcharts = require('react-highcharts');
 import moment from 'moment-jalaali'
 import JSONPretty from 'react-json-pretty';
-const brandPrimary = '#20a8d8';
-const brandSuccess = '#4dbd74';
-const brandInfo = '#63c2de';
-const brandWarning = '#f8cb00';
-const brandDanger = '#f86c6b';
-
-// Main Chart
-
-// convert Hex to RGBA
-function convertHex(hex, opacity) {
-    hex = hex.replace('#', '');
-    var r = parseInt(hex.substring(0, 2), 16);
-    var g = parseInt(hex.substring(2, 4), 16);
-    var b = parseInt(hex.substring(4, 6), 16);
-
-    var result = 'rgba(' + r + ',' + g + ',' + b + ',' + opacity / 100 + ')';
-    return result;
-}
-
-//Random Numbers
-function random(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-var elements = 27;
-var data1 = [];
-var data2 = [];
-// var data3 = [];
-
-for (var i = 0; i <= elements; i++) {
-    data1.push(random(50, 500));
-    // data2.push(random(80, 100));
-    // data3.push(65);
-}
-
-for (var i = 0; i <= elements; i++) {
-    data2.push(random(5000, 50000));
-    // data2.push(random(80, 100));
-    // data3.push(65);
-}
-
-const mainChart = {
-    labels: ['شنبه', 'یکشنبه', 'دوشنبه', 'سه شنبه', 'چهار شنبه'],
-    datasets: [
-        {
-            label: 'My First dataset',
-            backgroundColor: convertHex(brandInfo, 10),
-            borderColor: brandInfo,
-            pointHoverBackgroundColor: '#fff',
-            borderWidth: 2,
-            data: data1
-        },
-        {
-            label: 'My Second dataset',
-            backgroundColor: convertHex(brandWarning, 10),
-            borderColor: brandWarning,
-            pointHoverBackgroundColor: '#fff',
-            borderWidth: 3,
-            data: data2
-        },
-    ]
-}
-
-
-const mainChartOpts = {
-    maintainAspectRatio: false,
-    fontFamily: 'Tahoma',
-    legend: {
-        display: false
-    },
-    scales: {
-        xAxes: [{
-            ticks: {
-                fontFamily: 'Vazir',
-            },
-            gridLines: {
-                drawOnChartArea: false,
-            }
-        }],
-        yAxes: [{
-            ticks: {
-                beginAtZero: true,
-                maxTicksLimit: 5,
-                stepSize: Math.ceil(500 / 5),
-                max: 50000
-            }
-        }]
-    },
-    elements: {
-        point: {
-            radius: 0,
-            hitRadius: 10,
-            hoverRadius: 4,
-            hoverBorderWidth: 3,
-        }
-    }
-}
+import {getCodecTemplateListAction, getDataAction, getProject} from "../../actions/AppActions";
+import connect from "react-redux/es/connect/connect";
 
 
 class ProjectsView extends Component {
@@ -127,6 +32,9 @@ class ProjectsView extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            project: {
+                things: []
+            },
             config: {
                 xAxis: {
                     categories: [],
@@ -400,9 +308,34 @@ class ProjectsView extends Component {
 
 
     componentWillMount() {
-        this.draw()
+        this.loadProject()
     }
 
+    componentWillReceiveProps(props) {
+        const splitedUrl = window.location.href.split('/');
+        const me = this;
+        if (splitedUrl[splitedUrl.length - 1]) {
+            props.projects.forEach((project) => {
+
+                if (project._id === splitedUrl[splitedUrl.length - 1]) {
+                    console.log('findddd', project)
+                    this.setState({
+                        project
+                    })
+                }
+            })
+        }
+    }
+
+    loadProject() {
+        const splitedUrl = window.location.href.split('/');
+        if (splitedUrl[splitedUrl.length - 1]) {
+            this.props.dispatch(getProject(splitedUrl[splitedUrl.length - 1], (status) => {
+                if (status)
+                    this.props.dispatch(getCodecTemplateListAction(splitedUrl[splitedUrl.length - 1]))
+            }))
+        }
+    }
 
     draw() {
         const config = {
@@ -440,7 +373,7 @@ class ProjectsView extends Component {
                 if (_.find(sensors, {name: k}) === undefined) {
                     sensors.push({
                         name: k,
-                        data:[]
+                        data: []
                     })
                 }
             })
@@ -448,7 +381,7 @@ class ProjectsView extends Component {
 
         this.state.data.map((d) => {
 
-          config.xAxis.categories.push(moment(d.timestamp.$date, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'))
+            config.xAxis.categories.push(moment(d.timestamp.$date, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'))
             sensors.map((dataset, index) => {
                 if (d.data[dataset.name] === undefined) {
                     dataset.data.push(dataset.data.length > 0 ? dataset.data[dataset.data.length - 1] : 0)
@@ -471,6 +404,54 @@ class ProjectsView extends Component {
             <div>
                 <Card className="text-justify">
                     <CardHeader>
+                        <CardTitle className="mb-0 font-weight-bold h6">دریافت داده</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                        <Form>
+                            <FormGroup row>
+                                <Label sm={2}>supportsJoin :‌ </Label>
+                                <Col sm={4}>
+                                    <Input type="select" name="supportsJoin" id="select" onChange={(event) => {
+                                        this.setState({
+                                            thing: event.target.value
+                                        })
+                                    }}>
+                                        <option value=""> شی را انتخاب کنید</option>
+                                        {this.state.project.things.map(thing => {
+                                            return (<option value={thing._id}>{thing.name}</option>)
+                                        })
+                                        }
+                                    </Input>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label sm={2}>تعداد داده :‌ </Label>
+                                <Col sm={4}>
+                                    <Input onChange={(event) => {
+                                        this.setState({
+                                            limit: event.target.value
+                                        })
+                                    }} name={"name"} type="text"/>
+                                </Col>
+                            </FormGroup>
+                            <Button outline color="success" size="sm" onClick={() => {
+                                this.props.dispatch(getDataAction(this.state.thing, this.state.project._id, new Date().getTime(),
+                                    this.state.limit, (status, data) => {
+                                        if (status && data !== null && data !== undefined) {
+                                            this.setState({
+                                                data
+                                            })
+                                            this.draw()
+                                        }
+                                    }))
+                            }}>
+                                دریافت اطلاعات
+                            </Button>
+                        </Form>
+                    </CardBody>
+                </Card>
+                <Card className="text-justify">
+                    <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">نمودار داده ها</CardTitle>
                     </CardHeader>
                     <CardBody>
@@ -490,20 +471,29 @@ class ProjectsView extends Component {
                                 <th>زمان دریافت داده</th>
                                 <th>شی فرستنده</th>
                                 <th>داده دریافت شده</th>
-                                <th>RRSI</th>
-                                <th>SNR</th>
+                                {/*<th>RRSI</th>*/}
+                                {/*<th>SNR</th>*/}
                             </tr>
                             </thead>
                             <tbody>
-                            {this.state.data.map((data,key)=>{
-                                return(
+                            {this.state.data.map((data, key) => {
+                                return (
                                     <tr>
+<<<<<<< HEAD
                                         <th>{key+1}</th>
                                         <td className="english">{data.timestamp.$date}</td>
                                         <td style={{textAlign:'left'}}><JSONPretty id="json-pretty" json={data.data}/></td>
                                         <td>مقدار</td>
                                         <td>مقدار</td>
                                         <td>مقدار</td>
+=======
+                                        <th>{key + 1}</th>
+                                        <td>{moment(data.timestamp.$date, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}</td>
+                                        <td>{data.thingid}</td>
+                                        <td style={{textAlign: 'left', direction: 'ltr'}}><JSONPretty id="json-pretty"
+                                                                                                      json={data.data}/>
+                                        </td>
+>>>>>>> 0a5ba5f6450e846c52af92e5677a02717e60d11d
                                     </tr>
 
                                 )
@@ -518,4 +508,11 @@ class ProjectsView extends Component {
 
 }
 
-export default ProjectsView;
+
+function mapStateToPropes(state) {
+    return {
+        projects: state.projectReducer,
+    }
+}
+
+export default connect(mapStateToPropes)(ProjectsView);
