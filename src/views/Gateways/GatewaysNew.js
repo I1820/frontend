@@ -21,8 +21,8 @@ import Spinner from "../Spinner/Spinner";
 const _ = require("lodash");
 const {compose, withProps, lifecycle} = require("recompose");
 const {SearchBox} = require("react-google-maps/lib/components/places/SearchBox");
-import { ToastContainer, toast } from 'react-toastify';
-import { css } from 'glamor';
+import {ToastContainer, toast} from 'react-toastify';
+import {css} from 'glamor';
 
 
 const MapWithASearchBox = compose(
@@ -142,13 +142,11 @@ class GatewaysNew extends Component {
     }
 
 
-
-
     render() {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
-                <ToastContainer className="text-right" />
+                <ToastContainer className="text-right"/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">افزودن Gateway</CardTitle>
@@ -159,42 +157,43 @@ class GatewaysNew extends Component {
                                 <Label sm={2}>اسم : </Label>
                                 <Col sm={5}>
                                     <Input type="text"
-                                    onChange={event => this.setState({name: event.target.value})} />
+                                           onChange={event => this.setState({name: event.target.value})}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>آدرس Mac : </Label>
                                 <Col sm={5}>
                                     <Input type="text"
-                                    onChange={event => this.setState({mac: event.target.value})} />
+                                           value={this.formatMAC(this.state.mac)}
+                                           onChange={event => this.setState({mac: event.target.value})}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>توضیحات : </Label>
                                 <Col sm={5}>
                                     <Input type="textarea"
-                                    onChange={event => this.setState({description: event.target.value})} />
+                                           onChange={event => this.setState({description: event.target.value})}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>مقدار Lat : </Label>
                                 <Col sm={5}>
                                     <Input type="text" value={this.state.latitude}
-                                    onChange={event => this.setState({latitude: event.target.value})} />
+                                           onChange={event => this.setState({latitude: event.target.value})}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>مقدار Long : </Label>
                                 <Col sm={5}>
                                     <Input type="text" value={this.state.longitude}
-                                    onChange={event => this.setState({longitude: event.target.value})} />
+                                           onChange={event => this.setState({longitude: event.target.value})}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>مقدار Altitude : </Label>
                                 <Col sm={5}>
                                     <Input type="text"
-                                    onChange={event => this.setState({altitude: event.target.value})} />
+                                           onChange={event => this.setState({altitude: event.target.value})}/>
                                 </Col>
                             </FormGroup>
 
@@ -208,6 +207,20 @@ class GatewaysNew extends Component {
                 </Card>
             </div>
         );
+    }
+
+    formatMAC(value) {
+        if (value == undefined)
+            value = ""
+        const r = /([a-f0-9]{2})([a-f0-9]{2})/i
+        let str = value.replace(/[^a-f0-9]/ig, "");
+
+        while (r.test(str)) {
+            str = str.replace(r, '$1' + ':' + '$2');
+        }
+
+        console.log(str.slice(0, 17))
+        return str.slice(0, 17);
     }
 
     changeForm(event) {
@@ -224,27 +237,27 @@ class GatewaysNew extends Component {
     submitForm() {
         let fields = {
             name: this.state.name,
-            mac: this.state.mac,
+            mac: this.formatMAC(this.state.mac).replace(/:/g,''),
             description: this.state.description,
             latitude: this.state.latitude,
             longitude: this.state.longitude,
             altitude: this.state.altitude,
         }
-        this.props.dispatch(createGatewayAction(fields),this.callback)
+        this.props.dispatch(createGatewayAction(fields, this.callback))
     }
 
-    callback(status,message){
-        if(!status)
-        toast(message, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            className: css({
-                background: '#fee2e1',
-                color: '#813838',
-            }),
-            progressClassName: css({
-                background: '#813838'
-            })
-        });
+    callback(status, message) {
+        if (!status)
+            toast(message, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                className: css({
+                    background: '#fee2e1',
+                    color: '#813838',
+                }),
+                progressClassName: css({
+                    background: '#813838'
+                })
+            });
     }
 
 }

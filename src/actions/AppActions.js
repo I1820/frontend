@@ -384,13 +384,13 @@ export function cleanErrorMessage() {
     setErrorMessage('')
 }
 
-export function getData(id, offset, limit, callback) {
+export function getDataAction(thingId, projectId, offset, limit, callback) {
     return (dispatch) => {
-        const promise = getThingDataAPI(id, offset, limit, dispatch)
+        const promise = getThingDataAPI(thingId, projectId, offset, limit, dispatch)
         promise.then((response) => {
             console.log('data', response)
             if (response.status === 'OK') {
-                callback(response.result)
+                callback(true, response.result.data)
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
@@ -704,7 +704,7 @@ export function createCodecAction(thingId, projectId, code, cb) {
 
 export function createTemplateAction(projectId, data) {
     return (dispatch) => {
-        const promise = createTemplate(projectId,data, dispatch)
+        const promise = createTemplate(projectId, data, dispatch)
         promise.then((response) => {
             console.log(response)
             if (response.status === 'OK') {
@@ -718,9 +718,9 @@ export function createTemplateAction(projectId, data) {
     }
 }
 
-export function activateScenarioAction(projectId,scenarioId) {
+export function activateScenarioAction(projectId, scenarioId) {
     return (dispatch) => {
-        const promise = activateScenario(projectId,scenarioId, dispatch)
+        const promise = activateScenario(projectId, scenarioId, dispatch)
         promise.then((response) => {
             console.log(response)
             if (response.status === 'OK') {
