@@ -206,7 +206,7 @@ class GatewaysNew extends Component {
                             <FormGroup row>
                                 <Label sm={2}>آدرس Mac : </Label>
                                 <Col sm={5}>
-                                    <Input type="text"
+                                    <Input type="text" dir="ltr"
                                            value={this.formatMAC(this.state.mac)}
                                            onChange={event => this.setState({mac: event.target.value})}/>
                                 </Col>

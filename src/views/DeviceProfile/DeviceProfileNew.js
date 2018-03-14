@@ -85,7 +85,7 @@ class DeviceProfileNew extends Component {
                                 <Col sm={4}>
                                     <Input onChange={this.setForm} name={"name"} type="text"/>
                                 </Col>
-                                <Label sm={3}>Name </Label>
+                                <Label sm={3}> : Name </Label>
                             </FormGroup>
 
                             <FormGroup row>
@@ -95,7 +95,7 @@ class DeviceProfileNew extends Component {
                                         <option value="0">ABP</option>
                                     </Input>
                                 </Col>
-                                <Label sm={3}>supportsJoin‌ </Label>
+                                <Label sm={3}> : supportsJoin‌ </Label>
                             </FormGroup>
 
                             <Collapse isOpen={this.state.collapse} className="mt-3">
@@ -105,7 +105,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" defaultValue={this.state.form.classBTimeout} name={"classBTimeout"}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>classBTimeout‌ </Label>
+                                    <Label sm={3}> : classBTimeout‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -113,7 +113,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" defaultValue={this.state.form.classCTimeout} name={"classCTimeout"}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>classCTimeout </Label>
+                                    <Label sm={3}> : classCTimeout </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -122,7 +122,7 @@ class DeviceProfileNew extends Component {
                                                name={"factoryPresetFreqs"}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>factoryPresetFreqs‌ </Label>
+                                    <Label sm={3}> : factoryPresetFreqs‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -130,7 +130,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" defaultValue={this.state.form.macVersion} name={"macVersion"}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>macVersion‌ </Label>
+                                    <Label sm={3}> : macVersion‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -138,7 +138,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" defaultValue={this.state.form.maxDutyCycle} name={"maxDutyCycle"}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>maxDutyCycle </Label>
+                                    <Label sm={3}> : maxDutyCycle </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -146,7 +146,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" name={"maxEIRP"} defaultValue={this.state.form.maxEIRP}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>maxEIRP </Label>
+                                    <Label sm={3}> : maxEIRP </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -154,7 +154,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" name={"pingSlotDR"} defaultValue={this.state.form.pingSlotDR}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>pingSlotDR‌ </Label>
+                                    <Label sm={3}> : pingSlotDR‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -162,7 +162,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" name={"pingSlotFreq"} defaultValue={this.state.form.pingSlotFreq}
                                                type="text"/>
                                     </Col>
-                                    <Label sm={3}>pingSlotFreq‌ </Label>
+                                    <Label sm={3}> : pingSlotFreq‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -170,7 +170,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" name={"pingSlotPeriod"} defaultValue={this.state.form.pingSlotPeriod}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>pingSlotPeriod‌ </Label>
+                                    <Label sm={3}> : pingSlotPeriod‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -179,7 +179,7 @@ class DeviceProfileNew extends Component {
                                                defaultValue={this.state.form.regParamsRevision}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>regParamsRevision‌ </Label>
+                                    <Label sm={3}> : regParamsRevision‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -187,7 +187,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" name={"rfRegion"} defaultValue={this.state.form.rfRegion}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>rfRegion‌ </Label>
+                                    <Label sm={3}> : rfRegion‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -195,7 +195,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" name={"rxDROffset1"} defaultValue={this.state.form.rxDROffset1}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>rxDROffset1‌ </Label>
+                                    <Label sm={3}> : rxDROffset1‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -203,7 +203,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" name={"rxDataRate2"} defaultValue={this.state.form.rxDataRate2}
                                                type="text"/>
                                     </Col>
-                                    <Label sm={3}>rxDataRate2‌ </Label>
+                                    <Label sm={3}> : rxDataRate2‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -211,7 +211,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" name={"rxDelay1"} defaultValue={this.state.form.rxDelay1}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>rxDelay1‌ </Label>
+                                    <Label sm={3}> : rxDelay1‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -219,7 +219,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" name={"rxFreq2"} defaultValue={this.state.form.rxFreq2}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>rxFreq2‌ </Label>
+                                    <Label sm={3}> : rxFreq2‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -228,7 +228,7 @@ class DeviceProfileNew extends Component {
                                                defaultValue={this.state.form.supports32bitFCnt} onChange={this.setForm}
                                                type="text"/>
                                     </Col>
-                                    <Label sm={3}>supports32bitFCnt </Label>
+                                    <Label sm={3}> : supports32bitFCnt </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -236,7 +236,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" name={"supportsClassB"} defaultValue={this.state.form.supportsClassB}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>supportsClassB‌ </Label>
+                                    <Label sm={3}> : supportsClassB‌ </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -244,7 +244,7 @@ class DeviceProfileNew extends Component {
                                         <Input dir="ltr" name={"supportsClassC"} defaultValue={this.state.form.supportsClassC}
                                                onChange={this.setForm} type="text"/>
                                     </Col>
-                                    <Label sm={3}>supportsClassC </Label>
+                                    <Label sm={3}> : supportsClassC </Label>
                                 </FormGroup>
 
                                 <FormGroup row>
@@ -253,7 +253,7 @@ class DeviceProfileNew extends Component {
                                                defaultValue={this.state.form.supports32bitFCnt} onChange={this.setForm}
                                                type="text"/>
                                     </Col>
-                                    <Label sm={3}>supports32bitFCnt‌ </Label>
+                                    <Label sm={3}> : supports32bitFCnt‌ </Label>
                                 </FormGroup>
 
                             </Collapse>
