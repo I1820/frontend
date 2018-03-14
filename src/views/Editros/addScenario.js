@@ -49,7 +49,7 @@ class AddScenario extends Component {
                     <CardBody>
                         <Form>
                             <FormGroup row>
-                                <Label sm={1}>نام سناریو:</Label>
+                                <Label sm={2}>نام سناریو:</Label>
                                 <Col sm={5}>
                                     <Input onChange={(event) => {
                                         this.setState({name: event.target.value})

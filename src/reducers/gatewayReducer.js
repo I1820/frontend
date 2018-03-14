@@ -9,6 +9,7 @@ export function gatewayReducer (state = [], action) {
                 ...state,
                 ...action.newState
             ]
+
         case 'FREE':
             return []
         default:

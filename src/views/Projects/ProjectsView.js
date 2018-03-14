@@ -499,7 +499,7 @@ class ProjectsView extends Component {
                                 return(
                                     <tr>
                                         <th>{key+1}</th>
-                                        <td>{data.timestamp.$date}</td>
+                                        <td className="english">{data.timestamp.$date}</td>
                                         <td style={{textAlign:'left'}}><JSONPretty id="json-pretty" json={data.data}/></td>
                                         <td>مقدار</td>
                                         <td>مقدار</td>

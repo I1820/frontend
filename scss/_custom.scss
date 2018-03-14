@@ -82,6 +82,13 @@ textarea, input, select, label{
         position: fixed;
     }
 
+    // Captcha
+    .g-recaptcha{
+        transform: scale(0.8);
+        right: -30px;
+        position: relative;
+    }
+
 }
 
 
