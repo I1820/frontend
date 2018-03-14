@@ -14,9 +14,8 @@ import {
     InputGroupText
 } from 'reactstrap';
 import {connect} from 'react-redux';
-
 import {login} from '../../../actions/AppActions';
-const ReCAPTCHA = require("react-google-recaptcha");
+import ReCAPTCHA from 'react-google-recaptcha';
 
 class Login extends Component {
 
@@ -38,13 +37,18 @@ class Login extends Component {
 
 
     render() {
+
+        window.recaptchaOptions = {
+            lang: 'fa'
+        }
+
         return (
             <div className="app flex-row align-items-center">
                 <Container>
                     <Row className="justify-content-center">
                         <Col md="5">
                             <CardGroup>
-                                <Card className="p-4">
+                                <Card className="p-0 p-sm-4">
                                     <CardBody>
                                         <div className="text-right">
                                             <h1>ورود</h1>
@@ -75,13 +79,20 @@ class Login extends Component {
                                                    }}
                                                    placeholder="کلمه عبور"/>
                                         </InputGroup>
-
+                                        <InputGroup className="mb-4">
+                                            <ReCAPTCHA
+                                                className="g-recaptcha mb-4"
+                                                size="optional compact"
+                                                ref="recaptcha"
+                                                sitekey="6LdYh0EUAAAAALOCVNd4y7f5q8oPFwg0nmCO0zM4"
+                                                onChange={(response) => this.onChange(response)}/>
+                                        </InputGroup>
                                         <Row>
-                                            <Col xs="3" className="text-right">
+                                            <Col xs="2" className="text-right">
                                                 <img style={{display: this.props.currentlySending ? 'block' : 'none'}}
                                                 src={'img/loading.gif'} />
                                             </Col>
-                                            <Col xs="9">
+                                            <Col xs="10">
                                                 <Button onClick={this.goToRegisterPage} color="success" className="px-4 float-left">ثبت نام</Button>
                                                 <Button onClick={this.submit} color="primary" className="px-4 ml-1 float-left">ورود</Button>
                                             </Col>

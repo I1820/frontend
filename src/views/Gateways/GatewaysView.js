@@ -139,10 +139,9 @@ class GatewaysView extends Component {
         const splitedUrl = window.location.href.split('/');
         const me = this;
         if (splitedUrl[splitedUrl.length - 1]) {
-            props.gateway.forEach((project) => {
-
+            alert(props.gateway)
+            props.gateway.forEach((gateway) => {
                 if (gateway._id === splitedUrl[splitedUrl.length - 1]) {
-                    console.log('findddd', gateway)
                     this.setState({
                         gateway
                     })
@@ -193,7 +192,7 @@ class GatewaysView extends Component {
 
 function mapStateToProps(state) {
     return ({
-        gateWay: state.gatewayReducer
+        gateway: state.gatewayReducer
     })
 }
 

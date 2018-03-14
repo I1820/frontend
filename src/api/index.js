@@ -253,7 +253,8 @@ module.exports.deleteDeviceProfile = function (profileId, dispatch) {
 };
 
 module.exports.getSingleGateway = function (id, dispatch) {
-    return fetchData(endpoints.getGateway + '/' + id, getConfig(), dispatch)
+    const config = getConfig()
+    return fetchData('/gateway/' + id, getConfig(), dispatch)
 }
 
 module.exports.deleteThing = function (projectId, thingId, dispatch) {
