@@ -486,7 +486,6 @@ class ProjectsView extends Component {
                                                                                                       json={data.data}/>
                                         </td>
                                     </tr>
-
                                 )
                             })}
                             </tbody>

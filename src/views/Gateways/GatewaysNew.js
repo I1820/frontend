@@ -149,6 +149,10 @@ class GatewaysNew extends Component {
         this.changeForm = this.changeForm.bind(this)
         this.submitForm = this.submitForm.bind(this)
         this.manageToastAlerts = this.manageToastAlerts.bind(this)
+
+        this.state ={
+            mac:""
+        }
     }
 
     manageToastAlerts(status) {
