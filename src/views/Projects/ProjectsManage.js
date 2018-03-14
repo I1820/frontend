@@ -22,7 +22,7 @@ import {
     editProjectAction,
     getProject,
     deleteThingAction,
-    getCodecTemplateListAction,
+    getCodecTemplateListAction, activateScenarioAction,
 } from "../../actions/AppActions";
 import Spinner from "../Spinner/Spinner";
 
@@ -47,6 +47,7 @@ class ProjectsManage extends Component {
         this.modalAddable = this.modalAddable.bind(this)
         this.addTemplate = this.addTemplate.bind(this)
         this.uploadExcel = this.uploadExcel.bind(this)
+        this.renderTemplateItem = this.renderTemplateItem.bind(this)
         this.deleteThingModalToggle = this.deleteThingModalToggle.bind(this)
         this.deleteThing = this.deleteThing.bind(this)
         this.manageToastAlerts = this.manageToastAlerts.bind(this)
@@ -429,12 +430,26 @@ class ProjectsManage extends Component {
 
     renderScenarioItem(scenario) {
         return (
-            <ListGroupItem className="justify-content-between">
+            <ListGroupItem active={scenario.is_active} className="justify-content-between">
                 {scenario.name}
-                <Button className="ml-1 float-left" onClick={()=>{
+                <Button className="ml-1 float-left" onClick={() => {
                     window.location = '#/scenario'
                 }} color="warning" size="sm">ویرایش</Button>
-                <Button className="ml-1 float-left" color="success" size="sm">نمایش</Button>
+                <Button onClick={() => {
+                    this.props.dispatch(activateScenarioAction(this.state.project._id, scenario._id))
+                }} disabled={scenario.is_active} className="ml-1 float-left" color="success" size="sm">فعال
+                    سازی</Button>
+            </ListGroupItem>
+        )
+    }
+
+
+    renderTemplateItem(template) {
+        return (
+            <ListGroupItem className="justify-content-between">
+                {template.name}
+                <Button className="ml-1 float-left" color="danger" size="sm">حذف</Button>
+                <Button className="ml-1 float-left" color="warning" size="sm">ویرایش</Button>
             </ListGroupItem>
         )
     }
@@ -454,8 +469,10 @@ class ProjectsManage extends Component {
                         })
                     }}
                             color="success" size="sm">فعال سازی</Button>
-                    <Button  className="ml-1" color="warning" size="sm">ویرایش</Button>
-                    <Button onClick={()=>{
+                    <Button onClick={() => {
+                        window.location = `#/things/${thing._id}/${thing._id}`
+                    }} className="ml-1" color="warning" size="sm">ویرایش</Button>
+                    <Button onClick={() => {
                         window.location = `#/codec/${this.state.project._id}/${thing._id}`
                     }} className="ml-1" color="secondary" size="sm">ارسال codec</Button>
                     <Button onClick={this.dataModalToggle} className="ml-1" color="primary" size="sm">ارسال
@@ -541,7 +558,7 @@ class ProjectsManage extends Component {
     }
 
     renderScenarios() {
-        console.log('this.state.project.scenarios',this.state.project)
+        console.log('this.state.project.scenarios', this.state.project)
         if (this.state.project.scenarios)
             return (this.state.project.scenarios.map(scenario => {
                 return (this.renderScenarioItem(scenario))
@@ -550,8 +567,8 @@ class ProjectsManage extends Component {
 
     renderCodecs() {
         if (this.state.project.templates)
-            return (this.state.project.templates.map(scenario => {
-                return (this.renderScenarioItem(scenario))
+            return (this.state.project.templates.map(template => {
+                return (this.renderTemplateItem(template))
             }))
     }
 

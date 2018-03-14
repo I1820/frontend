@@ -47,6 +47,7 @@ import {
     newDownlink as newDownlinkAPI,
 } from '../api/index'
 import {
+    activateScenario,
     activeThing, createTemplate, createThingProfile, getCodecTemplateList, getThingProfileList,
     viewProfile
 } from "../api";
@@ -704,6 +705,22 @@ export function createCodecAction(thingId, projectId, code, cb) {
 export function createTemplateAction(projectId, data) {
     return (dispatch) => {
         const promise = createTemplate(projectId,data, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                forwardTo(`projects/manage/${projectId}`)
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((err) => {
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
+}
+
+export function activateScenarioAction(projectId,scenarioId) {
+    return (dispatch) => {
+        const promise = activateScenario(projectId,scenarioId, dispatch)
         promise.then((response) => {
             console.log(response)
             if (response.status === 'OK') {

@@ -267,7 +267,7 @@ module.exports.newDownlink = function (projectId, thingId, data, dispatch) {
     return fetchData(`/project/${projectId}/things/${thingId}/send`, config, dispatch)
 }
 
-module.exports.createTemplate = function (projectId,data, dispatch) {
+module.exports.createTemplate = function (projectId, data, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
     return fetchData(`/project/${projectId}/codec`, config, dispatch)
@@ -275,4 +275,8 @@ module.exports.createTemplate = function (projectId,data, dispatch) {
 
 module.exports.getCodecTemplateList = function (projectId, dispatch) {
     return fetchData(`/project/${projectId}/codec`, getConfig(), dispatch)
+}
+
+module.exports.activateScenario = function (projectId, scenarioId, dispatch) {
+    return fetchData(`/project/${projectId}/scenario/${scenarioId}/activate`, getConfig(), dispatch)
 }
