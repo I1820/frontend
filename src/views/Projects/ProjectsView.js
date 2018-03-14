@@ -479,23 +479,13 @@ class ProjectsView extends Component {
                             {this.state.data.map((data, key) => {
                                 return (
                                     <tr>
-<<<<<<< HEAD
-                                        <th>{key+1}</th>
-                                        <td className="english">{data.timestamp.$date}</td>
-                                        <td style={{textAlign:'left'}}><JSONPretty id="json-pretty" json={data.data}/></td>
-                                        <td>مقدار</td>
-                                        <td>مقدار</td>
-                                        <td>مقدار</td>
-=======
                                         <th>{key + 1}</th>
                                         <td>{moment(data.timestamp.$date, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}</td>
                                         <td>{data.thingid}</td>
                                         <td style={{textAlign: 'left', direction: 'ltr'}}><JSONPretty id="json-pretty"
                                                                                                       json={data.data}/>
                                         </td>
->>>>>>> 0a5ba5f6450e846c52af92e5677a02717e60d11d
                                     </tr>
-
                                 )
                             })}
                             </tbody>
