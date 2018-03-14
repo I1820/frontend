@@ -576,9 +576,7 @@ export function createGatewayAction(data, cb) {
     return (dispatch) => {
         const promise = createGatewayAPI(data, dispatch)
         promise.then((response) => {
-            console.log(response);
             if (response.status === 'OK') {
-                window.location = '#/gateways/list'
                 cb(true)
             } else {
                 cb(false, response.result)

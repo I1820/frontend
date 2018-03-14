@@ -22,7 +22,11 @@ body{
     font-family: 'Vazir';
 }
 
-textarea, input, select{
+.english{
+    font-family: 'Tahoma';
+}
+
+textarea, input, select, label{
     font-family: 'Tahoma';
 }
 
@@ -62,6 +66,7 @@ textarea, input, select{
     z-index: 1000;
 
 }
+
 
 
 // Media Queries
