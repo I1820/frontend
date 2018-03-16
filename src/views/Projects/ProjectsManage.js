@@ -470,7 +470,7 @@ class ProjectsManage extends Component {
                     }}
                             color="success" size="sm">فعال سازی</Button>
                     <Button onClick={() => {
-                        window.location = `#/things/${thing._id}/${thing._id}`
+                        window.location = `#/things/${this.state.project._id}/${thing._id}`
                     }} className="ml-1" color="warning" size="sm">ویرایش</Button>
                     <Button onClick={() => {
                         window.location = `#/codec/${this.state.project._id}/${thing._id}`

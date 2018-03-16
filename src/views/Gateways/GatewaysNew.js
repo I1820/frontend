@@ -13,14 +13,14 @@ import {
     Input
 } from 'reactstrap';
 
-import { GoogleMap, Marker, withGoogleMap, withScriptjs } from "react-google-maps"
-import { createGatewayAction } from "../../actions/AppActions";
+import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
+import {createGatewayAction} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
 import Spinner from "../Spinner/Spinner";
 
-import { ToastContainer, toast } from 'react-toastify';
-import { css } from 'glamor';
-import { style } from "react-toastify";
+import {ToastContainer, toast} from 'react-toastify';
+import {css} from 'glamor';
+import {style} from "react-toastify";
 
 
 style({
@@ -28,116 +28,116 @@ style({
 });
 
 const _ = require("lodash");
-const { compose, withProps, lifecycle } = require("recompose");
-const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox");
+const {compose, withProps, lifecycle} = require("recompose");
+const {SearchBox} = require("react-google-maps/lib/components/places/SearchBox");
 
 const MapWithASearchBox = compose(
-  withProps({
-    googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
-    loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `400px` }} />,
-    mapElement: <div style={{ height: `100%` }} />,
-  }),
-  lifecycle({
-    componentWillMount() {
-      const refs = {}
+    withProps({
+        googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
+        loadingElement: <div style={{height: `100%`}}/>,
+        containerElement: <div style={{height: `400px`}}/>,
+        mapElement: <div style={{height: `100%`}}/>,
+    }),
+    lifecycle({
+        componentWillMount() {
+            const refs = {}
 
-      this.setState({
-        bounds: null,
-        center: {
-          lat: 35.7024852, lng: 51.4023424
-        },
-        marker: {
-          lat: 35.7024852, lng: 51.4023424
-        },
-        onMapMounted: ref => {
-          refs.map = ref;
-        },
-        onBoundsChanged: () => {
-          this.setState({
-            bounds: refs.map.getBounds(),
-            center: refs.map.getCenter(),
-          })
-        },
-        onSearchBoxMounted: ref => {
-          refs.searchBox = ref;
-        },
-        onClick: data => {
-            document.getElementById('fld_lat').value = data.latLng.lat()
-            document.getElementById('fld_lng').value = data.latLng.lng()
             this.setState({
+                bounds: null,
                 center: {
-                    lat: data.latLng.lat(),
-                    lng: data.latLng.lng()
+                    lat: 35.7024852, lng: 51.4023424
                 },
                 marker: {
-                    lat: data.latLng.lat(),
-                    lng: data.latLng.lng()
+                    lat: 35.7024852, lng: 51.4023424
+                },
+                onMapMounted: ref => {
+                    refs.map = ref;
+                },
+                onBoundsChanged: () => {
+                    this.setState({
+                        bounds: refs.map.getBounds(),
+                        center: refs.map.getCenter(),
+                    })
+                },
+                onSearchBoxMounted: ref => {
+                    refs.searchBox = ref;
+                },
+                onClick: data => {
+                    document.getElementById('fld_lat').value = data.latLng.lat()
+                    document.getElementById('fld_lng').value = data.latLng.lng()
+                    this.setState({
+                        center: {
+                            lat: data.latLng.lat(),
+                            lng: data.latLng.lng()
+                        },
+                        marker: {
+                            lat: data.latLng.lat(),
+                            lng: data.latLng.lng()
+                        },
+                    })
+                },
+                onPlacesChanged: () => {
+                    const places = refs.searchBox.getPlaces();
+                    const bounds = new google.maps.LatLngBounds();
+
+                    places.forEach(place => {
+                        if (place.geometry.viewport) {
+                            bounds.union(place.geometry.viewport)
+                        } else {
+                            bounds.extend(place.geometry.location)
+                        }
+                    });
+                    const nextMarkers = places.map(place => ({
+                        position: place.geometry.location,
+                    }));
+                    const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
+
+                    this.setState({
+                        center: nextCenter,
+                        markers: nextMarkers,
+                    });
+                    // refs.map.fitBounds(bounds);
                 },
             })
         },
-        onPlacesChanged: () => {
-          const places = refs.searchBox.getPlaces();
-          const bounds = new google.maps.LatLngBounds();
-
-          places.forEach(place => {
-            if (place.geometry.viewport) {
-              bounds.union(place.geometry.viewport)
-            } else {
-              bounds.extend(place.geometry.location)
-            }
-          });
-          const nextMarkers = places.map(place => ({
-            position: place.geometry.location,
-          }));
-          const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
-
-          this.setState({
-            center: nextCenter,
-            markers: nextMarkers,
-          });
-          // refs.map.fitBounds(bounds);
-        },
-      })
-    },
-  }),
-  withScriptjs,
-  withGoogleMap
+    }),
+    withScriptjs,
+    withGoogleMap
 )(props =>
-  <GoogleMap
-    ref={props.onMapMounted}
-    defaultZoom={12}
-    center={props.center}
-    onBoundsChanged={props.onBoundsChanged}
-    onClick={props.onClick}
-  >
-    <SearchBox
-      ref={props.onSearchBoxMounted}
-      bounds={props.bounds}
-      controlPosition={google.maps.ControlPosition.TOP_LEFT}
-      onPlacesChanged={props.onPlacesChanged}
+    <GoogleMap
+        ref={props.onMapMounted}
+        defaultZoom={12}
+        center={props.center}
+        onBoundsChanged={props.onBoundsChanged}
+        onClick={props.onClick}
     >
-      <input
-        type="text"
-        placeholder="Customized your placeholder"
-        style={{
-          boxSizing: `border-box`,
-          border: `1px solid transparent`,
-          width: `240px`,
-          height: `32px`,
-          marginTop: `10px`,
-          textAlign: 'left',
-          padding: `0 12px`,
-          borderRadius: `3px`,
-          boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-          fontSize: `14px`,
-          outline: `none`,
-          textOverflow: `ellipses`,
-        }}
-      />
-    </SearchBox>
-    <Marker position={props.marker} />
-  </GoogleMap>
+        <SearchBox
+            ref={props.onSearchBoxMounted}
+            bounds={props.bounds}
+            controlPosition={google.maps.ControlPosition.TOP_LEFT}
+            onPlacesChanged={props.onPlacesChanged}
+        >
+            <input
+                type="text"
+                placeholder="Customized your placeholder"
+                style={{
+                    boxSizing: `border-box`,
+                    border: `1px solid transparent`,
+                    width: `240px`,
+                    height: `32px`,
+                    marginTop: `10px`,
+                    textAlign: 'left',
+                    padding: `0 12px`,
+                    borderRadius: `3px`,
+                    boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+                    fontSize: `14px`,
+                    outline: `none`,
+                    textOverflow: `ellipses`,
+                }}
+            />
+        </SearchBox>
+        <Marker position={props.marker}/>
+    </GoogleMap>
 );
 
 
@@ -150,14 +150,14 @@ class GatewaysNew extends Component {
         this.submitForm = this.submitForm.bind(this)
         this.manageToastAlerts = this.manageToastAlerts.bind(this)
 
-        this.state ={
-            mac:""
+        this.state = {
+            mac: ""
         }
     }
 
-    manageToastAlerts(status) {
+    manageToastAlerts(status,message) {
 
-        if(status === true) {
+        if (status) {
             window.location = '#/gateways/list'
 
 
@@ -172,7 +172,7 @@ class GatewaysNew extends Component {
                 })
             });
         } else {
-            toast(status, {
+            toast(message, {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 className: css({
                     background: '#fee2e1',
@@ -222,24 +222,24 @@ class GatewaysNew extends Component {
                             <FormGroup row>
                                 <Label sm={2}>مقدار Lat : </Label>
                                 <Col sm={5}>
-                                    <Input type="text" id="fld_lat" dir="ltr" />
+                                    <Input type="text" id="fld_lat" dir="ltr"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>مقدار Long : </Label>
                                 <Col sm={5}>
-                                    <Input dir="ltr" id="fld_lng" type="text" />
+                                    <Input dir="ltr" id="fld_lng" type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>مقدار Altitude : </Label>
                                 <Col sm={5}>
-                                <Input type="text" dir="ltr"
-                                    onChange={event => this.setState({altitude: event.target.value})} />
+                                    <Input type="text" dir="ltr"
+                                           onChange={event => this.setState({altitude: event.target.value})}/>
                                 </Col>
                             </FormGroup>
 
-                            <MapWithASearchBox />
+                            <MapWithASearchBox/>
 
                         </Form>
                     </CardBody>
@@ -279,13 +279,14 @@ class GatewaysNew extends Component {
 
     submitForm() {
         this.props.dispatch(createGatewayAction({
-            name: this.state.name,
-            mac: this.formatMAC(this.state.mac).replace(/:/g,''),
-            description: this.state.description,
-            latitude: document.getElementById('fld_lng').value,
-            longitude: document.getElementById('fld_lng').value,
-            altitude: this.state.altitude,
-        }, this.manageToastAlerts))
+                name: this.state.name,
+                mac: this.formatMAC(this.state.mac).replace(/:/g, ''),
+                description: this.state.description,
+                latitude: document.getElementById('fld_lng').value,
+                longitude: document.getElementById('fld_lng').value,
+                altitude: this.state.altitude
+            },
+            this.manageToastAlerts))
     }
 }
 
