@@ -35,6 +35,16 @@ export default {
         url: '/payment-portal/management',
         icon: 'icon-grid',
     },
+    {
+        name: 'مدیریت بسته‌ها',
+        url: '/Package/Managment',
+        icon: 'icon-grid',
+    },
+    {
+        name: 'مدیریت کاربران',
+        url: '/Users/Managment',
+        icon: 'icon-grid',
+    },
     // {
     //     name: 'اشیاء',
     //     url: '/things',

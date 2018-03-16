@@ -25,7 +25,9 @@
 
 import {
     SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
-    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST
+    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
+    NEW_PACKAGE, SELECT_USER
+
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -309,6 +311,14 @@ export function selectThing(newState = NEW_OBJECT) {
     return {type: SELECT_PROJECT, newState}
 }
 
+export function NewPackage(newState = NEW_OBJECT) {
+    newState !== NEW_OBJECT ? forwardTo('package/edit' + newState) : forwardTo('package/new')
+    return {type: NEW_PACKAGE, newState}
+}
+export function SelectUser(newState = NEW_OBJECT){
+    forwardTo('user/info/' + newState)
+    return {type: SELECT_USER, newState}
+}
 /**
  * Sets the requestSending state, which displays a loading indicator during requests
  * @param  {boolean} sending The new state the app should have
