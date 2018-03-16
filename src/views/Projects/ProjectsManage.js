@@ -71,7 +71,7 @@ class ProjectsManage extends Component {
     }
 
     downLinksAdd() {
-        alert()
+        // alert()
     }
 
     deleteThing() {
@@ -459,7 +459,7 @@ class ProjectsManage extends Component {
             <tr id={key}>
                 <th>{key + 1}</th>
                 <td>{thing.name}</td>
-                <td>{thing.interface.devEUI}</td>
+                <td className="english">{thing.interface.devEUI}</td>
                 <td>{thing.type}</td>
                 <td>
                     <Button className="ml-1" onClick={() => {

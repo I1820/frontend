@@ -45,34 +45,42 @@ class Register extends Component {
     }
 
     realRegister() {
-        this.props.dispatch(register({
-            'legal': 0,
-            'name': this.state.realFirstName + ' ' + this.state.realLastName,
-            'email': this.state.realEmail,
-            'mobile': this.state.realMobile,
-            'password': this.state.realPassword,
-            'other_info': JSON.stringify({
-                'phone': this.state.realTel,
-                'address': this.state.realAddress,
-            })
-        }, this.manageToastAlerts))
+        if( this.state.realPassword == this.state.realPasswordRepeat ) {
+            this.props.dispatch(register({
+                'legal': 0,
+                'name': this.state.realFirstName + ' ' + this.state.realLastName,
+                'email': this.state.realEmail,
+                'mobile': this.state.realMobile,
+                'password': this.state.realPassword,
+                'other_info': JSON.stringify({
+                    'phone': this.state.realTel,
+                    'address': this.state.realAddress,
+                })
+            }, this.manageToastAlerts))
+        } else {
+            this.manageToastAlerts('رمز عبور با تکرار برابر نیست')
+        }
     }
 
     legalRegister() {
-        this.props.dispatch(register({
-            'legal': 1,
-            'email': this.state.legalEmail,
-            'password': this.state.legalPassword,
-            'mobile': this.state.legalMobile,
-            'org_interface_name': this.state.legalFirstName,
-            'org_interface_last_name': this.state.legalLastName,
-            'org_interface_phone': this.state.legalPhone,
-            'org_interface_mobile': this.state.legalMobile,
-            'type': this.state.legalOrgType,
-            'org_name': this.state.legalOrgName,
-            'reg_number': this.state.legalOrgRegName,
-            'ec_code': this.state.legalEcCode,
-        }, this.manageToastAlerts))
+        if( this.state.legalPasswordRepeat == this.state.legalPassword ) {
+            this.props.dispatch(register({
+                'legal': 1,
+                'email': this.state.legalEmail,
+                'password': this.state.legalPassword,
+                'mobile': this.state.legalMobile,
+                'org_interface_name': this.state.legalFirstName,
+                'org_interface_last_name': this.state.legalLastName,
+                'org_interface_phone': this.state.legalPhone,
+                'org_interface_mobile': this.state.legalMobile,
+                'type': this.state.legalOrgType,
+                'org_name': this.state.legalOrgName,
+                'reg_number': this.state.legalOrgRegName,
+                'ec_code': this.state.legalEcCode,
+            }, this.manageToastAlerts))
+        } else {
+            this.manageToastAlerts('رمز عبور با تکرار برابر نیست')
+        }
     }
 
     manageToastAlerts(status) {
@@ -218,6 +226,16 @@ class Register extends Component {
                           onChange={event => this.setState({realPassword: event.target.value})} />
                         </InputGroup>
 
+                        <InputGroup className="mb-4">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="icon-lock"></i>
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input type="password" placeholder="تکرار کلمه عبور"
+                          onChange={event => this.setState({realPasswordRepeat: event.target.value})} />
+                        </InputGroup>
+
                         <Button color="success" onClick={this.realRegister} block>ثبت نام</Button>
                         <Button color="primary" onClick={this.goTologinPage} block>بازگشت به لاگین</Button>
 
@@ -329,6 +347,16 @@ class Register extends Component {
                           </InputGroupAddon>
                           <Input type="password" placeholder="کلمه عبور"
                           onChange={event => this.setState({legalPassword: event.target.value})} />
+                        </InputGroup>
+
+                        <InputGroup className="mb-4">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              <i className="icon-lock"></i>
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input type="password" placeholder="تکرار کلمه عبور"
+                          onChange={event => this.setState({legalPasswordRepeat: event.target.value})} />
                         </InputGroup>
 
                         <Button color="success" onClick={this.legalRegister} block>ثبت نام</Button>

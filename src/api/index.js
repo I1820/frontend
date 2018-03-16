@@ -180,10 +180,10 @@ module.exports.createThing = function (data, projectId, dispatch) {
 //     return fetchData('/project/' + projectId + '/things/' + thingId, projectControler.find, getConfig(), dispatch)
 // }
 //
-// module.exports.getProjectData = function (thingId,offset,limit, dispatch) {
-//     return fetchData('/thing/' + thingId +'/data?offset='+offset+'&count='+limit, projectControler.find, getConfig(), dispatch)
-// }
-//
+module.exports.getProjectData = function (thingId,projectId,offset,limit, dispatch) {
+    return fetchData(`/project/${projectId}/things/${thingId}/data?offset=${offset}&count=${limit}`,getConfig(), dispatch)
+}
+
 
 module.exports.createCodec = function (data, thingId, projectId, dispatch) {
     const config = postConfig()
@@ -254,7 +254,8 @@ module.exports.deleteDeviceProfile = function (profileId, dispatch) {
 };
 
 module.exports.getSingleGateway = function (id, dispatch) {
-    return fetchData(endpoints.getGateway + '/' + id, getConfig(), dispatch)
+    const config = getConfig()
+    return fetchData('/gateway/' + id, getConfig(), dispatch)
 }
 
 module.exports.deleteThing = function (projectId, thingId, dispatch) {

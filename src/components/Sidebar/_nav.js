@@ -14,19 +14,19 @@ export default {
     },
 
     {
-        name: 'Projects',
+        name: 'پروژه ها',
         url: '/projects/list',
         icon: 'icon-layers',
     },
 
     {
-        name: 'Gateways',
+        name: 'گذرگاه ها',
         url: '/gateways/list',
         icon: 'icon-direction',
     },
 
     {
-        name: 'Device Profile',
+        name: 'اطلاعات دستگاه',
         url: '/device-profile/list',
         icon: 'icon-grid',
     },
