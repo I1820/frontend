@@ -2,19 +2,19 @@
 @font-face {
     font-family: 'Vazir';
 
-    src: url('../Public/fonts/vazir/Vazir-Light-FD.eot');
-    src: url('../Public/fonts/vazir/Vazir-Light-FD.eot?#iefix') format('embedded-opentype'),
-       url('../Public/fonts/vazir/Vazir-Light-FD.woff') format('woff'),
-       url('../Public/fonts/vazir/Vazir-Light-FD.ttf') format('truetype');
+    src: url('../public/fonts/vazir/Vazir-Light-FD.eot');
+    src: url('../public/fonts/vazir/Vazir-Light-FD.eot?#iefix') format('embedded-opentype'),
+       url('../public/fonts/vazir/Vazir-Light-FD.woff') format('woff'),
+       url('../public/fonts/vazir/Vazir-Light-FD.ttf') format('truetype');
     font-weight: normal;
 }
 
 @font-face {
     font-family: 'Vazir';
-    src: url('../Public/fonts/vazir/Vazir-Bold-FD.eot');
-    src: url('../Public/fonts/vazir/Vazir-Bold-FD.eot?#iefix') format('embedded-opentype'),
-       url('../Public/fonts/vazir/Vazir-Bold-FD.woff') format('woff'),
-       url('../Public/fonts/vazir/Vazir-Bold-FD.ttf') format('truetype');
+    src: url('../public/fonts/vazir/Vazir-Bold-FD.eot');
+    src: url('../public/fonts/vazir/Vazir-Bold-FD.eot?#iefix') format('embedded-opentype'),
+       url('../public/fonts/vazir/Vazir-Bold-FD.woff') format('woff'),
+       url('../public/fonts/vazir/Vazir-Bold-FD.ttf') format('truetype');
     font-weight: bold;
 }
 
@@ -56,7 +56,7 @@ textarea, input, select, label{
 
     position: absolute;
     background-color: rgba(0,0,0,0.6);
-    background-image: url('../Public/img/spinner.gif');
+    background-image: url('../public/img/spinner.gif');
     background-position: center;
     background-repeat: no-repeat;
     top: 0px;
@@ -92,14 +92,22 @@ textarea, input, select, label{
 }
 
 
+//calender
+.JDatePicker .JDheader select {
+    width: 90% !important;
+}
 
+#dateTimePicker{
+    width: 100% !important;
+}
 
+.JDatePicker button {
+    width: 20% !important;
+}
 
-
-
-
-
-
+.JDatePicker {
+    background: #CFD8DC !important;
+}
 
 
 // END

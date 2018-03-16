@@ -576,6 +576,7 @@ export function createGatewayAction(data, cb) {
     return (dispatch) => {
         const promise = createGatewayAPI(data, dispatch)
         promise.then((response) => {
+
             if (response.status === 'OK') {
                 cb(true)
             } else {
