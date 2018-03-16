@@ -49,7 +49,7 @@ import {
 } from '../api/index'
 import {
     activateScenario,
-    activeThing, createTemplate, createThingProfile, getCodecTemplateList, getThingProfileList,
+    activeThing, createTemplate, createThingProfile, getCodec, getCodecTemplateList, getThingProfileList,
     viewProfile
 } from "../api";
 
@@ -173,9 +173,9 @@ export function getThings() {
     }
 }
 
-export function getThing(id) {
+export function getThingAction(projectId, thingId) {
     return (dispatch) => {
-        const promise = getThingAPI(id, dispatch)
+        const promise = getThingAPI(projectId, thingId, dispatch)
         promise.then((response) => {
             console.log('promise', response)
             if (response.status === 'OK') {
@@ -188,14 +188,15 @@ export function getThing(id) {
 }
 
 
-export function editThing(id, data) {
+export function editThingAction(projectId, thingId, data, cb) {
     return (dispatch) => {
-        const promise = editThingAPI(id, data, dispatch)
+        const promise = editThingAPI(projectId, thingId, data, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 dispatch(setThing(response.result))
-                forwardTo('things')
+                forwardTo(`projects/manage/${projectId}`)
             } else {
+                cb(false, response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         })
@@ -670,6 +671,22 @@ export function newDownlinkAction(projectId, thingId, data, cb) {
 
 /*  codec actions */
 
+
+export function getCodecAction(thingId, projectId, cb) {
+    return (dispatch) => {
+        const promise = getCodec(thingId, projectId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                if (cb)
+                    cb(true, response.result.codec)
+            } else {
+                cb(false)
+            }
+        })
+    }
+}
+
+
 export function getCodecTemplateListAction(projectId, cb) {
     return (dispatch) => {
         const promise = getCodecTemplateList(projectId, dispatch)
@@ -684,9 +701,9 @@ export function getCodecTemplateListAction(projectId, cb) {
     }
 }
 
-export function createCodecAction(thingId, projectId, code, cb) {
+export function createCodecAction(thingId, projectId, codec, cb) {
     return (dispatch) => {
-        const promise = createCodecAPI({code}, thingId, projectId, dispatch)
+        const promise = createCodecAPI({codec}, thingId, projectId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 cb(true)
@@ -724,7 +741,7 @@ export function activateScenarioAction(projectId, scenarioId) {
         promise.then((response) => {
             console.log(response)
             if (response.status === 'OK') {
-                forwardTo(`projects/manage/${projectId}`)
+                window.location.reload()
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }

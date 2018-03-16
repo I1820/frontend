@@ -16,10 +16,9 @@ import 'brace/mode/python';
 import 'brace/snippets/python';
 import 'brace/ext/language_tools';
 import {
-    connectThing, createCodecAction, createScenario, getCodecTemplateListAction,
-    getThingProfileListAction
-} from "../../actions/AppActions";
+    createCodecAction, getCodecAction, getCodecTemplateListAction} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
+import Spinner from "../Spinner/Spinner";
 
 class AddScenario extends Component {
 
@@ -29,7 +28,7 @@ class AddScenario extends Component {
         this.sendCodec = this.sendCodec.bind(this)
 
         this.state = {
-            code: "",
+            codec: "",
             templates: []
         }
     }
@@ -42,17 +41,25 @@ class AddScenario extends Component {
             thing: splitedUrl[6]
         })
         this.props.dispatch(getCodecTemplateListAction(splitedUrl[5], (status, templates) => {
+            this.props.dispatch(getCodecAction(splitedUrl[6], splitedUrl[5], (status, codec) => {
+                if (status)
+                    this.setState({
+                        codec
+                    })
+            }))
             if (status)
                 this.setState({
                     templates
                 })
         }))
+
     }
 
 
     render() {
         return (
             <div>
+                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">ویرایشگر codec</CardTitle>
@@ -66,7 +73,7 @@ class AddScenario extends Component {
                                         console.log(this.state.templates[event.target.value])
                                         if (event.target.value !== '') {
                                             this.setState({
-                                                code: this.state.templates[event.target.value].code
+                                                codec: this.state.templates[event.target.value].code
                                             })
                                         }
                                     }}>
@@ -77,12 +84,12 @@ class AddScenario extends Component {
                             </FormGroup>
                             <FormGroup row>
                                 <AceEditor
-                                    onChange={(code) => this.state.code = code}
+                                    onChange={(code) => this.state.codec = code}
                                     mode="python"
                                     theme="monokai"
                                     className="col-md-12"
                                     name="UNIQUE_ID_OF_DIV"
-                                    value={this.state.code}
+                                    value={this.state.codec}
                                     fontSize={14}
                                     showPrintMargin={true}
                                     showGutter={true}
@@ -116,7 +123,7 @@ class AddScenario extends Component {
     }
 
     sendCodec() {
-        this.props.dispatch(createCodecAction(this.state.thing, this.state.project, this.state.code, this.callback))
+        this.props.dispatch(createCodecAction(this.state.thing, this.state.project, this.state.codec, this.callback))
     }
 
     callback() {

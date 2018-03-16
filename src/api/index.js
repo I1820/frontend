@@ -135,11 +135,11 @@ module.exports.getProject = function (id, dispatch) {
 //
 //
 //
-// module.exports.editThing = function (id,data,dispatch) {
-//     const config = patchConfig()
-//     Object.assign(config, {body: getFormData(data)})
-//     return fetchData(endpoints.editThing + '/' + id, projectControler.edit, config, dispatch)
-// }
+module.exports.editThing = function (projectId, thingId, data, dispatch) {
+    const config = patchConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/project/${projectId}/things/${thingId}`, config, dispatch)
+}
 //
 module.exports.editProject = function (id, data, dispatch) {
     const config = patchConfig()
@@ -161,10 +161,10 @@ module.exports.editProject = function (id, data, dispatch) {
 //     return fetchData(endpoints.listThings, projectControler.list, getConfig(), dispatch)
 // }
 //
-// module.exports.getThing = function (id, dispatch) {
-//     return fetchData(endpoints.getThing + '/' + id, projectControler.find, getConfig(), dispatch)
-// }
-//
+module.exports.getThing = function (projectId, thingId, dispatch) {
+    return fetchData(`/project/${projectId}/things/${thingId}`, getConfig(), dispatch)
+}
+
 module.exports.getGateways = function (dispatch) {
     return fetchData('/gateway', getConfig(), dispatch)
 }
@@ -179,8 +179,8 @@ module.exports.createThing = function (data, projectId, dispatch) {
 //     return fetchData('/project/' + projectId + '/things/' + thingId, projectControler.find, getConfig(), dispatch)
 // }
 //
-module.exports.getProjectData = function (thingId,projectId,offset,limit, dispatch) {
-    return fetchData(`/project/${projectId}/things/${thingId}/data?offset=${offset}&count=${limit}`,getConfig(), dispatch)
+module.exports.getProjectData = function (thingId, projectId, offset, limit, dispatch) {
+    return fetchData(`/project/${projectId}/things/${thingId}/data?offset=${offset}&count=${limit}`, getConfig(), dispatch)
 }
 
 
@@ -280,4 +280,8 @@ module.exports.getCodecTemplateList = function (projectId, dispatch) {
 
 module.exports.activateScenario = function (projectId, scenarioId, dispatch) {
     return fetchData(`/project/${projectId}/scenario/${scenarioId}/activate`, getConfig(), dispatch)
+}
+
+module.exports.getCodec = function (thingId, projectId, dispatch) {
+    return fetchData(`/project/${projectId}/things/${thingId}/codec`, getConfig(), dispatch)
 }
