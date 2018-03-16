@@ -1,143 +1,133 @@
+@font-face {
+  font-family: 'Vazir';
+
+  src: url('../public/fonts/vazir/Vazir-Light-FD.eot');
+  src: url('../public/fonts/vazir/Vazir-Light-FD.eot?#iefix') format('embedded-opentype'),
+  url('../public/fonts/vazir/Vazir-Light-FD.woff') format('woff'),
+  url('../public/fonts/vazir/Vazir-Light-FD.ttf') format('truetype');
+  font-weight: normal;
+}
 
 @font-face {
-    font-family: 'Vazir';
-
-    src: url('../public/fonts/vazir/Vazir-Light-FD.eot');
-    src: url('../public/fonts/vazir/Vazir-Light-FD.eot?#iefix') format('embedded-opentype'),
-       url('../public/fonts/vazir/Vazir-Light-FD.woff') format('woff'),
-       url('../public/fonts/vazir/Vazir-Light-FD.ttf') format('truetype');
-    font-weight: normal;
+  font-family: 'Vazir';
+  src: url('../public/fonts/vazir/Vazir-Bold-FD.eot');
+  src: url('../public/fonts/vazir/Vazir-Bold-FD.eot?#iefix') format('embedded-opentype'),
+  url('../public/fonts/vazir/Vazir-Bold-FD.woff') format('woff'),
+  url('../public/fonts/vazir/Vazir-Bold-FD.ttf') format('truetype');
+  font-weight: bold;
 }
 
-@font-face {
-    font-family: 'Vazir';
-    src: url('../public/fonts/vazir/Vazir-Bold-FD.eot');
-    src: url('../public/fonts/vazir/Vazir-Bold-FD.eot?#iefix') format('embedded-opentype'),
-       url('../public/fonts/vazir/Vazir-Bold-FD.woff') format('woff'),
-       url('../public/fonts/vazir/Vazir-Bold-FD.ttf') format('truetype');
-    font-weight: bold;
+body {
+  font-family: 'Vazir';
 }
 
-body{
-    font-family: 'Vazir';
+.english {
+  font-family: 'Tahoma';
 }
 
-.english{
-    font-family: 'Tahoma';
-}
-
-textarea, input, select, label{
-    font-family: 'Tahoma';
+textarea, input, select, label {
+  font-family: 'Tahoma';
 }
 
 // Sidebar
-.sidebar .nav{
-    padding-right: 0px;
-    padding-left: 0px;
-    text-align: right;
+.sidebar .nav {
+  padding-right: 0px;
+  padding-left: 0px;
+  text-align: right;
 }
-
 
 // Header
-.app-header.navbar .navbar-brand{
-    background-size: 100%;
+.app-header.navbar .navbar-brand {
+  background-size: 100%;
 }
-
-
 
 // Modal
-.modal-open .modal{
-    background: rgba(0,0,0,0.5);
+.modal-open .modal {
+  background: rgba(0, 0, 0, 0.5);
 }
-
 
 // Spinner
-.spinner{
+.spinner {
 
-    position: absolute;
-    background-color: rgba(0,0,0,0.6);
-    background-image: url('../public/img/spinner.gif');
-    background-position: center;
-    background-repeat: no-repeat;
-    top: 0px;
-    left: 0px;
-    bottom: 0px;
-    right: 0px;
-    z-index: 1000;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  background-image: url('../public/img/spinner.gif');
+  background-position: center;
+  background-repeat: no-repeat;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  z-index: 1000;
 
 }
-
-
 
 // Media Queries
 @media screen and (max-width: 425px) {
 
-    .btn{
-        display: block;
-        width: 100%;
-        margin-bottom: 3px;
-    }
+  .btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 3px;
+  }
 
-    // Container
-    .main .container-fluid{
-        padding: 0px 15px;
-    }
+  // Container
+  .main .container-fluid {
+    padding: 0px 15px;
+  }
 
-    // Header
-    .app-header.navbar .navbar-brand{
-        position: fixed;
-    }
+  // Header
+  .app-header.navbar .navbar-brand {
+    position: fixed;
+  }
 
 }
 
 // cursor
-.cursorShape{
-    cursor: pointer;
+.cursorShape {
+  cursor: pointer;
 }
 
-.portal-style{
-    position: relative;
-    text-align: center;
-    border-radius: 2px;
-    background: #fff;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, .2), 0 -1px 10px rgba(0, 0, 0, .05);
-    -webkit-transition: box-shadow .2s ease-in-out;
-    transition: box-shadow .2s ease-in-out;
-    cursor: pointer;
-    border-top: 2px solid #fff;
-    border-bottom: 2px solid #fff;
-    background-position: 0 0, 100% 0;
-    background-repeat: no-repeat;
-    background-size: 2px 100%;
-    height: 120px;
-    width: 120px;
-  }
-
-    // Captcha
-    .g-recaptcha{
-        transform: scale(0.8);
-        right: -30px;
-        position: relative;
-    }
+.portal-style {
+  position: relative;
+  text-align: center;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .2), 0 -1px 10px rgba(0, 0, 0, .05);
+  -webkit-transition: box-shadow .2s ease-in-out;
+  transition: box-shadow .2s ease-in-out;
+  cursor: pointer;
+  border-top: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  background-position: 0 0, 100% 0;
+  background-repeat: no-repeat;
+  background-size: 2px 100%;
+  height: 120px;
+  width: 120px;
 }
 
+// Captcha
+.g-recaptcha {
+  transform: scale(0.8);
+  right: -30px;
+  position: relative;
+}
 
 //calender
 .JDatePicker .JDheader select {
-    width: 90% !important;
+  width: 90% !important;
 }
 
-#dateTimePicker{
-    width: 100% !important;
+#dateTimePicker {
+  width: 100% !important;
 }
 
 .JDatePicker button {
-    width: 20% !important;
+  width: 20% !important;
 }
 
 .JDatePicker {
-    background: #CFD8DC !important;
+  background: #CFD8DC !important;
 }
-
 
 // END
