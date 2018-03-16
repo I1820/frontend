@@ -42,6 +42,7 @@ class AddScenario extends Component {
     render() {
         return (
             <div>
+                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">ویرایشگر سناریو</CardTitle>

@@ -262,6 +262,16 @@ module.exports.deleteThing = function (projectId, thingId, dispatch) {
     return fetchData(`/project/${projectId}/things/${thingId}`, config, dispatch)
 };
 
+module.exports.deleteCodec = function (projectId, codecId, dispatch) {
+    const config = deleteConfig()
+    return fetchData(`/project/${projectId}/codec/${codecId}`, config, dispatch)
+};
+
+module.exports.deleteScenario = function (projectId, scenarioId, dispatch) {
+    const config = deleteConfig()
+    return fetchData(`/project/${projectId}/scenario/${scenarioId}`, config, dispatch)
+};
+
 module.exports.newDownlink = function (projectId, thingId, data, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})

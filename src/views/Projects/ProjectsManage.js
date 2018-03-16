@@ -22,7 +22,7 @@ import {
     editProjectAction,
     getProject,
     deleteThingAction,
-    getCodecTemplateListAction, activateScenarioAction,
+    getCodecTemplateListAction, activateScenarioAction, deleteCodecAction, deleteScenarioAction,
 } from "../../actions/AppActions";
 import Spinner from "../Spinner/Spinner";
 
@@ -50,11 +50,15 @@ class ProjectsManage extends Component {
         this.renderTemplateItem = this.renderTemplateItem.bind(this)
         this.deleteThingModalToggle = this.deleteThingModalToggle.bind(this)
         this.deleteThing = this.deleteThing.bind(this)
+        this.deleteCodec = this.deleteCodec.bind(this)
+        this.deleteSecnario = this.deleteSecnario.bind(this)
         this.manageToastAlerts = this.manageToastAlerts.bind(this)
         this.loadProject = this.loadProject.bind(this)
         this.downLinksAdd = this.downLinksAdd.bind(this)
         this.renderScenarios = this.renderScenarios.bind(this)
         this.renderCodecs = this.renderCodecs.bind(this)
+        this.deleteCodecModalToggle = this.deleteCodecModalToggle.bind(this)
+        this.deleteScenarioModalToggle = this.deleteScenarioModalToggle.bind(this)
 
         this.state = {
             OTAAmodal: false,
@@ -67,6 +71,10 @@ class ProjectsManage extends Component {
             ABP: {},
             deleteThingModal: false,
             deleteThingRowId: 0,
+            deleteCodecModal: false,
+            deleteCodecRowId: 0,
+            deleteScenarioModal: false,
+            deleteScenarioRowId: 0
         }
     }
 
@@ -75,6 +83,7 @@ class ProjectsManage extends Component {
     }
 
     deleteThing() {
+        this.deleteThingModalToggle(0)
         this.props.dispatch(deleteThingAction(
             this.state.project._id,
             this.state.deleteThingRowId,
@@ -82,12 +91,29 @@ class ProjectsManage extends Component {
         ))
     }
 
-    manageToastAlerts(status) {
+    deleteCodec() {
+        this.deleteCodecModalToggle(0)
+        this.props.dispatch(deleteCodecAction(
+            this.state.project._id,
+            this.state.deleteCodecRowId,
+            this.manageToastAlerts
+        ))
+    }
+    deleteSecnario() {
+        this.deleteScenarioModalToggle(0)
+        this.props.dispatch(deleteScenarioAction(
+            this.state.project._id,
+            this.state.deleteScenarioRowId,
+            this.manageToastAlerts
+        ))
+    }
+
+    manageToastAlerts(status,message) {
         if (status === true) {
-            this.deleteThingModalToggle()
+            // this.deleteThingModalToggle()
             this.loadProject()
 
-            toast('شی مورد نظر حذف شد', {
+            toast('آیتم مورد نظر حذف شد', {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 className: css({
                     background: '#dbf2e3',
@@ -98,7 +124,7 @@ class ProjectsManage extends Component {
                 })
             });
         } else {
-            toast(status, {
+            toast(message, {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 className: css({
                     background: '#fee2e1',
@@ -138,6 +164,21 @@ class ProjectsManage extends Component {
         });
     }
 
+    deleteCodecModalToggle(id) {
+        this.setState({
+            deleteCodecModal: !this.state.deleteCodecModal,
+            deleteCodecRowId: id
+        });
+    }
+
+    deleteScenarioModalToggle(id) {
+        this.setState({
+            deleteScenarioModal: !this.state.deleteScenarioModal,
+            deleteScenarioRowId: id
+        });
+    }
+
+
     loadProject() {
         const splitedUrl = window.location.href.split('/');
         if (splitedUrl[splitedUrl.length - 1]) {
@@ -154,6 +195,37 @@ class ProjectsManage extends Component {
                 <Spinner display={this.props.loading}/>
                 <ToastContainer className="text-right"/>
 
+                <Modal isOpen={this.state.deleteScenarioModal} toggle={this.deleteScenarioModalToggle} className="text-right">
+                    <ModalHeader>حذف شی</ModalHeader>
+                    <ModalBody>
+                        <h3>آیا از حذف سناریو مطمئن هستید ؟</h3>
+                        <br/>
+                        <h5>پس از حذف امکان برگشت اطلاعات وجود ندارد.</h5>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" className="ml-1" onClick={() => {
+                            this.deleteSecnario()
+                        }}>حذف</Button>
+                        <Button color="danger" onClick={this.deleteScenarioModalToggle}>انصراف</Button>
+                    </ModalFooter>
+                </Modal>
+
+                <Modal isOpen={this.state.deleteCodecModal} toggle={this.deleteCodecModalToggle} className="text-right">
+                    <ModalHeader>حذف شی</ModalHeader>
+                    <ModalBody>
+                        <h3>آیا از حذف قالب مطمئن هستید ؟</h3>
+                        <br/>
+                        <h5>پس از حذف امکان برگشت اطلاعات وجود ندارد.</h5>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" className="ml-1" onClick={() => {
+                            this.deleteCodec()
+                        }}>حذف</Button>
+                        <Button color="danger" onClick={this.deleteCodecModalToggle}>انصراف</Button>
+                    </ModalFooter>
+                </Modal>
+
+
                 <Modal isOpen={this.state.deleteThingModal} toggle={this.deleteThingModalToggle} className="text-right">
                     <ModalHeader>حذف شی</ModalHeader>
                     <ModalBody>
@@ -163,7 +235,7 @@ class ProjectsManage extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
-                            this.deleteThing(this.state.deleteRowId)
+                            this.deleteThing()
                         }}>حذف</Button>
                         <Button color="danger" onClick={this.deleteThingModalToggle}>انصراف</Button>
                     </ModalFooter>
@@ -432,6 +504,8 @@ class ProjectsManage extends Component {
         return (
             <ListGroupItem active={scenario.is_active} className="justify-content-between">
                 {scenario.name}
+                <Button onClick={() => this.deleteScenarioModalToggle(scenario._id)}
+                        className="ml-1 float-left" color="danger" size="sm">حذف</Button>
                 <Button className="ml-1 float-left" onClick={() => {
                     window.location = '#/scenario'
                 }} color="warning" size="sm">ویرایش</Button>
@@ -439,6 +513,7 @@ class ProjectsManage extends Component {
                     this.props.dispatch(activateScenarioAction(this.state.project._id, scenario._id))
                 }} disabled={scenario.is_active} className="ml-1 float-left" color="success" size="sm">فعال
                     سازی</Button>
+
             </ListGroupItem>
         )
     }
@@ -448,7 +523,8 @@ class ProjectsManage extends Component {
         return (
             <ListGroupItem className="justify-content-between">
                 {template.name}
-                <Button className="ml-1 float-left" color="danger" size="sm">حذف</Button>
+                <Button onClick={() => this.deleteCodecModalToggle(template._id)}
+                        className="ml-1 float-left" color="danger" size="sm">حذف</Button>
                 <Button className="ml-1 float-left" color="warning" size="sm">ویرایش</Button>
             </ListGroupItem>
         )
@@ -575,6 +651,8 @@ class ProjectsManage extends Component {
     addTemplate() {
         window.location = `#/template/${this.state.project._id}/new`
     }
+
+
 }
 
 function mapStateToProps(state) {
