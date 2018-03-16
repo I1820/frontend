@@ -17,6 +17,7 @@ import 'brace/snippets/python';
 import 'brace/ext/language_tools';
 import {connectThing, createScenario, getThingProfileListAction} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
+import Spinner from "../Spinner/Spinner";
 
 class AddScenario extends Component {
 
