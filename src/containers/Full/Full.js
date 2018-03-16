@@ -11,6 +11,9 @@ import Dashboard from '../../views/Dashboard/';
 
 import News from '../../views/News/';
 
+//Payment Portal Managment
+import PaymentPortalManagment from '../../views/PaymentPortalManagment/PamentPortalList.js'
+
 import Gateways from '../../views/Gateways/Gateways.js';
 import GatewaysNew from '../../views/Gateways/GatewaysNew.js';
 import GatewaysView from '../../views/Gateways/GatewaysView.js';
@@ -92,6 +95,8 @@ class Full extends Component {
                 <Route path="/gateways/view" name="GatewaysView" component={GatewaysView}/>
                 <Route path="/device-profile/list" name="DeviceProfile" component={DeviceProfile}/>
                 <Route path="/device-profile/new" name="DeviceProfileNew" component={DeviceProfileNew}/>
+
+                <Route path="/payment-portal/management" name="PaymentPortalManagment" component={PaymentPortalManagment}/>
 
                 <Route path="/scenario" name="addScenario" component={addScenario}/>
                 <Route path="/codec" name="addScenario" component={addCodec}/>
