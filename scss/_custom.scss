@@ -72,6 +72,12 @@ textarea, input, select, label{
 // Media Queries
 @media screen and (max-width: 425px) {
 
+    .btn{
+        display: block;
+        width: 100%;
+        margin-bottom: 3px;
+    }
+
     // Container
     .main .container-fluid{
         padding: 0px 15px;
