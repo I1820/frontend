@@ -26,8 +26,7 @@
 import {
     SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
     UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
-    NEW_PACKAGE, SELECT_USER
-
+    NEW_PACKAGE, SELECT_USER, SELECT_PACKAGE, PAYMENT_RESULT
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -319,6 +318,20 @@ export function SelectUser(newState = NEW_OBJECT){
     forwardTo('user/info/' + newState)
     return {type: SELECT_USER, newState}
 }
+export function selectPackage(newState = NEW_OBJECT) {
+    forwardTo('selectedPackage/' + newState)
+    return {type: SELECT_PACKAGE, newState}
+}
+
+export function resultOfPay(newState){
+    newState == 'success'?  forwardTo('paymentResult/S/'+newState) : forwardTo('paymentResult/F/'+newState)
+    //   console.log('status pay : '+ newState)
+    // forwardTo('paymentResultS/'+newState)
+    // console.log('status pay : '+ newState)
+    return{type: PAYMENT_RESULT, newState}
+
+}
+
 /**
  * Sets the requestSending state, which displays a loading indicator during requests
  * @param  {boolean} sending The new state the app should have

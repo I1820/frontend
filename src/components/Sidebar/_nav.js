@@ -18,7 +18,21 @@ export default {
         url: '/projects/list',
         icon: 'icon-layers',
     },
-
+    {
+        name: 'بسته‌ها',
+        url: '/packages',
+        icon: 'icon-puzzle',
+    },
+    {
+        name: 'بسته‌های خریداری شده',
+        url: '/buyedPackages',
+        icon: 'icon-puzzle',
+    },
+    {
+        name: 'تراکنش‌ها',
+        url: '/transactions',
+        icon: 'icon-puzzle',
+    },
     {
         name: 'گذرگاه ها',
         url: '/gateways/list',

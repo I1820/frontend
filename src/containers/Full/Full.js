@@ -34,6 +34,14 @@ import ProjectsList from '../../views/Projects/ProjectsList.js';
 import ProjectsManage from '../../views/Projects/ProjectsManage.js';
 import ProjectsView from '../../views/Projects/ProjectsView.js';
 
+//package
+import ShowPackages from '../../views/Packages'
+import SelectedPackage from '../../views/Packages/SelectedPackage'
+import SuccessPayment from '../../views/Packages/SuccessPayment'
+import UnSuccessPayment from '../../views/Packages/FailurePayment'
+import Transactions from '../../views/Packages/Transactions'
+import BuyedPackages from '../../views/Packages/BuyedPackage'
+
 import ThingsExcel from '../../views/Things/ThingsExcel.js';
 import ThingsList from '../../views/Things/ThingsList.js'
 import CreateThing from '../../views/Things/CreateThing.js'
@@ -118,6 +126,14 @@ class Full extends Component {
                 <Route path="/projects/list" name="ProjectsList" component={ProjectsList}/>
                 <Route path="/projects/manage" name="ProjectsManage" component={ProjectsManage}/>
                 <Route path="/projects/view" name="ProjectsView" component={ProjectsView}/>
+
+                <Route path="/packages" name="packages" component={ShowPackages}/>
+                <Route path="/selectedPackage/" name="selectedPackage" component={SelectedPackage}/>
+                <Route path="/paymentResult/S/" name="SuccessPayment" component={SuccessPayment}/>
+                <Route path="/paymentResult/F/" name="UnSuccessPayment" component={UnSuccessPayment}/>
+                <Route path="/transactions" name="Transactions" component={Transactions}/>
+                <Route path="/buyedPackages" name="BuyedPackages" component={BuyedPackages}/>
+
                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
                 <Route path="/things" name="createThing" component={CreateThing}/>
                 <Route path="/theme/colors" name="Colors" component={Colors}/>
