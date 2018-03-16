@@ -156,6 +156,7 @@ class GatewaysNew extends Component {
     }
 
     manageToastAlerts(status) {
+
         if(status === true) {
             window.location = '#/gateways/list'
 
@@ -251,6 +252,7 @@ class GatewaysNew extends Component {
     }
 
     formatMAC(value) {
+        return value
         if (value == undefined)
             value = ""
         const r = /([a-f0-9]{2})([a-f0-9]{2})/i
