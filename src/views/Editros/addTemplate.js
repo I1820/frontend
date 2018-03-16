@@ -15,8 +15,9 @@ import 'brace/theme/monokai';
 import 'brace/mode/python';
 import 'brace/snippets/python';
 import 'brace/ext/language_tools';
-import {connectThing, createScenario, createTemplateAction, getThingProfileListAction} from "../../actions/AppActions";
+import {createTemplateAction} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
+import Spinner from "../Spinner/Spinner";
 
 class AddScenario extends Component {
 
@@ -42,6 +43,7 @@ class AddScenario extends Component {
     render() {
         return (
             <div>
+                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">ویرایشگر قالب codec</CardTitle>

@@ -49,7 +49,8 @@ import {
 } from '../api/index'
 import {
     activateScenario,
-    activeThing, createTemplate, createThingProfile, getCodec, getCodecTemplateList, getThingProfileList,
+    activeThing, createTemplate, createThingProfile, deleteCodec, deleteScenario, getCodec, getCodecTemplateList,
+    getThingProfileList,
     viewProfile
 } from "../api";
 
@@ -486,7 +487,33 @@ export function deleteThingAction(projectId, thingId, cb) {
             if (response.status === 'OK') {
                 cb(true)
             } else {
-                cb(response.result)
+                cb(false,response.result)
+            }
+        })
+    }
+}
+
+export function deleteCodecAction(projectId, codecId, cb) {
+    return (dispatch) => {
+        const promise = deleteCodec(projectId, codecId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb(true)
+            } else {
+                cb(false,response.result)
+            }
+        })
+    }
+}
+
+export function deleteScenarioAction(projectId, scenarioId, cb) {
+    return (dispatch) => {
+        const promise = deleteScenario(projectId, scenarioId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb(true)
+            } else {
+                cb(false,response.result)
             }
         })
     }
