@@ -30,11 +30,11 @@ export default {
         url: '/device-profile/list',
         icon: 'icon-grid',
     },
-    {
-        name: 'مدیریت پرتال پرداخت',
-        url: '/payment-portal/management',
-        icon: 'icon-grid',
-    },
+    // {
+    //     name: 'مدیریت پرتال پرداخت',
+    //     url: '/payment-portal/management',
+    //     icon: 'icon-grid',
+    // },
     // {
     //     name: 'اشیاء',
     //     url: '/things',

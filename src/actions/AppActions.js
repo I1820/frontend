@@ -25,7 +25,8 @@
 
 import {
     SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
-    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST
+    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
+    SET_GATEWAY
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -588,7 +589,7 @@ export function createGatewayAction(data, cb) {
 }
 
 function setSingleGateway(newState) {
-    return {type: GET_GATEWAYS, newState}
+    return {type: SET_GATEWAY, newState}
 }
 
 export function getSingleGatewayAction(id) {
@@ -596,7 +597,7 @@ export function getSingleGatewayAction(id) {
         const promise = getSingleGatewayAPI(id, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                dispatch(setSingleGateway(response.result))
+                dispatch(setSingleGateway(response.result.gateway))
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }

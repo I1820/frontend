@@ -269,40 +269,6 @@ class DeviceProfileNew extends Component {
                     </CardFooter>
                 </Card>
 
-                <Card className="text-justify">
-                    <CardHeader>
-                        <CardTitle className="mb-0 font-weight-bold h6">ویرایشگر decoder</CardTitle>
-                    </CardHeader>
-                    <CardBody>
-                        <Form>
-                            <FormGroup row>
-                                <AceEditor
-                                    mode="python"
-                                    theme="monokai"
-                                    className="col-md-12"
-                                    name="UNIQUE_ID_OF_DIV"
-                                    fontSize={14}
-                                    showPrintMargin={true}
-                                    showGutter={true}
-                                    highlightActiveLine={true}
-                                    editorProps={{$blockScrolling: true}}
-                                    setOptions={{
-                                        enableBasicAutocompletion: true,
-                                        enableLiveAutocompletion: true,
-                                        enableSnippets: true,
-                                        showLineNumbers: true,
-                                        tabSize: 2,
-                                    }}
-                                />
-                            </FormGroup>
-                        </Form>
-                    </CardBody>
-                    <CardFooter>
-                        <Button  className="ml-1" color="primary" size="md">ارسال
-                            decoder</Button>
-                    </CardFooter>
-                </Card>
-
             </div>
         );
     }
