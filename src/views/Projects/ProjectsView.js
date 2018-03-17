@@ -176,13 +176,14 @@ class ProjectsView extends Component {
                                 <Label sm={2}>زمان داده :‌ </Label>
                                 <Col sm={4}>
                                 <DateTimePicker placeholder="انتخاب تاریخ و ساعت"
+
                                                 format="تاریخ: jYYYY/jMM/jDD ساعت: HH:mm" id="dateTimePicker"
                                                 onChange={(e,b)=>{
                                                     this.setState({
                                                         offset:e
                                                     })
                                                 }}
-                                                preSelected="تاریخ: 1396/02/24 ساعت: 18:30"/>
+                                />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>

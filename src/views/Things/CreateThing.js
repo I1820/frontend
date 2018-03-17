@@ -67,6 +67,9 @@ class CreateThing extends Component {
     componentWillMount() {
         this.props.dispatch(getThingProfileListAction())
         const splitedUrl = window.location.href.split('/');
+        this.setState({
+            project: splitedUrl[5],
+        })
         if (splitedUrl[6] !== 'new') {
             this.setState({
                 project: splitedUrl[5],
@@ -149,15 +152,26 @@ class CreateThing extends Component {
                             <FormGroup row>
                                 <Label sm={3}> devEUI : </Label>
                                 <Col sm={5}>
-                                    <Input value={this.state.form.devEUI} name="devEUI" dir="ltr"
-                                           onChange={this.changeForm} type="text"/>
+                                    <Input readOnly={this.state.thing._id !== undefined}  value={this.state.form.devEUI} name="devEUI" dir="ltr"
+                                           onChange={(e) => {
+                                               const state = this.state.form
+                                               state.devEUI = e.target.value
+                                               this.setState({
+                                                   form: state
+                                               })
+                                           }} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={3} htmlFor="select">پروفایل شی :</Label>
                                 <Col md="5">
-                                    <Input type="select" name="thing_profile_slug" onChange={this.changeForm}
-                                           id="select">
+                                    <Input type="select" name="thing_profile_slug" onChange={(e) => {
+                                        const state = this.state.form
+                                        state.thing_profile_slug = e.target.value
+                                        this.setState({
+                                            form: state
+                                        })
+                                    }} id="select">
                                         <option value={this.state.form.thing_profile_slug} value="0">انتخاب
                                             کنید
                                         </option>
