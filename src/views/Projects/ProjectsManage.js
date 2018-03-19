@@ -290,11 +290,10 @@ class ProjectsManage extends Component {
                                 <Col sm={9}>
                                     <Input name="appSKey"
                                            onChange={(event) => {
-                                               let state = {}
-                                               state[event.target.name] = event.target.value
                                                this.setState({
                                                    ABP: {
-                                                       ...this.setState.ABP,
+                                                       ...this.state.ABP,
+                                                       [event.target.name]: event.target.value
                                                    }
                                                })
                                            }} type="text"/>
@@ -305,11 +304,10 @@ class ProjectsManage extends Component {
                                 <Col sm={9}>
                                     <Input name="devAddr"
                                            onChange={(event) => {
-                                               let state = {}
-                                               state[event.target.name] = event.target.value
                                                this.setState({
                                                    ABP: {
-                                                       ...this.setState.ABP,
+                                                       ...this.state.ABP,
+                                                       [event.target.name]: event.target.value
                                                    }
                                                })
                                            }} type="text"/>
@@ -320,11 +318,10 @@ class ProjectsManage extends Component {
                                 <Col sm={9}>
                                     <Input name="fCntDown"
                                            onChange={(event) => {
-                                               let state = {}
-                                               state[event.target.name] = event.target.value
                                                this.setState({
                                                    ABP: {
-                                                       ...this.setState.ABP,
+                                                       ...this.state.ABP,
+                                                       [event.target.name]: event.target.value
                                                    }
                                                })
                                            }} type="text"/>
@@ -335,11 +332,10 @@ class ProjectsManage extends Component {
                                 <Col sm={9}>
                                     <Input name="fCntUp"
                                            onChange={(event) => {
-                                               let state = {}
-                                               state[event.target.name] = event.target.value
                                                this.setState({
                                                    ABP: {
-                                                       ...this.setState.ABP,
+                                                       ...this.state.ABP,
+                                                       [event.target.name]: event.target.value
                                                    }
                                                })
                                            }} type="text"/>
@@ -350,11 +346,10 @@ class ProjectsManage extends Component {
                                 <Col sm={9}>
                                     <Input name="nwkSKey"
                                            onChange={(event) => {
-                                               let state = {}
-                                               state[event.target.name] = event.target.value
                                                this.setState({
                                                    ABP: {
-                                                       ...this.setState.ABP,
+                                                       ...this.state.ABP,
+                                                       [event.target.name]: event.target.value
                                                    }
                                                })
                                            }} type="text"/>
@@ -365,12 +360,10 @@ class ProjectsManage extends Component {
                                 <Col sm={9}>
                                     <Input name="skipFCntCheck"
                                            onChange={(event) => {
-                                               let state = {}
-                                               state[event.target.name] = event.target.value
                                                this.setState({
                                                    ABP: {
-                                                       ...this.setState.ABP,
-                                                       ...state
+                                                       ...this.state.ABP,
+                                                       [event.target.name]: event.target.value
                                                    }
                                                })
                                            }} type="text"/>
