@@ -99,8 +99,8 @@ class Full extends Component {
                 <Route path="/payment-portal/management" name="PaymentPortalManagment" component={PaymentPortalManagment}/>
 
                 <Route path="/scenario" name="addScenario" component={addScenario}/>
-                <Route path="/codec" name="addScenario" component={addCodec}/>
-                <Route path="/template" name="addScenario" component={addTemplate}/>
+                <Route path="/codec" name="addCodec" component={addCodec}/>
+                <Route path="/template" name="addTemplate" component={addTemplate}/>
 
                 <Route path="/projects/list" name="ProjectsList" component={ProjectsList}/>
                 <Route path="/projects/manage" name="ProjectsManage" component={ProjectsManage}/>

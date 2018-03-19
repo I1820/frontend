@@ -42,7 +42,7 @@ class AddScenario extends Component {
         })
         this.props.dispatch(getCodecTemplateListAction(splitedUrl[5], (status, templates) => {
             this.props.dispatch(getCodecAction(splitedUrl[6], splitedUrl[5], (status, codec) => {
-                if (status)
+                if (status && codec !== null)
                     this.setState({
                         codec
                     })
