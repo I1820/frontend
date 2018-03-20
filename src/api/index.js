@@ -180,7 +180,7 @@ module.exports.createThing = function (data, projectId, dispatch) {
 // }
 //
 module.exports.getProjectData = function (thingId, projectId, offset, limit, dispatch) {
-    return fetchData(`/project/${projectId}/things/${thingId}/data?offset=${offset}&count=${limit}`, getConfig(), dispatch)
+    return fetchData(`/project/${projectId}/things/${thingId}/data?since=${offset}&until=${limit}`, getConfig(), dispatch)
 }
 
 
@@ -223,6 +223,11 @@ module.exports.createScenario = function (data, id, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
     return fetchData(`/project/${id}/scenario`, config, dispatch)
+}
+module.exports.updateScenarioAPI = function (data, projectId, scenarioId, dispatch) {
+    const config = patchConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/project/${projectId}/scenario/${scenarioId}`, config, dispatch)
 }
 
 module.exports.activeThing = function (data, thingId, projectId, dispatch) {
@@ -294,4 +299,8 @@ module.exports.activateScenario = function (projectId, scenarioId, dispatch) {
 
 module.exports.getCodec = function (thingId, projectId, dispatch) {
     return fetchData(`/project/${projectId}/things/${thingId}/codec`, getConfig(), dispatch)
+}
+
+module.exports.getScenario = function (projectId, scenarioId, dispatch) {
+    return fetchData(`/project/${projectId}/scenario/${scenarioId}`, getConfig(), dispatch)
 }

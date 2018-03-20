@@ -15,7 +15,10 @@ import 'brace/theme/monokai';
 import 'brace/mode/python';
 import 'brace/snippets/python';
 import 'brace/ext/language_tools';
-import {connectThing, createScenario, getThingProfileListAction} from "../../actions/AppActions";
+import {
+    connectThing, createScenario, getScenarioAction, getThingProfileListAction,
+    updateScenarioAction
+} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
 import Spinner from "../Spinner/Spinner";
 
@@ -27,7 +30,8 @@ class AddScenario extends Component {
         this.sendScenario = this.sendScenario.bind(this)
 
         this.state = {
-            code: ""
+            code: "",
+            name: ""
         }
     }
 
@@ -37,6 +41,20 @@ class AddScenario extends Component {
         this.setState({
             project: splitedUrl[5]
         })
+
+        if (splitedUrl[6] !== 'new') {
+            this.setState({
+                id: splitedUrl[6]
+            })
+
+            this.props.dispatch(getScenarioAction(splitedUrl[5], splitedUrl[6], (status, scenario) => {
+                if (status)
+                    this.setState({
+                        code: scenario.code,
+                        name: scenario.name
+                    })
+            }))
+        }
     }
 
 
@@ -55,7 +73,9 @@ class AddScenario extends Component {
                                 <Col sm={5}>
                                     <Input onChange={(event) => {
                                         this.setState({name: event.target.value})
-                                    }} type="text"/>
+                                    }}
+                                           value={this.state.name}
+                                           type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -65,6 +85,7 @@ class AddScenario extends Component {
                                     theme="monokai"
                                     className="col-md-12"
                                     name="UNIQUE_ID_OF_DIV"
+                                    value={this.state.code}
                                     fontSize={14}
                                     showPrintMargin={true}
                                     showGutter={true}
@@ -100,10 +121,16 @@ class AddScenario extends Component {
 
 
     sendScenario() {
-        this.props.dispatch(createScenario(this.state.project, {
-            name: this.state.name,
-            code: this.state.code
-        }))
+        if (this.state.id === undefined)
+            this.props.dispatch(createScenario(this.state.project, {
+                name: this.state.name,
+                code: this.state.code
+            }))
+        else
+            this.props.dispatch(updateScenarioAction(this.state.project, this.state.id, {
+                name: this.state.name,
+                code: this.state.code
+            }))
     }
 }
 
