@@ -15,7 +15,7 @@ import {
     ButtonGroup,
     Label,
     Input,
-    Table
+    Table, PaginationItem, PaginationLink, Pagination
 } from 'reactstrap';
 
 import _ from 'underscore'
@@ -31,7 +31,9 @@ class ProjectsView extends Component {
 
     constructor(props) {
         super(props);
+        this.renderPagination = this.renderPagination.bind(this)
         this.state = {
+            page: 0,
             project: {
                 things: []
             },
@@ -192,16 +194,17 @@ class ProjectsView extends Component {
                                 </Col>
                             </FormGroup>
                             {/*<FormGroup row>*/}
-                                {/*<Label sm={2}>تعداد داده :‌ </Label>*/}
-                                {/*<Col sm={4}>*/}
-                                    {/*<Input onChange={(event) => {*/}
-                                        {/*this.setState({*/}
-                                            {/*limit: event.target.value*/}
-                                        {/*})*/}
-                                    {/*}} name={"name"} type="text"/>*/}
-                                {/*</Col>*/}
+                            {/*<Label sm={2}>تعداد داده :‌ </Label>*/}
+                            {/*<Col sm={4}>*/}
+                            {/*<Input onChange={(event) => {*/}
+                            {/*this.setState({*/}
+                            {/*limit: event.target.value*/}
+                            {/*})*/}
+                            {/*}} name={"name"} type="text"/>*/}
+                            {/*</Col>*/}
                             {/*</FormGroup>*/}
                             <Button outline color="success" size="sm" onClick={() => {
+                                this.setState({page: 0})
                                 this.props.dispatch(getDataAction(this.state.thing, this.state.project._id, this.state.since,
                                     this.state.until, (status, data) => {
                                         if (status && data !== null && data !== undefined) {
@@ -243,10 +246,10 @@ class ProjectsView extends Component {
                             </tr>
                             </thead>
                             <tbody>
-                            {this.state.data.map((data, key) => {
+                            {this.state.data.slice(this.state.page * 10, (this.state.page + 1) * 10).map((data, key) => {
                                 return (
                                     <tr>
-                                        <th>{key + 1}</th>
+                                        <th>{this.state.page * 10 + key + 1}</th>
                                         <td>{moment(data.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}</td>
                                         <td>{data.thingid}</td>
                                         <td style={{textAlign: 'left', direction: 'ltr'}}><JSONPretty id="json-pretty"
@@ -257,12 +260,47 @@ class ProjectsView extends Component {
                             })}
                             </tbody>
                         </Table>
+                        <Pagination>
+                            <PaginationItem disabled={this.state.page <= 0}>
+                                <PaginationLink previous
+                                                onClick={
+                                                    () => {
+                                                        this.setState({
+                                                            page: this.state.page - 1
+                                                        })
+                                                    }
+                                                }>قبل</PaginationLink></PaginationItem>
+                            {this.renderPagination()}
+                            <PaginationItem disabled={(this.state.page+1) * 10 > this.state.data.length}>
+                                <PaginationLink next
+                                                onClick={
+                                                    () => {
+                                                        this.setState({
+                                                            page: this.state.page + 1
+                                                        })
+                                                    }}>بعد</PaginationLink></PaginationItem>
+                        </Pagination>
                     </CardBody>
                 </Card>
             </div>
         );
     }
 
+    renderPagination() {
+
+        let page = []
+        for (let i = 0; i < this.state.data.length / 10; i++) {
+            page.push(<PaginationItem active={i === this.state.page}>
+                <PaginationLink onClick={() => {
+                    this.setState({
+                        page: i
+                    })
+                }}>{i + 1}</PaginationLink>
+            </PaginationItem>)
+        }
+
+        return page
+    }
 }
 
 
