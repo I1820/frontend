@@ -25,7 +25,7 @@ import moment from 'moment-jalaali'
 import JSONPretty from 'react-json-pretty';
 import {getCodecTemplateListAction, getDataAction, getProject} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
-import {DateTimePicker} from "react-advance-jalaali-datepicker";
+import {DateTimeRangePicker} from "react-advance-jalaali-datepicker";
 
 class ProjectsView extends Component {
 
@@ -174,31 +174,36 @@ class ProjectsView extends Component {
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>زمان داده :‌ </Label>
-                                <Col sm={4}>
-                                <DateTimePicker placeholder="انتخاب تاریخ و ساعت"
-
-                                                format="تاریخ: jYYYY/jMM/jDD ساعت: HH:mm" id="dateTimePicker"
-                                                onChange={(e,b)=>{
-                                                    this.setState({
-                                                        offset:e
-                                                    })
-                                                }}
-                                />
+                                <Col sm={8}>
+                                    <DateTimeRangePicker placeholderStart="تاریخ و ساعت شروع"
+                                                         placeholderEnd="تاریخ و ساعت پایان"
+                                                         format="تاریخ: jYYYY/jMM/jDD ساعت: HH:mm"
+                                                         onChangeStart={(e, b) => {
+                                                             this.setState({
+                                                                 since: e
+                                                             })
+                                                         }}
+                                                         onChangeEnd={(e, b) => {
+                                                             this.setState({
+                                                                 until: e
+                                                             })
+                                                         }}
+                                    />
                                 </Col>
                             </FormGroup>
-                            <FormGroup row>
-                                <Label sm={2}>تعداد داده :‌ </Label>
-                                <Col sm={4}>
-                                    <Input onChange={(event) => {
-                                        this.setState({
-                                            limit: event.target.value
-                                        })
-                                    }} name={"name"} type="text"/>
-                                </Col>
-                            </FormGroup>
+                            {/*<FormGroup row>*/}
+                                {/*<Label sm={2}>تعداد داده :‌ </Label>*/}
+                                {/*<Col sm={4}>*/}
+                                    {/*<Input onChange={(event) => {*/}
+                                        {/*this.setState({*/}
+                                            {/*limit: event.target.value*/}
+                                        {/*})*/}
+                                    {/*}} name={"name"} type="text"/>*/}
+                                {/*</Col>*/}
+                            {/*</FormGroup>*/}
                             <Button outline color="success" size="sm" onClick={() => {
-                                this.props.dispatch(getDataAction(this.state.thing, this.state.project._id, this.state.offset,
-                                    this.state.limit, (status, data) => {
+                                this.props.dispatch(getDataAction(this.state.thing, this.state.project._id, this.state.since,
+                                    this.state.until, (status, data) => {
                                         if (status && data !== null && data !== undefined) {
                                             this.setState({
                                                 data

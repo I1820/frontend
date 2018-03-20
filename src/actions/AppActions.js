@@ -50,7 +50,8 @@ import {
 import {
     activateScenario,
     activeThing, createTemplate, createThingProfile, deleteCodec, deleteScenario, getCodec, getCodecTemplateList,
-    getThingProfileList,
+    getScenario,
+    getThingProfileList, updateScenarioAPI,
     viewProfile
 } from "../api";
 
@@ -487,7 +488,7 @@ export function deleteThingAction(projectId, thingId, cb) {
             if (response.status === 'OK') {
                 cb(true)
             } else {
-                cb(false,response.result)
+                cb(false, response.result)
             }
         })
     }
@@ -500,7 +501,7 @@ export function deleteCodecAction(projectId, codecId, cb) {
             if (response.status === 'OK') {
                 cb(true)
             } else {
-                cb(false,response.result)
+                cb(false, response.result)
             }
         })
     }
@@ -513,7 +514,7 @@ export function deleteScenarioAction(projectId, scenarioId, cb) {
             if (response.status === 'OK') {
                 cb(true)
             } else {
-                cb(false,response.result)
+                cb(false, response.result)
             }
         })
     }
@@ -556,6 +557,23 @@ export function createScenario(projectId, data) {
         })
     }
 }
+
+export function updateScenarioAction(projectId,scenarioId, data) {
+    return (dispatch) => {
+        const promise = updateScenarioAPI(data, projectId,scenarioId, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                forwardTo(`projects/manage/${projectId}`)
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((err) => {
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
+}
+
 
 export function editProjectAction(id, state) {
     return (dispatch) => {
@@ -773,6 +791,23 @@ export function activateScenarioAction(projectId, scenarioId) {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         }).catch((err) => {
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
+}
+
+export function getScenarioAction(projectId, scenarioId, cb) {
+    return (dispatch) => {
+        const promise = getScenario(projectId, scenarioId, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                cb(true, response.result.scenario)
+            } else {
+                cb(false)
+            }
+        }).catch((err) => {
+            cb(false)
             dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
         })
     }

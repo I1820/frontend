@@ -99,6 +99,7 @@ class ProjectsManage extends Component {
             this.manageToastAlerts
         ))
     }
+
     deleteSecnario() {
         this.deleteScenarioModalToggle(0)
         this.props.dispatch(deleteScenarioAction(
@@ -108,7 +109,7 @@ class ProjectsManage extends Component {
         ))
     }
 
-    manageToastAlerts(status,message) {
+    manageToastAlerts(status, message) {
         if (status === true) {
             // this.deleteThingModalToggle()
             this.loadProject()
@@ -195,7 +196,8 @@ class ProjectsManage extends Component {
                 <Spinner display={this.props.loading}/>
                 <ToastContainer className="text-right"/>
 
-                <Modal isOpen={this.state.deleteScenarioModal} toggle={this.deleteScenarioModalToggle} className="text-right">
+                <Modal isOpen={this.state.deleteScenarioModal} toggle={this.deleteScenarioModalToggle}
+                       className="text-right">
                     <ModalHeader>حذف شی</ModalHeader>
                     <ModalBody>
                         <h3>آیا از حذف سناریو مطمئن هستید ؟</h3>
@@ -500,7 +502,7 @@ class ProjectsManage extends Component {
                 <Button onClick={() => this.deleteScenarioModalToggle(scenario._id)}
                         className="ml-1 float-left" color="danger" size="sm">حذف</Button>
                 <Button className="ml-1 float-left" onClick={() => {
-                    window.location = '#/scenario'
+                    window.location = `#/scenario/${this.state.project._id}/${scenario._id}`
                 }} color="warning" size="sm">ویرایش</Button>
                 <Button onClick={() => {
                     this.props.dispatch(activateScenarioAction(this.state.project._id, scenario._id))
