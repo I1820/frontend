@@ -119,7 +119,7 @@ class DeviceProfile extends Component {
 
                 <Card className="text-justify">
                     <CardHeader>
-                        <CardTitle className="mb-0 font-weight-bold h6">Device Profile</CardTitle>
+                        <CardTitle className="mb-0 font-weight-bold h6">پروفایل اشیا</CardTitle>
                     </CardHeader>
                     <CardBody>
                         <Table hover responsive className="table-outline">
