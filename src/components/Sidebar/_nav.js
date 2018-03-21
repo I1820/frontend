@@ -1,11 +1,11 @@
 export default {
   items: [
 
-    {
-        name: 'داشبورد',
-        url: '/dashboard',
-        icon: 'icon-screen-desktop',
-    },
+    // {
+    //     name: 'داشبورد',
+    //     url: '/dashboard',
+    //     icon: 'icon-screen-desktop',
+    // },
 
     {
         name: 'حساب کاربری',
@@ -26,7 +26,7 @@ export default {
     },
 
     {
-        name: 'اطلاعات دستگاه',
+        name: 'پروفایل اشیا',
         url: '/device-profile/list',
         icon: 'icon-grid',
     },

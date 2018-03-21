@@ -105,16 +105,16 @@ class AddScenario extends Component {
                     <CardFooter>
                         <Button onClick={this.sendScenario} className="ml-1" color="primary" size="md">ارسال
                             سناریو</Button>
-                        <Button className="ml-1" color="warning" size="md">بررسی سناریو</Button>
+                        {/*<Button className="ml-1" color="warning" size="md">بررسی سناریو</Button>*/}
                     </CardFooter>
                 </Card>
-                <Card className="text-justify">
-                    <CardHeader>
-                        <CardTitle className="mb-0 font-weight-bold h6">نتیجه بررسی سناریو</CardTitle>
-                    </CardHeader>
-                    <CardBody>
-                    </CardBody>
-                </Card>
+                {/*<Card className="text-justify">*/}
+                    {/*<CardHeader>*/}
+                        {/*<CardTitle className="mb-0 font-weight-bold h6">نتیجه بررسی سناریو</CardTitle>*/}
+                    {/*</CardHeader>*/}
+                    {/*<CardBody>*/}
+                    {/*</CardBody>*/}
+                {/*</Card>*/}
             </div>
         );
     }
