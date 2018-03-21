@@ -198,7 +198,7 @@ class CreateThing extends Component {
                         </Form>
                     </CardBody>
                     <CardFooter>
-                        <Button onClick={this.submitForm} color="primary">شی جدید</Button>
+                        <Button onClick={this.submitForm} color="primary">ثبت</Button>
                     </CardFooter>
                 </Card>
 
@@ -348,7 +348,7 @@ const MapWithASearchBox = compose(
     <GoogleMap
         ref={props.onMapMounted}
         defaultZoom={12}
-        center={props.center}
+        center={props.marker}
         onBoundsChanged={props.onBoundsChanged}
         onClick={props.onClick}
     >
