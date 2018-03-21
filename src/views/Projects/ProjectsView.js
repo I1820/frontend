@@ -38,6 +38,14 @@ class ProjectsView extends Component {
                 things: []
             },
             config: {
+                chart: {
+                    style: {
+                        fontFamily: 'Tahoma'
+                    }
+                },
+                title: {
+                    text: 'داده‌های دریافتی'
+                },
                 xAxis: {
                     categories: [],
 
@@ -89,15 +97,25 @@ class ProjectsView extends Component {
 
     draw() {
         const config = {
+            chart: {
+                style: {
+                    fontFamily: 'Tahoma'
+                }
+            },
+            title: {
+                text: 'داده‌های دریافتی'
+            },
             xAxis: {
                 categories: []
+            },
+            yAxis: {
+                title: {
+                    text: 'مقدار'
+                }
             },
             series: [{
                 data: []
             }],
-            title: {
-                text: 'داده های دریافتی'
-            },
             tooltip: {
                 backgroundColor: 'lightgray',
                 borderColor: '#7CB5EC',
@@ -260,7 +278,7 @@ class ProjectsView extends Component {
                             })}
                             </tbody>
                         </Table>
-                        <Pagination>
+                        <Pagination style={{justifyContent:"center"}}>
                             <PaginationItem disabled={this.state.page <= 0}>
                                 <PaginationLink previous
                                                 onClick={
@@ -289,15 +307,25 @@ class ProjectsView extends Component {
     renderPagination() {
 
         let page = []
-        for (let i = 0; i < this.state.data.length / 10; i++) {
-            page.push(<PaginationItem active={i === this.state.page}>
-                <PaginationLink onClick={() => {
-                    this.setState({
-                        page: i
-                    })
-                }}>{i + 1}</PaginationLink>
+        let page_count = this.state.data.length / 10;
+        if(this.state.page > 4)
+            page.push(<PaginationItem active={false}>
+                <PaginationLink>...</PaginationLink>
             </PaginationItem>)
+        for (let i = 0; i < page_count; i++) {
+            if(Math.abs(i-this.state.page) < 5)
+                page.push(<PaginationItem active={i === this.state.page}>
+                    <PaginationLink onClick={() => {
+                        this.setState({
+                            page: i
+                        })
+                    }}>{i + 1}</PaginationLink>
+                </PaginationItem>)
         }
+        if(page_count - 5 > this.state.page)
+            page.push(<PaginationItem active={false}>
+                <PaginationLink>...</PaginationLink>
+            </PaginationItem>)
 
         return page
     }
