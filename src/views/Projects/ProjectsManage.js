@@ -23,6 +23,7 @@ import {
     getProject,
     deleteThingAction,
     getCodecTemplateListAction, activateScenarioAction, deleteCodecAction, deleteScenarioAction, editAliasesAction,
+    sendDownlinkAction,
 } from '../../actions/AppActions';
 import Spinner from '../Spinner/Spinner';
 
@@ -35,7 +36,6 @@ style({
 });
 
 class ProjectsManage extends Component {
-
     constructor(props) {
         super(props);
 
@@ -44,14 +44,14 @@ class ProjectsManage extends Component {
         this.addThing = this.addThing.bind(this)
         this.addScenario = this.addScenario.bind(this)
         this.dataModalToggle = this.dataModalToggle.bind(this)
-        this.modalAddable = this.modalAddable.bind(this)
+        this.renderDownlinkRow = this.renderDownlinkRow.bind(this)
         this.addTemplate = this.addTemplate.bind(this)
         this.uploadExcel = this.uploadExcel.bind(this)
         this.renderTemplateItem = this.renderTemplateItem.bind(this)
         this.deleteThingModalToggle = this.deleteThingModalToggle.bind(this)
         this.deleteThing = this.deleteThing.bind(this)
         this.deleteCodec = this.deleteCodec.bind(this)
-        this.deleteSecnario = this.deleteSecnario.bind(this)
+        this.deleteScenario = this.deleteScenario.bind(this)
         this.manageToastAlerts = this.manageToastAlerts.bind(this)
         this.loadProject = this.loadProject.bind(this)
         this.downLinksAdd = this.downLinksAdd.bind(this)
@@ -68,7 +68,7 @@ class ProjectsManage extends Component {
             id: '',
             project: {},
             dataModal: false,
-            modalAddableItems: [],
+            modalDownlinkRows: [],
             OTAA: {},
             ABP: {},
             deleteThingModal: false,
@@ -77,12 +77,33 @@ class ProjectsManage extends Component {
             deleteCodecRowId: 0,
             deleteScenarioModal: false,
             deleteScenarioRowId: 0,
+            DownlinkThingRowId: 0,
             newAlias: {key: '', alias: ''}
-        }
+        };
+        this.el_refs = {
+            alias: {
+                key: '',
+                value: '',
+            }
+        };
+        this.nextId = 1;
     }
 
     downLinksAdd() {
-        // alert()
+        this.dataModalToggle(0);
+        const data = {};
+        let json;
+        this.state.modalDownlinkRows.forEach((item) => {
+            if (item.key && item.value)
+                data[item.key] = item.value;
+        })
+        json = JSON.stringify(data);
+        this.props.dispatch(sendDownlinkAction(
+            this.state.project._id,
+            this.state.DownlinkThingRowId,
+            {data: json},
+            this.callback
+        ))
     }
 
     deleteThing() {
@@ -103,7 +124,7 @@ class ProjectsManage extends Component {
         ))
     }
 
-    deleteSecnario() {
+    deleteScenario() {
         this.deleteScenarioModalToggle(0)
         this.props.dispatch(deleteScenarioAction(
             this.state.project._id,
@@ -208,7 +229,7 @@ class ProjectsManage extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
-                            this.deleteSecnario()
+                            this.deleteScenario()
                         }}>حذف</Button>
                         <Button color="danger" onClick={this.deleteScenarioModalToggle}>انصراف</Button>
                     </ModalFooter>
@@ -248,8 +269,16 @@ class ProjectsManage extends Component {
                 <Modal isOpen={this.state.dataModal} toggle={this.dataModalToggle} className="text-right">
                     <ModalHeader>ارسال داده</ModalHeader>
                     <ModalBody>
-                        {this.state.modalAddableItems}
-                        <Button color="success" onClick={this.modalAddable}>+ اضافه</Button>
+                        {this.state.modalDownlinkRows.map(row => this.renderDownlinkRow(row.id, row.key, row.value))}
+                        <Button color="success" onClick={() => {
+                            this.setState({
+                                modalDownlinkRows: [...this.state.modalDownlinkRows, {
+                                    id: this.nextId++,
+                                    key: '',
+                                    value: ''
+                                }]
+                            })
+                        }}>+ اضافه</Button>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={this.downLinksAdd}>ثبت</Button>
@@ -456,23 +485,27 @@ class ProjectsManage extends Component {
                                         {this.renderAliasTd(this.state.project.aliases)}
 
                                         <tr>
-                                            <td><input onChange={(event) => {
-                                                this.setState({
-                                                    newAlias: {
-                                                        ...this.state.newAlias,
-                                                        key: event.target.value
-                                                    }
-                                                })
-                                            }} type="text" className="form-control" placeholder={'مقدار اصلی'}/>
+                                            <td><input ref={input => this.el_refs.alias.key = input}
+                                                       onChange={(event) => {
+                                                           this.setState({
+                                                               newAlias: {
+                                                                   ...this.state.newAlias,
+                                                                   key: event.target.value
+                                                               }
+                                                           })
+                                                       }}
+                                                       type="text" className="form-control" placeholder={'مقدار اصلی'}/>
                                             </td>
-                                            <td><input onChange={(event) => {
-                                                this.setState({
-                                                    newAlias: {
-                                                        ...this.state.newAlias,
-                                                        alias: event.target.value
-                                                    }
-                                                })
-                                            }} type="text" className="form-control" placeholder={'نام مستعار'}/>
+                                            <td><input ref={input => this.el_refs.alias.value = input}
+                                                       onChange={(event) => {
+                                                           this.setState({
+                                                               newAlias: {
+                                                                   ...this.state.newAlias,
+                                                                   alias: event.target.value
+                                                               }
+                                                           })
+                                                       }} type="text" className="form-control"
+                                                       placeholder={'نام مستعار'}/>
                                             </td>
                                             <td>
                                                 <button onClick={() => {
@@ -496,6 +529,9 @@ class ProjectsManage extends Component {
                                                             }
                                                         }
                                                     })
+                                                    this.el_refs.alias.key.value = '';
+                                                    this.el_refs.alias.value.value = '';
+
                                                 }} type="button" className="btn btn-primary">اضافه کردن
                                                 </button>
                                             </td>
@@ -633,10 +669,10 @@ class ProjectsManage extends Component {
                     <Button onClick={() => {
                         window.location = `#/codec/${this.state.project._id}/${thing._id}`
                     }} className="ml-1" color="secondary" size="sm">ارسال codec</Button>
-                    <Button onClick={this.dataModalToggle} className="ml-1" color="primary" size="sm">ارسال
-                        داده</Button>
+                    <Button onClick={() => this.dataModalToggle(thing._id)} className="ml-1" color="primary" size="sm">ارسال
+                        داده (داون لینک)</Button>
                     <Button onClick={() => this.deleteThingModalToggle(thing._id)} className="ml-1" color="danger"
-                            size="sm">حذف</Button>
+                            size="sm">حذف شئ</Button>
                 </td>
             </tr>
         )
@@ -658,6 +694,37 @@ class ProjectsManage extends Component {
         })
     }
 
+    renderDownlinkRow(id, key, value) {
+        return (
+            <FormGroup row key={id}>
+                <Col sm={5}>
+                    <Input type="text" value={key} onChange={(e) => {
+                        const newRows = [...this.state.modalDownlinkRows];
+                        const item = newRows.findIndex(item => item.id == id)
+                        newRows[item].key = e.target.value;
+                        this.setState({modalDownlinkRows: newRows})
+                    }} placeholder="کلید"/>
+                </Col>
+                <Col sm={5}>
+                    <Input type="text" value={value} onChange={(e) => {
+                        const newRows = [...this.state.modalDownlinkRows];
+                        const item = newRows.findIndex(item => item.id == id)
+                        newRows[item].value = e.target.value;
+                        this.setState({modalDownlinkRows: newRows})
+                    }} placeholder="مقدار"/>
+                </Col>
+                <Col sm={2} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    <Button color="danger" onClick={() => {
+                        this.setState({
+                            modalDownlinkRows: this.state.modalDownlinkRows.filter((value) => value.id != id)
+                        })
+                    }} className="btn-sm" style={{float: 'left'}}>&times;</Button>
+                </Col>
+            </FormGroup>
+        )
+
+    }
+
     deleteAlias(event) {
         const key = event.target.value;
         const newState = {
@@ -672,9 +739,11 @@ class ProjectsManage extends Component {
         this.setState(newState)
     }
 
-    dataModalToggle() {
+    dataModalToggle(id) {
         this.setState({
-            dataModal: !this.state.dataModal
+            dataModal: !this.state.dataModal,
+            modalDownlinkRows: [],
+            DownlinkThingRowId: id
         });
     }
 
@@ -702,23 +771,6 @@ class ProjectsManage extends Component {
         });
     }
 
-    modalAddable() {
-        let newItem = (
-            <FormGroup row>
-                <Col sm={5}>
-                    <Input type="text" placeholder="کلید"/>
-                </Col>
-                <Col sm={1} className="text-center"> : </Col>
-                <Col sm={5}>
-                    <Input type="text" placeholder="مقدار"/>
-                </Col>
-            </FormGroup>
-        )
-
-        this.setState(prevState => ({
-            modalAddableItems: [...prevState.modalAddableItems, newItem]
-        }))
-    }
 
     callback(status, message) {
         if (!status)
@@ -733,7 +785,7 @@ class ProjectsManage extends Component {
                 })
             });
         else
-            toast('ف با موفقیت انجام شد', {
+            toast('با موفقیت انجام شد', {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 className: css({
                     background: '#dbf2e3',

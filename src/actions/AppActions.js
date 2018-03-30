@@ -711,14 +711,14 @@ export function editProfile(data, cb) {
 
 /* downlink actions */
 
-export function newDownlinkAction(projectId, thingId, data, cb) {
+export function sendDownlinkAction(projectId, thingId, data, cb) {
     return (dispatch) => {
         const promise = newDownlinkAPI(projectId, thingId, data, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 cb(true)
             } else {
-                cb(false)
+                cb(false,response.result)
             }
         })
     }

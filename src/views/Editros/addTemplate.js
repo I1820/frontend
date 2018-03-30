@@ -19,15 +19,15 @@ import {createTemplateAction} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
 import Spinner from "../Spinner/Spinner";
 
-class AddScenario extends Component {
+class AddTemplate extends Component {
 
     constructor(props) {
         super(props);
 
-        this.sendScenario = this.sendScenario.bind(this)
+        this.sendTemplate = this.sendTemplate.bind(this)
 
         this.state = {
-            code: ""
+            code: "",
         }
     }
 
@@ -66,6 +66,7 @@ class AddScenario extends Component {
                                     className="col-md-12"
                                     name="UNIQUE_ID_OF_DIV"
                                     fontSize={14}
+                                    value={this.state.code}
                                     showPrintMargin={true}
                                     showGutter={true}
                                     highlightActiveLine={true}
@@ -82,7 +83,7 @@ class AddScenario extends Component {
                         </Form>
                     </CardBody>
                     <CardFooter>
-                        <Button onClick={this.sendScenario} className="ml-1" color="primary" size="md">ارسال
+                        <Button onClick={this.sendTemplate} className="ml-1" color="primary" size="md">ارسال
                             قالب</Button>
                     </CardFooter>
                 </Card>
@@ -91,7 +92,7 @@ class AddScenario extends Component {
     }
 
 
-    sendScenario() {
+    sendTemplate() {
         this.props.dispatch(createTemplateAction(this.state.project, {
             name: this.state.name,
             code: this.state.code
@@ -105,4 +106,4 @@ function mapStateToProps(state) {
     })
 }
 
-export default connect(mapStateToProps)(AddScenario);
+export default connect(mapStateToProps)(AddTemplate);
