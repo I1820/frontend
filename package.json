@@ -71,7 +71,7 @@
   },
   "scripts": {
     "dev": "webpack -d --progress --watch --profile --json > compilation-stats.json --env.dev",
-    "start": "webpack-dev-server --progress --color --inline --env.dev --host=0.0.0.0 --port=8001 --public platform.ceit.aut.ac.ir:50009",
+    "start": "webpack-dev-server --progress --color --inline --env.dev --host=0.0.0.0 --port=8080",
     "build": "webpack -p --progress --env.prod",
     "clean": "rimraf ./build"
   },

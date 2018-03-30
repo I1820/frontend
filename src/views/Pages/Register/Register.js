@@ -26,7 +26,8 @@ import { css } from 'glamor';
 import { style } from "react-toastify";
 
 style({
-    colorProgressDefault: 'white'
+    colorProgressDefault: 'white',
+    fontFamily: 'Vazir',
 });
 
 class Register extends Component {

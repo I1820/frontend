@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Col,
     Card,
@@ -16,19 +16,19 @@ import {
     Input,
     Table, Modal, ModalHeader, ModalBody
 } from 'reactstrap';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {
     activeThingAction,
     editProjectAction,
     getProject,
     deleteThingAction,
-    getCodecTemplateListAction, activateScenarioAction, deleteCodecAction, deleteScenarioAction,
-} from "../../actions/AppActions";
-import Spinner from "../Spinner/Spinner";
+    getCodecTemplateListAction, activateScenarioAction, deleteCodecAction, deleteScenarioAction, editAliasesAction,
+} from '../../actions/AppActions';
+import Spinner from '../Spinner/Spinner';
 
-import {ToastContainer, toast} from 'react-toastify';
-import {css} from 'glamor';
-import {style} from "react-toastify";
+import { ToastContainer, toast } from 'react-toastify';
+import { css } from 'glamor';
+import { style } from 'react-toastify';
 
 style({
     colorProgressDefault: 'white'
@@ -59,11 +59,13 @@ class ProjectsManage extends Component {
         this.renderCodecs = this.renderCodecs.bind(this)
         this.deleteCodecModalToggle = this.deleteCodecModalToggle.bind(this)
         this.deleteScenarioModalToggle = this.deleteScenarioModalToggle.bind(this)
+        this.deleteAlias = this.deleteAlias.bind(this)
+        this.renderAliasTd = this.renderAliasTd.bind(this)
 
         this.state = {
             OTAAmodal: false,
             ABPmodel: false,
-            id: "",
+            id: '',
             project: {},
             dataModal: false,
             modalAddableItems: [],
@@ -74,7 +76,8 @@ class ProjectsManage extends Component {
             deleteCodecModal: false,
             deleteCodecRowId: 0,
             deleteScenarioModal: false,
-            deleteScenarioRowId: 0
+            deleteScenarioRowId: 0,
+            newAlias: {key: '', alias: ''}
         }
     }
 
@@ -149,7 +152,6 @@ class ProjectsManage extends Component {
             props.projects.forEach((project) => {
 
                 if (project._id === splitedUrl[splitedUrl.length - 1]) {
-                    console.log('findddd', project)
                     this.setState({
                         project
                     })
@@ -383,49 +385,135 @@ class ProjectsManage extends Component {
                     </ModalFooter>
                 </Modal>
 
-                <Card className="text-justify">
-                    <CardHeader>
-                        <CardTitle className="mb-0 font-weight-bold h6">تغییر اطلاعات پروژه</CardTitle>
-                    </CardHeader>
-                    <CardBody>
-                        <Form>
-                            <FormGroup row>
-                                <Label sm={2}>نام پروژه : </Label>
-                                <Col sm={5}>
-                                    <Input type="text" onChange={(event) => {
-                                        this.setState({
-                                            project: {
-                                                ...this.state.project,
-                                                name: event.target.value
-                                            }
-                                        })
-                                    }} value={this.state.project.name}/>
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label sm={2}>توضیحات :‌ </Label>
-                                <Col sm={5}>
-                                    <Input value={this.state.project.description} onChange={(event) => {
-                                        this.setState({
-                                            project: {
-                                                ...this.state.project,
-                                                description: event.target.value
-                                            }
-                                        })
-                                    }} type="textarea" name="" rows="2"/>
-                                </Col>
-                            </FormGroup>
-                        </Form>
-                    </CardBody>
-                    <CardFooter>
-                        <Button onClick={() => {
-                            this.props.dispatch(editProjectAction(this.state.project._id, {
-                                name: this.state.project.name,
-                                description: this.state.project.description
-                            }))
-                        }} color="primary">ثبت اطلاعات</Button>
-                    </CardFooter>
-                </Card>
+                <div className="row">
+                    <div className="col-md-12 col-lg-6">
+                        <Card className="text-justify">
+                            <CardHeader>
+                                <CardTitle className="mb-0 font-weight-bold h6">تغییر اطلاعات پروژه</CardTitle>
+                            </CardHeader>
+                            <CardBody>
+                                <Form>
+                                    <FormGroup style={{display: 'flex'}}>
+                                        <div style={{minWidth: '65px', width: '20%'}}>
+                                            <Label>نام پروژه : </Label>
+                                        </div>
+                                        <div style={{width: '80%'}}>
+                                            <Input type="text" onChange={(event) => {
+                                                this.setState({
+                                                    project: {
+                                                        ...this.state.project,
+                                                        name: event.target.value
+                                                    }
+                                                })
+                                            }} value={this.state.project.name || ''}/>
+                                        </div>
+                                    </FormGroup>
+                                    <FormGroup style={{display: 'flex'}}>
+                                        <div style={{minWidth: '65px', width: '20%'}}>
+                                            <Label>توضیحات :‌ </Label>
+                                        </div>
+                                        <div style={{width: '80%'}}>
+                                            <Input value={this.state.project.description || ''} onChange={(event) => {
+                                                this.setState({
+                                                    project: {
+                                                        ...this.state.project,
+                                                        description: event.target.value
+                                                    }
+                                                })
+                                            }} type="textarea" name="" rows="2"/>
+                                        </div>
+                                    </FormGroup>
+
+                                </Form>
+                            </CardBody>
+                            <CardFooter>
+                                <Button onClick={() => {
+                                    this.props.dispatch(editProjectAction(this.state.project._id, {
+                                        name: this.state.project.name,
+                                        description: this.state.project.description
+                                    }))
+                                }} color="primary">ثبت اطلاعات</Button>
+                            </CardFooter>
+                        </Card>
+                    </div>
+
+                    <div className="col-md-12 col-lg-6">
+                        <Card className="text-justify">
+                            <CardHeader>
+                                <CardTitle className="mb-0 font-weight-bold h6">نام مستعار کلید داده‌ها</CardTitle>
+                            </CardHeader>
+                            <CardBody>
+                                <Form className='row'>
+                                    <table className="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">ردیف</th>
+                                            <th scope="col">مقدار اصلی</th>
+                                            <th scope="col">نام مستعار</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {this.renderAliasTd(this.state.project.aliases)}
+
+                                        <tr>
+                                            <td><input onChange={(event) => {
+                                                this.setState({
+                                                    newAlias: {
+                                                        ...this.state.newAlias,
+                                                        key: event.target.value
+                                                    }
+                                                })
+                                            }} type="text" className="form-control" placeholder={'مقدار اصلی'}/>
+                                            </td>
+                                            <td><input onChange={(event) => {
+                                                this.setState({
+                                                    newAlias: {
+                                                        ...this.state.newAlias,
+                                                        alias: event.target.value
+                                                    }
+                                                })
+                                            }} type="text" className="form-control" placeholder={'نام مستعار'}/>
+                                            </td>
+                                            <td>
+                                                <button onClick={() => {
+                                                    const newAlias = this.state.newAlias;
+                                                    if (!newAlias.key || !newAlias.alias) {
+                                                        toast('اطلاعات را کامل وارد کنید', {
+                                                            position: toast.POSITION.BOTTOM_LEFT,
+                                                            className: css({
+                                                                background: '#fee2e1',
+                                                                color: '#813838',
+                                                            }),
+                                                        });
+                                                        return;
+                                                    }
+                                                    this.setState({
+                                                        project: {
+                                                            ...this.state.project,
+                                                            aliases: {
+                                                                ...this.state.project.aliases,
+                                                                [newAlias.key]: newAlias.alias
+                                                            }
+                                                        }
+                                                    })
+                                                }} type="button" className="btn btn-primary">اضافه کردن
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </Form>
+                            </CardBody>
+                            <CardFooter>
+                                <Button onClick={() => {
+                                    this.props.dispatch(editAliasesAction(this.state.project._id, {
+                                        aliases: JSON.stringify(this.state.project.aliases)
+                                    }))
+                                }} color="primary">ثبت</Button>
+                            </CardFooter>
+                        </Card>
+                    </div>
+                </div>
 
                 <Card className="text-justify">
                     <CardHeader>
@@ -447,8 +535,7 @@ class ProjectsManage extends Component {
                                 this.state.project.things !== undefined ?
                                     this.state.project.things.map((thing, key) => {
                                         return (this.renderThingItem(thing, key))
-                                    }) :
-                                    <br/>
+                                    }) : undefined
                             }
                             </tbody>
                         </Table>
@@ -527,7 +614,7 @@ class ProjectsManage extends Component {
 
     renderThingItem(thing, key) {
         return (
-            <tr id={key}>
+            <tr key={key}>
                 <th>{key + 1}</th>
                 <td>{thing.name}</td>
                 <td className="english">{thing.interface.devEUI}</td>
@@ -553,6 +640,36 @@ class ProjectsManage extends Component {
                 </td>
             </tr>
         )
+    }
+
+    renderAliasTd(aliases) {
+        aliases = aliases ? aliases : [];
+
+        return Object.keys(aliases).map((key, index) => {
+            return <tr key={key}>
+                <td>{index + 1}</td>
+                <td>{key}</td>
+                <td>
+                    {aliases[key]}
+                    <Button color="danger" onClick={this.deleteAlias} value={key}
+                            className="btn-sm" style={{float: 'left'}}>&times;</Button>
+                </td>
+            </tr>
+        })
+    }
+
+    deleteAlias(event) {
+        const key = event.target.value;
+        const newState = {
+            project: {
+                ...this.state.project,
+                aliases: {
+                    ...this.state.project.aliases,
+                }
+            }
+        };
+        delete newState.project.aliases[key];
+        this.setState(newState)
     }
 
     dataModalToggle() {
@@ -629,7 +746,6 @@ class ProjectsManage extends Component {
     }
 
     renderScenarios() {
-        console.log('this.state.project.scenarios', this.state.project)
         if (this.state.project.scenarios)
             return (this.state.project.scenarios.map(scenario => {
                 return (this.renderScenarioItem(scenario))

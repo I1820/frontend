@@ -1,3 +1,4 @@
+/*
 @font-face {
   font-family: 'Vazir';
 
@@ -16,18 +17,35 @@
   url('../public/fonts/vazir/Vazir-Bold-FD.ttf') format('truetype');
   font-weight: bold;
 }
+*/
+
+@font-face {
+  font-family: 'Vazir';
+
+  src: url('../public/fonts/vazir-fd-wol/Vazir-Light-FD-WOL.eot');
+  src: url('../public/fonts/vazir-fd-wol/Vazir-Light-FD-WOL.eot?#iefix') format('embedded-opentype'),
+  url('../public/fonts/vazir-fd-wol/Vazir-Light-FD-WOL.woff') format('woff'),
+  url('../public/fonts/vazir-fd-wol/Vazir-Light-FD-WOL.ttf') format('truetype');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Vazir';
+  src: url('../public/fonts/vazir-fd-wol/Vazir-Bold-FD-WOL.eot');
+  src: url('../public/fonts/vazir-fd-wol/Vazir-Bold-FD-WOL.eot?#iefix') format('embedded-opentype'),
+  url('../public/fonts/vazir-fd-wol/Vazir-Bold-FD-WOL.woff') format('woff'),
+  url('../public/fonts/vazir-fd-wol/Vazir-Bold-FD-WOL.ttf') format('truetype');
+  font-weight: bold;
+}
 
 body {
-  font-family: 'Vazir';
+  font-family: Vazir, Tahoma, serif;
 }
 
 .english {
-  font-family: 'Tahoma';
+  font-family: Tahoma;
 }
 
-textarea, input, select, label {
-  font-family: 'Tahoma';
-}
 
 // Sidebar
 .sidebar .nav {

@@ -8,12 +8,12 @@ import {
 } from './config'
 
 import _ from 'underscore'
-import {sendingRequest, logout} from '../actions/AppActions'
-import axios, {post} from 'axios';
+import { sendingRequest, logout } from '../actions/AppActions'
+import axios, { post } from 'axios';
 import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://backback.ceit.aut.ac.ir:50024/api/v1'
+const BASE_URL = 'http://backback.ceit.aut.ac.ir/api/v1'
 
 const endpoints = {
     login: '/login',
@@ -72,7 +72,7 @@ function fetchData(endpoint = '/404', config = {}, dispatch) {
                 dispatch(sendingRequest(false))
                 const {status, message, code} = controler(json)
                 console.log(code)
-                if (code === 703 || code === 704) {
+                if (code === 701 || code === 401) {
                     dispatch(logout())
                 }
                 if (!status) {
@@ -93,13 +93,12 @@ function getFormData(object) {
         formData += _.isUndefined(object[key]) ? ''
             : key + '=' + encodeURIComponent(object[key]) + '&'
     })
-    console.log('form data', object + ' ' + formData)
     return formData
 }
 
 module.exports.login = function (email, password, captcha, dispatch) {
     const config = loginConfig
-    Object.assign(config, {body: getFormData({email, password, "g-recaptcha-response": captcha})})
+    Object.assign(config, {body: getFormData({email, password, 'g-recaptcha-response': captcha})})
     return fetchData(endpoints.login, config, dispatch)
 }
 
@@ -145,6 +144,12 @@ module.exports.editProject = function (id, data, dispatch) {
     const config = patchConfig()
     Object.assign(config, {body: getFormData(data)})
     return fetchData('/project/' + id, config, dispatch)
+}
+
+module.exports.editAliases = function (id, data, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData('/project/' + id + '/aliases', config, dispatch)
 }
 
 // module.exports.editProfile = function (data, dispatch) {

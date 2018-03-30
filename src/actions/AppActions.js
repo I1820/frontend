@@ -35,7 +35,7 @@ import {
     getProject as getProjectAPI, createProject as createProjectAPI,
     editProfile as editProfileAPI, listThings as listThingsAPI,
     getThing as getThingAPI, connectThing as connectThingAPI,
-    createThing as createThingAPI, editThing as editThingAPI,
+    createThing as createThingAPI, editThing as editThingAPI, editAliases as editAliasesAPI,
     getProjectData as getThingDataAPI, createCodec as createCodecAPI,
     createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
     createGateway as createGatewayAPI,
@@ -53,7 +53,7 @@ import {
     getScenario,
     getThingProfileList, updateScenarioAPI,
     viewProfile
-} from "../api";
+} from '../api';
 
 /**
  * Logs an user in
@@ -127,10 +127,10 @@ export function getProject(id, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 dispatch(setProject(response.result))
-                cb(true)
+                cb && cb(true);
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-                cb(false)
+                cb && cb(false);
             }
         })
     }
@@ -142,7 +142,6 @@ export function createProject(state, cb) {
         const promise = createProjectAPI(state, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                console.log('response.result', response.result)
                 dispatch(setProject(response.result))
                 cb(true)
             } else {
@@ -165,7 +164,6 @@ export function getThings() {
     return (dispatch) => {
         const promise = listThingsAPI(dispatch)
         promise.then((response) => {
-            console.log('promise', response)
             if (response.status === 'OK') {
                 dispatch(setThings(response.result))
             } else {
@@ -179,7 +177,6 @@ export function getThingAction(projectId, thingId) {
     return (dispatch) => {
         const promise = getThingAPI(projectId, thingId, dispatch)
         promise.then((response) => {
-            console.log('promise', response)
             if (response.status === 'OK') {
                 dispatch(setThing(response.result))
             } else {
@@ -249,7 +246,6 @@ export function connectThing(thingId, projectId) {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         }).catch((err) => {
-            console.log(err)
             dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
         })
     }
@@ -558,9 +554,9 @@ export function createScenario(projectId, data) {
     }
 }
 
-export function updateScenarioAction(projectId,scenarioId, data) {
+export function updateScenarioAction(projectId, scenarioId, data) {
     return (dispatch) => {
-        const promise = updateScenarioAPI(data, projectId,scenarioId, dispatch)
+        const promise = updateScenarioAPI(data, projectId, scenarioId, dispatch)
         promise.then((response) => {
             console.log(response)
             if (response.status === 'OK') {
@@ -579,13 +575,28 @@ export function editProjectAction(id, state) {
     return (dispatch) => {
         const promise = editProjectAPI(id, state, dispatch)
         promise.then((response) => {
-            console.log(response)
             if (response.status === 'OK') {
                 dispatch(setProject(response.result))
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         }).catch((e) => {
+            console.log(e);
+        })
+    }
+}
+
+export function editAliasesAction(id, aliases) {
+    return (dispatch) => {
+        const promise = editAliasesAPI(id, aliases, dispatch);
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch(getProject(id, null))
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((e) => {
+            console.log(e)
         })
     }
 }
