@@ -26,13 +26,16 @@ import JSONPretty from 'react-json-pretty';
 import {getCodecTemplateListAction, getDataAction, getProject} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
 import {DateTimeRangePicker} from "react-advance-jalaali-datepicker";
+import Select2 from "react-select2-wrapper";
 
 class ProjectsView extends Component {
 
     constructor(props) {
         super(props);
+        this.setThing = this.setThing.bind(this)
         this.renderPagination = this.renderPagination.bind(this)
         this.state = {
+            selectedThing: {ids: []},
             page: 0,
             project: {
                 things: []
@@ -140,9 +143,10 @@ class ProjectsView extends Component {
         let sensors = []
         this.state.data.map((d, i) => {
             _.allKeys(d.data).map((k, i2) => {
-                if (_.find(sensors, {name: k}) === undefined) {
+                if (_.find(sensors, {name: k + d.thingid}) === undefined) {
                     sensors.push({
-                        name: k,
+                        label: k,
+                        name: k + d.thingid,
                         data: []
                     })
                 }
@@ -153,10 +157,10 @@ class ProjectsView extends Component {
 
             config.xAxis.categories.push(moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'))
             sensors.map((dataset, index) => {
-                if (d.data[dataset.name] === undefined) {
+                if (d.data[dataset.label] === undefined) {
                     dataset.data.push(dataset.data.length > 0 ? dataset.data[dataset.data.length - 1] : 0)
                 } else {
-                    dataset.data.push(d.data[dataset.name])
+                    dataset.data.push(d.data[dataset.label])
                 }
             })
         })
@@ -168,6 +172,23 @@ class ProjectsView extends Component {
         })
     }
 
+    getThings() {
+        let things = []
+        this.state.project.things.forEach((thing) => {
+                things.push({text: thing.name, id: thing._id})
+            }
+        )
+        return things
+    }
+
+    setThing(things) {
+        let selectedThing = {ids: []}
+        for (let i = 0; i < things.target.selectedOptions.length; i++)
+            // console.log(things.target.selectedOptions[i].value)
+            selectedThing.ids.push(things.target.selectedOptions[i].value)
+        this.setState({selectedThing})
+        console.log('set state', this.state)
+    }
 
     render() {
         return (
@@ -180,19 +201,22 @@ class ProjectsView extends Component {
                         <Form>
                             <FormGroup row>
                                 <Label sm={2}>شی ارسال کننده :‌ </Label>
-                                <Col sm={4}>
-                                    <Input type="select" name="supportsJoin" id="select" onChange={(event) => {
-                                        this.setState({
-                                            thing: event.target.value
-                                        })
-                                    }}>
-                                        <option value=""> شی را انتخاب کنید</option>
-                                        {this.state.project.things.map(thing => {
-                                            return (<option value={thing._id}>{thing.name}</option>)
-                                        })
+                                <Select2
+                                    style={{width: "30%"}}
+                                    multiple
+                                    data={this.getThings()}
+                                    ref="tags"
+                                    value={this.state.selectedThing.ids}
+                                    onSelect={
+                                        this.setThing
+                                    }
+                                    onUnselect={this.setThing}
+                                    options={
+                                        {
+                                            placeholder: 'شی مورد نظر را انتخاب کنید',
                                         }
-                                    </Input>
-                                </Col>
+                                    }
+                                />
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>زمان داده :‌ </Label>
@@ -225,7 +249,7 @@ class ProjectsView extends Component {
                             {/*</FormGroup>*/}
                             <Button outline color="success" size="sm" onClick={() => {
                                 this.setState({page: 0})
-                                this.props.dispatch(getDataAction(this.state.thing, this.state.project._id, this.state.since,
+                                this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
                                     this.state.until, (status, data) => {
                                         if (status && data !== null && data !== undefined) {
                                             this.setState({

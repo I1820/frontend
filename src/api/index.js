@@ -8,12 +8,12 @@ import {
 } from './config'
 
 import _ from 'underscore'
-import { sendingRequest, logout } from '../actions/AppActions'
-import axios, { post } from 'axios';
+import {sendingRequest, logout} from '../actions/AppActions'
+import axios, {post} from 'axios';
 import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://backback.ceit.aut.ac.ir/api/v1'
+const BASE_URL = 'http://backback.ceit.aut.ac.ir:50024/api/v1'
 
 const endpoints = {
     login: '/login',
@@ -184,8 +184,16 @@ module.exports.createThing = function (data, projectId, dispatch) {
 //     return fetchData('/project/' + projectId + '/things/' + thingId, projectControler.find, getConfig(), dispatch)
 // }
 //
-module.exports.getProjectData = function (thingId, projectId, offset, limit, dispatch) {
-    return fetchData(`/project/${projectId}/things/${thingId}/data?since=${offset}&until=${limit}`, getConfig(), dispatch)
+module.exports.getProjectData = function (thing_ids, projectId, since, until, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {
+        body: getFormData({
+            since,
+            until,
+            thing_ids
+        })
+    })
+    return fetchData(`/project/${projectId}/things/data`, config, dispatch)
 }
 
 
