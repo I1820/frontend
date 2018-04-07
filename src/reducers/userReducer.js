@@ -1,4 +1,4 @@
-import {INIT_USER, UPDATE_USER, FREE} from '../constants/AppConstants'
+import {INIT_USER, UPDATE_USER, FREE, GET_USERS} from '../constants/AppConstants'
 import _ from 'underscore'
 
 const assign = Object.assign || require('object.assign')
@@ -7,6 +7,12 @@ const initialState = {}
 export function userReducer(state = initialState, action) {
     switch (action.type) {
 
+        case GET_USERS:
+            state = []
+            return [
+                ...state,
+                ...action.newState.users
+            ]
         case INIT_USER:
             if (!_.isUndefined(action.newState.user.legal) && action.newState.user.legal === true) {
                 return assign({}, state, {

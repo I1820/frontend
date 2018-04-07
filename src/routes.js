@@ -50,5 +50,6 @@ const routes = {
   '/gateways/view': 'View Gateway',
   '/device-profile/list': 'پروفایل اشیا',
   '/device-profile/new': 'Add New Devices Profile',
+  '/users': 'لیست کاربران',
 };
 export default routes;

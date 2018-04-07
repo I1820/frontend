@@ -46,6 +46,7 @@ import {
     getGateways,
     deleteThing as deleteThingAPI,
     newDownlink as newDownlinkAPI,
+    getUsers as getUsersAPI,
 } from '../api/index'
 import {
     activateScenario,
@@ -822,4 +823,21 @@ export function getScenarioAction(projectId, scenarioId, cb) {
             dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
         })
     }
+}
+
+export function getUsersAction() {
+    return (dispatch) => {
+        const promise = getUsersAPI(dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch(setUsers(response.result))
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+function setUsers(newState) {
+    return {type: GET_USERS, newState}
 }

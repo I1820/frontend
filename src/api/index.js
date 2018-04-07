@@ -309,3 +309,7 @@ module.exports.getCodec = function (thingId, projectId, dispatch) {
 module.exports.getScenario = function (projectId, scenarioId, dispatch) {
     return fetchData(`/project/${projectId}/scenario/${scenarioId}`, getConfig(), dispatch)
 }
+
+module.exports.getUsers = function (dispatch) {
+    return fetchData(`/admin/users?offset=0&limit=100`, getConfig(), dispatch)
+}

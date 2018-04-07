@@ -9,7 +9,7 @@ import Footer from '../../components/Footer/';
 
 import Dashboard from '../../views/Dashboard/';
 
-import News from '../../views/News/';
+import Users from '../../views/Users/Users.js';
 
 //Payment Portal Managment
 import PaymentPortalManagment from '../../views/PaymentPortalManagment/PamentPortalList.js'
@@ -87,8 +87,8 @@ class Full extends Component {
             <Breadcrumb/>
             <Container fluid>
               <Switch>
-                <Route path="/dashboard" name="Dashboard" component={ProjectsList}/>
-                <Route path="/news" name="News" component={News}/>
+                <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
+                <Route path="/users" name="Users" component={Users}/>
                 <Route path="/profile" name="Profile" component={Profile}/>
                 <Route path="/gateways/new" name="GatewaysNew" component={GatewaysNew}/>
                 <Route path="/gateways/list" name="Gateways" component={Gateways}/>

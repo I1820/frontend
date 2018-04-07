@@ -1,11 +1,17 @@
 export default {
   items: [
 
-    // {
-    //     name: 'داشبورد',
-    //     url: '/dashboard',
-    //     icon: 'icon-screen-desktop',
-    // },
+    {
+        name: 'داشبورد',
+        url: '/dashboard',
+        icon: 'icon-screen-desktop',
+    },
+
+    {
+        name: 'لیست کاربران',
+        url: '/users',
+        icon: 'icon-people',
+    },
 
     {
         name: 'حساب کاربری',
