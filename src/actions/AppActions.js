@@ -46,6 +46,7 @@ import {
     getGateways,
     deleteThing as deleteThingAPI,
     newDownlink as newDownlinkAPI,
+    lint
 } from '../api/index'
 import {
     activateScenario,
@@ -823,3 +824,23 @@ export function getScenarioAction(projectId, scenarioId, cb) {
         })
     }
 }
+
+
+export function lintCode(projectId, code, cb) {
+    return (dispatch) => {
+        const promise = lint(projectId, code, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                cb(true, response.result.result)
+            } else {
+                cb(false)
+            }
+        }).catch((err) => {
+            cb(false)
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
+}
+
+

@@ -16,7 +16,7 @@ import 'brace/mode/python';
 import 'brace/snippets/python';
 import 'brace/ext/language_tools';
 import {
-    connectThing, createScenario, getScenarioAction, getThingProfileListAction,
+    connectThing, createScenario, getScenarioAction, getThingProfileListAction, lintCode,
     updateScenarioAction
 } from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
@@ -31,7 +31,8 @@ class AddScenario extends Component {
 
         this.state = {
             code: "",
-            name: ""
+            name: "",
+            lint: []
         }
     }
 
@@ -105,20 +106,43 @@ class AddScenario extends Component {
                     <CardFooter>
                         <Button onClick={this.sendScenario} className="ml-1" color="primary" size="md">ارسال
                             سناریو</Button>
-                        {/*<Button className="ml-1" color="warning" size="md">بررسی سناریو</Button>*/}
+                        <Button onClick={() => {
+                            this.props.dispatch(lintCode(this.state.project, this.state.code, (status, lint) => {
+                                if (status)
+                                    this.setState({lint})
+                            }))
+                        }} className="ml-1" color="warning" size="md">بررسی سناریو</Button>
                     </CardFooter>
                 </Card>
-                {/*<Card className="text-justify">*/}
-                    {/*<CardHeader>*/}
-                        {/*<CardTitle className="mb-0 font-weight-bold h6">نتیجه بررسی سناریو</CardTitle>*/}
-                    {/*</CardHeader>*/}
-                    {/*<CardBody>*/}
-                    {/*</CardBody>*/}
-                {/*</Card>*/}
+                <Card className="text-justify">
+                    <CardHeader>
+                        <CardTitle className="mb-0 font-weight-bold h6">نتیجه بررسی سناریو</CardTitle>
+                    </CardHeader>
+                    <CardBody style={{background: '#2F3129', textAlign: 'left', direction: 'ltr'}}>
+                        {
+                            this.renderLog()
+                        }
+                    </CardBody>
+                </Card>
             </div>
         );
     }
 
+    renderLog() {
+        console.log('lint', this.state.lint)
+        return this.state.lint.map((lint, key) => {
+            let color = 'black'
+            if (lint.type === 'error')
+                color = 'red'
+            else if (lint.type === 'warning')
+                color = 'orange'
+            else if (lint.type === 'convention')
+                color = 'cadetblue'
+            return <p id={`log-${key}`}
+                      style={{fontFamily: 'sans-serif', color}}>{key + 1}- {lint.type}: {lint.message}!
+                lint:{lint.line} column:{lint.column}</p>
+        })
+    }
 
     sendScenario() {
         if (this.state.id === undefined)
