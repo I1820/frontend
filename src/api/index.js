@@ -13,7 +13,7 @@ import axios, {post} from 'axios';
 import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://backback.ceit.aut.ac.ir:50024/api/v1'
+const BASE_URL = 'http://backback.ceit.aut.ac.ir/api/v1'
 
 const endpoints = {
     login: '/login',
@@ -316,4 +316,11 @@ module.exports.getCodec = function (thingId, projectId, dispatch) {
 
 module.exports.getScenario = function (projectId, scenarioId, dispatch) {
     return fetchData(`/project/${projectId}/scenario/${scenarioId}`, getConfig(), dispatch)
+}
+
+
+module.exports.lint = function (projectId, code, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData({code})})
+    return fetchData(`/project/${projectId}/lint`, config, dispatch)
 }
