@@ -46,7 +46,11 @@ import {
     getGateways,
     deleteThing as deleteThingAPI,
     newDownlink as newDownlinkAPI,
+<<<<<<< HEAD
     getUsers as getUsersAPI,
+=======
+    lint
+>>>>>>> df38691b5376c8bb346a3c8f67b78f3339ee2fb4
 } from '../api/index'
 import {
     activateScenario,
@@ -385,9 +389,9 @@ export function cleanErrorMessage() {
     setErrorMessage('')
 }
 
-export function getDataAction(thingId, projectId, offset, limit, callback) {
+export function getDataAction(things, projectId, offset, limit, callback) {
     return (dispatch) => {
-        const promise = getThingDataAPI(thingId, projectId, offset, limit, dispatch)
+        const promise = getThingDataAPI(things, projectId, offset, limit, dispatch)
         promise.then((response) => {
             console.log('data', response)
             if (response.status === 'OK') {
@@ -834,6 +838,23 @@ export function getUsersAction() {
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
+        })
+    }
+}
+
+export function lintCode(projectId, code, cb) {
+    return (dispatch) => {
+        const promise = lint(projectId, code, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                cb(true, response.result.result)
+            } else {
+                cb(false)
+            }
+        }).catch((err) => {
+            cb(false)
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
         })
     }
 }

@@ -8,8 +8,8 @@ import {
 } from './config'
 
 import _ from 'underscore'
-import { sendingRequest, logout } from '../actions/AppActions'
-import axios, { post } from 'axios';
+import {sendingRequest, logout} from '../actions/AppActions'
+import axios, {post} from 'axios';
 import store from '../store'
 /* global fetch */
 
@@ -184,8 +184,16 @@ module.exports.createThing = function (data, projectId, dispatch) {
 //     return fetchData('/project/' + projectId + '/things/' + thingId, projectControler.find, getConfig(), dispatch)
 // }
 //
-module.exports.getProjectData = function (thingId, projectId, offset, limit, dispatch) {
-    return fetchData(`/project/${projectId}/things/${thingId}/data?since=${offset}&until=${limit}`, getConfig(), dispatch)
+module.exports.getProjectData = function (thing_ids, projectId, since, until, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {
+        body: getFormData({
+            since,
+            until,
+            thing_ids
+        })
+    })
+    return fetchData(`/project/${projectId}/things/data`, config, dispatch)
 }
 
 
@@ -310,6 +318,9 @@ module.exports.getScenario = function (projectId, scenarioId, dispatch) {
     return fetchData(`/project/${projectId}/scenario/${scenarioId}`, getConfig(), dispatch)
 }
 
-module.exports.getUsers = function (dispatch) {
-    return fetchData(`/admin/users?offset=0&limit=10`, getConfig(), dispatch)
+
+module.exports.lint = function (projectId, code, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData({code})})
+    return fetchData(`/project/${projectId}/lint`, config, dispatch)
 }

@@ -16,7 +16,8 @@ import 'brace/mode/python';
 import 'brace/snippets/python';
 import 'brace/ext/language_tools';
 import {
-    createCodecAction, getCodecAction, getCodecTemplateListAction} from "../../actions/AppActions";
+    createCodecAction, getCodecAction, getCodecTemplateListAction, lintCode
+} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
 import Spinner from "../Spinner/Spinner";
 
@@ -29,7 +30,8 @@ class AddScenario extends Component {
 
         this.state = {
             codec: "",
-            templates: []
+            templates: [],
+            lint:[]
         }
     }
 
@@ -109,10 +111,43 @@ class AddScenario extends Component {
                     <CardFooter>
                         <Button onClick={this.sendCodec} className="ml-1" color="primary" size="md">ارسال
                             codec</Button>
+                            <Button onClick={() => {
+                                this.props.dispatch(lintCode(this.state.project, this.state.codec, (status, lint) => {
+                                    if (status)
+                                        this.setState({lint})
+                                }))
+                            }} className="ml-1" color="warning" size="md">بررسی کدک</Button>
                     </CardFooter>
+                </Card>
+                <Card className="text-justify">
+                    <CardHeader>
+                        <CardTitle className="mb-0 font-weight-bold h6">نتیجه بررسی کدک</CardTitle>
+                    </CardHeader>
+                    <CardBody style={{background: '#2F3129', textAlign: 'left', direction: 'ltr'}}>
+                        {
+                            this.renderLog()
+                        }
+                    </CardBody>
                 </Card>
             </div>
         );
+    }
+
+
+    renderLog() {
+        console.log('lint', this.state.lint)
+        return this.state.lint.map((lint, key) => {
+            let color = 'black'
+            if (lint.type === 'error')
+                color = 'red'
+            else if (lint.type === 'warning')
+                color = 'orange'
+            else if (lint.type === 'convention')
+                color = 'cadetblue'
+            return <p id={`log-${key}`}
+                      style={{fontFamily: 'sans-serif', color}}>{key + 1}- {lint.type}: {lint.message}!
+                lint:{lint.line} column:{lint.column}</p>
+        })
     }
 
 
