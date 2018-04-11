@@ -46,11 +46,8 @@ import {
     getGateways,
     deleteThing as deleteThingAPI,
     newDownlink as newDownlinkAPI,
-<<<<<<< HEAD
     getUsers as getUsersAPI,
-=======
     lint
->>>>>>> df38691b5376c8bb346a3c8f67b78f3339ee2fb4
 } from '../api/index'
 import {
     activateScenario,
