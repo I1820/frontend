@@ -26,7 +26,7 @@
 import {
     SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
     UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
-    SET_GATEWAY
+    SET_GATEWAY, GET_USERS
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -827,17 +827,13 @@ export function getScenarioAction(projectId, scenarioId, cb) {
 
 export function getUsersAction() {
     return (dispatch) => {
-        const promise = getUsersAPI(dispatch)
+        const promise = getUsersAPI(dispatch);
         promise.then((response) => {
             if (response.status === 'OK') {
-                dispatch(setUsers(response.result))
+                dispatch({type: GET_USERS, newState: response.result})
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         })
     }
-}
-
-function setUsers(newState) {
-    return {type: GET_USERS, newState}
 }

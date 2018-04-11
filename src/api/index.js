@@ -311,5 +311,5 @@ module.exports.getScenario = function (projectId, scenarioId, dispatch) {
 }
 
 module.exports.getUsers = function (dispatch) {
-    return fetchData(`/admin/users?offset=0&limit=100`, getConfig(), dispatch)
+    return fetchData(`/admin/users?offset=0&limit=10`, getConfig(), dispatch)
 }

@@ -29,6 +29,8 @@ class Users extends Component {
     constructor(props) {
         super(props);
 
+        this.loadUsers = this.loadUsers.bind(this)
+
         this.state = {};
     }
 
@@ -38,6 +40,14 @@ class Users extends Component {
                 users: props.users,
             })
         }
+    }
+
+    componentWillMount() {
+        this.loadUsers()
+    }
+
+    loadUsers() {
+        this.props.dispatch(getUsersAction())
     }
 
     render() {
