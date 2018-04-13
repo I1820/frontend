@@ -1,11 +1,11 @@
 export default {
   items: [
 
-    // {
-    //     name: 'داشبورد',
-    //     url: '/dashboard',
-    //     icon: 'icon-screen-desktop',
-    // },
+    {
+        name: 'داشبورد',
+        url: '/dashboard',
+        icon: 'icon-screen-desktop',
+    },
 
     {
         name: 'حساب کاربری',
@@ -18,7 +18,21 @@ export default {
         url: '/projects/list',
         icon: 'icon-layers',
     },
-
+    {
+        name: 'بسته‌ها',
+        url: '/packages',
+        icon: 'icon-puzzle',
+    },
+    {
+        name: 'بسته‌های خریداری شده',
+        url: '/buyedPackages',
+        icon: 'icon-puzzle',
+    },
+    {
+        name: 'تراکنش‌ها',
+        url: '/transactions',
+        icon: 'icon-puzzle',
+    },
     {
         name: 'گذرگاه ها',
         url: '/gateways/list',
@@ -30,11 +44,21 @@ export default {
         url: '/device-profile/list',
         icon: 'icon-grid',
     },
-    // {
-    //     name: 'مدیریت پرتال پرداخت',
-    //     url: '/payment-portal/management',
-    //     icon: 'icon-grid',
-    // },
+    {
+        name: 'مدیریت پرتال پرداخت',
+        url: '/payment-portal/management',
+        icon: 'icon-grid',
+    },
+    {
+        name: 'مدیریت بسته‌ها',
+        url: '/Package/Managment',
+        icon: 'icon-grid',
+    },
+    {
+        name: 'مدیریت کاربران',
+        url: '/Users/Managment',
+        icon: 'icon-grid',
+    },
     // {
     //     name: 'اشیاء',
     //     url: '/things',
