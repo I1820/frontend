@@ -15,7 +15,7 @@ import 'brace/theme/monokai';
 import 'brace/mode/python';
 import 'brace/snippets/python';
 import 'brace/ext/language_tools';
-import {createTemplateAction} from "../../actions/AppActions";
+import { createTemplateAction, lintCode } from '../../actions/AppActions';
 import connect from "react-redux/es/connect/connect";
 import Spinner from "../Spinner/Spinner";
 
@@ -28,6 +28,8 @@ class AddTemplate extends Component {
 
         this.state = {
             code: "",
+            name: "",
+            lint: []
         }
     }
 
@@ -85,12 +87,42 @@ class AddTemplate extends Component {
                     <CardFooter>
                         <Button onClick={this.sendTemplate} className="ml-1" color="primary" size="md">ارسال
                             قالب</Button>
+                        <Button onClick={() => {
+                            this.props.dispatch(lintCode(this.state.project, this.state.code, (status, lint) => {
+                                if (status)
+                                    this.setState({lint})
+                            }))
+                        }} className="ml-1" color="warning" size="md">بررسی کدک</Button>
                     </CardFooter>
+                </Card>
+                <Card className="text-justify">
+                    <CardHeader>
+                        <CardTitle className="mb-0 font-weight-bold h6">نتیجه بررسی کدک</CardTitle>
+                    </CardHeader>
+                    <CardBody style={{background: '#2F3129', textAlign: 'left', direction: 'ltr'}}>
+                        {
+                            this.renderLog()
+                        }
+                    </CardBody>
                 </Card>
             </div>
         );
     }
 
+    renderLog() {
+        return this.state.lint.map((lint, key) => {
+            let color = 'black'
+            if (lint.type === 'error')
+                color = 'red'
+            else if (lint.type === 'warning')
+                color = 'orange'
+            else if (lint.type === 'convention')
+                color = 'cadetblue'
+            return <p key={`log-${key}`} style={{fontFamily: 'sans-serif', color}}>
+                line  {lint.line}:{lint.column} - {lint.type}: {lint.message}!
+            </p>
+        })
+    }
 
     sendTemplate() {
         this.props.dispatch(createTemplateAction(this.state.project, {
