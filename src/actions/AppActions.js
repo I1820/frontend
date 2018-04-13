@@ -65,19 +65,20 @@ import {
  */
 export function login(username, password, captcha, errorCallback) {
     return (dispatch) => {
-        if (captcha === undefined)
-            return dispatch(setErrorMessage('لطفا برروی گزینه من ربات نیستم کلیک کنید'))
+        if (captcha === undefined) {
+          errorCallback('لطفا برروی گزینه من ربات نیستم کلیک کنید')
+            return
+        }
 
         // Show the loading indicator, hide the last error
         // If no username or password was specified, throw a field-missing error
         if (anyElementsEmpty({username, password})) {
-            errorCallback(setErrorMessage(errorMessages.FIELD_MISSING))
+            errorCallback(errorMessages.FIELD_MISSING)
             return
         }
         const promise = loginAPI(username, password, captcha, dispatch)
 
         promise.then((response) => {
-            console.log(response)
             if (response.status === 'OK') {
                 dispatch(setAuthState(true))
                 dispatch(initUser(response.result))
