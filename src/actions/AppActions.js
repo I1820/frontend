@@ -24,9 +24,9 @@
  */
 
 import {
-    SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
-    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
-    SET_GATEWAY,NEW_PACKAGE, SELECT_USER, SELECT_PACKAGE, PAYMENT_RESULT
+  SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
+  UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
+  SET_GATEWAY, NEW_PACKAGE, SELECT_USER, SELECT_PACKAGE, PAYMENT_RESULT, GET_PACKAGED
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -49,11 +49,12 @@ import {
     lint
 } from '../api/index'
 import {
-    activateScenario,
-    activeThing, createTemplate, createThingProfile, deleteCodec, deleteScenario, getCodec, getCodecTemplateList,
-    getScenario,
-    getThingProfileList, updateScenarioAPI,
-    viewProfile
+  activateScenario,
+  activeThing, createTemplate, createThingProfile, deleteCodec, deleteScenario, getCodec, getCodecTemplateList,
+  getPackage,
+  getScenario,
+  getThingProfileList, updateScenarioAPI,
+  viewProfile
 } from '../api';
 
 /**
@@ -867,3 +868,17 @@ export function lintCode(projectId, code, cb) {
 }
 
 
+/* packages action */
+
+export function getPackagesAction() {
+  return (dispatch) => {
+    const promise = getPackage(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        dispatch({type: GET_PACKAGED, newState: response.result.packages})
+      } else {
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    })
+  }
+}

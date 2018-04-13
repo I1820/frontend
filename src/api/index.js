@@ -318,6 +318,10 @@ module.exports.getScenario = function (projectId, scenarioId, dispatch) {
   return fetchData(`/project/${projectId}/scenario/${scenarioId}`, getConfig(), dispatch)
 }
 
+module.exports.getPackage = function (dispatch) {
+  return fetchData(`/packages`, getConfig(), dispatch)
+}
+
 
 module.exports.lint = function (projectId, code, dispatch) {
   const config = postConfig()
