@@ -13,11 +13,11 @@ export default {
         icon: 'icon-people',
     },
 
-    {
-        name: 'حساب کاربری',
-        url: '/profile',
-        icon: 'icon-user',
-    },
+    // {
+    //     name: 'حساب کاربری',
+    //     url: '/profile',
+    //     icon: 'icon-user',
+    // },
 
     {
         name: 'پروژه ها',
