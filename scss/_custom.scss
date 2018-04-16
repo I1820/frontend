@@ -66,18 +66,16 @@ body {
 
 // Spinner
 .spinner {
-
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.6);
-  background-image: url('../public/img/spinner.gif');
-  background-position: center;
-  background-repeat: no-repeat;
-  top: 0px;
-  left: 0px;
-  bottom: 0px;
-  right: 0px;
-  z-index: 2000;
-
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.6);
+    background-image: url('../public/img/spinner.gif');
+    background-position: center;
+    background-repeat: no-repeat;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    z-index: 5000;
 }
 
 // Media Queries
