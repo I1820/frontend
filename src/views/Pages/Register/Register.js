@@ -39,10 +39,23 @@ class Register extends Component {
         this.realRegister = this.realRegister.bind(this);
         this.legalRegister = this.legalRegister.bind(this);
         this.goTologinPage = this.goTologinPage.bind(this);
+        this.registerAllUser = this.registerAllUser.bind(this);
 
         this.state = {
             activeTab: '1',
         };
+    }
+
+    registerAllUser() {
+        if( this.state.regPasswrod == this.state.regRepeatPassword ) {
+            this.props.dispatch(register({
+                'legal': this.state.regUserType,
+                'email': this.state.regEmail,
+                'password': this.state.regPasswrod,
+            }, this.manageToastAlerts))
+        } else {
+            this.manageToastAlerts('رمز عبور با تکرار برابر نیست')
+        }
     }
 
     realRegister() {
@@ -136,6 +149,70 @@ class Register extends Component {
 
                   <br />
 
+                  <InputGroup className="mb-4">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        @
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                    style={{
+                        direction: 'ltr'
+                    }}
+                     type="text" placeholder="پست الکترونیکی"
+                    onChange={event => this.setState({regEmail: event.target.value})} />
+                  </InputGroup>
+
+                  <InputGroup className="mb-4">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="icon-user-following"></i>
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input type="select"
+                    onChange={event => this.setState({regUserType: event.target.value})} >
+                        <option value="0">حقیقی</option>
+                        <option value="1">حقوقی</option>
+                    </Input>
+                  </InputGroup>
+
+                  <InputGroup className="mb-4">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="icon-lock"></i>
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                    style={{
+                        direction: 'ltr'
+                    }}
+                    type="password" placeholder="کلمه عبور"
+                    onChange={event => this.setState({regPasswrod: event.target.value})} />
+                  </InputGroup>
+
+                  <InputGroup className="mb-4">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="icon-lock"></i>
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input
+                    style={{
+                        direction: 'ltr'
+                    }}
+                    type="password" placeholder="تکرار کلمه عبور"
+                    onChange={event => this.setState({regRepeatPassword: event.target.value})} />
+                  </InputGroup>
+
+                  <br />
+
+                  <Button color="success" onClick={this.registerAllUser} block>ثبت نام</Button>
+                  <Button color="primary" onClick={this.goTologinPage} block>بازگشت به لاگین</Button>
+
+
+
+              {/*
+
                 <Nav tabs>
                     <NavItem>
                         <NavLink
@@ -158,7 +235,7 @@ class Register extends Component {
                 <TabContent activeTab={this.state.activeTab} className="border-0">
 
                     <TabPane tabId="1">
-                        {/* حقیقی */}
+
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
@@ -246,7 +323,7 @@ class Register extends Component {
 
 
                     <TabPane tabId="2">
-                        {/* حقوقی */}
+
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
@@ -366,6 +443,8 @@ class Register extends Component {
                     </TabPane>
 
                 </TabContent>
+
+                */}
 
                 </CardBody>
               </Card>

@@ -62,6 +62,9 @@ class Login extends Component {
                                                 </InputGroupText>
                                             </InputGroupAddon>
                                             <Input
+                                                style={{
+                                                    direction: 'ltr'
+                                                }}
                                                 onChange={event => {
                                                     this.mergeWithState({email: event.target.value})
                                                 }}
@@ -74,6 +77,9 @@ class Login extends Component {
                                                 </InputGroupText>
                                             </InputGroupAddon>
                                             <Input type="password"
+                                                    style={{
+                                                        direction: 'ltr'
+                                                    }}
                                                    onChange={event => {
                                                        this.mergeWithState({password: event.target.value})
                                                    }}

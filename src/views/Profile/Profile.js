@@ -22,6 +22,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from "react-toastify";
 import {editProfile, getProfileAction} from "../../actions/AppActions";
+import Phone from 'react-phone-number-input'
+import 'react-phone-number-input/rrui.css'
+import 'react-phone-number-input/style.css'
 
 style({
     colorProgressDefault: 'white'
@@ -52,14 +55,26 @@ class Profile extends Component {
     }
 
     editUserProfile() {
-        this.props.dispatch(editProfile({
-            'name': this.state.fetchUserInfo.fullName,
-            'mobile': this.state.fetchUserInfo.mobile,
-            'other_info': JSON.stringify({
-                'phone': this.state.fetchUserInfo.phone,
-                'address': this.state.fetchUserInfo.address,
-            })
-        }, this.manageToastAlerts))
+        var pattern = new RegExp('^[0-9]{4,11}$');
+
+        if( pattern.test(this.state.fetchUserInfo.phone) ) {
+            if( pattern.test(this.state.fetchUserInfo.mobile) ) {
+                this.props.dispatch(editProfile({
+                    'name': this.state.fetchUserInfo.fullName,
+                    'mobile': this.state.fetchUserInfo.mobile,
+                    'other_info': JSON.stringify({
+                        'phone': this.state.fetchUserInfo.phone,
+                        'address': this.state.fetchUserInfo.address,
+                    })
+                }, this.manageToastAlerts))
+            }
+            else {
+                this.manageToastAlerts('شماره موبایل فقط عدد و ۱۱ کاراکتر باشد')
+            }
+        }
+        else {
+            this.manageToastAlerts('تلفن ثابت فقط عدد و بین ۴ الی ۱۱ کاراکتر باشد')
+        }
     }
 
     manageToastAlerts(status) {
@@ -101,17 +116,32 @@ class Profile extends Component {
                     </CardHeader>
                     <CardBody>
                         <Form>
+
+                        <FormGroup row>
+                            <Label sm={3}>نام :‌ </Label>
+                            <Col sm={5}>
+                                <Input type="text" onChange={(event) => {
+                                    this.setState({
+                                        fetchUserInfo: {
+                                            ...this.state.firstName,
+                                            fullName: event.target.value
+                                        }
+                                    })
+                                }} value={this.state.fetchUserInfo.firstName}/>
+                            </Col>
+                        </FormGroup>
+
                             <FormGroup row>
-                                <Label sm={3}>نام و نام خانوادگی :‌ </Label>
+                                <Label sm={3}>نام خانوادگی :‌ </Label>
                                 <Col sm={5}>
                                     <Input type="text" onChange={(event) => {
                                         this.setState({
                                             fetchUserInfo: {
-                                                ...this.state.fullName,
+                                                ...this.state.lastName,
                                                 fullName: event.target.value
                                             }
                                         })
-                                    }} value={this.state.fetchUserInfo.fullName}/>
+                                    }} value={this.state.fetchUserInfo.lastName}/>
                                 </Col>
                             </FormGroup>
 
@@ -132,21 +162,27 @@ class Profile extends Component {
                             <FormGroup row>
                                 <Label sm={3}>تلفن همراه : </Label>
                                 <Col sm={5}>
-                                    <Input type="text" dir="ltr" onChange={(event) => {
+                                    {/*<Input type="text" dir="ltr" onChange={(event) => {
                                         this.setState({
                                             fetchUserInfo: {
                                                 ...this.state.mobile,
                                                 mobile: event.target.value
                                             }
                                         })
-                                    }} value={this.state.fetchUserInfo.mobile}/>
+                                    }} value={this.state.fetchUserInfo.mobile}/> */}
+                                    <Phone placeholder="09121234567"
+                                    style={{
+                                        direction: 'ltr'
+                                    }}
+                                    value={ this.state.phone }
+                                    onChange={ phone => this.setState({ phone }) } />
                                 </Col>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Label sm={3}>نشانی :‌ </Label>
                                 <Col sm={5}>
-                                    <Input type="textarea" rows="4" onChange={(event) => {
+                                    <Input type="textarea" rows="4" maxLength="500" onChange={(event) => {
                                         this.setState({
                                             fetchUserInfo: {
                                                 ...this.state.address,

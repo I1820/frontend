@@ -290,7 +290,24 @@ const MapWithASearchBox = compose(
             this.setState({
                 bounds: null,
                 center: marker,
-                marker,
+                marker: {
+                    lat: 35.7024852,
+                    lng: 51.4023424,
+                },
+                dragEnd: data => {
+                    document.getElementById('fld_lat').value = data.latLng.lat()
+                    document.getElementById('fld_lng').value = data.latLng.lng()
+                    this.setState({
+                        center: {
+                            lat: data.latLng.lat(),
+                            lng: data.latLng.lng()
+                        },
+                        marker: {
+                            lat: data.latLng.lat(),
+                            lng: data.latLng.lng()
+                        },
+                    })
+                },
                 onMapMounted: ref => {
                     refs.map = ref;
                 },
@@ -377,7 +394,7 @@ const MapWithASearchBox = compose(
                 }}
             />
         </SearchBox>
-        <Marker position={props.marker}/>
+        <Marker draggable={true} onDragEnd={props.dragEnd} position={props.marker}/>
     </GoogleMap>
 );
 

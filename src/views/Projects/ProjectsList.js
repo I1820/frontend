@@ -28,6 +28,7 @@ import classnames from 'classnames';
 import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from "react-toastify";
+import Pagination from "react-js-pagination";
 
 style({
     colorProgressDefault: 'white'
@@ -79,7 +80,7 @@ class ProjectsList extends Component {
     manageToastAlerts(status) {
         if(status === true) {
             this.loadProjects()
-            this.deleteModalToggle()
+            //this.deleteModalToggle()
 
             toast('پروژه مورد نظر با موفقیت حذف شد', {
                 position: toast.POSITION.BOTTOM_RIGHT,
@@ -189,6 +190,17 @@ class ProjectsList extends Component {
                             }
                             </tbody>
                         </Table>
+
+                        <br />
+
+                        <Pagination
+                            activePage={1}
+                            itemsCountPerPage={10}
+                            totalItemsCount={450}
+                            pageRangeDisplayed={5}
+                            onChange={false}
+                        />
+
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.toggle} color="primary">پروژه جدید</Button>
@@ -238,7 +250,7 @@ class ProjectsList extends Component {
 
     onCreateProject(status) {
         if (status) {
-            this.toggle()
+            //this.toggle()
             this.loadProjects()
         } else {
             //TODO Alert
