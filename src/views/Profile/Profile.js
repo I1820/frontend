@@ -54,6 +54,10 @@ class Profile extends Component {
         this.props.dispatch(getProfileAction());
     }
 
+    componentWillReceiveProps() {
+        console.log('ppppppppp' + this.props.userInfo.mobile);
+    }
+
     editUserProfile() {
         var pattern = new RegExp('^[0-9]{4,11}$');
 
@@ -170,11 +174,11 @@ class Profile extends Component {
                                             }
                                         })
                                     }} value={this.state.fetchUserInfo.mobile}/> */}
-                                    <Phone placeholder="09121234567"
+                                    <Phone
                                     style={{
                                         direction: 'ltr'
                                     }}
-                                    value={ this.state.phone }
+                                    value={this.state.fetchUserInfo.mobile}
                                     onChange={ phone => this.setState({ phone }) } />
                                 </Col>
                             </FormGroup>
@@ -190,6 +194,61 @@ class Profile extends Component {
                                             }
                                         })
                                     }} value={this.state.fetchUserInfo.address}/>
+                                </Col>
+                            </FormGroup>
+
+                            <FormGroup row>
+                                <Label sm={3}>اسم مجموعه :‌ </Label>
+                                <Col sm={5}>
+                                    <Input type="text" placeholder="اسم مجموعه" />
+                                </Col>
+                            </FormGroup>
+
+                            <FormGroup row>
+                                <Label sm={3}>نوع مجموعه :‌ </Label>
+                                <Col sm={5}>
+                                    <Input type="select" >
+                                        <option value="0">انتخاب نوع مجموعه</option>
+                                        <option value="سازمانی">سازمانی</option>
+                                        <option value="شرکت">شرکت</option>
+                                        <option value="نظامی">نظامی</option>
+                                        <option value="NGO">NGO</option>
+                                    </Input>
+                                </Col>
+                            </FormGroup>
+
+                            <FormGroup row>
+                                <Label sm={3}>شماره ثبت :‌ </Label>
+                                <Col sm={5}>
+                                    <Input type="text" placeholder="شماره ثبت" />
+                                </Col>
+                            </FormGroup>
+
+                            <FormGroup row>
+                                <Label sm={3}>کد اقتصادی :‌ </Label>
+                                <Col sm={5}>
+                                    <Input type="text" placeholder="کد اقتصادی" />
+                                </Col>
+                            </FormGroup>
+
+                            <FormGroup row>
+                                <Label sm={3}>کد اقتصادی :‌ </Label>
+                                <Col sm={5}>
+                                    <Input type="text" placeholder="کد اقتصادی" />
+                                </Col>
+                            </FormGroup>
+
+                            <FormGroup row>
+                                <Label sm={3}>کلمه عبور :‌ </Label>
+                                <Col sm={5}>
+                                    <Input type="password" />
+                                </Col>
+                            </FormGroup>
+
+                            <FormGroup row>
+                                <Label sm={3}>تکرار کلمه عبور :‌ </Label>
+                                <Col sm={5}>
+                                    <Input type="password" />
                                 </Col>
                             </FormGroup>
 
