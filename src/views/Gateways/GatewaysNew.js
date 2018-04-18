@@ -236,19 +236,19 @@ class GatewaysNew extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}>مقدار Lat : </Label>
+                                <Label sm={2}>عرض جغرافیایی : </Label>
                                 <Col sm={5}>
                                     <Input type="text" id="fld_lat" dir="ltr"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}>مقدار Long : </Label>
+                                <Label sm={2}>طول جغرافیایی : </Label>
                                 <Col sm={5}>
                                     <Input dir="ltr" id="fld_lng" type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}>مقدار Altitude : </Label>
+                                <Label sm={2}>ارتفاع : </Label>
                                 <Col sm={5}>
                                     <Input type="text" dir="ltr"
                                            onChange={event => this.setState({altitude: event.target.value})}/>

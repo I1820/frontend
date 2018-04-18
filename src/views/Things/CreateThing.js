@@ -180,7 +180,7 @@ class CreateThing extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}>مقدار Lat : </Label>
+                                <Label sm={3}>عرض جغرافیایی : </Label>
                                 <Col sm={5}>
                                     <Input value={this.state.thing.loc.coordinates ?
                                         this.state.thing.loc.coordinates[0] : 0} type="text" id="fld_lat"
@@ -188,7 +188,7 @@ class CreateThing extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}>مقدار Long : </Label>
+                                <Label sm={3}>طول جغرافیایی : </Label>
                                 <Col sm={5}>
                                     <Input value={this.state.thing.loc.coordinates ?
                                         this.state.thing.loc.coordinates[1] : 0} dir="ltr" id="fld_lng"

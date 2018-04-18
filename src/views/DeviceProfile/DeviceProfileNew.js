@@ -96,7 +96,7 @@ class DeviceProfileNew extends Component {
                     <option value={0}>ABP</option>
                   </Input>
                 </Col>
-                <Label sm={3}> : supportsJoin‌ </Label>
+                <Label sm={3}> : Supports join </Label>
               </FormGroup>
 
               <Collapse isOpen={this.state.collapse} className="mt-3">
@@ -123,7 +123,7 @@ class DeviceProfileNew extends Component {
                            name={"factoryPresetFreqs"}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : factoryPresetFreqs‌ </Label>
+                  <Label sm={3}> : Factory Present frequencies </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -131,7 +131,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" defaultValue={this.state.form.macVersion} name={"macVersion"}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : macVersion‌ </Label>
+                  <Label sm={3}> : LoRaWAN MAC Version </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -147,7 +147,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" name={"maxEIRP"} defaultValue={this.state.form.maxEIRP}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : maxEIRP </Label>
+                  <Label sm={3}> : Max EIRP </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -155,7 +155,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" name={"pingSlotDR"} defaultValue={this.state.form.pingSlotDR}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : pingSlotDR‌ </Label>
+                  <Label sm={3}> : Ping Slot Datarate </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -163,7 +163,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" name={"pingSlotFreq"} defaultValue={this.state.form.pingSlotFreq}
                            type="text"/>
                   </Col>
-                  <Label sm={3}> : pingSlotFreq‌ </Label>
+                  <Label sm={3}> : Ping Slot Frequency (Hz) </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -171,7 +171,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" name={"pingSlotPeriod"} defaultValue={this.state.form.pingSlotPeriod}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : pingSlotPeriod‌ </Label>
+                  <Label sm={3}> : Ping Slot Periodicity </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -180,7 +180,7 @@ class DeviceProfileNew extends Component {
                            defaultValue={this.state.form.regParamsRevision}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : regParamsRevision‌ </Label>
+                  <Label sm={3}> : Regional Parameters Revision </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -196,7 +196,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" name={"rxDROffset1"} defaultValue={this.state.form.rxDROffset1}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : rxDROffset1‌ </Label>
+                  <Label sm={3}> : RX1 Datarate Offset </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -204,7 +204,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" name={"rxDataRate2"} defaultValue={this.state.form.rxDataRate2}
                            type="text"/>
                   </Col>
-                  <Label sm={3}> : rxDataRate2‌ </Label>
+                  <Label sm={3}> : RX2 Datarate </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -212,7 +212,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" name={"rxDelay1"} defaultValue={this.state.form.rxDelay1}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : rxDelay1‌ </Label>
+                  <Label sm={3}> : RX1 Delay </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -220,7 +220,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" name={"rxFreq2"} defaultValue={this.state.form.rxFreq2}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : rxFreq2‌ </Label>
+                  <Label sm={3}> : RX2 Channel Frequency </Label>
                 </FormGroup>
 
                 <FormGroup row>
