@@ -47,9 +47,46 @@ body {
 }
 
 
+// Phone Number ( Countries )
 .react-phone-number-input__icon{
     border: 0px !important;
     height: inherit !important;
+}
+
+
+
+// React Table
+.ReactTable{
+    border-color: #a4b7c1;
+}
+.ReactTable .rt-table{
+    overflow: hidden !important;
+}
+.ReactTable .rt-thead .rt-th.-cursor-pointer,
+.ReactTable .rt-thead .rt-td.-cursor-pointer{
+    background: #c2cfd6;
+    border-bottom: 1px solid #a4b7c1;
+    color: #3e515b;
+    font-weight: bold;
+    padding: 15px auto;
+}
+.ReactTable .rt-thead .rt-th,
+.ReactTable .rt-thead .rt-td{
+    box-shadow: 0px !important;
+}
+.ReactTable .rt-thead .rt-th.-cursor-pointer,
+.ReactTable .rt-thead .rt-td.-cursor-pointer{
+    padding: 5px 15px !important;
+    text-align: right;
+}
+.ReactTable .rt-td{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 15px;
+    margin-top: 5px;
+}
+.ReactTable .rt-tbody .rt-tr-group{
+    border-color: #a4b7c1;
 }
 
 

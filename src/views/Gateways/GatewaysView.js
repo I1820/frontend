@@ -152,7 +152,6 @@ class GatewaysView extends Component {
                     this.setState({
                         gateway
                     })
-                    console.log(gateway)
                 }
             })
         }
