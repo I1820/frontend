@@ -129,7 +129,6 @@ class AddScenario extends Component {
     }
 
     renderLog() {
-        console.log('lint', this.state.lint)
         return this.state.lint.map((lint, key) => {
             let color = 'black'
             if (lint.type === 'error')
@@ -138,9 +137,9 @@ class AddScenario extends Component {
                 color = 'orange'
             else if (lint.type === 'convention')
                 color = 'cadetblue'
-            return <p id={`log-${key}`}
-                      style={{fontFamily: 'sans-serif', color}}>{key + 1}- {lint.type}: {lint.message}!
-                lint:{lint.line} column:{lint.column}</p>
+            return <p key={`log-${key}`} style={{fontFamily: 'sans-serif', color}}>
+                    line  {lint.line}:{lint.column} - {lint.type}: {lint.message}!
+                 </p>
         })
     }
 

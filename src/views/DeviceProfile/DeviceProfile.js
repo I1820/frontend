@@ -128,7 +128,7 @@ class DeviceProfile extends Component {
                             <tr>
                                 <th>#</th>
                                 <th>اسم</th>
-                                <th>آدرس Mac</th>
+                                <th>شناسه پروفایل</th>
                                 <th>امکانات</th>
                             </tr>
                             </thead>

@@ -91,7 +91,7 @@ class Login extends Component {
                                                 size="optional compact"
                                                 ref="recaptcha"
                                                 sitekey="6LdYh0EUAAAAALOCVNd4y7f5q8oPFwg0nmCO0zM4"
-                                                onChange={(response) => this.onChange(response)}/>
+                                                onChange={(response) => this.setState({recaptcha:response})}/>
                                         </InputGroup>
                                         <Row>
                                             <Col xs="2" className="text-right">
@@ -125,15 +125,18 @@ class Login extends Component {
     }
 
     submit() {
-        this.props.dispatch(login(this.state.email, this.state.password, "", this.onRespond))
-        this.setState({
-            showAlert:false,
-            alert:""
-        })
+      let recaptcha = this.state.recaptcha
+      this.setState({
+        showAlert:false,
+        recaptcha:undefined
+      })
+      this.refs.recaptcha.reset()
+      this.props.dispatch(login(this.state.email, this.state.password, recaptcha, this.onRespond))
+
     }
 
     onRespond(errorMessage) {
-        if (errorMessage)
+
             this.setState({
                 alert:errorMessage,
                 showAlert:true
@@ -141,6 +144,7 @@ class Login extends Component {
     }
 
     renderAlert() {
+      console.log(this.state)
         if (this.state.showAlert) {
             return (
                 <Alert color="danger" className="text-right">

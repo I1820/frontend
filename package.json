@@ -66,6 +66,7 @@
     "react-telephone-input": "^4.5.6",
     "react-textarea-count": "^1.0.3",
     "react-toastify": "^3.3.4",
+    "react-stonecutter": "^0.3.9",
     "react-transition-group": "2.2.1",
     "reactstrap": "5.0.0-beta",
     "recompose": "^0.26.0",

@@ -14,6 +14,13 @@ import Users from '../../views/Users/Users.js';
 //Payment Portal Managment
 import PaymentPortalManagment from '../../views/PaymentPortalManagment/PamentPortalList.js'
 
+//PackageManagment
+import PackageManagment from '../../views/PackageManagment/PackageList'
+import NewPackage from '../../views/PackageManagment/PackageManage'
+//usersManagement
+import UsersList from '../../views/UserPaymentManagment/UsersList'
+import UserInfo from '../../views/UserPaymentManagment/UserInfo'
+
 import Gateways from '../../views/Gateways/Gateways.js';
 import GatewaysNew from '../../views/Gateways/GatewaysNew.js';
 import GatewaysView from '../../views/Gateways/GatewaysView.js';
@@ -26,6 +33,14 @@ import Profile from '../../views/Profile/';
 import ProjectsList from '../../views/Projects/ProjectsList.js';
 import ProjectsManage from '../../views/Projects/ProjectsManage.js';
 import ProjectsView from '../../views/Projects/ProjectsView.js';
+
+//package
+import ShowPackages from '../../views/Packages'
+import SelectedPackage from '../../views/Packages/SelectedPackage'
+import SuccessPayment from '../../views/Packages/SuccessPayment'
+import UnSuccessPayment from '../../views/Packages/FailurePayment'
+import Transactions from '../../views/Packages/Transactions'
+import BuyedPackages from '../../views/Packages/BuyedPackage'
 
 import ThingsExcel from '../../views/Things/ThingsExcel.js';
 import ThingsList from '../../views/Things/ThingsList.js'
@@ -90,6 +105,12 @@ class Full extends Component {
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                 <Route path="/users" name="Users" component={Users}/>
                 <Route path="/profile" name="Profile" component={Profile}/>
+
+                <Route path="/Package/Managment" name="PackageManagment" component={PackageManagment}/>
+                <Route path="/Package/New" name="NewPackage" component={NewPackage}/>
+                <Route path="/Users/Managment" name="UsersList" component={UsersList}/>
+                <Route path="/user/info/" name="UserInfo" component={UserInfo}/>
+
                 <Route path="/gateways/new" name="GatewaysNew" component={GatewaysNew}/>
                 <Route path="/gateways/list" name="Gateways" component={Gateways}/>
                 <Route path="/gateways/view" name="GatewaysView" component={GatewaysView}/>
@@ -105,6 +126,14 @@ class Full extends Component {
                 <Route path="/projects/list" name="ProjectsList" component={ProjectsList}/>
                 <Route path="/projects/manage" name="ProjectsManage" component={ProjectsManage}/>
                 <Route path="/projects/view" name="ProjectsView" component={ProjectsView}/>
+
+                <Route path="/packages" name="packages" component={ShowPackages}/>
+                <Route path="/selectedPackage/" name="selectedPackage" component={SelectedPackage}/>
+                <Route path="/paymentResult/S/" name="SuccessPayment" component={SuccessPayment}/>
+                <Route path="/paymentResult/F/" name="UnSuccessPayment" component={UnSuccessPayment}/>
+                <Route path="/transactions" name="Transactions" component={Transactions}/>
+                <Route path="/buyedPackages" name="BuyedPackages" component={BuyedPackages}/>
+
                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
                 <Route path="/things" name="createThing" component={CreateThing}/>
                 <Route path="/theme/colors" name="Colors" component={Colors}/>

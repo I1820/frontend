@@ -24,9 +24,15 @@
  */
 
 import {
+<<<<<<< HEAD
     SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
     UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
     SET_GATEWAY, GET_USERS
+=======
+  SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
+  UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
+  SET_GATEWAY, NEW_PACKAGE, SELECT_USER, SELECT_PACKAGE, PAYMENT_RESULT, GET_PACKAGED
+>>>>>>> c79b88a1a46e601ae3e00e8866c395b99e2fa35e
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -50,11 +56,12 @@ import {
     lint
 } from '../api/index'
 import {
-    activateScenario,
-    activeThing, createTemplate, createThingProfile, deleteCodec, deleteScenario, getCodec, getCodecTemplateList,
-    getScenario,
-    getThingProfileList, updateScenarioAPI,
-    viewProfile
+  activateScenario,
+  activeThing, createTemplate, createThingProfile, deleteCodec, deleteScenario, getCodec, getCodecTemplateList,
+  getPackage,
+  getScenario,
+  getThingProfileList, updateScenarioAPI,
+  viewProfile
 } from '../api';
 
 /**
@@ -66,19 +73,20 @@ import {
  */
 export function login(username, password, captcha, errorCallback) {
     return (dispatch) => {
-        if (captcha === undefined)
-            return dispatch(setErrorMessage('لطفا برروی گزینه من ربات نیستم کلیک کنید'))
+        if (captcha === undefined) {
+          errorCallback('لطفا برروی گزینه من ربات نیستم کلیک کنید')
+            return
+        }
 
         // Show the loading indicator, hide the last error
         // If no username or password was specified, throw a field-missing error
         if (anyElementsEmpty({username, password})) {
-            errorCallback(setErrorMessage(errorMessages.FIELD_MISSING))
+            errorCallback(errorMessages.FIELD_MISSING)
             return
         }
         const promise = loginAPI(username, password, captcha, dispatch)
 
         promise.then((response) => {
-            console.log(response)
             if (response.status === 'OK') {
                 dispatch(setAuthState(true))
                 dispatch(initUser(response.result))
@@ -309,6 +317,28 @@ export function selectProject(newState = NEW_OBJECT) {
 export function selectThing(newState = NEW_OBJECT) {
     newState !== NEW_OBJECT ? forwardTo('thing/' + newState) : forwardTo('thing/new')
     return {type: SELECT_PROJECT, newState}
+}
+
+export function NewPackage(newState = NEW_OBJECT) {
+    newState !== NEW_OBJECT ? forwardTo('package/edit' + newState) : forwardTo('package/new')
+    return {type: NEW_PACKAGE, newState}
+}
+export function SelectUser(newState = NEW_OBJECT){
+    forwardTo('user/info/' + newState)
+    return {type: SELECT_USER, newState}
+}
+export function selectPackage(newState = NEW_OBJECT) {
+    forwardTo('selectedPackage/' + newState)
+    return {type: SELECT_PACKAGE, newState}
+}
+
+export function resultOfPay(newState){
+    newState == 'success'?  forwardTo('paymentResult/S/'+newState) : forwardTo('paymentResult/F/'+newState)
+    //   console.log('status pay : '+ newState)
+    // forwardTo('paymentResultS/'+newState)
+    // console.log('status pay : '+ newState)
+    return{type: PAYMENT_RESULT, newState}
+
 }
 
 /**
@@ -855,3 +885,22 @@ export function lintCode(projectId, code, cb) {
         })
     }
 }
+<<<<<<< HEAD
+=======
+
+
+/* packages action */
+
+export function getPackagesAction() {
+  return (dispatch) => {
+    const promise = getPackage(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        dispatch({type: GET_PACKAGED, newState: response.result.packages})
+      } else {
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    })
+  }
+}
+>>>>>>> c79b88a1a46e601ae3e00e8866c395b99e2fa35e
