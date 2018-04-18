@@ -23,12 +23,8 @@ export const FETCH_THING_PROFILE = 'FETCH_THING_PROFILE'
 export const GET_GATEWAYS = 'GET_GATEWAYS'
 export const FETCH_CODEC_LIST = 'FETCH_CODEC_LIST'
 export const SET_GATEWAY = 'SET_GATEWAY'
-<<<<<<< HEAD
-export const GET_USERS = 'GET_USERS'
-=======
 export const GET_PACKAGED = 'GET_PACKAGED'
 export const NEW_PACKAGE = 'NEW_PACKAGE'
 export const SELECT_USER = "SELECT_USER"
 export const SELECT_PACKAGE = 'SELECT_PACKAGE'
 export const PAYMENT_RESULT = 'PAYMENT_RESULT'
->>>>>>> c79b88a1a46e601ae3e00e8866c395b99e2fa35e

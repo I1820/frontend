@@ -24,15 +24,9 @@
  */
 
 import {
-<<<<<<< HEAD
-    SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
-    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
-    SET_GATEWAY, GET_USERS
-=======
   SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
   UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
   SET_GATEWAY, NEW_PACKAGE, SELECT_USER, SELECT_PACKAGE, PAYMENT_RESULT, GET_PACKAGED
->>>>>>> c79b88a1a46e601ae3e00e8866c395b99e2fa35e
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -885,8 +879,6 @@ export function lintCode(projectId, code, cb) {
         })
     }
 }
-<<<<<<< HEAD
-=======
 
 
 /* packages action */
@@ -903,4 +895,3 @@ export function getPackagesAction() {
     })
   }
 }
->>>>>>> c79b88a1a46e601ae3e00e8866c395b99e2fa35e
