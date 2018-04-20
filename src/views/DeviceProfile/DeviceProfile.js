@@ -27,6 +27,7 @@ import classnames from 'classnames';
 import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from "react-toastify";
+import Pagination from "react-js-pagination";
 
 style({
     colorProgressDefault: 'white'
@@ -139,6 +140,16 @@ class DeviceProfile extends Component {
                             }
                             </tbody>
                         </Table>
+
+                        <br />
+
+                        <Pagination
+                            activePage={1}
+                            itemsCountPerPage={10}
+                            totalItemsCount={450}
+                            pageRangeDisplayed={5}
+                            onChange={false}
+                        />
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.newDeviceProfile} color="primary">ساخت پروفایل</Button>

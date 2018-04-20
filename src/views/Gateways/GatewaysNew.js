@@ -45,10 +45,26 @@ const MapWithASearchBox = compose(
             this.setState({
                 bounds: null,
                 center: {
-                    lat: 35.7024852, lng: 51.4023424
+                    lat: 35.7024852,
+                    lng: 51.4023424,
                 },
                 marker: {
-                    lat: 35.7024852, lng: 51.4023424
+                    lat: 35.7024852,
+                    lng: 51.4023424,
+                },
+                dragEnd: data => {
+                    document.getElementById('fld_lat').value = data.latLng.lat()
+                    document.getElementById('fld_lng').value = data.latLng.lng()
+                    this.setState({
+                        center: {
+                            lat: data.latLng.lat(),
+                            lng: data.latLng.lng()
+                        },
+                        marker: {
+                            lat: data.latLng.lat(),
+                            lng: data.latLng.lng()
+                        },
+                    })
                 },
                 onMapMounted: ref => {
                     refs.map = ref;
@@ -136,7 +152,7 @@ const MapWithASearchBox = compose(
                 }}
             />
         </SearchBox>
-        <Marker position={props.marker}/>
+        <Marker draggable={true} onDragEnd={props.dragEnd} position={props.marker}/>
     </GoogleMap>
 );
 
@@ -220,19 +236,19 @@ class GatewaysNew extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}>مقدار Lat : </Label>
+                                <Label sm={2}>عرض جغرافیایی : </Label>
                                 <Col sm={5}>
                                     <Input type="text" id="fld_lat" dir="ltr"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}>مقدار Long : </Label>
+                                <Label sm={2}>طول جغرافیایی : </Label>
                                 <Col sm={5}>
                                     <Input dir="ltr" id="fld_lng" type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}>مقدار Altitude : </Label>
+                                <Label sm={2}>ارتفاع : </Label>
                                 <Col sm={5}>
                                     <Input type="text" dir="ltr"
                                            onChange={event => this.setState({altitude: event.target.value})}/>

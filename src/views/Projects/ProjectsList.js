@@ -28,6 +28,10 @@ import classnames from 'classnames';
 import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from "react-toastify";
+import Pagination from "react-js-pagination";
+
+import ReactTable from 'react-table'
+import 'react-table/react-table.css'
 
 style({
     colorProgressDefault: 'white'
@@ -51,7 +55,7 @@ class ProjectsList extends Component {
             modal: false,
             deleteModal: false,
             projects: [{}],
-            deleteRowId: 0
+            deleteRowId: 0,
         }
     }
 
@@ -79,7 +83,7 @@ class ProjectsList extends Component {
     manageToastAlerts(status) {
         if(status === true) {
             this.loadProjects()
-            this.deleteModalToggle()
+            //this.deleteModalToggle()
 
             toast('پروژه مورد نظر با موفقیت حذف شد', {
                 position: toast.POSITION.BOTTOM_RIGHT,
@@ -106,8 +110,102 @@ class ProjectsList extends Component {
     }
 
     render() {
+
+        const data = [
+            {
+                name: 'Tanner Linsley 1',
+                age: 26,
+                friend: {
+                    name: 'Jason Maurer 1',
+                    age: 23,
+                }
+            },
+            {
+                name: 'Tanner Linsley 2',
+                age: 26,
+                friend: {
+                    name: 'Jason Maurer 2',
+                    age: 23,
+                }
+            },
+            {
+                name: 'Tanner Linsley 2',
+                age: 26,
+                friend: {
+                    name: 'Jason Maurer 2',
+                    age: 23,
+                }
+            },
+            {
+                name: 'Tanner Linsley 2',
+                age: 26,
+                friend: {
+                    name: 'Jason Maurer 2',
+                    age: 23,
+                }
+            },
+            {
+                name: 'Tanner Linsley 2',
+                age: 26,
+                friend: {
+                    name: 'Jason Maurer 2',
+                    age: 23,
+                }
+            },
+            {
+                name: 'Tanner Linsley 2',
+                age: 26,
+                friend: {
+                    name: 'Jason Maurer 2',
+                    age: 23,
+                }
+            },
+        ]
+
+        const columns = [{
+           Header: 'نام شخص',
+           accessor: 'name' // String-based value accessors!
+         },
+         {
+           Header: 'سن',
+           accessor: 'name',
+           // Cell: row => (
+           //     <strong>{row.value}</strong>
+           // ),
+         }]
+
         return (
             <div>
+
+
+
+            <Card className="text-justify">
+                <CardHeader>
+                    <CardTitle className="mb-0 font-weight-bold h6">لیست جدید</CardTitle>
+                </CardHeader>
+                <CardBody>
+
+                <ReactTable
+                  data={data}
+                  columns={columns}
+                  nextText='بعدی'
+                  previousText='قبلی'
+                  rowsText='ردیف'
+                  pageText='صفحه'
+                  ofText='از'
+                  resizable={false}
+                  defaultPageSize='5'
+                />
+
+                </CardBody>
+                <CardFooter>
+
+                </CardFooter>
+            </Card>
+
+
+
+
                 <ToastContainer className="text-right" />
                 <Spinner display={this.props.loading}/>
                 <Modal isOpen={this.state.deleteModal} toggle={this.deleteModalToggle} className="text-right">
@@ -189,6 +287,17 @@ class ProjectsList extends Component {
                             }
                             </tbody>
                         </Table>
+
+                        <br />
+
+                        <Pagination
+                            activePage={1}
+                            itemsCountPerPage={10}
+                            totalItemsCount={450}
+                            pageRangeDisplayed={5}
+                            onChange={false}
+                        />
+
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.toggle} color="primary">پروژه جدید</Button>
@@ -238,7 +347,7 @@ class ProjectsList extends Component {
 
     onCreateProject(status) {
         if (status) {
-            this.toggle()
+            //this.toggle()
             this.loadProjects()
         } else {
             //TODO Alert

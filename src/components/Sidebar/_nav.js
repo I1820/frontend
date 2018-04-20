@@ -8,10 +8,16 @@ export default {
     },
 
     {
-        name: 'حساب کاربری',
-        url: '/profile',
-        icon: 'icon-user',
+        name: 'لیست کاربران',
+        url: '/users',
+        icon: 'icon-people',
     },
+
+    // {
+    //     name: 'حساب کاربری',
+    //     url: '/profile',
+    //     icon: 'icon-user',
+    // },
 
     {
         name: 'پروژه ها',

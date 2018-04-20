@@ -16,6 +16,7 @@ import {
   Input,
   Table
 } from 'reactstrap';
+import Pagination from "react-js-pagination";
 
 
 class ThingsList extends Component {
@@ -80,6 +81,17 @@ class ThingsList extends Component {
                                 </tr>
                             </tbody>
                         </Table>
+
+                        <br />
+
+                        <Pagination
+                            activePage={1}
+                            itemsCountPerPage={10}
+                            totalItemsCount={450}
+                            pageRangeDisplayed={5}
+                            onChange={false}
+                        />
+
                     </CardBody>
                     <CardFooter>
                         <Button color="primary">شی جدید</Button>

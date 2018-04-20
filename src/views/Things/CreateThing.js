@@ -180,7 +180,7 @@ class CreateThing extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}>مقدار Lat : </Label>
+                                <Label sm={3}>عرض جغرافیایی : </Label>
                                 <Col sm={5}>
                                     <Input value={this.state.thing.loc.coordinates ?
                                         this.state.thing.loc.coordinates[0] : 0} type="text" id="fld_lat"
@@ -188,7 +188,7 @@ class CreateThing extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}>مقدار Long : </Label>
+                                <Label sm={3}>طول جغرافیایی : </Label>
                                 <Col sm={5}>
                                     <Input value={this.state.thing.loc.coordinates ?
                                         this.state.thing.loc.coordinates[1] : 0} dir="ltr" id="fld_lng"
@@ -290,7 +290,24 @@ const MapWithASearchBox = compose(
             this.setState({
                 bounds: null,
                 center: marker,
-                marker,
+                marker: {
+                    lat: 35.7024852,
+                    lng: 51.4023424,
+                },
+                dragEnd: data => {
+                    document.getElementById('fld_lat').value = data.latLng.lat()
+                    document.getElementById('fld_lng').value = data.latLng.lng()
+                    this.setState({
+                        center: {
+                            lat: data.latLng.lat(),
+                            lng: data.latLng.lng()
+                        },
+                        marker: {
+                            lat: data.latLng.lat(),
+                            lng: data.latLng.lng()
+                        },
+                    })
+                },
                 onMapMounted: ref => {
                     refs.map = ref;
                 },
@@ -377,7 +394,7 @@ const MapWithASearchBox = compose(
                 }}
             />
         </SearchBox>
-        <Marker position={props.marker}/>
+        <Marker draggable={true} onDragEnd={props.dragEnd} position={props.marker}/>
     </GoogleMap>
 );
 

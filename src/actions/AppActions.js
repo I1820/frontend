@@ -46,6 +46,7 @@ import {
     getGateways,
     deleteThing as deleteThingAPI,
     newDownlink as newDownlinkAPI,
+    getUsers as getUsersAPI,
     lint
 } from '../api/index'
 import {
@@ -849,6 +850,18 @@ export function getScenarioAction(projectId, scenarioId, cb) {
     }
 }
 
+export function getUsersAction() {
+    return (dispatch) => {
+        const promise = getUsersAPI(dispatch);
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch({type: GET_USERS, newState: response.result})
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
 
 export function lintCode(projectId, code, cb) {
     return (dispatch) => {

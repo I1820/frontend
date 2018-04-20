@@ -17,6 +17,7 @@ import {getGatewaysAction, deleteGatewaysAction} from "../../actions/AppActions"
 import Spinner from "../Spinner/Spinner";
 import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
+import Pagination from "react-js-pagination";
 
 
 
@@ -99,7 +100,7 @@ class Gateways extends Component {
                 </Modal>
                 <Card className="text-justify">
                     <CardHeader>
-                        <CardTitle className="mb-0 font-weight-bold h6">Gateways List</CardTitle>
+                        <CardTitle className="mb-0 font-weight-bold h6">لیست گذرگاه ها</CardTitle>
                     </CardHeader>
                     <CardBody>
                         <Table hover responsive className="table-outline">
@@ -119,6 +120,17 @@ class Gateways extends Component {
                             }
                             </tbody>
                         </Table>
+
+                        <br />
+
+                        <Pagination
+                            activePage={1}
+                            itemsCountPerPage={10}
+                            totalItemsCount={450}
+                            pageRangeDisplayed={5}
+                            onChange={false}
+                        />
+
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.newGateway} color="primary">ساخت جدید</Button>
