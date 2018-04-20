@@ -27,6 +27,11 @@ import {getCodecTemplateListAction, getDataAction, getProject} from "../../actio
 import connect from "react-redux/es/connect/connect";
 import {DateTimeRangePicker, DateTimePicker} from "react-advance-jalaali-datepicker";
 import Select2 from "react-select2-wrapper";
+import {ToastContainer, toast} from 'react-toastify';
+import Spinner from "../Spinner/Spinner";
+import {css} from 'glamor';
+import {style} from "react-toastify";
+
 
 class ProjectsView extends Component {
 
@@ -143,14 +148,19 @@ class ProjectsView extends Component {
       },
     }
 
+    let things = {}
+    this.state.project.things.forEach((thing) => {
+      things[thing.interface.devEUI] = thing.name
+    })
+    console.log(things)
 
     let sensors = []
     this.state.data.map((d, i) => {
       _.allKeys(d.data).map((k, i2) => {
-        if (_.find(sensors, {name: k + d.thingid}) === undefined) {
+        if (_.find(sensors, {name: `${k}':'${things[d.thingid]}`}) === undefined) {
           sensors.push({
             label: k,
-            name: k + d.thingid,
+            name: `${k}':'${things[d.thingid]}`,
             data: []
           })
         }
@@ -196,12 +206,14 @@ class ProjectsView extends Component {
 
   componentWillUnmount() {
     // use intervalId from the state to clear the interval
-    clearInterval(this.state.interval);
+    // clearInterval(this.state.interval);
   }
 
   render() {
     return (
       <div>
+        <Spinner display={this.props.loading && this.state.data.length == 0}/>
+        <ToastContainer className="text-right"/>
         <Card className="text-justify">
           <CardHeader>
             <CardTitle className="mb-0 font-weight-bold h6">دریافت داده</CardTitle>
@@ -229,57 +241,79 @@ class ProjectsView extends Component {
               </FormGroup>
               <FormGroup row>
                 <Label sm={2}>زمان داده :‌ </Label>
-                <Col sm={6}>
+                <Col sm={4}>
+                  <Input type="select" onChange={
+                    (event) => {
+                      console.log(event.target.value,event.target.value == 0)
+                      this.setState({auto: !(event.target.value == 0)})
+                      this.setState({window:event.target.value})
+                    }
+                  } name="type" id="select">
+                    <option value={0}> بازه زمانی</option>
+                    <option value={1}>یک ساعت اخیر</option>
+                    <option value={5}>5 ساعت اخیر</option>
+                    <option value={10}>10 ساعت اخیر</option>
+                    <option value={24}>یک روز اخیر</option>
+                    <option value={168}>یک هفته اخیر</option>
+                  </Input>
+                </Col>
+              </FormGroup>
+              <FormGroup style={{display:this.state.auto?'none':'block'}} row>
+                <Label sm={2}>بازه زمانی :‌ </Label>
+                <Col sm={4}>
                   {this.renderTimePicker()}
                 </Col>
               </FormGroup>
-              <FormGroup row>
-                <Label syle={{marginRight: 20}}>دریافت خودکار داده</Label>
-                <Col sm={1}>
-                  <Input type="checkbox" onChange={(e) => {
-                    this.setState({auto: e.target.checked, until: '', since: ''})
-                  }}/>{'    '}
-                </Col>
-                {
-                  this.renderPeriodPicker()
-                }
-              </FormGroup>
               <Button outline color="success" size="sm" onClick={() => {
-                this.setState({page: 0})
-                clearInterval(this.state.interval)
-                if (!this.state.auto)
-                  this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
-                    this.state.until, (status, data) => {
-                      if (status && data !== null && data !== undefined) {
-                        this.setState({
-                          data
-                        })
-                        this.draw()
-                      }
-                    }))
+                if (this.state.selectedThing.ids.length <= 0) {
+                  toast("ابتدا شی مورد نظر را انتخاب نمایید", {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    className: css({
+                      background: '#fee2e1',
+                      color: '#813838',
+                    }),
+                    progressClassName: css({
+                      background: '#813838'
+                    })
+                  });
+                }
                 else {
-                  this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
-                    this.state.until, (status, data) => {
-                      if (status && data !== null && data !== undefined) {
-                        this.setState({
-                          data
-                        })
-                        this.draw()
-                      }
-                    }))
-                  this.setState({
-                    interval: setInterval(() => {
-                      this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
-                        this.state.until, (status, data) => {
-                          if (status && data !== null && data !== undefined) {
-                            this.setState({
-                              data
-                            })
-                            this.draw()
-                          }
-                        }))
-                    }, this.state.period)
-                  })
+                  // this.setState({page: 0, data: []})
+                  // clearInterval(this.state.interval)
+                  // if (!this.state.auto)
+                    this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
+                      this.state.until,this.state.window, (status, data) => {
+                        if (status && data !== null && data !== undefined) {
+                          this.setState({
+                            data
+                          })
+                          this.draw()
+                        }
+                      }))
+                  // else {
+                  //   this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
+                  //     this.state.until, (status, data) => {
+                  //       if (status && data !== null && data !== undefined) {
+                  //         this.setState({
+                  //           data
+                  //         })
+                  //         this.draw()
+                  //       }
+                  //     }))
+                  //   this.setState({
+                  //     interval: setInterval(() => {
+                  //       this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
+                  //         this.state.until, (status, data) => {
+                  //           if (status && data !== null && data !== undefined) {
+                  //             this.setState({
+                  //               data
+                  //             })
+                  //             this.draw()
+                  //           }
+                  //         }))
+                  //     }, this.state.period)
+                  //   })
+                  // }
                 }
               }}>
                 دریافت اطلاعات
@@ -425,6 +459,7 @@ class ProjectsView extends Component {
 function mapStateToPropes(state) {
   return {
     projects: state.projectReducer,
+    loading: state.homeReducer.currentlySending
   }
 }
 
