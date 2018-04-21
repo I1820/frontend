@@ -51,5 +51,10 @@ const routes = {
   '/device-profile/list': 'پروفایل اشیا',
   '/device-profile/new': 'ساخت پروفایل اشیاء',
   '/users': 'لیست کاربران',
+  '/packages': 'بسته ها',
+  '/buyedPackages': 'بسته های خریداری شده',
+  '/transactions': 'تراکنش ها',
+  '/payment-portal/management': 'مدیریت پرتال پرداخت',
+  '/Package/Managment': 'مدیریت بسته ها',
 };
 export default routes;

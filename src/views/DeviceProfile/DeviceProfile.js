@@ -29,6 +29,10 @@ import { css } from 'glamor';
 import { style } from "react-toastify";
 import Pagination from "react-js-pagination";
 
+import ReactTable from 'react-table'
+import 'react-table/react-table.css'
+
+
 style({
     colorProgressDefault: 'white'
 });
@@ -97,8 +101,57 @@ class DeviceProfile extends Component {
     }
 
     render() {
+
+        const columns = [
+        {
+            Header: 'عنوان پروفایل',
+            accessor: 'name'
+        },
+        {
+            Header: 'شناسه',
+            accessor: 'thing_profile_slug'
+        },
+        {
+            id: 'rowTools',
+            Header: 'امکانات',
+            filterable: false,
+            accessor: d => <div>
+                <Button onClick={() => this.deleteModalToggle(d._id)} className="ml-1" color="danger"
+                    size="sm">حذف</Button>
+            </div>
+        },
+    ]
+
         return (
             <div>
+
+                <Card className="text-justify">
+                    <CardHeader>
+                        <CardTitle className="mb-0 font-weight-bold h6">لیست پروفایل اشیاء</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+
+                    <ReactTable
+                        data={this.props.profiles}
+                        columns={columns}
+                        pageSizeOptions={[5, 10, 25, 50, 100]}
+                        nextText='بعدی'
+                        previousText='قبلی'
+                        rowsText='ردیف'
+                        pageText='صفحه'
+                        ofText='از'
+                        filterable={true}
+                        minRows='1'
+                        noDataText= 'داده ای وجود ندارد'
+                        resizable={false}
+                        defaultPageSize='5'
+                    />
+
+                    </CardBody>
+                    <CardFooter>
+                        <Button onClick={this.newDeviceProfile} color="primary">ساخت پروفایل</Button>
+                    </CardFooter>
+                </Card>
 
                 <Modal isOpen={this.state.deleteModal} toggle={this.deleteModalToggle} className="text-right">
                     <ModalHeader>حذف پروفایل</ModalHeader>
@@ -118,6 +171,7 @@ class DeviceProfile extends Component {
                 <ToastContainer className="text-right" />
                 <Spinner display={this.props.loading}/>
 
+                {/*
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">پروفایل اشیا</CardTitle>
@@ -155,6 +209,8 @@ class DeviceProfile extends Component {
                         <Button onClick={this.newDeviceProfile} color="primary">ساخت پروفایل</Button>
                     </CardFooter>
                 </Card>
+                */}
+
             </div>
         );
     }
