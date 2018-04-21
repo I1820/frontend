@@ -111,68 +111,41 @@ class ProjectsList extends Component {
 
     render() {
 
-        const data = [
-            {
-                name: 'Tanner Linsley 1',
-                age: 26,
-                friend: {
-                    name: 'Jason Maurer 1',
-                    age: 23,
-                }
-            },
-            {
-                name: 'Tanner Linsley 2',
-                age: 26,
-                friend: {
-                    name: 'Jason Maurer 2',
-                    age: 23,
-                }
-            },
-            {
-                name: 'Tanner Linsley 2',
-                age: 26,
-                friend: {
-                    name: 'Jason Maurer 2',
-                    age: 23,
-                }
-            },
-            {
-                name: 'Tanner Linsley 2',
-                age: 26,
-                friend: {
-                    name: 'Jason Maurer 2',
-                    age: 23,
-                }
-            },
-            {
-                name: 'Tanner Linsley 2',
-                age: 26,
-                friend: {
-                    name: 'Jason Maurer 2',
-                    age: 23,
-                }
-            },
-            {
-                name: 'Tanner Linsley 2',
-                age: 26,
-                friend: {
-                    name: 'Jason Maurer 2',
-                    age: 23,
-                }
-            },
-        ]
-
-        const columns = [{
-           Header: 'نام شخص',
-           accessor: 'name' // String-based value accessors!
-         },
-         {
-           Header: 'سن',
-           accessor: 'name',
-           // Cell: row => (
-           //     <strong>{row.value}</strong>
-           // ),
-         }]
+        const columns = [
+        {
+            Header: 'نام پروژه',
+            accessor: 'name'
+        },
+        {
+            Header: 'توضیحات',
+            accessor: 'description'
+        },
+        {
+            Header: 'صاحب پروژه',
+            accessor: 'owner.name'
+        },
+        {
+            id: 'projectStatus',
+            Header: 'وضعیت',
+            filterable: false,
+            accessor: d => <Badge color={d.active === true ? 'success' : 'danger'}>
+                {d.active === true ? 'فعال' : 'غیرفعال'}
+            </Badge>
+        },
+        {
+            id: 'rowTools',
+            Header: 'امکانات',
+            filterable: false,
+            accessor: d => <div>
+                <Button onClick={() => this.showProject(d._id)} className="ml-1" color="success"
+                        size="sm">نمایش</Button>
+                <Button onClick={() => this.manageProject(d._id)} className="ml-1" color="warning"
+                        size="sm">مدیریت</Button>
+                <Button onClick={() => this.deleteModalToggle(d._id)} className="ml-1" color="danger"
+                        size="sm">حذف</Button>
+            </div>
+        },
+    ]
 
         return (
             <div>
@@ -181,25 +154,29 @@ class ProjectsList extends Component {
 
             <Card className="text-justify">
                 <CardHeader>
-                    <CardTitle className="mb-0 font-weight-bold h6">لیست جدید</CardTitle>
+                    <CardTitle className="mb-0 font-weight-bold h6">لیست پروژه ها</CardTitle>
                 </CardHeader>
                 <CardBody>
 
                 <ReactTable
-                  data={data}
-                  columns={columns}
-                  nextText='بعدی'
-                  previousText='قبلی'
-                  rowsText='ردیف'
-                  pageText='صفحه'
-                  ofText='از'
-                  resizable={false}
-                  defaultPageSize='5'
+                    data={this.state.projects}
+                    columns={columns}
+                    pageSizeOptions={[5, 10, 25, 50, 100]}
+                    nextText='بعدی'
+                    previousText='قبلی'
+                    filterable={true}
+                    rowsText='ردیف'
+                    pageText='صفحه'
+                    ofText='از'
+                    minRows='1'
+                    noDataText= 'داده ای وجود ندارد'
+                    resizable={false}
+                    defaultPageSize='5'
                 />
 
                 </CardBody>
                 <CardFooter>
-
+                    <Button onClick={this.toggle} color="primary">پروژه جدید</Button>
                 </CardFooter>
             </Card>
 
@@ -262,7 +239,7 @@ class ProjectsList extends Component {
                     </ModalFooter>
                 </Modal>
 
-
+                {/*
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">Projects List</CardTitle>
@@ -303,6 +280,7 @@ class ProjectsList extends Component {
                         <Button onClick={this.toggle} color="primary">پروژه جدید</Button>
                     </CardFooter>
                 </Card>
+                */}
             </div>
         );
     }

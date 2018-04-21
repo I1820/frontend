@@ -87,6 +87,9 @@ body {
 .ReactTable .rt-tbody .rt-tr-group{
     border-color: #a4b7c1;
 }
+.ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td{
+    border: 0px;
+}
 
 
 // Sidebar

@@ -19,6 +19,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
 import Pagination from "react-js-pagination";
 
+import ReactTable from 'react-table'
+import 'react-table/react-table.css'
+
+
 
 
 class Gateways extends Component {
@@ -80,8 +84,61 @@ class Gateways extends Component {
     }
 
     render() {
+
+        const columns = [
+        {
+            Header: 'نام گذرگاه',
+            accessor: 'name'
+        },
+        {
+            Header: 'آدرس Mac',
+            accessor: 'mac'
+        },
+        {
+            id: 'rowTools',
+            Header: 'امکانات',
+            filterable: false,
+            accessor: d => <div>
+                <Button onClick={() => this.viewGateway(d._id)} className="ml-1" color="success"
+                        size="sm">نمایش</Button>
+                <Button onClick={() => this.deleteModalToggle(d._id)} className="ml-1" color="danger"
+                        size="sm">حذف</Button>
+            </div>
+        },
+    ]
+
         return (
             <div>
+
+                <Card className="text-justify">
+                    <CardHeader>
+                        <CardTitle className="mb-0 font-weight-bold h6">لیست گذرگاه ها</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+
+                    <ReactTable
+                        data={this.props.gateways}
+                        columns={columns}
+                        pageSizeOptions={[5, 10, 25, 50, 100]}
+                        nextText='بعدی'
+                        previousText='قبلی'
+                        rowsText='ردیف'
+                        pageText='صفحه'
+                        ofText='از'
+                        filterable={true}
+                        minRows='1'
+                        noDataText= 'داده ای وجود ندارد'
+                        resizable={false}
+                        defaultPageSize='5'
+                    />
+
+                    </CardBody>
+                    <CardFooter>
+                        <Button onClick={this.newGateway} color="primary">ساخت جدید</Button>
+                    </CardFooter>
+                </Card>
+
+
                 <Spinner display={this.props.loading}/>
                 <ToastContainer className="text-right" />
                 <Modal isOpen={this.state.deleteModal} toggle={this.deleteModalToggle} className="text-right">
@@ -98,6 +155,9 @@ class Gateways extends Component {
                         <Button color="danger" onClick={this.deleteModalToggle}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
+
+                {/*
+
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">لیست گذرگاه ها</CardTitle>
@@ -136,6 +196,7 @@ class Gateways extends Component {
                         <Button onClick={this.newGateway} color="primary">ساخت جدید</Button>
                     </CardFooter>
                 </Card>
+                */}
             </div>
         );
     }
