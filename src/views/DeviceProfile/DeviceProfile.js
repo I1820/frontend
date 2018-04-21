@@ -27,7 +27,6 @@ import classnames from 'classnames';
 import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from "react-toastify";
-import Pagination from "react-js-pagination";
 
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
@@ -197,13 +196,6 @@ class DeviceProfile extends Component {
 
                         <br />
 
-                        <Pagination
-                            activePage={1}
-                            itemsCountPerPage={10}
-                            totalItemsCount={450}
-                            pageRangeDisplayed={5}
-                            onChange={false}
-                        />
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.newDeviceProfile} color="primary">ساخت پروفایل</Button>
