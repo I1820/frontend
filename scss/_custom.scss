@@ -111,7 +111,7 @@ body {
 
 // Spinner
 .spinner {
-    position: absolute;
+    position: fixed;
     background-color: rgba(0, 0, 0, 0.6);
     background-image: url('../public/img/spinner.gif');
     background-position: center;

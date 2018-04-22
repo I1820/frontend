@@ -27,6 +27,7 @@ import {getCodecTemplateListAction, getDataAction, getProject} from "../../actio
 import connect from "react-redux/es/connect/connect";
 import {DateTimeRangePicker, DateTimePicker} from "react-advance-jalaali-datepicker";
 import Select2 from "react-select2-wrapper";
+import Spinner from "../Spinner/Spinner";
 
 class ProjectsView extends Component {
 
@@ -39,6 +40,7 @@ class ProjectsView extends Component {
     this.state = {
       selectedThing: {ids: []},
       page: 0,
+      loading: false,
       period: 5000,
       project: {
         things: []
@@ -202,6 +204,7 @@ class ProjectsView extends Component {
   render() {
     return (
       <div>
+        <Spinner display={this.state.loading}/>
         <Card className="text-justify">
           <CardHeader>
             <CardTitle className="mb-0 font-weight-bold h6">دریافت داده</CardTitle>
@@ -245,7 +248,10 @@ class ProjectsView extends Component {
                 }
               </FormGroup>
               <Button outline color="success" size="sm" onClick={() => {
-                this.setState({page: 0})
+                this.setState({
+                    page: 0,
+                    loading: true
+                })
                 clearInterval(this.state.interval)
                 if (!this.state.auto)
                   this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
@@ -262,7 +268,8 @@ class ProjectsView extends Component {
                     this.state.until, (status, data) => {
                       if (status && data !== null && data !== undefined) {
                         this.setState({
-                          data
+                          data,
+                          loading: false,
                         })
                         this.draw()
                       }
@@ -273,7 +280,8 @@ class ProjectsView extends Component {
                         this.state.until, (status, data) => {
                           if (status && data !== null && data !== undefined) {
                             this.setState({
-                              data
+                              data,
+                              loading: false,
                             })
                             this.draw()
                           }
