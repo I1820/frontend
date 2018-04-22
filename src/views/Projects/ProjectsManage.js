@@ -31,6 +31,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from 'react-toastify';
 
+import ReactTable from 'react-table'
+import 'react-table/react-table.css'
+
 style({
     colorProgressDefault: 'white'
 });
@@ -214,6 +217,113 @@ class ProjectsManage extends Component {
     }
 
     render() {
+
+        const thing_columns = [
+            {
+                Header: 'نام شی',
+                accessor: 'name',
+                maxWidth: 200
+            },
+            {
+                Header: 'آدرس',
+                accessor: 'interface.devEUI',
+                maxWidth: 200
+            },
+            {
+                Header: 'نوع',
+                accessor: 'type',
+                maxWidth: 100
+            },
+            {
+                id: 'rowTools',
+                Header: 'امکانات',
+                filterable: false,
+                accessor: d => <div>
+                    <Button className="ml-1" onClick={() => {
+                        d.type === 'ABP' ? this.toggleABP() : this.toggleOTAA()
+                        this.setState({
+                            selectedThing: d._id
+                        })
+                    }}
+                            color="success" size="sm">فعال سازی</Button>
+                    <Button onClick={() => {
+                        window.location = `#/things/${this.state.project._id}/${d._id}`
+                    }} className="ml-1" color="warning" size="sm">ویرایش</Button>
+                    <Button onClick={() => {
+                        window.location = `#/codec/${this.state.project._id}/${d._id}`
+                    }} className="ml-1" color="secondary" size="sm">ارسال codec</Button>
+                    <Button onClick={() => this.dataModalToggle(d._id)} className="ml-1" color="primary" size="sm">ارسال
+                        داده (داون لینک)</Button>
+                    <Button onClick={() => this.deleteThingModalToggle(d._id)} className="ml-1" color="danger"
+                            size="sm">حذف شئ</Button>
+                </div>
+            },
+        ]
+
+        const scenario_columns = [
+            {
+                Header: 'عنوان',
+                accessor: 'name',
+                maxWidth: 200
+            },
+            {
+                id: 'rowTools',
+                Header: 'امکانات',
+                filterable: false,
+                accessor: d => <div>
+                <Button onClick={() => this.deleteScenarioModalToggle(d._id)}
+                        className="ml-1" color="danger" size="sm">حذف</Button>
+                <Button className="ml-1" onClick={() => {
+                    window.location = `#/scenario/${this.state.project._id}/${d._id}`
+                }} color="warning" size="sm">ویرایش</Button>
+                <Button onClick={() => {
+                    this.props.dispatch(activateScenarioAction(this.state.project._id, d._id))
+                }} disabled={d.is_active} className="ml-1" color="success" size="sm">فعال
+                    سازی</Button>
+                </div>
+            },
+        ]
+
+        const codec_columns = [
+            {
+                Header: 'عنوان',
+                accessor: 'name',
+                maxWidth: 200
+            },
+            {
+                id: 'rowTools',
+                Header: 'امکانات',
+                filterable: false,
+                accessor: d => <div>
+                    <Button onClick={() => this.deleteCodecModalToggle(d._id)}
+                        className="ml-1" color="danger" size="sm">حذف</Button>
+                    <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
+                </div>
+            },
+        ]
+
+        // const aliases_columns = [
+        //     {
+        //         Header: 'مقدار اصلی',
+        //         accessor: 'name',
+        //         maxWidth: 200
+        //     },
+        //     {
+        //         Header: 'نام مستعار',
+        //         accessor: 'name',
+        //         maxWidth: 200
+        //     },
+        //     {
+        //         id: 'rowTools',
+        //         Header: 'امکانات',
+        //         filterable: false,
+        //         accessor: d => <div>
+        //             <Button color="danger" onClick={this.deleteAlias} value={key}
+        //                 className="btn-sm">حذف</Button>
+        //         </div>
+        //     },
+        // ]
+
         return (
             <div>
                 <Spinner display={this.props.loading}/>
@@ -291,7 +401,7 @@ class ProjectsManage extends Component {
                     <ModalBody>
                         <Form>
                             <FormGroup row>
-                                <Label sm={3}> appKey : </Label>
+                                <Label sm={3}> AppSKey : </Label>
                                 <Col sm={9}>
                                     <Input onChange={(event) => {
                                         this.setState({
@@ -314,14 +424,14 @@ class ProjectsManage extends Component {
                     </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.ABPmodel} toggle={this.toggleABP} className="text-right">
-                    <ModalHeader>ABP</ModalHeader>
+                <Modal isOpen={this.state.ABPmodel} toggle={this.toggleABP} className="text-left">
+                    <ModalHeader className="text-left">ABP</ModalHeader>
                     <ModalBody>
                         <Form>
                             <FormGroup row>
-                                <Label sm={3}>appSKey : </Label>
-                                <Col sm={9}>
-                                    <Input name="appSKey"
+                                <Label sm={12}> : AppSKey</Label>
+                                <Col sm={12}>
+                                    <Input name="appSKey" dir="ltr" placeholder="Application session key"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -333,9 +443,9 @@ class ProjectsManage extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}>devAddr : </Label>
-                                <Col sm={9}>
-                                    <Input name="devAddr"
+                                <Label sm={12}> : Device address</Label>
+                                <Col sm={12}>
+                                    <Input name="devAddr" dir="ltr"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -347,9 +457,9 @@ class ProjectsManage extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}>fCntDown : </Label>
-                                <Col sm={9}>
-                                    <Input name="fCntDown"
+                                <Label sm={12}> : Downlink frame-counter</Label>
+                                <Col sm={12}>
+                                    <Input name="fCntDown" dir="ltr"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -361,9 +471,9 @@ class ProjectsManage extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}>fCntUp : </Label>
-                                <Col sm={9}>
-                                    <Input name="fCntUp"
+                                <Label sm={12}> : Uplink frame-counter</Label>
+                                <Col sm={12}>
+                                    <Input name="fCntUp" dir="ltr"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -375,9 +485,9 @@ class ProjectsManage extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}>nwkSKey : </Label>
-                                <Col sm={9}>
-                                    <Input name="nwkSKey"
+                                <Label sm={12}> : NwkSKey</Label>
+                                <Col sm={12}>
+                                    <Input name="nwkSKey" dir="ltr" placeholder="Network session key"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -389,9 +499,9 @@ class ProjectsManage extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}>skipFCntCheck : </Label>
-                                <Col sm={9}>
-                                    <Input name="skipFCntCheck"
+                                <Label sm={12}> : Disable frame-counter validation</Label>
+                                <Col sm={12}>
+                                    <Input name="skipFCntCheck" dir="ltr"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -472,6 +582,25 @@ class ProjectsManage extends Component {
                                 <CardTitle className="mb-0 font-weight-bold h6">نام مستعار کلید داده‌ها</CardTitle>
                             </CardHeader>
                             <CardBody>
+
+                                {/*
+                                <ReactTable
+                                    data={this.state.project.aliases}
+                                    columns={aliases_columns}
+                                    pageSizeOptions={[5, 10, 25, 50, 100]}
+                                    nextText='بعدی'
+                                    previousText='قبلی'
+                                    filterable={true}
+                                    rowsText='ردیف'
+                                    pageText='صفحه'
+                                    ofText='از'
+                                    minRows='1'
+                                    noDataText= 'داده ای وجود ندارد'
+                                    resizable={false}
+                                    defaultPageSize='5'
+                                />
+                                */}
+
                                 <Form className='row'>
                                     <table className="table">
                                         <thead>
@@ -556,6 +685,25 @@ class ProjectsManage extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">اشیا متصل شده به پروژه</CardTitle>
                     </CardHeader>
                     <CardBody>
+
+                        <ReactTable
+                            data={this.state.project.things}
+                            columns={thing_columns}
+                            pageSizeOptions={[5, 10, 25, 50, 100]}
+                            nextText='بعدی'
+                            previousText='قبلی'
+                            filterable={true}
+                            rowsText='ردیف'
+                            pageText='صفحه'
+                            ofText='از'
+                            minRows='1'
+                            noDataText= 'داده ای وجود ندارد'
+                            resizable={false}
+                            defaultPageSize='5'
+                        />
+
+                        {/*
+
                         <Table hover responsive className="table-outline">
                             <thead className="thead-light">
                             <tr>
@@ -575,6 +723,8 @@ class ProjectsManage extends Component {
                             }
                             </tbody>
                         </Table>
+                        */}
+
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.addThing} className="ml-1" color="primary">افزودن شی</Button>
@@ -587,11 +737,31 @@ class ProjectsManage extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">انتخاب سناریو پروژه</CardTitle>
                     </CardHeader>
                     <CardBody>
+
+                        <ReactTable
+                            data={this.state.project.scenarios}
+                            columns={scenario_columns}
+                            pageSizeOptions={[5, 10, 25, 50, 100]}
+                            nextText='بعدی'
+                            previousText='قبلی'
+                            filterable={true}
+                            rowsText='ردیف'
+                            pageText='صفحه'
+                            ofText='از'
+                            minRows='1'
+                            noDataText= 'داده ای وجود ندارد'
+                            resizable={false}
+                            defaultPageSize='5'
+                        />
+
+                        {/*
                         <ListGroup className="p-0">
                             {
                                 this.renderScenarios()
                             }
                         </ListGroup>
+                        */}
+
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.addScenario} color="primary">افزودن سناریو</Button>
@@ -604,11 +774,33 @@ class ProjectsManage extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">لیست قالب های codec</CardTitle>
                     </CardHeader>
                     <CardBody>
+
+                        <ReactTable
+                            data={this.state.project.templates}
+                            columns={codec_columns}
+                            pageSizeOptions={[5, 10, 25, 50, 100]}
+                            nextText='بعدی'
+                            previousText='قبلی'
+                            filterable={true}
+                            rowsText='ردیف'
+                            pageText='صفحه'
+                            ofText='از'
+                            minRows='1'
+                            noDataText= 'داده ای وجود ندارد'
+                            resizable={false}
+                            defaultPageSize='5'
+                        />
+
+                        {/*
+
                         <ListGroup className="p-0">
                             {
                                 this.renderCodecs()
                             }
                         </ListGroup>
+
+                        */}
+
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.addTemplate} color="primary">افزودن قالب</Button>

@@ -22,9 +22,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from "react-toastify";
 import {editProfile, getProfileAction} from "../../actions/AppActions";
-import Phone from 'react-phone-number-input'
-import 'react-phone-number-input/rrui.css'
-import 'react-phone-number-input/style.css'
+//import Phone from 'react-phone-number-input'
+//import 'react-phone-number-input/rrui.css'
+//import 'react-phone-number-input/style.css'
+
+import ReactPhoneInput from 'react-phone-input-2'
 
 style({
     colorProgressDefault: 'white'
@@ -173,13 +175,32 @@ class Profile extends Component {
                                                 mobile: event.target.value
                                             }
                                         })
-                                    }} value={this.state.fetchUserInfo.mobile}/> */}
+                                    }} value={this.state.fetchUserInfo.mobile}/>
                                     <Phone
                                     style={{
                                         direction: 'ltr'
                                     }}
                                     value={this.state.fetchUserInfo.mobile}
                                     onChange={ phone => this.setState({ phone }) } />
+                                    */}
+                                    <div style={{
+                                        direction: 'ltr',
+                                        textAlign: 'left',
+                                        width: '100%'
+                                        }} >
+                                        <ReactPhoneInput
+                                            defaultCountry="ir"
+                                            value={this.state.fetchUserInfo.mobile}
+                                            onChange={(value) => {
+                                                this.setState({
+                                                    fetchUserInfo: {
+                                                        ...this.state.mobile,
+                                                        mobile: value
+                                                    }
+                                                })
+                                            }}
+                                        />
+                                    </div>
                                 </Col>
                             </FormGroup>
 

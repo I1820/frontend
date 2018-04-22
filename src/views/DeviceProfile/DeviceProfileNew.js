@@ -106,7 +106,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" defaultValue={this.state.form.classBTimeout} name={"classBTimeout"}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : classBTimeout‌ </Label>
+                  <Label sm={3}> : ClassBTimeout‌ </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -114,7 +114,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" defaultValue={this.state.form.classCTimeout} name={"classCTimeout"}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : classCTimeout </Label>
+                  <Label sm={3}> : ClassCTimeout </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -139,7 +139,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" defaultValue={this.state.form.maxDutyCycle} name={"maxDutyCycle"}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : maxDutyCycle </Label>
+                  <Label sm={3}> : MaxDutyCycle </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -188,7 +188,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" name={"rfRegion"} defaultValue={this.state.form.rfRegion}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : rfRegion‌ </Label>
+                  <Label sm={3}> : RfRegion‌ </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -229,7 +229,7 @@ class DeviceProfileNew extends Component {
                            defaultValue={this.state.form.supports32bitFCnt} onChange={this.setForm}
                            type="text"/>
                   </Col>
-                  <Label sm={3}> : supports32bitFCnt </Label>
+                  <Label sm={3}> : Supports32bitFCnt </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -237,7 +237,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" name={"supportsClassB"} defaultValue={this.state.form.supportsClassB}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : supportsClassB‌ </Label>
+                  <Label sm={3}> : SupportsClassB‌ </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -245,7 +245,7 @@ class DeviceProfileNew extends Component {
                     <Input dir="ltr" name={"supportsClassC"} defaultValue={this.state.form.supportsClassC}
                            onChange={this.setForm} type="text"/>
                   </Col>
-                  <Label sm={3}> : supportsClassC </Label>
+                  <Label sm={3}> : SupportsClassC </Label>
                 </FormGroup>
 
                 <FormGroup row>
@@ -254,14 +254,14 @@ class DeviceProfileNew extends Component {
                            defaultValue={this.state.form.supports32bitFCnt} onChange={this.setForm}
                            type="text"/>
                   </Col>
-                  <Label sm={3}> : supports32bitFCnt‌ </Label>
+                  <Label sm={3}> : Supports32bitFCnt‌ </Label>
                 </FormGroup>
 
               </Collapse>
 
               <Button outline color="success" size="sm" onClick={this.advancedFields}>
                 <i className="icon-check ml-2"></i>
-                فیلدهای بیشتر
+                { this.state.collapse ? 'فیلدهای کمتر' : 'فیلدهای بیشتر' }
               </Button>
             </Form>
           </CardBody>

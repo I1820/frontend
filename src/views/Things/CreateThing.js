@@ -134,9 +134,8 @@ class CreateThing extends Component {
                             <FormGroup row>
                                 <Label sm={3}> نوع اتصال :</Label>
                                 <Col md="5">
-                                    <Input type="select" name="type"
+                                    <Input type="select" name="type" style={{ direction: 'ltr' }}
                                            onChange={this.changeForm} id="select">
-                                        <option value="0"> انتخاب کنید</option>
                                         <option value="LAN">LAN</option>
                                         <option value="Lora">Lora</option>
                                     </Input>
@@ -150,7 +149,7 @@ class CreateThing extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}> devEUI : </Label>
+                                <Label sm={3}> DevEUI : </Label>
                                 <Col sm={5}>
                                     <Input readOnly={this.state.thing._id !== undefined}  value={this.state.form.devEUI} name="devEUI" dir="ltr"
                                            onChange={(e) => {
@@ -172,9 +171,7 @@ class CreateThing extends Component {
                                             form: state
                                         })
                                     }} id="select">
-                                        <option value={this.state.form.thing_profile_slug} value="0">انتخاب
-                                            کنید
-                                        </option>
+                                        <option value={this.state.form.thing_profile_slug} value="0"></option>
                                         {this.renderProfiles()}
                                     </Input>
                                 </Col>
