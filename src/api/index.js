@@ -87,6 +87,14 @@ function fetchData(endpoint = '/404', config = {}, dispatch) {
   })
 }
 
+export function streamFetch(endpoint = '/404', cb) {
+  fetch(BASE_URL + endpoint, getConfig())
+    .then((response) => response.json())
+    .then((json) => {
+      cb(json)
+    })
+}
+
 function getFormData(object) {
   let formData = ''
   Object.keys(object).forEach(key => {
@@ -176,31 +184,34 @@ module.exports.getGateways = function (dispatch) {
 
 module.exports.createThing = function (data, projectId, dispatch) {
   const config = postConfig()
+  data['project_id'] = projectId
   Object.assign(config, {body: getFormData(data)})
-  return fetchData(`/project/${projectId}/things`, config, dispatch)
+  return fetchData(`/things`, config, dispatch)
 }
 //
 // module.exports.connectThing = function (thingId, projectId, dispatch) {
 //     return fetchData('/project/' + projectId + '/things/' + thingId, projectControler.find, getConfig(), dispatch)
 // }
 //
-module.exports.getProjectData = function (thing_ids, projectId, since, until, dispatch) {
+module.exports.getProjectData = function (thing_ids, projectId, since, until,window, dispatch) {
   const config = postConfig()
   Object.assign(config, {
     body: getFormData({
+      'project_id': projectId,
       since,
+      window,
       until,
       thing_ids
     })
   })
-  return fetchData(`/project/${projectId}/things/data`, config, dispatch)
+  return fetchData(`/things/data`, config, dispatch)
 }
 
 
 module.exports.createCodec = function (data, thingId, projectId, dispatch) {
   const config = postConfig()
   Object.assign(config, {body: getFormData(data)})
-  return fetchData(`/project/${projectId}/things/${thingId}/codec`, config, dispatch)
+  return fetchData(`/things/${thingId}/codec`, config, dispatch)
 }
 module.exports.createGateway = function (data, dispatch) {
   const config = postConfig()
@@ -246,7 +257,7 @@ module.exports.updateScenarioAPI = function (data, projectId, scenarioId, dispat
 module.exports.activeThing = function (data, thingId, projectId, dispatch) {
   const config = postConfig()
   Object.assign(config, {body: getFormData(data)})
-  return fetchData(`/project/${projectId}/things/${thingId}/activate`, config, dispatch)
+  return fetchData(`/things/${thingId}/activate`, config, dispatch)
 }
 
 module.exports.deleteProject = function (projectId, dispatch) {
@@ -277,12 +288,12 @@ module.exports.getSingleGateway = function (id, dispatch) {
 
 module.exports.deleteThing = function (projectId, thingId, dispatch) {
   const config = deleteConfig()
-  return fetchData(`/project/${projectId}/things/${thingId}`, config, dispatch)
+  return fetchData(`/things/${thingId}`, config, dispatch)
 };
 
 module.exports.deleteCodec = function (projectId, codecId, dispatch) {
   const config = deleteConfig()
-  return fetchData(`/project/${projectId}/codec/${codecId}`, config, dispatch)
+  return fetchData(`/codec/${codecId}`, config, dispatch)
 };
 
 module.exports.deleteScenario = function (projectId, scenarioId, dispatch) {
@@ -311,7 +322,7 @@ module.exports.activateScenario = function (projectId, scenarioId, dispatch) {
 }
 
 module.exports.getCodec = function (thingId, projectId, dispatch) {
-  return fetchData(`/project/${projectId}/things/${thingId}/codec`, getConfig(), dispatch)
+  return fetchData(`/things/${thingId}/codec`, getConfig(), dispatch)
 }
 
 module.exports.getScenario = function (projectId, scenarioId, dispatch) {

@@ -410,9 +410,9 @@ export function cleanErrorMessage() {
     setErrorMessage('')
 }
 
-export function getDataAction(things, projectId, offset, limit, callback) {
+export function getDataAction(things, projectId, offset, limit,window, callback) {
     return (dispatch) => {
-        const promise = getThingDataAPI(things, projectId, offset, limit, dispatch)
+        const promise = getThingDataAPI(things, projectId, offset, limit,window, dispatch)
         promise.then((response) => {
             console.log('data', response)
             if (response.status === 'OK') {
