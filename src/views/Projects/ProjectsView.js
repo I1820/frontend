@@ -27,15 +27,7 @@ import {getCodecTemplateListAction, getDataAction, getProject} from "../../actio
 import connect from "react-redux/es/connect/connect";
 import {DateTimeRangePicker, DateTimePicker} from "react-advance-jalaali-datepicker";
 import Select2 from "react-select2-wrapper";
-<<<<<<< HEAD
 import Spinner from "../Spinner/Spinner";
-=======
-import {ToastContainer, toast} from 'react-toastify';
-import Spinner from "../Spinner/Spinner";
-import {css} from 'glamor';
-import {style} from "react-toastify";
-
->>>>>>> 71a095c2dbb689656a4f29e9c2a973f06901c9d7
 
 class ProjectsView extends Component {
 
@@ -217,12 +209,7 @@ class ProjectsView extends Component {
   render() {
     return (
       <div>
-<<<<<<< HEAD
         <Spinner display={this.state.loading}/>
-=======
-        <Spinner display={this.props.loading && this.state.data.length == 0}/>
-        <ToastContainer className="text-right"/>
->>>>>>> 71a095c2dbb689656a4f29e9c2a973f06901c9d7
         <Card className="text-justify">
           <CardHeader>
             <CardTitle className="mb-0 font-weight-bold h6">دریافت داده</CardTitle>
@@ -274,7 +261,6 @@ class ProjectsView extends Component {
                 </Col>
               </FormGroup>
               <Button outline color="success" size="sm" onClick={() => {
-<<<<<<< HEAD
                 this.setState({
                     page: 0,
                     loading: true
@@ -315,57 +301,6 @@ class ProjectsView extends Component {
                         }))
                     }, this.state.period)
                   })
-=======
-                if (this.state.selectedThing.ids.length <= 0) {
-                  toast("ابتدا شی مورد نظر را انتخاب نمایید", {
-                    position: toast.POSITION.BOTTOM_RIGHT,
-                    className: css({
-                      background: '#fee2e1',
-                      color: '#813838',
-                    }),
-                    progressClassName: css({
-                      background: '#813838'
-                    })
-                  });
-                }
-                else {
-                  // this.setState({page: 0, data: []})
-                  // clearInterval(this.state.interval)
-                  // if (!this.state.auto)
-                    this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
-                      this.state.until,this.state.window, (status, data) => {
-                        if (status && data !== null && data !== undefined) {
-                          this.setState({
-                            data
-                          })
-                          this.draw()
-                        }
-                      }))
-                  // else {
-                  //   this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
-                  //     this.state.until, (status, data) => {
-                  //       if (status && data !== null && data !== undefined) {
-                  //         this.setState({
-                  //           data
-                  //         })
-                  //         this.draw()
-                  //       }
-                  //     }))
-                  //   this.setState({
-                  //     interval: setInterval(() => {
-                  //       this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
-                  //         this.state.until, (status, data) => {
-                  //           if (status && data !== null && data !== undefined) {
-                  //             this.setState({
-                  //               data
-                  //             })
-                  //             this.draw()
-                  //           }
-                  //         }))
-                  //     }, this.state.period)
-                  //   })
-                  // }
->>>>>>> 71a095c2dbb689656a4f29e9c2a973f06901c9d7
                 }
               }}>
                 دریافت اطلاعات
