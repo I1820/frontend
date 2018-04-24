@@ -102,7 +102,7 @@ class Full extends Component {
             <Breadcrumb/>
             <Container fluid>
               <Switch>
-                <Route path="/dashboard" name="Dashboard" component={ProjectsList}/>
+                <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                 <Route path="/news" name="News" component={News}/>
                 <Route path="/profile" name="Profile" component={Profile}/>
 

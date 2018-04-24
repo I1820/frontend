@@ -51,9 +51,10 @@ import {
 import {
   activateScenario,
   activeThing, createTemplate, createThingProfile, deleteCodec, deleteScenario, getCodec, getCodecTemplateList,
+  getDashboard,
   getPackage,
   getScenario,
-  getThingProfileList, updateScenarioAPI,
+  getThingProfileList, setDashboard, updateScenarioAPI,
   viewProfile
 } from '../api';
 
@@ -879,6 +880,32 @@ export function getPackagesAction() {
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
+    })
+  }
+}
+
+
+
+export function getDashboardAction(callback) {
+  return (dispatch) => {
+    const promise = getDashboard(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        callback(response.result)
+      } else {
+      }
+    })
+  }
+}
+
+export function setDashboardAction(widget,id) {
+  return (dispatch) => {
+    const promise = setDashboard(widget,id,dispatch)
+    promise.then((response) => {
+      // if (response.status === 'OK') {
+      //   callback(response.result)
+      // } else {
+      // }
     })
   }
 }

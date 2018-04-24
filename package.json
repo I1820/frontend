@@ -53,6 +53,7 @@
     "react-dom": "16.2.0",
     "react-google-maps": "^9.4.5",
     "react-google-recaptcha": "^0.9.7",
+    "react-grid-layout": "^0.16.6",
     "react-highcharts": "^16.0.2",
     "react-json-pretty": "^1.7.5",
     "react-lazylog": "^3.1.3",
