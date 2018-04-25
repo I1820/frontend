@@ -62,7 +62,6 @@ class DeviceProfileNew extends Component {
         supportsClassB: 1,
         supportsClassC: 1,
         supports32bitFCnt: 1,
-        supportsJoin:1
       }
     }
   }

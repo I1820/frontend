@@ -13,8 +13,9 @@ import {
   Button,
   ModalFooter,
   Label,
+  Tooltip,
   Input,
-  Table, Modal, ModalHeader, ModalBody
+  Table, Modal, ModalHeader, ModalBody, Badge
 } from 'reactstrap';
 import {connect} from 'react-redux';
 import {
@@ -62,8 +63,10 @@ class ProjectsManage extends Component {
     this.deleteScenarioModalToggle = this.deleteScenarioModalToggle.bind(this)
     this.deleteAlias = this.deleteAlias.bind(this)
     this.renderAliasTd = this.renderAliasTd.bind(this)
+    this.toggle = this.toggle.bind(this);
 
     this.state = {
+      tooltipOpen: [],
       OTAAmodal: false,
       ABPmodel: false,
       id: '',
@@ -651,6 +654,12 @@ class ProjectsManage extends Component {
   }
 
   renderThingItem(thing, key) {
+    let badgeColor = "success"
+    switch(thing.last_seen_at.status){
+      case 'gray':
+        badgeColor = 'secondary'
+    }
+
     return (
       <tr key={key}>
         <th>{key + 1}</th>
@@ -675,10 +684,24 @@ class ProjectsManage extends Component {
             داده (داون لینک)</Button>
           <Button onClick={() => this.deleteThingModalToggle(thing._id)} className="ml-1" color="danger"
                   size="sm">حذف شئ</Button>
+          <Badge id={`key-${key}`}  color={badgeColor}>وضعیت </Badge>
+          <Tooltip placement="top" isOpen={this.state.tooltipOpen[key]} target={`key-${key}`}  toggle={()=>this.toggle(key)}>
+            {thing.last_seen_at.time}
+          </Tooltip>
         </td>
       </tr>
     )
   }
+
+  toggle(key) {
+    let tooltipOpen = this.state.tooltipOpen;
+    tooltipOpen[key] = tooltipOpen[key]==undefined  ||  !tooltipOpen[key] ? true : false
+    console.log(tooltipOpen)
+    this.setState({
+      tooltipOpen
+    });
+  }
+
 
   renderAliasTd(aliases) {
     aliases = aliases ? aliases : [];

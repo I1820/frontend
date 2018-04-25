@@ -206,7 +206,7 @@ class ProjectsView extends Component {
 
   componentWillUnmount() {
     // use intervalId from the state to clear the interval
-    // clearInterval(this.state.interval);
+    clearInterval(this.state.interval);
   }
 
   render() {
@@ -259,8 +259,7 @@ class ProjectsView extends Component {
                 </Col>
               </FormGroup>
               <FormGroup style={{display:this.state.auto?'none':'block'}} row>
-                <Label sm={2}>بازه زمانی :‌ </Label>
-                <Col sm={4}>
+                <Col sm={6}>
                   {this.renderTimePicker()}
                 </Col>
               </FormGroup>
@@ -278,11 +277,11 @@ class ProjectsView extends Component {
                   });
                 }
                 else {
-                  // this.setState({page: 0, data: []})
-                  // clearInterval(this.state.interval)
-                  // if (!this.state.auto)
+                  this.setState({page: 0, data: []})
+                  clearInterval(this.state.interval)
+                  if (!this.state.auto)
                     this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
-                      this.state.until,this.state.window, (status, data) => {
+                      this.state.until,undefined, (status, data) => {
                         if (status && data !== null && data !== undefined) {
                           this.setState({
                             data
@@ -290,30 +289,30 @@ class ProjectsView extends Component {
                           this.draw()
                         }
                       }))
-                  // else {
-                  //   this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
-                  //     this.state.until, (status, data) => {
-                  //       if (status && data !== null && data !== undefined) {
-                  //         this.setState({
-                  //           data
-                  //         })
-                  //         this.draw()
-                  //       }
-                  //     }))
-                  //   this.setState({
-                  //     interval: setInterval(() => {
-                  //       this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
-                  //         this.state.until, (status, data) => {
-                  //           if (status && data !== null && data !== undefined) {
-                  //             this.setState({
-                  //               data
-                  //             })
-                  //             this.draw()
-                  //           }
-                  //         }))
-                  //     }, this.state.period)
-                  //   })
-                  // }
+                  else {
+                    this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
+                      this.state.until,this.state.window ,(status, data) => {
+                        if (status && data !== null && data !== undefined) {
+                          this.setState({
+                            data
+                          })
+                          this.draw()
+                        }
+                      }))
+                    this.setState({
+                      interval: setInterval(() => {
+                        this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing), this.state.project._id, this.state.since,
+                          this.state.until,this.state.window, (status, data) => {
+                            if (status && data !== null && data !== undefined) {
+                              this.setState({
+                                data
+                              })
+                              this.draw()
+                            }
+                          }))
+                      }, this.state.period)
+                    })
+                  }
                 }
               }}>
                 دریافت اطلاعات

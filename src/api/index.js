@@ -339,3 +339,15 @@ module.exports.lint = function (projectId, code, dispatch) {
   Object.assign(config, {body: getFormData({code})})
   return fetchData(`/project/${projectId}/lint`, config, dispatch)
 }
+
+module.exports.getDashboard = function (dispatch) {
+  return fetchData(`/user/dashboard`, getConfig(), dispatch)
+}
+
+
+module.exports.setDashboard = function (widget,id, dispatch) {
+  const config = postConfig()
+  widget.id = id
+  Object.assign(config, {body: getFormData(widget)})
+  return fetchData(`/user/widget/charts`, config, dispatch)
+}

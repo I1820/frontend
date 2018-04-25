@@ -71,7 +71,7 @@ export default class Logger extends Component {
       return (
         <Row style={{padding: 22}}>
           <Col>
-            {data.Message}
+            {data.Message.replace('\n','</br>')}
           </Col>
           <div style={{width: '20%'}}>
             {`${data.Time}   ${data.job}`}
