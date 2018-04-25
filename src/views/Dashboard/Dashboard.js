@@ -167,7 +167,11 @@ class Dashboard extends Component {
         if (this.state.charts[key].data === undefined)
           return
         let config = {
-
+          plotOptions: {
+            line: {
+              animation: false
+            }
+          },
           chart: {
             style: {
               fontFamily: 'Tahoma'

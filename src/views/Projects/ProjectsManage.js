@@ -75,6 +75,7 @@ class ProjectsManage extends Component {
       modalDownlinkRows: [],
       OTAA: {},
       ABP: {},
+      keys: {},
       deleteThingModal: false,
       deleteThingRowId: 0,
       deleteCodecModal: false,
@@ -225,7 +226,7 @@ class ProjectsManage extends Component {
 
         <Modal isOpen={this.state.deleteScenarioModal} toggle={this.deleteScenarioModalToggle}
                className="text-right">
-          <ModalHeader>حذف شی</ModalHeader>
+          <ModalHeader>حذف سناریو</ModalHeader>
           <ModalBody>
             <h3>آیا از حذف سناریو مطمئن هستید ؟</h3>
             <br/>
@@ -240,7 +241,7 @@ class ProjectsManage extends Component {
         </Modal>
 
         <Modal isOpen={this.state.deleteCodecModal} toggle={this.deleteCodecModalToggle} className="text-right">
-          <ModalHeader>حذف شی</ModalHeader>
+          <ModalHeader>حذف قالب</ModalHeader>
           <ModalBody>
             <h3>آیا از حذف قالب مطمئن هستید ؟</h3>
             <br/>
@@ -297,7 +298,7 @@ class ProjectsManage extends Component {
               <FormGroup row>
                 <Label sm={3}> appKey : </Label>
                 <Col sm={9}>
-                  <Input onChange={(event) => {
+                  <Input value={this.state.keys['appKey']} onChange={(event) => {
                     this.setState({
                       OTTA: {
                         appKey: event.target.value
@@ -314,7 +315,7 @@ class ProjectsManage extends Component {
               this.props.dispatch(activeThingAction(this.state.OTTA, this.state.selectedThing,
                 this.state.project._id, this.callback))
             }}>ارسال</Button>
-            <Button color="danger" onClick={this.toggle}>انصراف</Button>
+            <Button color="danger" onClick={this.toggleOTAA}>انصراف</Button>
           </ModalFooter>
         </Modal>
 
@@ -325,7 +326,7 @@ class ProjectsManage extends Component {
               <FormGroup row>
                 <Label sm={3}>appSKey : </Label>
                 <Col sm={9}>
-                  <Input name="appSKey"
+                  <Input value={this.state.keys['appSKey']} name="appSKey"
                          onChange={(event) => {
                            this.setState({
                              ABP: {
@@ -339,7 +340,7 @@ class ProjectsManage extends Component {
               <FormGroup row>
                 <Label sm={3}>devAddr : </Label>
                 <Col sm={9}>
-                  <Input name="devAddr"
+                  <Input value={this.state.keys['devAddr']} name="devAddr"
                          onChange={(event) => {
                            this.setState({
                              ABP: {
@@ -353,7 +354,7 @@ class ProjectsManage extends Component {
               <FormGroup row>
                 <Label sm={3}>fCntDown : </Label>
                 <Col sm={9}>
-                  <Input name="fCntDown"
+                  <Input value={this.state.keys['fCntDown']} name="fCntDown"
                          onChange={(event) => {
                            this.setState({
                              ABP: {
@@ -367,7 +368,7 @@ class ProjectsManage extends Component {
               <FormGroup row>
                 <Label sm={3}>fCntUp : </Label>
                 <Col sm={9}>
-                  <Input name="fCntUp"
+                  <Input value={this.state.keys['fCntUp']} name="fCntUp"
                          onChange={(event) => {
                            this.setState({
                              ABP: {
@@ -381,7 +382,7 @@ class ProjectsManage extends Component {
               <FormGroup row>
                 <Label sm={3}>nwkSKey : </Label>
                 <Col sm={9}>
-                  <Input name="nwkSKey"
+                  <Input value={this.state.keys['nwkSKey']} name="nwkSKey"
                          onChange={(event) => {
                            this.setState({
                              ABP: {
@@ -395,7 +396,7 @@ class ProjectsManage extends Component {
               <FormGroup row>
                 <Label sm={3}>skipFCntCheck : </Label>
                 <Col sm={9}>
-                  <Input name="skipFCntCheck"
+                  <Input value={this.state.keys['skipFCntCheck']} name="skipFCntCheck"
                          onChange={(event) => {
                            this.setState({
                              ABP: {
@@ -670,7 +671,8 @@ class ProjectsManage extends Component {
           <Button className="ml-1" onClick={() => {
             thing.type === 'ABP' ? this.toggleABP() : this.toggleOTAA()
             this.setState({
-              selectedThing: thing._id
+              selectedThing: thing._id,
+              keys: thing.keys
             })
           }}
                   color="success" size="sm">فعال سازی</Button>
