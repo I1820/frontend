@@ -24,9 +24,9 @@
  */
 
 import {
-  SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
-  UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
-  SET_GATEWAY, NEW_PACKAGE, SELECT_USER, SELECT_PACKAGE, PAYMENT_RESULT, GET_PACKAGED
+    SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
+    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
+    SET_GATEWAY, NEW_PACKAGE, SELECT_USER, SELECT_PACKAGE, PAYMENT_RESULT, GET_PACKAGED
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -49,13 +49,23 @@ import {
     lint
 } from '../api/index'
 import {
-  activateScenario,
-  activeThing, createTemplate, createThingProfile, deleteCodec, deleteScenario, getCodec, getCodecTemplateList,
-  getDashboard,
-  getPackage,
-  getScenario,
-  getThingProfileList, setDashboard, updateScenarioAPI,
-  viewProfile
+    activateScenario,
+    activeThing,
+    createCodecTemplate,
+    createThingProfile,
+    deleteCodecTemplate,
+    deleteScenario,
+    getCodecTemplate,
+    getThingCodec,
+    updateCodecTemplate,
+    getCodecTemplateList,
+    getDashboard,
+    getPackage,
+    getScenario,
+    getThingProfileList,
+    setDashboard,
+    updateScenarioAPI,
+    viewProfile
 } from '../api';
 
 /**
@@ -68,7 +78,7 @@ import {
 export function login(username, password, captcha, errorCallback) {
     return (dispatch) => {
         if (captcha === undefined) {
-          errorCallback('لطفا برروی گزینه من ربات نیستم کلیک کنید')
+            errorCallback('لطفا برروی گزینه من ربات نیستم کلیک کنید')
             return
         }
 
@@ -317,21 +327,23 @@ export function NewPackage(newState = NEW_OBJECT) {
     newState !== NEW_OBJECT ? forwardTo('package/edit' + newState) : forwardTo('package/new')
     return {type: NEW_PACKAGE, newState}
 }
-export function SelectUser(newState = NEW_OBJECT){
+
+export function SelectUser(newState = NEW_OBJECT) {
     forwardTo('user/info/' + newState)
     return {type: SELECT_USER, newState}
 }
+
 export function selectPackage(newState = NEW_OBJECT) {
     forwardTo('selectedPackage/' + newState)
     return {type: SELECT_PACKAGE, newState}
 }
 
-export function resultOfPay(newState){
-    newState == 'success'?  forwardTo('paymentResult/S/'+newState) : forwardTo('paymentResult/F/'+newState)
+export function resultOfPay(newState) {
+    newState == 'success' ? forwardTo('paymentResult/S/' + newState) : forwardTo('paymentResult/F/' + newState)
     //   console.log('status pay : '+ newState)
     // forwardTo('paymentResultS/'+newState)
     // console.log('status pay : '+ newState)
-    return{type: PAYMENT_RESULT, newState}
+    return {type: PAYMENT_RESULT, newState}
 
 }
 
@@ -410,9 +422,9 @@ export function cleanErrorMessage() {
     setErrorMessage('')
 }
 
-export function getDataAction(things, projectId, offset, limit,window, callback) {
+export function getDataAction(things, projectId, offset, limit, window, callback) {
     return (dispatch) => {
-        const promise = getThingDataAPI(things, projectId, offset, limit,window, dispatch)
+        const promise = getThingDataAPI(things, projectId, offset, limit, window, dispatch)
         promise.then((response) => {
             console.log('data', response)
             if (response.status === 'OK') {
@@ -516,9 +528,9 @@ export function deleteThingAction(projectId, thingId, cb) {
     }
 }
 
-export function deleteCodecAction(projectId, codecId, cb) {
+export function deleteCodecTemplateAction(projectId, codecId, cb) {
     return (dispatch) => {
-        const promise = deleteCodec(projectId, codecId, dispatch)
+        const promise = deleteCodecTemplate(projectId, codecId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 cb(true)
@@ -737,14 +749,14 @@ export function editProfile(data, cb) {
 
 /* downlink actions */
 
-export function sendDownlinkAction(projectId, thingId, data, cb) {
+export function sendDownlinkAction(thingId, data, cb) {
     return (dispatch) => {
-        const promise = newDownlinkAPI(projectId, thingId, data, dispatch)
+        const promise = newDownlinkAPI(thingId, data, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 cb(true)
             } else {
-                cb(false,response.result)
+                cb(false, response.result)
             }
         })
     }
@@ -754,9 +766,24 @@ export function sendDownlinkAction(projectId, thingId, data, cb) {
 /*  codec actions */
 
 
-export function getCodecAction(thingId, projectId, cb) {
+export function getThingCodecAction(thingId, cb) {
     return (dispatch) => {
-        const promise = getCodec(thingId, projectId, dispatch)
+        const promise = getThingCodec(thingId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                if (cb)
+                    cb(true, response.result.codec)
+            } else {
+                cb(false)
+            }
+        })
+    }
+}
+
+
+export function getCodecTemplateAction(projectId, codecId, cb) {
+    return (dispatch) => {
+        const promise = getCodecTemplate(projectId, codecId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 if (cb)
@@ -783,15 +810,15 @@ export function getCodecTemplateListAction(projectId, cb) {
     }
 }
 
-export function createCodecAction(thingId, projectId, codec, cb) {
+export function sendCodecAction(thingId, projectId, codec, cb) {
     return (dispatch) => {
         const promise = createCodecAPI({codec}, thingId, projectId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                cb(true)
                 forwardTo(`projects/manage/${projectId}`)
+                cb(true,'کدک با موفقیت ارسال شد.')
             } else {
-                cb(false, response.result)
+                cb(false, 'مشکلی به وجود امده لطفا بعدا تلاش کنید.')
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         }).catch((err) => {
@@ -801,9 +828,25 @@ export function createCodecAction(thingId, projectId, codec, cb) {
     }
 }
 
-export function createTemplateAction(projectId, data) {
+export function createCodecTemplateAction(projectId, data) {
     return (dispatch) => {
-        const promise = createTemplate(projectId, data, dispatch)
+        const promise = createCodecTemplate(projectId, data, dispatch)
+        promise.then((response) => {
+            console.log(response)
+            if (response.status === 'OK') {
+                forwardTo(`projects/manage/${projectId}`)
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((err) => {
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
+}
+
+export function updateCodecTemplateAction(codec_id, projectId, data) {
+    return (dispatch) => {
+        const promise = updateCodecTemplate(codec_id, projectId, data, dispatch)
         promise.then((response) => {
             console.log(response)
             if (response.status === 'OK') {
@@ -872,40 +915,39 @@ export function lintCode(projectId, code, cb) {
 /* packages action */
 
 export function getPackagesAction() {
-  return (dispatch) => {
-    const promise = getPackage(dispatch)
-    promise.then((response) => {
-      if (response.status === 'OK') {
-        dispatch({type: GET_PACKAGED, newState: response.result.packages})
-      } else {
-        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-      }
-    })
-  }
+    return (dispatch) => {
+        const promise = getPackage(dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch({type: GET_PACKAGED, newState: response.result.packages})
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
 }
-
 
 
 export function getDashboardAction(callback) {
-  return (dispatch) => {
-    const promise = getDashboard(dispatch)
-    promise.then((response) => {
-      if (response.status === 'OK') {
-        callback(response.result)
-      } else {
-      }
-    })
-  }
+    return (dispatch) => {
+        const promise = getDashboard(dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                callback(response.result)
+            } else {
+            }
+        })
+    }
 }
 
-export function setDashboardAction(widget,id) {
-  return (dispatch) => {
-    const promise = setDashboard(widget,id,dispatch)
-    promise.then((response) => {
-      // if (response.status === 'OK') {
-      //   callback(response.result)
-      // } else {
-      // }
-    })
-  }
+export function setDashboardAction(widget, id) {
+    return (dispatch) => {
+        const promise = setDashboard(widget, id, dispatch)
+        promise.then((response) => {
+            // if (response.status === 'OK') {
+            //   callback(response.result)
+            // } else {
+            // }
+        })
+    }
 }

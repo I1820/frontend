@@ -35,9 +35,11 @@ export default class Logger extends Component {
     return (
       <div style={{
         width: '80%',
-        height: '12%'
+        height: '12%',
+
       }}>
         <div style={{
+          zIndex: '10',
           width: '80%',
           position: 'fixed',
           bottom: '0',
@@ -67,17 +69,15 @@ export default class Logger extends Component {
 
   renderLog() {
     return (this.state.data.slice(0).reverse().map((data, key) => {
-
       return (
-        <Row style={{padding: 22}}>
+        <Row style={{padding: 22}} key={key}>
           <Col>
-            {data.Message.replace('\n','</br>')}
+            <pre style={{color:'#fff'}}>
+            {data.Message}
+            </pre>
           </Col>
           <div style={{width: '20%'}}>
             {`${data.Time}   ${data.job}`}
-          </div>
-          <div>
-            {key + 1}
           </div>
         </Row>)
     }))

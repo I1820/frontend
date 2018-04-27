@@ -234,27 +234,6 @@ class ProjectsList extends Component {
         ];
     }
 
-    // TODO delete function
-    renderItem(project = {}, key = 0) {
-        return (
-            <tr>
-                <th>{key + 1}</th>
-                <td>{project.name}</td>
-                <td>{project.description}</td>
-                <td><Badge color="success">{project.active === true ? 'فعال' : 'غیرفعال'}</Badge></td>
-                <td>{project.owner.name}</td>
-                <td>
-                    <Button onClick={() => this.showProject(project._id)} className="ml-1" color="success"
-                            size="sm">نمایش</Button>
-                    <Button onClick={() => this.manageProject(project._id)} className="ml-1" color="warning"
-                            size="sm">مدیریت</Button>
-                    <Button onClick={() => this.deleteModalToggle(project._id)} className="ml-1" color="danger"
-                            size="sm">حذف</Button>
-                </td>
-            </tr>
-        )
-    }
-
     toggle() {
         this.setState({
             modal: !this.state.modal
