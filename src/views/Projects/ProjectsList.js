@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Row,
     Col,
@@ -20,14 +20,15 @@ import {
     Input,
     Table
 } from 'reactstrap';
+import ReactTable from 'react-table'
+import 'react-table/react-table.css'
 
-import {connect} from 'react-redux';
-import {createProject, getProjects, deleteProjectAction} from "../../actions/AppActions";
-import Spinner from "../Spinner/Spinner";
-import classnames from 'classnames';
+import { connect } from 'react-redux';
+import { createProject, getProjects, deleteProjectAction } from '../../actions/AppActions';
+import Spinner from '../Spinner/Spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
-import { style } from "react-toastify";
+import { style } from 'react-toastify';
 
 style({
     colorProgressDefault: 'white'
@@ -38,14 +39,15 @@ class ProjectsList extends Component {
     constructor(props) {
         super(props);
 
-        this.toggle = this.toggle.bind(this)
-        this.showProject = this.showProject.bind(this)
-        this.onCreateProject = this.onCreateProject.bind(this)
-        this.onCreateProject = this.onCreateProject.bind(this)
-        this.deleteModalToggle = this.deleteModalToggle.bind(this)
-        this.deleteProject = this.deleteProject.bind(this)
-        this.manageToastAlerts = this.manageToastAlerts.bind(this)
-        this.loadProjects = this.loadProjects.bind(this)
+        this.toggle = this.toggle.bind(this);
+        this.showProject = this.showProject.bind(this);
+        this.onCreateProject = this.onCreateProject.bind(this);
+        this.onCreateProject = this.onCreateProject.bind(this);
+        this.deleteModalToggle = this.deleteModalToggle.bind(this);
+        this.deleteProject = this.deleteProject.bind(this);
+        this.manageToastAlerts = this.manageToastAlerts.bind(this);
+        this.loadProjects = this.loadProjects.bind(this);
+        this.reactTableColumns = this.reactTableColumns.bind(this);
 
         this.state = {
             modal: false,
@@ -63,8 +65,8 @@ class ProjectsList extends Component {
         if (props.projects !== undefined) {
             this.setState({
                 projects: props.projects,
-                projectName: "",
-                projectDesc: ""
+                projectName: '',
+                projectDesc: ''
             })
         }
     }
@@ -77,7 +79,7 @@ class ProjectsList extends Component {
     }
 
     manageToastAlerts(status) {
-        if(status === true) {
+        if (status === true) {
             this.loadProjects()
             this.deleteModalToggle()
 
@@ -108,13 +110,13 @@ class ProjectsList extends Component {
     render() {
         return (
             <div>
-                <ToastContainer className="text-right" />
+                <ToastContainer className="text-right"/>
                 <Spinner display={this.props.loading}/>
                 <Modal isOpen={this.state.deleteModal} toggle={this.deleteModalToggle} className="text-right">
                     <ModalHeader>حذف پروژه</ModalHeader>
                     <ModalBody>
                         <h3>آیا از حذف پروژه مطمئن هستید؟</h3>
-                        <br />
+                        <br/>
                         <h5>پس از حذف پروژه امکان بازگرداندن آن وجود ندارد.</h5>
                     </ModalBody>
                     <ModalFooter>
@@ -167,28 +169,24 @@ class ProjectsList extends Component {
 
                 <Card className="text-justify">
                     <CardHeader>
-                        <CardTitle className="mb-0 font-weight-bold h6">Projects List</CardTitle>
+                        <CardTitle className="mb-0 font-weight-bold h6">لیست پروژه‌ها</CardTitle>
                     </CardHeader>
                     <CardBody>
-                        <Table hover responsive className="table-outline">
-                            <thead className="thead-light">
-                            <tr>
-                                <th>#</th>
-                                <th>نام پروژه</th>
-                                <th>توضیحات</th>
-                                <th>وضعیت</th>
-                                <th>صاحب پروژه</th>
-                                <th>امکانات</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                this.props.projects.map((project, key) => {
-                                    return (this.renderItem(project, key))
-                                })
-                            }
-                            </tbody>
-                        </Table>
+                        <ReactTable
+                            data={this.state.projects}
+                            columns={this.reactTableColumns()}
+                            pageSizeOptions={[5, 10, 25]}
+                            nextText='بعدی'
+                            previousText='قبلی'
+                            filterable={true}
+                            rowsText='ردیف'
+                            pageText='صفحه'
+                            ofText='از'
+                            minRows='1'
+                            noDataText='داده ای وجود ندارد'
+                            resizable={false}
+                            defaultPageSize='5'
+                        />
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.toggle} color="primary">پروژه جدید</Button>
@@ -198,6 +196,45 @@ class ProjectsList extends Component {
         );
     }
 
+    reactTableColumns() {
+        return [
+            {
+                Header: 'نام پروژه',
+                accessor: 'name'
+            },
+            {
+                Header: 'توضیحات',
+                accessor: 'description'
+            },
+            {
+                Header: 'صاحب پروژه',
+                accessor: 'owner.name'
+            },
+            {
+                id: 'projectStatus',
+                Header: 'وضعیت',
+                filterable: false,
+                accessor: row => <Badge color={row.active === true ? 'success' : 'danger'}>
+                    {row.active === true ? 'فعال' : 'غیرفعال'}
+                </Badge>
+            },
+            {
+                id: 'rowTools',
+                Header: 'امکانات',
+                filterable: false,
+                accessor: row => <div>
+                    <Button onClick={() => this.showProject(row._id)} className="ml-1" color="success"
+                            size="sm">نمایش</Button>
+                    <Button onClick={() => this.manageProject(row._id)} className="ml-1" color="warning"
+                            size="sm">مدیریت</Button>
+                    <Button onClick={() => this.deleteModalToggle(row._id)} className="ml-1" color="danger"
+                            size="sm">حذف</Button>
+                </div>
+            }
+        ];
+    }
+
+    // TODO delete function
     renderItem(project = {}, key = 0) {
         return (
             <tr>
@@ -232,7 +269,7 @@ class ProjectsList extends Component {
     }
 
     showProject() {
-        window.location = "#/projects/view"
+        window.location = '#/projects/view'
     }
 
 
