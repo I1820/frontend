@@ -21,6 +21,7 @@ import {
     Table
 } from 'reactstrap';
 import ReactTable from 'react-table'
+import { toastAlerts } from '../Shared/toast_alert';
 import 'react-table/react-table.css'
 
 import { connect } from 'react-redux';
@@ -41,7 +42,6 @@ class ProjectsList extends Component {
 
         this.toggle = this.toggle.bind(this);
         this.showProject = this.showProject.bind(this);
-        this.onCreateProject = this.onCreateProject.bind(this);
         this.onCreateProject = this.onCreateProject.bind(this);
         this.deleteModalToggle = this.deleteModalToggle.bind(this);
         this.deleteProject = this.deleteProject.bind(this);
@@ -185,7 +185,7 @@ class ProjectsList extends Component {
                             minRows='1'
                             noDataText='داده ای وجود ندارد'
                             resizable={false}
-                            defaultPageSize='5'
+                            defaultPageSize={5}
                         />
                     </CardBody>
                     <CardFooter>
@@ -252,12 +252,11 @@ class ProjectsList extends Component {
     }
 
 
-    onCreateProject(status) {
+    onCreateProject(status, message) {
+        toastAlerts(status, message)
         if (status) {
             this.toggle()
             this.loadProjects()
-        } else {
-            //TODO Alert
         }
     }
 

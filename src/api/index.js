@@ -43,7 +43,7 @@ const Errors = {
     'invalid credentials': 'ایمیل و یا رمز عبور صحیح نمی باشد'
 }
 
-function controller(json = {}) {
+function controler(json = {}) {
     if (json === {}) {
         return {status: false, message: Errors.EMPTY_JSON_RESPONSE}
     }
@@ -70,11 +70,11 @@ function fetchData(endpoint = '/404', config = {}, dispatch) {
             .then((response) => response.json())
             .then((json) => {
                 dispatch(sendingRequest(false))
-                const {status, message, code} = controller(json)
+                const {status, message, code} = controler(json)
                 if ((code === 701 || code === 401) && endpoint !== endpoints.login) {
                     dispatch(logout())
                 }
-                if (!status) {
+                if (!status || (code && str(code).startsWith('7'))) {
                     return resolve({status: 'FAILED', result: message})
                 }
                 return resolve({result: json.result, status: 'OK'})
@@ -353,10 +353,19 @@ module.exports.getDashboard = function (dispatch) {
     return fetchData(`/user/dashboard`, getConfig(), dispatch)
 }
 
+module.exports.getUserThings = function (dispatch) {
+    return fetchData(`/things`, getConfig(), dispatch)
+}
 
-module.exports.setDashboard = function (widget, id, dispatch) {
+
+module.exports.setDashboardWidgetChart = function (widget, id, dispatch) {
     const config = postConfig()
-    widget.id = id
+    if (id)
+        widget.id = id;
     Object.assign(config, {body: getFormData(widget)})
     return fetchData(`/user/widget/charts`, config, dispatch)
+}
+module.exports.deleteDashboardWidgetChart = function (id, dispatch) {
+    const config = deleteConfig()
+    return fetchData(`/user/widget/charts?id=${id}`, config, dispatch)
 }

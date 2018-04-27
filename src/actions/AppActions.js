@@ -60,10 +60,12 @@ import {
     updateCodecTemplate,
     getCodecTemplateList,
     getDashboard,
+    getUserThings,
     getPackage,
     getScenario,
     getThingProfileList,
-    setDashboard,
+    setDashboardWidgetChart,
+    deleteDashboardWidgetChart,
     updateScenarioAPI,
     viewProfile
 } from '../api';
@@ -157,9 +159,9 @@ export function createProject(state, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 dispatch(setProject(response.result))
-                cb(true)
+                cb(true, response.result)
             } else {
-                cb(false)
+                cb(false, response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         })
@@ -816,7 +818,7 @@ export function sendCodecAction(thingId, projectId, codec, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 forwardTo(`projects/manage/${projectId}`)
-                cb(true,'کدک با موفقیت ارسال شد.')
+                cb(true, 'کدک با موفقیت ارسال شد.')
             } else {
                 cb(false, 'مشکلی به وجود امده لطفا بعدا تلاش کنید.')
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -940,14 +942,40 @@ export function getDashboardAction(callback) {
     }
 }
 
-export function setDashboardAction(widget, id) {
+export function getUserThingsAction(callback) {
     return (dispatch) => {
-        const promise = setDashboard(widget, id, dispatch)
+        const promise = getUserThings(dispatch)
         promise.then((response) => {
-            // if (response.status === 'OK') {
-            //   callback(response.result)
-            // } else {
-            // }
+            if (response.status === 'OK') {
+                callback(response.result)
+            } else {
+            }
+        })
+    }
+}
+
+export function setDashboardWidgetChartAction(widget, id, cb) {
+    return (dispatch) => {
+        const promise = setDashboardWidgetChart(widget, id, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb(true, 'با موفقیت اضافه شد')
+            } else {
+                cb(false, response.result)
+            }
+        })
+    }
+}
+
+export function deleteDashboardWidgetChartAction(id, cb) {
+    return (dispatch) => {
+        const promise = deleteDashboardWidgetChart(id, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb(true, 'با موفقیت حذف شد')
+            } else {
+                cb(true, 'مشکلی پیش آمد بعدا تلاش کنید')
+            }
         })
     }
 }
