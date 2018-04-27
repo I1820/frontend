@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Card,
     Modal,
@@ -10,14 +10,16 @@ import {
     ModalFooter,
     CardTitle,
     Button,
+    Badge,
+    UncontrolledTooltip,
     Table
 } from 'reactstrap';
-import connect from "react-redux/es/connect/connect";
-import {getGatewaysAction, deleteGatewaysAction} from "../../actions/AppActions";
-import Spinner from "../Spinner/Spinner";
+import ReactTable from 'react-table'
+import connect from 'react-redux/es/connect/connect';
+import { getGatewaysAction, deleteGatewaysAction } from '../../actions/AppActions';
+import Spinner from '../Spinner/Spinner';
 import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
-
 
 
 class Gateways extends Component {
@@ -31,10 +33,11 @@ class Gateways extends Component {
         this.deleteGateway = this.deleteGateway.bind(this)
         this.manageToastAlerts = this.manageToastAlerts.bind(this)
         this.loadGateways = this.loadGateways.bind(this)
+        this.reactTableColumns = this.reactTableColumns.bind(this)
 
         this.state = {
             deleteModal: false,
-            deleteRowId: 0
+            deleteRowId: 0,
         }
     }
 
@@ -46,7 +49,7 @@ class Gateways extends Component {
     }
 
     manageToastAlerts(status) {
-        if(status === true) {
+        if (status === true) {
             this.deleteModalToggle()
             this.loadGateways()
 
@@ -82,12 +85,12 @@ class Gateways extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
-                <ToastContainer className="text-right" />
+                <ToastContainer className="text-right"/>
                 <Modal isOpen={this.state.deleteModal} toggle={this.deleteModalToggle} className="text-right">
                     <ModalHeader>حذف Gateway</ModalHeader>
                     <ModalBody>
                         <h3>آیا از حذف Gateway مطمئن هستید ؟</h3>
-                        <br />
+                        <br/>
                         <h5>پس از حذف امکان برگشت اطلاعات وجود ندارد.</h5>
                     </ModalBody>
                     <ModalFooter>
@@ -102,23 +105,21 @@ class Gateways extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">Gateways List</CardTitle>
                     </CardHeader>
                     <CardBody>
-                        <Table hover responsive className="table-outline">
-                            <thead className="thead-light">
-                            <tr>
-                                <th>#</th>
-                                <th>اسم</th>
-                                <th>آدرس Mac</th>
-                                <th>امکانات</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                this.props.gateways.map((gateway, key) => {
-                                    return (this.renderItem(gateway, key))
-                                })
-                            }
-                            </tbody>
-                        </Table>
+                        <ReactTable
+                            data={this.props.gateways}
+                            columns={this.reactTableColumns()}
+                            pageSizeOptions={[10, 15, 25]}
+                            nextText='بعدی'
+                            previousText='قبلی'
+                            filterable={true}
+                            rowsText='ردیف'
+                            pageText='صفحه'
+                            ofText='از'
+                            minRows='1'
+                            noDataText='گذرگاهی وجود ندارد'
+                            resizable={false}
+                            defaultPageSize={10}
+                        />
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.newGateway} color="primary">ساخت جدید</Button>
@@ -156,11 +157,52 @@ class Gateways extends Component {
     }
 
     newGateway() {
-        window.location = "#/gateways/new"
+        window.location = '#/gateways/new'
     }
 
     viewGateway(id) {
         window.location = `#/gateways/view/${id}`
+    }
+
+    reactTableColumns() {
+        return [
+            {
+                Header: 'نام گذرگاه(gateway)',
+                accessor: 'name'
+            },
+            {
+                Header: 'توضیحات',
+                accessor: 'description'
+            }, {
+                Header: 'شناسه گذرگاه',
+                accessor: 'mac',
+                filterMethod: (filter, row) =>
+                    row[filter.id].includes(filter.value)
+            },
+            {
+                id: 'status',
+                filterable: false,
+                Header: 'وضعیت',
+                accessor: row => <Badge color={row.last_seen_at['status'] === 'green' ? 'success' : 'danger'}
+                                        id={`tooltip-${row._id}`}>
+                    {row.last_seen_at['time'] && <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
+                        {row.last_seen_at['time']}
+                    </UncontrolledTooltip>}
+                    {row.last_seen_at['status'] === 'green' ? 'فعال' : 'غیرفعال'}
+                </Badge>
+            }, {
+                id: 'operations',
+                Header: 'عملیات',
+                filterable: false,
+                accessor: row => <div>
+                    <Button onClick={() => this.viewGateway(row._id)} className="ml-1" color="success"
+                            size="sm">نمایش</Button>
+                    <Button onClick={() => this.deleteModalToggle(row._id)} className="ml-1" color="danger"
+                            size="sm">حذف</Button>
+                </div>
+            },
+
+        ];
     }
 
 }
