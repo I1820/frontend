@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Card,
     CardHeader,
@@ -15,9 +15,12 @@ import 'brace/theme/monokai';
 import 'brace/mode/python';
 import 'brace/snippets/python';
 import 'brace/ext/language_tools';
-import { createTemplateAction, lintCode } from '../../actions/AppActions';
-import connect from "react-redux/es/connect/connect";
-import Spinner from "../Spinner/Spinner";
+import {
+    createCodecTemplateAction, getCodecTemplateAction, updateCodecTemplateAction,
+    lintCode
+} from '../../actions/AppActions';
+import connect from 'react-redux/es/connect/connect';
+import Spinner from '../Spinner/Spinner';
 
 class AddTemplate extends Component {
 
@@ -27,8 +30,8 @@ class AddTemplate extends Component {
         this.sendTemplate = this.sendTemplate.bind(this)
 
         this.state = {
-            code: "",
-            name: "",
+            code: '',
+            name: '',
             lint: []
         }
     }
@@ -39,6 +42,20 @@ class AddTemplate extends Component {
         this.setState({
             project: splitedUrl[5]
         })
+
+        if (splitedUrl[6] !== 'new') {
+            this.setState({
+                id: splitedUrl[6]
+            })
+
+            this.props.dispatch(getCodecTemplateAction(splitedUrl[5], splitedUrl[6], (status, codec) => {
+                if (status)
+                    this.setState({
+                        code: codec.code,
+                        name: codec.name
+                    })
+            }))
+        }
     }
 
 
@@ -55,9 +72,10 @@ class AddTemplate extends Component {
                             <FormGroup row>
                                 <Label sm={1}>نام قالب:</Label>
                                 <Col sm={5}>
-                                    <Input onChange={(event) => {
-                                        this.setState({name: event.target.value})
-                                    }} type="text"/>
+                                    <Input value={this.state.name}
+                                           onChange={(event) => {
+                                               this.setState({name: event.target.value})
+                                           }} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -119,16 +137,24 @@ class AddTemplate extends Component {
             else if (lint.type === 'convention')
                 color = 'cadetblue'
             return <p key={`log-${key}`} style={{fontFamily: 'sans-serif', color}}>
-                line  {lint.line}:{lint.column} - {lint.type}: {lint.message}!
+                line {lint.line}:{lint.column} - {lint.type}: {lint.message}!
             </p>
         })
     }
 
     sendTemplate() {
-        this.props.dispatch(createTemplateAction(this.state.project, {
-            name: this.state.name,
-            code: this.state.code
-        }))
+
+
+        if (this.state.id === undefined)
+            this.props.dispatch(createCodecTemplateAction(this.state.project, {
+                name: this.state.name,
+                code: this.state.code
+            }))
+        else
+            this.props.dispatch(updateCodecTemplateAction(this.state.id, this.state.project, {
+                name: this.state.name,
+                code: this.state.code
+            }))
     }
 }
 

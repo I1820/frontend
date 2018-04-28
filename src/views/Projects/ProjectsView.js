@@ -82,12 +82,10 @@ class ProjectsView extends Component {
 
   componentWillReceiveProps(props) {
     const splitedUrl = window.location.href.split('/');
-    const me = this;
     if (splitedUrl[splitedUrl.length - 1]) {
       props.projects.forEach((project) => {
 
         if (project._id === splitedUrl[splitedUrl.length - 1]) {
-          console.log('findddd', project)
           this.setState({
             project
           })
@@ -112,6 +110,11 @@ class ProjectsView extends Component {
         style: {
           fontFamily: 'Tahoma'
         }
+      },
+      plotOptions: {
+          line: {
+              animation: false
+          }
       },
       title: {
         text: 'داده‌های دریافتی'

@@ -40,18 +40,22 @@ const MapWithASearchBox = compose(
     }),
     lifecycle({
         componentWillReceiveProps(props) {
-            this.setState({
-                markers: [props.marker]
-            })
-            console.log('map', this.props)
+            if (props.marker !== undefined) {
+                this.setState({
+                    marker: props.marker
+                })
+            }
+
         },
         componentWillMount() {
-            console.log('map', this.props)
             const refs = {}
+            const marker = this.props.marker !== undefined ? this.props.marker : {
+                lat: 35.7024852, lng: 51.4023424
+            }
             this.setState({
                 bounds: null,
-                center: this.props.marker,
-                markers: [this.props.marker],
+                center: marker,
+                marker,
                 onMapMounted: ref => {
                     refs.map = ref;
                 },
@@ -63,6 +67,20 @@ const MapWithASearchBox = compose(
                 },
                 onSearchBoxMounted: ref => {
                     refs.searchBox = ref;
+                },
+                onClick: data => {
+                    document.getElementById('fld_lat').value = data.latLng.lat()
+                    document.getElementById('fld_lng').value = data.latLng.lng()
+                    this.setState({
+                        center: {
+                            lat: data.latLng.lat(),
+                            lng: data.latLng.lng()
+                        },
+                        marker: {
+                            lat: data.latLng.lat(),
+                            lng: data.latLng.lng()
+                        },
+                    })
                 },
                 onPlacesChanged: () => {
                     const places = refs.searchBox.getPlaces();
@@ -95,12 +113,10 @@ const MapWithASearchBox = compose(
     <GoogleMap
         ref={props.onMapMounted}
         defaultZoom={12}
-        center={props.center}
+        center={props.marker}
         onBoundsChanged={props.onBoundsChanged}
+        onClick={props.onClick}
     >
-
-        <Marker
-            position={props.markers[0]}/>
         <SearchBox
             ref={props.onSearchBoxMounted}
             bounds={props.bounds}
@@ -113,22 +129,20 @@ const MapWithASearchBox = compose(
                 style={{
                     boxSizing: `border-box`,
                     border: `1px solid transparent`,
-                    width: `250px`,
+                    width: `240px`,
                     height: `32px`,
                     marginTop: `10px`,
+                    textAlign: 'left',
                     padding: `0 12px`,
                     borderRadius: `3px`,
                     boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
                     fontSize: `14px`,
                     outline: `none`,
                     textOverflow: `ellipses`,
-                    textAlign: `left`,
                 }}
             />
         </SearchBox>
-        {props.markers.map((marker, index) =>
-            <Marker key={index} position={marker.position}/>
-        )}
+        <Marker position={props.marker}/>
     </GoogleMap>
 );
 

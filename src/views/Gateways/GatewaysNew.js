@@ -33,23 +33,29 @@ const {SearchBox} = require("react-google-maps/lib/components/places/SearchBox")
 
 const MapWithASearchBox = compose(
     withProps({
-        googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
+        googleMapURL: 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places',
         loadingElement: <div style={{height: `100%`}}/>,
         containerElement: <div style={{height: `400px`}}/>,
         mapElement: <div style={{height: `100%`}}/>,
     }),
     lifecycle({
+        componentWillReceiveProps(props) {
+            if (props.marker !== undefined) {
+                this.setState({
+                    marker: props.marker
+                })
+            }
+
+        },
         componentWillMount() {
             const refs = {}
-
+            const marker = this.props.marker !== undefined ? this.props.marker : {
+                lat: 35.7024852, lng: 51.4023424
+            }
             this.setState({
                 bounds: null,
-                center: {
-                    lat: 35.7024852, lng: 51.4023424
-                },
-                marker: {
-                    lat: 35.7024852, lng: 51.4023424
-                },
+                center: marker,
+                marker,
                 onMapMounted: ref => {
                     refs.map = ref;
                 },
@@ -107,7 +113,7 @@ const MapWithASearchBox = compose(
     <GoogleMap
         ref={props.onMapMounted}
         defaultZoom={12}
-        center={props.center}
+        center={props.marker}
         onBoundsChanged={props.onBoundsChanged}
         onClick={props.onClick}
     >
@@ -198,16 +204,20 @@ class GatewaysNew extends Component {
                     <CardBody>
                         <Form>
                             <FormGroup row>
-                                <Label sm={2}>اسم : </Label>
+                                <Label sm={2}>اسم :</Label>
                                 <Col sm={5}>
                                     <Input type="text"
+                                           placeholder="گذرگاه پژوهشکده"
+                                           maxLength="50"
                                            onChange={event => this.setState({name: event.target.value})}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}>آدرس Mac : </Label>
+                                <Label sm={2}>شناسه گذرگاه</Label>
                                 <Col sm={5}>
                                     <Input type="text" dir="ltr"
+                                           placeholder="AA00CC11DD22EE33"
+                                           maxLength="16"
                                            value={this.formatMAC(this.state.mac)}
                                            onChange={event => this.setState({mac: event.target.value})}/>
                                 </Col>
@@ -216,25 +226,28 @@ class GatewaysNew extends Component {
                                 <Label sm={2}>توضیحات : </Label>
                                 <Col sm={5}>
                                     <Input type="textarea"
+                                           placeholder="گذرگاه سقف"
+                                           maxLength="150"
                                            onChange={event => this.setState({description: event.target.value})}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}>مقدار Lat : </Label>
+                                <Label sm={2}> عرض جغرافیایی:</Label>
                                 <Col sm={5}>
-                                    <Input type="text" id="fld_lat" dir="ltr"/>
+                                    <Input id="fld_lat" dir="ltr" readOnly={true}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}>مقدار Long : </Label>
+                                <Label sm={2}>طول جغرافیایی:</Label>
                                 <Col sm={5}>
-                                    <Input dir="ltr" id="fld_lng" type="text"/>
+                                    <Input dir="ltr" id="fld_lng" readOnly={true}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={2}>مقدار Altitude : </Label>
+                                <Label sm={2}>ارتفاع:</Label>
                                 <Col sm={5}>
-                                    <Input type="text" dir="ltr"
+                                    <Input type="number" dir="rtl"
+                                           placeholder="۱۰ متر"
                                            onChange={event => this.setState({altitude: event.target.value})}/>
                                 </Col>
                             </FormGroup>
@@ -282,7 +295,7 @@ class GatewaysNew extends Component {
                 name: this.state.name,
                 mac: this.formatMAC(this.state.mac).replace(/:/g, ''),
                 description: this.state.description,
-                latitude: document.getElementById('fld_lng').value,
+                latitude: document.getElementById('fld_lat').value,
                 longitude: document.getElementById('fld_lng').value,
                 altitude: this.state.altitude
             },

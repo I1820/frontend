@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Card,
     CardHeader,
@@ -8,6 +8,8 @@ import {
     Button, FormGroup, Form, Label, Col, Input,
 } from 'reactstrap';
 
+import { toastAlerts } from '../Shared/toast_alert';
+
 
 import AceEditor from 'react-ace';
 
@@ -16,12 +18,12 @@ import 'brace/mode/python';
 import 'brace/snippets/python';
 import 'brace/ext/language_tools';
 import {
-    createCodecAction, getCodecAction, getCodecTemplateListAction, lintCode
-} from "../../actions/AppActions";
-import connect from "react-redux/es/connect/connect";
-import Spinner from "../Spinner/Spinner";
+    getThingCodecAction, getCodecTemplateListAction, lintCode, sendCodecAction
+} from '../../actions/AppActions';
+import connect from 'react-redux/es/connect/connect';
+import Spinner from '../Spinner/Spinner';
 
-class AddScenario extends Component {
+class SendCodec extends Component {
 
     constructor(props) {
         super(props);
@@ -29,9 +31,9 @@ class AddScenario extends Component {
         this.sendCodec = this.sendCodec.bind(this)
 
         this.state = {
-            codec: "",
+            codec: '',
             templates: [],
-            lint:[]
+            lint: []
         }
     }
 
@@ -43,7 +45,7 @@ class AddScenario extends Component {
             thing: splitedUrl[6]
         })
         this.props.dispatch(getCodecTemplateListAction(splitedUrl[5], (status, templates) => {
-            this.props.dispatch(getCodecAction(splitedUrl[6], splitedUrl[5], (status, codec) => {
+            this.props.dispatch(getThingCodecAction(splitedUrl[6], (status, codec) => {
                 if (status && codec !== null)
                     this.setState({
                         codec
@@ -72,7 +74,6 @@ class AddScenario extends Component {
                                 <Label sm={2}>قالب Decoder: </Label>
                                 <Col sm={4}>
                                     <Input type="select" name="supportsJoin" id="select" onChange={(event) => {
-                                        console.log(this.state.templates[event.target.value])
                                         if (event.target.value !== '') {
                                             this.setState({
                                                 codec: this.state.templates[event.target.value].code
@@ -111,12 +112,12 @@ class AddScenario extends Component {
                     <CardFooter>
                         <Button onClick={this.sendCodec} className="ml-1" color="primary" size="md">ارسال
                             codec</Button>
-                            <Button onClick={() => {
-                                this.props.dispatch(lintCode(this.state.project, this.state.codec, (status, lint) => {
-                                    if (status)
-                                        this.setState({lint})
-                                }))
-                            }} className="ml-1" color="warning" size="md">بررسی کدک</Button>
+                        <Button onClick={() => {
+                            this.props.dispatch(lintCode(this.state.project, this.state.codec, (status, lint) => {
+                                if (status)
+                                    this.setState({lint})
+                            }))
+                        }} className="ml-1" color="warning" size="md">بررسی کدک</Button>
                     </CardFooter>
                 </Card>
                 <Card className="text-justify">
@@ -135,7 +136,6 @@ class AddScenario extends Component {
 
 
     renderLog() {
-        console.log('lint', this.state.lint)
         return this.state.lint.map((lint, key) => {
             let color = 'black'
             if (lint.type === 'error')
@@ -158,11 +158,7 @@ class AddScenario extends Component {
     }
 
     sendCodec() {
-        this.props.dispatch(createCodecAction(this.state.thing, this.state.project, this.state.codec, this.callback))
-    }
-
-    callback() {
-
+        this.props.dispatch(sendCodecAction(this.state.thing, this.state.project, this.state.codec, toastAlerts))
     }
 }
 
@@ -173,4 +169,4 @@ function mapStateToProps(state) {
     })
 }
 
-export default connect(mapStateToProps)(AddScenario);
+export default connect(mapStateToProps)(SendCodec);

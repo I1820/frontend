@@ -23,8 +23,7 @@ import {
 import { getThingProfileListAction, deleteDeviceProfileAction } from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
 import Spinner from "../Spinner/Spinner";
-import classnames from 'classnames';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from "react-toastify";
 
@@ -113,8 +112,6 @@ class DeviceProfile extends Component {
                         <Button color="danger" onClick={this.deleteModalToggle}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
-
-                <ToastContainer className="text-right" />
                 <Spinner display={this.props.loading}/>
 
                 <Card className="text-justify">
