@@ -434,7 +434,7 @@ class ProjectsManage extends Component {
                                 <Form>
                                     <FormGroup style={{display: 'flex'}}>
                                         <div style={{minWidth: '65px', width: '20%'}}>
-                                            <Label>نام پروژه : </Label>
+                                            <Label>نام پروژه:</Label>
                                         </div>
                                         <div style={{width: '80%'}}>
                                             <Input type="text" onChange={(event) => {
@@ -444,12 +444,12 @@ class ProjectsManage extends Component {
                                                         name: event.target.value
                                                     }
                                                 })
-                                            }} value={this.state.project.name || ''}/>
+                                            }} maxLength="50" value={this.state.project.name || ''}/>
                                         </div>
                                     </FormGroup>
                                     <FormGroup style={{display: 'flex'}}>
                                         <div style={{minWidth: '65px', width: '20%'}}>
-                                            <Label>توضیحات :‌ </Label>
+                                            <Label>توضیحات:</Label>
                                         </div>
                                         <div style={{width: '80%'}}>
                                             <Input value={this.state.project.description || ''} onChange={(event) => {
@@ -459,7 +459,7 @@ class ProjectsManage extends Component {
                                                         description: event.target.value
                                                     }
                                                 })
-                                            }} type="textarea" name="" rows="2"/>
+                                            }} maxLength="150" type="textarea" name="" rows="2"/>
                                         </div>
                                     </FormGroup>
 

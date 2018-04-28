@@ -220,9 +220,8 @@ body {
 
 // Captcha
 .g-recaptcha {
-  transform: scale(0.8);
-  right: -30px;
-  position: relative;
+  transform:scale(0.77);
+  transform-origin:0 0;
 }
 
 //calender

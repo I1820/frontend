@@ -141,10 +141,10 @@ module.exports.getProject = function (id, dispatch) {
 //
 //
 //
-module.exports.editThing = function (projectId, thingId, data, dispatch) {
+module.exports.editThing = function (thingId, data, dispatch) {
     const config = patchConfig()
     Object.assign(config, {body: getFormData(data)})
-    return fetchData(`/project/${projectId}/things/${thingId}`, config, dispatch)
+    return fetchData(`/things/${thingId}`, config, dispatch)
 }
 //
 module.exports.editProject = function (id, data, dispatch) {
@@ -173,8 +173,8 @@ module.exports.editAliases = function (id, data, dispatch) {
 //     return fetchData(endpoints.listThings, projectControler.list, getConfig(), dispatch)
 // }
 //
-module.exports.getThing = function (projectId, thingId, dispatch) {
-    return fetchData(`/project/${projectId}/things/${thingId}`, getConfig(), dispatch)
+module.exports.getThing = function (thingId, dispatch) {
+    return fetchData(`/things/${thingId}`, getConfig(), dispatch)
 }
 
 module.exports.getGateways = function (dispatch) {

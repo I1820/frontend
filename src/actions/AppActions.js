@@ -189,9 +189,9 @@ export function getThings() {
     }
 }
 
-export function getThingAction(projectId, thingId) {
+export function getThingAction(thingId) {
     return (dispatch) => {
-        const promise = getThingAPI(projectId, thingId, dispatch)
+        const promise = getThingAPI(thingId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 dispatch(setThing(response.result))
@@ -203,9 +203,9 @@ export function getThingAction(projectId, thingId) {
 }
 
 
-export function editThingAction(projectId, thingId, data, cb) {
+export function editThingAction(thingId, data, cb) {
     return (dispatch) => {
-        const promise = editThingAPI(projectId, thingId, data, dispatch)
+        const promise = editThingAPI(thingId, data, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 dispatch(setThing(response.result))

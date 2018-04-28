@@ -57,10 +57,10 @@ class Dashboard extends Component {
     componentDidMount() {
         this.getThings()
         this.refresh()
-        // let interval = setInterval(this.refresh, 5000)
-        // this.setState({
-        //     interval
-        // })
+        let interval = setInterval(this.refresh, 5000)
+        this.setState({
+            interval
+        })
     }
 
 
@@ -98,7 +98,6 @@ class Dashboard extends Component {
                                         })}
                                         ref="tags"
                                         onSelect={(event) => {
-                                            console.log(event.target.value)
                                             widget.devEUI = event.target.value
                                         }}
                                         options={
@@ -135,7 +134,6 @@ class Dashboard extends Component {
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
                             this.toggle('setWidgetChart')
-                            console.log(widget)
                             this.props.dispatch(setDashboardWidgetChartAction(widget, null, toastAlerts))
                             this.refresh()
                         }}>ارسال</Button>

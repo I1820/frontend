@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Container,
     Row,
@@ -13,8 +13,8 @@ import {
     InputGroupAddon,
     InputGroupText
 } from 'reactstrap';
-import {connect} from 'react-redux';
-import {login} from '../../../actions/AppActions';
+import { connect } from 'react-redux';
+import { login } from '../../../actions/AppActions';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 class Login extends Component {
@@ -28,10 +28,10 @@ class Login extends Component {
         this.goToRegisterPage = this.goToRegisterPage.bind(this)
 
         this.state = {
-            email: "",
-            password: "",
+            email: '',
+            password: '',
             showAlert: false,
-            alert: "",
+            alert: '',
         }
     }
 
@@ -79,22 +79,37 @@ class Login extends Component {
                                                    }}
                                                    placeholder="کلمه عبور"/>
                                         </InputGroup>
+
+                                        <div className="form-group">
+                                            <div className="form-check" style={{textAlign: 'right', direction: 'rtl'}}>
+                                                <input className="form-check-input" type="checkbox"
+                                                       onChange={event => {
+                                                           this.mergeWithState({keep: event.target.value})
+                                                       }}/>
+                                                <label className="form-check-label" style={{marginRight: '20px'}}>
+                                                    {'مرا به خاطرت نگه دار'}
+                                                </label>
+                                            </div>
+                                        </div>
+
                                         <InputGroup className="mb-4">
                                             <ReCAPTCHA
                                                 className="g-recaptcha mb-4"
-                                                size="optional compact"
+                                                size="normal"
                                                 ref="recaptcha"
                                                 sitekey="6LdYh0EUAAAAALOCVNd4y7f5q8oPFwg0nmCO0zM4"
-                                                onChange={(response) => this.setState({recaptcha:response})}/>
+                                                onChange={(response) => this.setState({recaptcha: response})}/>
                                         </InputGroup>
                                         <Row>
                                             <Col xs="2" className="text-right">
                                                 <img style={{display: this.props.currentlySending ? 'block' : 'none'}}
-                                                src={'img/loading.gif'} />
+                                                     src={'img/loading.gif'}/>
                                             </Col>
                                             <Col xs="10">
-                                                <Button onClick={this.goToRegisterPage} color="success" className="px-4 float-left">ثبت نام</Button>
-                                                <Button onClick={this.submit} color="primary" className="px-4 ml-1 float-left">ورود</Button>
+                                                <Button onClick={this.goToRegisterPage} color="success"
+                                                        className="px-4 float-left">ثبت نام</Button>
+                                                <Button onClick={this.submit} color="primary"
+                                                        className="px-4 ml-1 float-left">ورود</Button>
                                             </Col>
                                         </Row>
                                     </CardBody>
@@ -119,26 +134,25 @@ class Login extends Component {
     }
 
     submit() {
-      let recaptcha = this.state.recaptcha
-      this.setState({
-        showAlert:false,
-        recaptcha:undefined
-      })
-      this.refs.recaptcha.reset()
-      this.props.dispatch(login(this.state.email, this.state.password, recaptcha, this.onRespond))
+        let recaptcha = this.state.recaptcha
+        this.setState({
+            showAlert: false,
+            recaptcha: undefined
+        })
+        this.refs.recaptcha.reset()
+        this.props.dispatch(login(this.state.email, this.state.password, recaptcha, this.onRespond))
 
     }
 
     onRespond(errorMessage) {
 
-            this.setState({
-                alert:errorMessage,
-                showAlert:true
-            })
+        this.setState({
+            alert: errorMessage,
+            showAlert: true
+        })
     }
 
     renderAlert() {
-      console.log(this.state)
         if (this.state.showAlert) {
             return (
                 <Alert color="danger" className="text-right">

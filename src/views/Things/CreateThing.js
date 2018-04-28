@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Row,
     Col,
@@ -16,18 +16,24 @@ import {
     Input,
     Table
 } from 'reactstrap';
-import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
-import connect from "react-redux/es/connect/connect";
-import {createThingAction, editThingAction, getThingAction, getThingProfileListAction} from "../../actions/AppActions";
-import Spinner from "../Spinner/Spinner";
+import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
+import connect from 'react-redux/es/connect/connect';
+import {
+    createThingAction,
+    editThingAction,
+    getThingAction,
+    getThingProfileListAction
+} from '../../actions/AppActions';
+import Spinner from '../Spinner/Spinner';
 
-const _ = require("lodash");
-const {compose, withProps, lifecycle} = require("recompose");
-const {SearchBox} = require("react-google-maps/lib/components/places/SearchBox");
+const _ = require('lodash');
+const {compose, withProps, lifecycle} = require('recompose');
+const {SearchBox} = require('react-google-maps/lib/components/places/SearchBox');
 
-import {ToastContainer, toast} from 'react-toastify';
-import {css} from 'glamor';
-import {style} from "react-toastify";
+import { ToastContainer, toast } from 'react-toastify';
+import { css } from 'glamor';
+import { style } from 'react-toastify';
+import Select2 from 'react-select2-wrapper';
 
 style({
     colorProgressDefault: 'white'
@@ -41,25 +47,18 @@ class CreateThing extends Component {
 
         this.changeForm = this.changeForm.bind(this)
         this.submitForm = this.submitForm.bind(this)
-
+        this.thing_profile_slug = ''
         this.state = {
-            form: {
-                lat: 0,
-                long: 0,
-                devEUI: ""
-            },
-            project: "",
+            project: '',
             thing: {
-                name: "",
-                description: "",
-                interface: {
-                    devEUI: "",
-                    deviceProfileID: ""
-                },
-                period: "",
-                loc: {
-                    coordinates: [35.7024852, 51.4023424]
-                }
+                lat: 35.7024852,
+                long: 51.4023424,
+                name: '',
+                description: '',
+                devEUI: '',
+                thing_profile_slug: '',
+                period: '',
+                type: '',
             }
         }
     }
@@ -76,30 +75,24 @@ class CreateThing extends Component {
                 thingId: splitedUrl[6],
             })
 
-            this.props.dispatch(getThingAction(splitedUrl[5], splitedUrl[6]))
+            this.props.dispatch(getThingAction(splitedUrl[6]))
         }
     }
 
     componentWillReceiveProps(props) {
         const splitedUrl = window.location.href.split('/');
-        const me = this;
         if (splitedUrl[splitedUrl.length - 1] !== 'new') {
             props.things.forEach((thing) => {
                 if (thing._id === splitedUrl[splitedUrl.length - 1]) {
                     this.setState({
-                        thing
+                        thing: {
+                            ...thing,
+                            devEUI: thing.dev_eui,
+                            lat: thing.loc.coordinates[0],
+                            long: thing.loc.coordinates[1],
+                        },
+                        thing_profile_slug: thing.profile.thing_profile_slug
                     })
-                    const devEui = {
-                        devEUI: thing.interface.devEUI,
-                        thing_profile_slug: thing.interface.deviceProfileID
-                    }
-                    this.setState({
-                        form: {
-                            ...this.state.form,
-                            ...devEui
-                        }
-                    })
-                    console.log('find', this.state)
                 }
             })
         }
@@ -117,16 +110,20 @@ class CreateThing extends Component {
                     <CardBody>
                         <Form>
                             <FormGroup row>
-                                <Label sm={3}>نام شی : </Label>
+                                <Label sm={3}>نام شی:</Label>
                                 <Col sm={5}>
                                     <Input name="name" value={this.state.thing.name}
+                                           placeholder={'شی خودکار'}
+                                           maxLength={50}
                                            onChange={this.changeForm} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}>توضیحات شی : </Label>
+                                <Label sm={3}>توضیحات:</Label>
                                 <Col sm={5}>
                                     <Input name="description" onChange={this.changeForm}
+                                           placeholder={'شی طبقه سوم'}
+                                           maxLength={150}
                                            value={this.state.thing.description}
                                            type="textarea"/>
                                 </Col>
@@ -138,61 +135,63 @@ class CreateThing extends Component {
                                            onChange={this.changeForm} id="select">
                                         <option value="0"> انتخاب کنید</option>
                                         <option value="LAN">LAN</option>
-                                        <option value="Lora">Lora</option>
+                                        <option value="Lora">LoRa</option>
                                     </Input>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}> پریود ارسال داده : </Label>
+                                <Label sm={3}>پریود ارسال داده:</Label>
                                 <Col sm={5}>
-                                    <Input value={this.state.thing.period} name="period" dir="ltr"
+                                    <Input value={this.state.thing.period} name="period"
+                                           placeholder={'۱۰ دقیقه'}
+                                           onChange={this.changeForm} type="number"/>
+                                </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Label sm={3}>شناسه یکتا(devEUI):</Label>
+                                <Col sm={5}>
+                                    <Input readOnly={this.state.thing._id !== undefined} value={this.state.thing.devEUI}
+                                           name="devEUI" dir="ltr"
+                                           maxLength={16}
+                                           placeholder={'0000000000000000'}
                                            onChange={this.changeForm} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}> devEUI : </Label>
-                                <Col sm={5}>
-                                    <Input readOnly={this.state.thing._id !== undefined}  value={this.state.form.devEUI} name="devEUI" dir="ltr"
-                                           onChange={(e) => {
-                                               const state = this.state.form
-                                               state.devEUI = e.target.value
-                                               this.setState({
-                                                   form: state
-                                               })
-                                           }} type="text"/>
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label sm={3} htmlFor="select">پروفایل شی :</Label>
+                                <Label sm={3} htmlFor="select">پروفایل شی:</Label>
                                 <Col md="5">
-                                    <Input type="select" name="thing_profile_slug" onChange={(e) => {
-                                        const state = this.state.form
-                                        state.thing_profile_slug = e.target.value
-                                        this.setState({
-                                            form: state
-                                        })
-                                    }} id="select">
-                                        <option value={this.state.form.thing_profile_slug} value="0">انتخاب
-                                            کنید
-                                        </option>
-                                        {this.renderProfiles()}
-                                    </Input>
+                                    <Select2
+                                        name="device_profile_slug"
+                                        style={{width: '100%'}}
+                                        data={this.props.profiles.map((profile) => {
+                                            return {text: profile.name, id: profile.thing_profile_slug}
+                                        })}
+                                        refs="tags"
+                                        value={this.state.thing_profile_slug}
+                                        onSelect={(e) => this.thing_profile_slug = e.target.value}
+                                        options={
+                                            {
+                                                placeholder: 'پروفایل شی مورد نظر را انتخاب کنید',
+                                            }
+                                        }
+                                    />
+
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}>مقدار Lat : </Label>
+                                <Label sm={3}>عرض جغرافیایی:</Label>
                                 <Col sm={5}>
-                                    <Input value={this.state.thing.loc.coordinates ?
-                                        this.state.thing.loc.coordinates[0] : 0} type="text" id="fld_lat"
-                                           dir="ltr"/>
+                                    <Input value={this.state.thing.lat ?
+                                        this.state.thing.lat : 0} type="text" id="fld_lat"
+                                           dir="ltr" readOnly={true}/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}>مقدار Long : </Label>
+                                <Label sm={3}>طول جغرافیایی:</Label>
                                 <Col sm={5}>
-                                    <Input value={this.state.thing.loc.coordinates ?
-                                        this.state.thing.loc.coordinates[1] : 0} dir="ltr" id="fld_lng"
-                                           type="text"/>
+                                    <Input value={this.state.thing.long ?
+                                        this.state.thing.long : 0} dir="ltr" id="fld_lng"
+                                           type="text" readOnly={true}/>
                                 </Col>
                             </FormGroup>
                         </Form>
@@ -208,8 +207,8 @@ class CreateThing extends Component {
                     </CardHeader>
                     <CardBody>
                         <MapWithASearchBox marker={{
-                            lat: parseFloat(this.state.thing.loc.coordinates ? this.state.thing.loc.coordinates[0] : 0),
-                            lng: parseFloat(this.state.thing.loc.coordinates ? this.state.thing.loc.coordinates[1] : 0)
+                            lat: parseFloat(this.state.thing.lat ? this.state.thing.lat : 0),
+                            lng: parseFloat(this.state.thing.long ? this.state.thing.long : 0)
                         }}/>
                     </CardBody>
                 </Card>
@@ -217,38 +216,31 @@ class CreateThing extends Component {
         );
     }
 
-    renderProfiles() {
-        return (this.props.profiles.map((profile, key) => {
-            return (<option id={key} value={profile.thing_profile_slug}>{profile.name}</option>)
-        }))
-    }
 
     changeForm(event) {
-        let state = {}
-        state[event.target.name] = event.target.value
         this.setState({
             thing: {
                 ...this.state.thing,
-                ...state
+                [event.target.name]: event.target.value
             }
         })
     }
 
     submitForm() {
-        const form = {
+        const data = {
             name: this.state.thing.name,
             description: this.state.thing.description,
             period: this.state.thing.period,
             lat: document.getElementById('fld_lat').value,
             long: document.getElementById('fld_lng').value,
-            devEUI: this.state.form.devEUI,
-            thing_profile_slug: this.state.form.thing_profile_slug,
+            devEUI: this.state.thing.devEUI,
+            thing_profile_slug: this.thing_profile_slug,
             type: this.state.thing.type
         }
         if (this.state.thing._id === undefined)
-            this.props.dispatch(createThingAction(form, this.state.project, this.callback))
+            this.props.dispatch(createThingAction(data, this.state.project, this.callback))
         else
-            this.props.dispatch(editThingAction(this.state.project, this.state.thing._id, form, this.callback))
+            this.props.dispatch(editThingAction(this.state.thing._id, data, this.callback))
     }
 
     callback(status, message) {
@@ -268,7 +260,7 @@ class CreateThing extends Component {
 
 const MapWithASearchBox = compose(
     withProps({
-        googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
+        googleMapURL: 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places',
         loadingElement: <div style={{height: `100%`}}/>,
         containerElement: <div style={{height: `400px`}}/>,
         mapElement: <div style={{height: `100%`}}/>,
@@ -360,7 +352,7 @@ const MapWithASearchBox = compose(
         >
             <input
                 type="text"
-                placeholder="Customized your placeholder"
+                placeholder=""
                 style={{
                     boxSizing: `border-box`,
                     border: `1px solid transparent`,
