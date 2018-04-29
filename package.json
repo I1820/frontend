@@ -40,6 +40,7 @@
     "font-awesome": "4.7.0",
     "history": "4.7.2",
     "jquery": "^3.3.1",
+    "js-file-download": "^0.4.1",
     "js-md5": "^0.7.3",
     "lodash": "^4.17.5",
     "moment-jalaali": "^0.7.2",

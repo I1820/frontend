@@ -20,6 +20,15 @@ module.exports.postConfig = () => ({
   }
 })
 
+module.exports.putConfig = () => ({
+    method: 'PUT',
+    body: '',
+    headers: {
+        'Authorization': getAuth(),
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+})
+
 module.exports.uploadConfig = () => ({
   method: 'POST',
   body: '',

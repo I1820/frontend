@@ -22,6 +22,7 @@
  *    If you add an async function, remove the export from the function
  *    created in the second step
  */
+/* global fetch */
 
 import {
     SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
@@ -33,11 +34,12 @@ import {
     login as loginAPI, logout as logoutAPI, register as registerAPI,
     listProject as listProjectsAPI, editProject as editProjectAPI,
     getProject as getProjectAPI, createProject as createProjectAPI,
-    editProfile as editProfileAPI, listThings as listThingsAPI,
+    editProfile as editProfileAPI, changePassword as changePasswordAPI, listThings as listThingsAPI,
     getThing as getThingAPI, connectThing as connectThingAPI,
     createThing as createThingAPI, editThing as editThingAPI, editAliases as editAliasesAPI,
     getProjectData as getThingDataAPI, createCodec as createCodecAPI,
     createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
+    DownloadThingsExcel as DownloadThingsExcelAPI,
     createGateway as createGatewayAPI,
     deleteProject as deleteProjectAPI,
     deleteDeviceProfile as deleteDeviceProfileAPI,
@@ -69,6 +71,7 @@ import {
     updateScenarioAPI,
     viewProfile
 } from '../api';
+import fileDownload from 'js-file-download'
 
 /**
  * Logs an user in
@@ -77,7 +80,7 @@ import {
  * @param (string) captcha
  * @param {function} errorCallback
  */
-export function login(username, password, captcha, errorCallback) {
+export function login(username, password, captcha, keep, errorCallback) {
     return (dispatch) => {
         if (captcha === undefined) {
             errorCallback('لطفا برروی گزینه من ربات نیستم کلیک کنید')
@@ -95,7 +98,7 @@ export function login(username, password, captcha, errorCallback) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 dispatch(setAuthState(true))
-                dispatch(initUser(response.result))
+                dispatch(initUser({...response.result, keep: !!keep}))
                 forwardTo('/dashboard')
             } else {
                 errorCallback(translateErrorMessage(response.result))
@@ -115,6 +118,7 @@ export function logout() {
         dispatch(freeState())
     }
 }
+
 
 /**
  * List All projects
@@ -205,7 +209,7 @@ export function getThingAction(thingId) {
 
 export function editThingAction(thingId, data, cb) {
     return (dispatch) => {
-        const promise = editThingAPI(thingId, data, dispatch)
+        const promise = editThingAPI(projectId, thingId, data, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 dispatch(setThing(response.result))
@@ -244,7 +248,7 @@ export function register(data, cb) {
                 cb(true)
                 setTimeout(() => {
                     forwardTo('/login')
-                }, 2000)
+                }, 3000)
             } else {
                 cb(response.result)
             }
@@ -428,7 +432,6 @@ export function getDataAction(things, projectId, offset, limit, window, callback
     return (dispatch) => {
         const promise = getThingDataAPI(things, projectId, offset, limit, window, dispatch)
         promise.then((response) => {
-            console.log('data', response)
             if (response.status === 'OK') {
                 callback(true, response.result.data)
             } else {
@@ -471,7 +474,6 @@ export function createThingProfileAction(data, cb) {
     return (dispatch) => {
         const promise = createThingProfile(data, dispatch);
         promise.then((response) => {
-            console.log(response)
             if (response.status === 'OK') {
                 dispatch({type: FETCH_THING_PROFILE, newState: response.result})
                 forwardTo('device-profile/list')
@@ -494,7 +496,6 @@ export function createThingAction(data, project, cb) {
                 forwardTo(`projects/manage/${project}`)
                 cb(true)
             } else {
-                console.log(response)
                 cb(false, response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
@@ -506,7 +507,6 @@ export function activeThingAction(data, projectId, thingId, cb) {
     return (dispatch) => {
         const promise = activeThing(data, projectId, thingId, dispatch)
         promise.then((response) => {
-            console.log(response);
             if (response.status === 'OK') {
                 cb(true)
             } else {
@@ -576,13 +576,20 @@ export function uploadExcelAction(file, projectId, cb) {
     }
 }
 
+export function DownloadThingsExcelAction(projectId) {
+    return (dispatch) => {
+        DownloadThingsExcelAPI(projectId).then((response) => {
+            fileDownload(response.data, 'things.csv');
+        })
+    }
+}
+
 /*  project actions */
 
 export function createScenario(projectId, data) {
     return (dispatch) => {
         const promise = createScenarioAPI(data, projectId, dispatch)
         promise.then((response) => {
-            console.log(response)
             if (response.status === 'OK') {
                 forwardTo(`projects/manage/${projectId}`)
             } else {
@@ -598,7 +605,6 @@ export function updateScenarioAction(projectId, scenarioId, data) {
     return (dispatch) => {
         const promise = updateScenarioAPI(data, projectId, scenarioId, dispatch)
         promise.then((response) => {
-            console.log(response)
             if (response.status === 'OK') {
                 forwardTo(`projects/manage/${projectId}`)
             } else {
@@ -735,13 +741,26 @@ export function editProfile(data, cb) {
     return (dispatch) => {
         const promise = editProfileAPI(data, dispatch)
         promise.then((response) => {
-            console.log(response)
             if (response.status === 'OK') {
                 cb(true)
                 dispatch(updateUser(response.result))
             } else {
                 cb(false)
             }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+}
+
+export function changePassword(data, cb) {
+    return (dispatch) => {
+        const promise = changePasswordAPI(data, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK')
+                cb(true)
+            else
+                cb(response.result)
         }).catch((err) => {
             console.log(err)
         })
@@ -834,7 +853,6 @@ export function createCodecTemplateAction(projectId, data) {
     return (dispatch) => {
         const promise = createCodecTemplate(projectId, data, dispatch)
         promise.then((response) => {
-            console.log(response)
             if (response.status === 'OK') {
                 forwardTo(`projects/manage/${projectId}`)
             } else {
@@ -850,7 +868,6 @@ export function updateCodecTemplateAction(codec_id, projectId, data) {
     return (dispatch) => {
         const promise = updateCodecTemplate(codec_id, projectId, data, dispatch)
         promise.then((response) => {
-            console.log(response)
             if (response.status === 'OK') {
                 forwardTo(`projects/manage/${projectId}`)
             } else {
@@ -866,7 +883,6 @@ export function activateScenarioAction(projectId, scenarioId) {
     return (dispatch) => {
         const promise = activateScenario(projectId, scenarioId, dispatch)
         promise.then((response) => {
-            console.log(response)
             if (response.status === 'OK') {
                 window.location.reload()
             } else {
@@ -882,7 +898,6 @@ export function getScenarioAction(projectId, scenarioId, cb) {
     return (dispatch) => {
         const promise = getScenario(projectId, scenarioId, dispatch)
         promise.then((response) => {
-            console.log(response)
             if (response.status === 'OK') {
                 cb(true, response.result.scenario)
             } else {
@@ -900,7 +915,6 @@ export function lintCode(projectId, code, cb) {
     return (dispatch) => {
         const promise = lint(projectId, code, dispatch)
         promise.then((response) => {
-            console.log(response)
             if (response.status === 'OK') {
                 cb(true, response.result.result)
             } else {

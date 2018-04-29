@@ -140,7 +140,7 @@ class Login extends Component {
             recaptcha: undefined
         })
         this.refs.recaptcha.reset()
-        this.props.dispatch(login(this.state.email, this.state.password, recaptcha, this.onRespond))
+        this.props.dispatch(login(this.state.email, this.state.password, recaptcha, this.state.keep, this.onRespond))
 
     }
 

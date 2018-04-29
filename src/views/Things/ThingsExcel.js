@@ -92,17 +92,6 @@ class ThingsExcel extends Component {
                             }
                             </tbody>
                         </Table>
-                        <Pagination>
-                            <PaginationItem>
-                                <PaginationLink previous href="#"/>
-                            </PaginationItem>
-                            <PaginationItem active>
-                                <PaginationLink href="#">1</PaginationLink>
-                            </PaginationItem>
-                            <PaginationItem>
-                                <PaginationLink next href="#"/>
-                            </PaginationItem>
-                        </Pagination>
                     </CardBody>
                 </Card>
             </div>
@@ -118,7 +107,7 @@ class ThingsExcel extends Component {
                     <Badge
                         color={typeof(this.state.result[res]) === 'string'
                             ? 'danger' : 'success'}>{typeof(this.state.result[res]) === 'string' ?
-                        this.state.result[res] : 'OK'}</Badge>
+                        this.state.result[res] : 'با موفقیت انجام شد'}</Badge>
                 </td>
             </tr>
         )

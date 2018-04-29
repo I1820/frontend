@@ -23,6 +23,7 @@ import {
 import { getThingProfileListAction, deleteDeviceProfileAction } from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
 import Spinner from "../Spinner/Spinner";
+import ReactTable from 'react-table'
 import { toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from "react-toastify";
@@ -119,23 +120,22 @@ class DeviceProfile extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">پروفایل اشیا</CardTitle>
                     </CardHeader>
                     <CardBody>
-                        <Table hover responsive className="table-outline">
-                            <thead className="thead-light">
-                            <tr>
-                                <th>#</th>
-                                <th>اسم</th>
-                                <th>شناسه پروفایل</th>
-                                <th>امکانات</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {
-                                this.props.profiles.map((profile, key) => {
-                                    return (this.renderItem(profile, key))
-                                })
-                            }
-                            </tbody>
-                        </Table>
+                        <ReactTable
+                            data={this.props.profiles}
+                            columns={this.reactTableColumns()}
+                            pageSizeOptions={[10, 115, 25]}
+                            nextText='بعدی'
+                            previousText='قبلی'
+                            filterable={true}
+                            rowsText='ردیف'
+                            pageText='صفحه'
+                            ofText='از'
+                            minRows='1'
+                            noDataText='پروفالی‌ای یافت نشد'
+                            resizable={false}
+                            defaultPageSize={5}
+                            className="-striped -highlight"
+                        />
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.newDeviceProfile} color="primary">ساخت پروفایل</Button>
@@ -169,6 +169,28 @@ class DeviceProfile extends Component {
 
     newDeviceProfile() {
         window.location = '#/device-profile/new';
+    }
+
+    reactTableColumns() {
+        return [
+            {
+                Header: 'عنوان',
+                accessor: 'name'
+            },
+            {
+                Header: 'شناسه پروفایل',
+                accessor: 'thing_profile_slug'
+            },
+            {
+                id: 'rowTools',
+                Header: 'عملیات',
+                filterable: false,
+                accessor: row => <div>
+                    <Button onClick={() => this.deleteModalToggle(row._id)} className="ml-1" color="danger"
+                            size="sm">حذف</Button>
+                </div>
+            }
+        ];
     }
 
 

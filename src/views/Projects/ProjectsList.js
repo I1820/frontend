@@ -186,6 +186,7 @@ class ProjectsList extends Component {
                             noDataText='داده ای وجود ندارد'
                             resizable={false}
                             defaultPageSize={5}
+                            className="-striped -highlight"
                         />
                     </CardBody>
                     <CardFooter>

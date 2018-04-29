@@ -28,7 +28,7 @@ import {
     deleteCodecTemplateAction,
     deleteScenarioAction,
     editAliasesAction,
-    sendDownlinkAction,
+    sendDownlinkAction, DownloadThingsExcelAction,
 } from '../../actions/AppActions';
 import Spinner from '../Spinner/Spinner';
 
@@ -54,6 +54,7 @@ class ProjectsManage extends Component {
         this.renderDownlinkRow = this.renderDownlinkRow.bind(this)
         this.addTemplate = this.addTemplate.bind(this)
         this.uploadExcel = this.uploadExcel.bind(this)
+        this.downloadExcel = this.downloadExcel.bind(this)
         this.deleteThingModalToggle = this.deleteThingModalToggle.bind(this)
         this.deleteThing = this.deleteThing.bind(this)
         this.deleteCodec = this.deleteCodec.bind(this)
@@ -297,11 +298,10 @@ class ProjectsManage extends Component {
                 </Modal>
 
                 <Modal isOpen={this.state.OTAAmodal} toggle={this.toggleOTAA} className="text-right">
-                    <ModalHeader>OTAA</ModalHeader>
+                    <ModalHeader className={'ltr'}>Over-the-Air Activation</ModalHeader>
                     <ModalBody>
                         <Form>
                             <FormGroup row>
-                                <Label sm={3}> appKey : </Label>
                                 <Col sm={9}>
                                     <Input value={this.state.keys['appKey']} onChange={(event) => {
                                         this.setState({
@@ -309,8 +309,12 @@ class ProjectsManage extends Component {
                                                 appKey: event.target.value
                                             }
                                         })
-                                    }} type="text"/>
+                                    }}
+                                           maxLength={32}
+                                           placeholder="00AA11BB22CC33DD44FF55GG66HH77JJ"
+                                           type="text"/>
                                 </Col>
+                                <Label sm={3}>Application key</Label>
                             </FormGroup>
                         </Form>
                     </ModalBody>
@@ -324,27 +328,13 @@ class ProjectsManage extends Component {
                     </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.ABPmodel} toggle={this.toggleABP} className="text-right">
-                    <ModalHeader>ABP</ModalHeader>
+                <Modal size={'lg'} isOpen={this.state.ABPmodel} toggle={this.toggleABP}
+                       className="text-right">
+                    <ModalHeader className={'ltr'}>Activation By Personalization</ModalHeader>
                     <ModalBody>
-                        <Form>
+                        <Form className={'english'}>
                             <FormGroup row>
-                                <Label sm={3}>appSKey : </Label>
-                                <Col sm={9}>
-                                    <Input value={this.state.keys['appSKey']} name="appSKey"
-                                           onChange={(event) => {
-                                               this.setState({
-                                                   ABP: {
-                                                       ...this.state.ABP,
-                                                       [event.target.name]: event.target.value
-                                                   }
-                                               })
-                                           }} type="text"/>
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label sm={3}>devAddr : </Label>
-                                <Col sm={9}>
+                                <Col sm={7}>
                                     <Input value={this.state.keys['devAddr']} name="devAddr"
                                            onChange={(event) => {
                                                this.setState({
@@ -353,13 +343,17 @@ class ProjectsManage extends Component {
                                                        [event.target.name]: event.target.value
                                                    }
                                                })
-                                           }} type="text"/>
+                                           }}
+                                           maxLength={32}
+                                           placeholder="66HH77JJ"
+                                           type="text"/>
                                 </Col>
+                                <Label sm={5}>Device Address:</Label>
                             </FormGroup>
+
                             <FormGroup row>
-                                <Label sm={3}>fCntDown : </Label>
-                                <Col sm={9}>
-                                    <Input value={this.state.keys['fCntDown']} name="fCntDown"
+                                <Col sm={7}>
+                                    <Input value={this.state.keys['appSKey']} name="appSKey"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -367,26 +361,16 @@ class ProjectsManage extends Component {
                                                        [event.target.name]: event.target.value
                                                    }
                                                })
-                                           }} type="text"/>
+                                           }}
+                                           maxLength={32}
+                                           placeholder="44FF55GG66HH77JJ00AA11BB22CC33DD"
+                                           type="text"/>
                                 </Col>
+                                <Label sm={5}>Application Session Key:</Label>
                             </FormGroup>
+
                             <FormGroup row>
-                                <Label sm={3}>fCntUp : </Label>
-                                <Col sm={9}>
-                                    <Input value={this.state.keys['fCntUp']} name="fCntUp"
-                                           onChange={(event) => {
-                                               this.setState({
-                                                   ABP: {
-                                                       ...this.state.ABP,
-                                                       [event.target.name]: event.target.value
-                                                   }
-                                               })
-                                           }} type="text"/>
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Label sm={3}>nwkSKey : </Label>
-                                <Col sm={9}>
+                                <Col sm={7}>
                                     <Input value={this.state.keys['nwkSKey']} name="nwkSKey"
                                            onChange={(event) => {
                                                this.setState({
@@ -395,13 +379,16 @@ class ProjectsManage extends Component {
                                                        [event.target.name]: event.target.value
                                                    }
                                                })
-                                           }} type="text"/>
+                                           }}
+                                           maxLength={32}
+                                           placeholder="00AA11BB22CC33DD44FF55GG66HH77JJ"
+                                           type="text"/>
                                 </Col>
+                                <Label sm={5}>Network Session Key:</Label>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}>skipFCntCheck : </Label>
-                                <Col sm={9}>
-                                    <Input value={this.state.keys['skipFCntCheck']} name="skipFCntCheck"
+                                <Col sm={7}>
+                                    <Input value={this.state.keys['fCntDown']} name="fCntDown"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -409,8 +396,42 @@ class ProjectsManage extends Component {
                                                        [event.target.name]: event.target.value
                                                    }
                                                })
-                                           }} type="text"/>
+                                           }}
+                                           placeholder="12"
+                                           type="text"/>
                                 </Col>
+                                <Label sm={5}>Downlink Frame Counter:</Label>
+                            </FormGroup>
+                            <FormGroup row>
+                                <Col sm={7}>
+                                    <Input value={this.state.keys['fCntUp']} name="fCntUp"
+                                           onChange={(event) => {
+                                               this.setState({
+                                                   ABP: {
+                                                       ...this.state.ABP,
+                                                       [event.target.name]: event.target.value
+                                                   }
+                                               })
+                                           }}
+                                           placeholder="12"
+                                           type="text"/>
+                                </Col>
+                                <Label sm={5}>Downlink Frame Counter : </Label>
+                            </FormGroup>
+
+                            <FormGroup row>
+                                <Col sm={7}>
+                                    <Input value={this.state.keys['skipFCntCheck']} name="skipFCntCheck"
+                                           onChange={(event) => {
+                                               this.setState({
+                                                   ABP: {
+                                                       ...this.state.ABP,
+                                                       [event.target.name]: event.target.value ? 1 : 0
+                                                   }
+                                               })
+                                           }} type="checkbox"/>
+                                </Col>
+                                <Label sm={5}>Disable Frame Counter Validation:</Label>
                             </FormGroup>
                         </Form>
                     </ModalBody>
@@ -590,6 +611,7 @@ class ProjectsManage extends Component {
                     <CardFooter>
                         <Button onClick={this.addThing} className="ml-1" color="primary">افزودن شی</Button>
                         <Button onClick={this.uploadExcel} className="ml-1" color="success">افزودن دسته ای شی</Button>
+                        <Button onClick={this.downloadExcel} className="ml-1" color="success">خروجی اکسل</Button>
                     </CardFooter>
                 </Card>
 
@@ -734,6 +756,10 @@ class ProjectsManage extends Component {
 
     uploadExcel() {
         window.location = `#/things/excel/${this.state.project._id}`
+    }
+
+    downloadExcel() {
+        this.props.dispatch(DownloadThingsExcelAction(this.state.project._id))
     }
 
     addThing() {
