@@ -72,16 +72,20 @@ class ProjectsList extends Component {
     }
 
     deleteProject() {
+        this.deleteModalToggle(this.state.deleteRowId)
         this.props.dispatch(deleteProjectAction(
             this.state.deleteRowId,
-            this.manageToastAlerts
+            ()=>{
+                this.loadProjects();
+                toastAlerts(true,'با موفقیت حذف شد.')
+            }
         ))
     }
 
     manageToastAlerts(status) {
         if (status === true) {
             this.loadProjects()
-            this.deleteModalToggle()
+            // this.deleteModalToggle()
 
             toast('پروژه مورد نظر با موفقیت حذف شد', {
                 position: toast.POSITION.BOTTOM_RIGHT,
@@ -94,7 +98,7 @@ class ProjectsList extends Component {
                 })
             });
         } else {
-            toast(status, {
+            toast(status.toString(), {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 className: css({
                     background: '#fee2e1',
@@ -121,7 +125,6 @@ class ProjectsList extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
-                            this.deleteModalToggle()
                             this.deleteProject(this.state.deleteRowId)
                         }}>حذف</Button>
                         <Button color="danger" onClick={this.deleteModalToggle}>انصراف</Button>
@@ -254,9 +257,8 @@ class ProjectsList extends Component {
 
 
     onCreateProject(status, message) {
-        toastAlerts(status, message)
+        toastAlerts(true, 'پروژه با موفقیت ساخته شد')
         if (status) {
-            this.toggle()
             this.loadProjects()
         }
     }

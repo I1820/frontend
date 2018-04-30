@@ -653,9 +653,9 @@ export function deleteProjectAction(projectId, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 window.location = '#/projects/list'
-                cb(true)
+                cb(true,response.result)
             } else {
-                cb(response.result)
+                cb(false,response.result)
             }
         })
     }
