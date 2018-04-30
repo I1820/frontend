@@ -268,8 +268,7 @@ module.exports.getThingProfileList = function (dispatch) {
 module.exports.createThingProfile = function (data, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
-    return fetchData(`
-    /thing-profile`, config, dispatch)
+    return fetchData(`/thing-profile`, config, dispatch)
 }
 
 module.exports.createScenario = function (data, id, dispatch) {
