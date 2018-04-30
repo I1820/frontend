@@ -42,6 +42,7 @@ class Gateways extends Component {
     }
 
     deleteGateway() {
+        this.deleteModalToggle()
         this.props.dispatch(deleteGatewaysAction(
             this.state.deleteRowId,
             this.manageToastAlerts
@@ -50,7 +51,6 @@ class Gateways extends Component {
 
     manageToastAlerts(status) {
         if (status === true) {
-            this.deleteModalToggle()
             this.loadGateways()
 
             toast('Gateway مورد نظر حذف شد', {
