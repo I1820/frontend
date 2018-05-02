@@ -462,9 +462,9 @@ export function deleteDeviceProfileAction(profileId, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 window.location = '#/device-profile/list'
-                cb(true)
+                cb(true, 'با موفقیت حذف شد')
             } else {
-                cb(response.result)
+                cb(false, response.result)
             }
         })
     }
@@ -653,9 +653,9 @@ export function deleteProjectAction(projectId, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 window.location = '#/projects/list'
-                cb(true,response.result)
+                cb(true, response.result)
             } else {
-                cb(false,response.result)
+                cb(false, response.result)
             }
         })
     }

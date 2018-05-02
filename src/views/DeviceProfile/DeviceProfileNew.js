@@ -32,6 +32,7 @@ import { createThingProfileAction } from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import Spinner from '../Spinner/Spinner';
 import classnames from 'classnames';
+import { toastAlerts } from '../Shared/toast_alert';
 
 
 class DeviceProfileNew extends Component {
@@ -50,21 +51,21 @@ class DeviceProfileNew extends Component {
                 classBTimeout: 0,
                 classCTimeout: 0,
                 'factoryPresetFreqs[]': 0,
-                macVersion: 'version-1',
+                macVersion: '1.0.0',
                 maxDutyCycle: 0,
                 maxEIRP: 0,
                 pingSlotDR: 0,
                 pingSlotFreq: 0,
                 pingSlotPeriod: 0,
-                regParamsRevision: 'reg-p-rev',
-                rfRegion: 'rf-region',
+                regParamsRevision: 'A',
                 rxDROffset1: 0,
                 rxDataRate2: 0,
                 rxDelay1: 0,
                 rxFreq2: 0,
-                supportsClassB: 1,
-                supportsClassC: 1,
+                supportsClassB: false,
+                supportsClassC: false,
                 supports32bitFCnt: 1,
+                supportsJoin: 1,
             }
         }
     }
@@ -91,6 +92,13 @@ class DeviceProfileNew extends Component {
                                         onClick={() => {
                                             this.toggleTab('general');
                                         }}>اطلاعات کلی</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink
+                                        className={classnames({active: this.state.activeTab === 'activation'})}
+                                        onClick={() => {
+                                            this.toggleTab('activation');
+                                        }}>فعال‌سازی</NavLink>
                                 </NavItem>
                                 <NavItem>
                                     <NavLink
@@ -124,13 +132,12 @@ class DeviceProfileNew extends Component {
 
                                     <FormGroup row>
                                         <Col sm={4}>
-                                            <Input dir="ltr" value={'1.0.0'} name={'macVersion'}
+                                            <Input dir="ltr" value={this.state.form.macVersion} name={'macVersion'}
                                                    onChange={this.setForm} type="select">
                                                 <option value={'1.0.0'}>1.0.0</option>
                                                 <option value={'1.0.1'}>1.0.1</option>
                                                 <option value={'1.0.2'}>1.0.2</option>
-                                                <option value={'1.1.0'}>1.0.0</option>
-
+                                                <option value={'1.1.0'}>1.1.0</option>
                                             </Input>
                                         </Col>
                                         <Label id={'macVersion-input'} sm={3}>LoRaWAN MAC Version:</Label>
@@ -159,9 +166,13 @@ class DeviceProfileNew extends Component {
                                         <Label id={'maxEIRP-input'} sm={3}>Max EIRP:</Label>
                                     </FormGroup>
 
+                                </TabPane>
+
+                                <TabPane tabId={'activation'}>
+
                                     <FormGroup row>
                                         <Col sm={4}>
-                                            <Input type="select" dir="ltr" name="supportsJoin‌" id="select"
+                                            <Input type="select" dir="ltr" name="supportsJoin" id="select"
                                                    onChange={this.setForm}>
                                                 <option value={1}>OTAA</option>
                                                 <option value={0}>ABP</option>
@@ -170,13 +181,50 @@ class DeviceProfileNew extends Component {
                                         <Label id={'supportsJoin-input'} sm={3}>Supports Join (OTAA):</Label>
                                         {/*{'End-Device supports Join (OTAA) or not (ABP).'}*/}
                                     </FormGroup>
+
+                                    <FormGroup row>
+                                        <Col sm={4}>
+                                            <Input dir="ltr" name={'rxDelay1'}
+                                                   onChange={this.setForm} placeholder={0} type="number"/>
+                                        </Col>
+                                        <Label id={'rxDelay1-input'} sm={3}>RX1 Delay:</Label>
+                                        {/*{'Class A RX1 delay (mandatory for ABP).'}*/}
+                                    </FormGroup>
+
+                                    <FormGroup row>
+                                        <Col sm={4}>
+                                            <Input dir="ltr" name={'rxDROffset1'}
+                                                   onChange={this.setForm} placeholder={0} type="number"/>
+                                        </Col>
+                                        <Label id={'rxDROffset1-input'} sm={3}>RX1 Data Rate Offset:</Label>
+                                        {/*{'RX1 data rate offset (mandatory for ABP).'}*/}
+                                    </FormGroup>
+
+                                    <FormGroup row>
+                                        <Col sm={4}>
+                                            <Input dir="ltr" name={'rxDataRate2'}
+                                                   onChange={this.setForm} placeholder={0} type="number"/>
+                                        </Col>
+                                        <Label id={'rxDataRate2-input'} sm={3}>RX2 Data Rate:</Label>
+                                        {/*{'RX2 data rate (mandatory for ABP).'}*/}
+                                    </FormGroup>
+
+                                    <FormGroup row>
+                                        <Col sm={4}>
+                                            <Input dir="ltr" name={'rxFreq2'}
+                                                   onChange={this.setForm} placeholder={0} type="number"/>
+                                        </Col>
+                                        <Label id={'rxFreq2-input'} sm={3}>RX2 Channel Frequency:</Label>
+                                        {/*{'RX2 channel frequency (mandatory for ABP).'}*/}
+                                    </FormGroup>
+
                                 </TabPane>
 
                                 <TabPane tabId={'classB'}>
                                     <FormGroup row>
                                         <Col sm={4} style={{display: 'flex', justifyContent: 'flex-end'}}>
-                                            <Input dir="ltr" name={'supportsClassB'}
-                                                   onChange={this.setForm} type="checkbox"/>
+                                            <input type="checkbox" name={'supportsClassB'}
+                                                   onChange={() => this.toggleCheckbox('supportsClassB')}/>
                                         </Col>
                                         <Label id={'supportsClassB-input'} sm={3}>Supports Class-B:</Label>
                                         {/*{'End-Device supports Class B.'}*/}
@@ -223,7 +271,7 @@ class DeviceProfileNew extends Component {
                                     <FormGroup row>
                                         <Col sm={4}>
                                             <Input dir="ltr" name={'pingSlotFreq'} placeholder={'2 Hz'}
-                                                   type="number"/>
+                                                   onChange={this.setForm} type="number"/>
                                         </Col>
                                         <Label sm={3}>Class-B Ping-Slot Frequency (Hz):</Label>
                                         {/*{'Class-B frequency (in Hz).'}*/}
@@ -234,7 +282,8 @@ class DeviceProfileNew extends Component {
                                     <FormGroup row>
                                         <Col style={{display: 'flex', justifyContent: 'flex-end'}} sm={4}>
                                             <Input dir="ltr" name={'supportsClassC'}
-                                                   onChange={this.setForm} type="checkbox"/>
+                                                   onChange={() => this.toggleCheckbox('supportsClassC')}
+                                                   type="checkbox"/>
                                         </Col>
                                         <Label sm={3}>Supports Class-C:</Label>
                                         {/*{'End-Device supports Class C.'}*/}
@@ -247,13 +296,13 @@ class DeviceProfileNew extends Component {
                                                    placeholder={0}
                                                    onChange={this.setForm} type="number"/>
                                         </Col>
-                                        <Label id={'classCTimeout-input'} sm={3}>Class-C Confirmed Downlink Timeout</Label>
+                                        <Label id={'classCTimeout-input'} sm={3}>Class-C Confirmed Downlink
+                                            Timeout</Label>
                                         {/*{'Class-C timeout (in seconds) for confirmed downlink transmissions.'}*/}
                                     </FormGroup>
                                 </TabPane>
 
                             </TabContent>
-
 
 
                             {/*<Collapse isOpen={this.state.collapse} className="mt-3">*/}
@@ -356,16 +405,24 @@ class DeviceProfileNew extends Component {
 
 
     setForm(event) {
-        let newState = this.state.form
-        newState[event.target.name] = event.target.value
         this.setState({
-            form: newState
+            form: {
+                ...this.state.form,
+                [event.target.name]: event.target.value
+            }
         })
-        console.log(this.state.form)
+    }
+
+    toggleCheckbox(name) {
+        this.setState({
+            form: {
+                ...this.state.form,
+                [name]: !this.state.form[name]
+            }
+        }, () => console.log(this.state.form))
     }
 
     submitForm() {
-        console.log('dispatch')
         const form = this.state.form
         this.props.dispatch(createThingProfileAction(form, this.callBack))
     }
@@ -378,8 +435,8 @@ class DeviceProfileNew extends Component {
         }
     }
 
-    callBack() {
-
+    callBack(status, response) {
+        toastAlerts(status, response)
     }
 
 }
