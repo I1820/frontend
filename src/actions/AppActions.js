@@ -508,7 +508,7 @@ export function activeThingAction(data, projectId, thingId, cb) {
         const promise = activeThing(data, projectId, thingId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                cb(true)
+                cb(true,'با موفقیت فعال شد')
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
                 cb(false, response.result)
@@ -522,7 +522,7 @@ export function deleteThingAction(projectId, thingId, cb) {
         const promise = deleteThingAPI(projectId, thingId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                cb(true)
+                cb(true,'با موفقیت حذف شد')
             } else {
                 cb(false, response.result)
             }
@@ -535,7 +535,7 @@ export function deleteCodecTemplateAction(projectId, codecId, cb) {
         const promise = deleteCodecTemplate(projectId, codecId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                cb(true)
+                cb(true,'کدک با موفقیت حذف شد')
             } else {
                 cb(false, response.result)
             }
@@ -548,7 +548,7 @@ export function deleteScenarioAction(projectId, scenarioId, cb) {
         const promise = deleteScenario(projectId, scenarioId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                cb(true)
+                cb(true,'با موفقیت حذف شد')
             } else {
                 cb(false, response.result)
             }
@@ -775,7 +775,7 @@ export function sendDownlinkAction(thingId, data, cb) {
         const promise = newDownlinkAPI(thingId, data, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                cb(true)
+                cb(true,'با موفقیت فرستاده شد')
             } else {
                 cb(false, response.result)
             }

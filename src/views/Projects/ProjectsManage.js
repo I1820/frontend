@@ -37,6 +37,7 @@ import { css } from 'glamor';
 import { style } from 'react-toastify';
 import ReactTable from 'react-table'
 import Logger from '../../components/Logger';
+import { toastAlerts } from '../Shared/toast_alert';
 
 style({
     colorProgressDefault: 'white'
@@ -46,40 +47,32 @@ class ProjectsManage extends Component {
     constructor(props) {
         super(props);
 
-        this.toggleABP = this.toggleABP.bind(this)
-        this.toggleOTAA = this.toggleOTAA.bind(this)
         this.addThing = this.addThing.bind(this)
         this.addScenario = this.addScenario.bind(this)
-        this.dataModalToggle = this.dataModalToggle.bind(this)
         this.renderDownlinkRow = this.renderDownlinkRow.bind(this)
         this.addTemplate = this.addTemplate.bind(this)
         this.uploadExcel = this.uploadExcel.bind(this)
         this.downloadExcel = this.downloadExcel.bind(this)
-        this.deleteThingModalToggle = this.deleteThingModalToggle.bind(this)
         this.deleteThing = this.deleteThing.bind(this)
         this.deleteCodec = this.deleteCodec.bind(this)
         this.deleteScenario = this.deleteScenario.bind(this)
-        this.manageToastAlerts = this.manageToastAlerts.bind(this)
         this.loadProject = this.loadProject.bind(this)
         this.downLinksAdd = this.downLinksAdd.bind(this)
         this.renderCodecs = this.renderCodecs.bind(this)
-        this.deleteCodecModalToggle = this.deleteCodecModalToggle.bind(this)
-        this.deleteScenarioModalToggle = this.deleteScenarioModalToggle.bind(this)
         this.deleteAlias = this.deleteAlias.bind(this)
-        this.toggle = this.toggle.bind(this);
         this.reactTableColumns = this.reactTableColumns.bind(this);
         this.getAliases = this.getAliases.bind(this);
+        this.callback = this.callback.bind(this);
 
         this.state = {
-            tooltipOpen: [],
-            OTAAmodal: false,
-            ABPmodel: false,
+            OTAAModal: false,
+            ABPModal: false,
             id: '',
             project: {},
             dataModal: false,
             modalDownlinkRows: [],
             OTAA: {},
-            ABP: {},
+            ABP: {skipFCntCheck: true},
             keys: {},
             deleteThingModal: false,
             deleteThingRowId: 0,
@@ -100,75 +93,58 @@ class ProjectsManage extends Component {
     }
 
     downLinksAdd() {
-        this.dataModalToggle(0);
-        const data = {};
+        const data = {}, selected = this.state.DownlinkThingRowId;
         let json;
         this.state.modalDownlinkRows.forEach((item) => {
             if (item.key && item.value)
                 data[item.key] = item.value;
-        })
+        });
         json = JSON.stringify(data);
+        this.toggle('downlink');
         this.props.dispatch(sendDownlinkAction(
-            this.state.DownlinkThingRowId,
+            selected,
             {data: json},
             this.callback
         ))
     }
 
     deleteThing() {
-        this.deleteThingModalToggle(0)
+        const data = {
+            project_id: this.state.project._id,
+            thing_id: this.state.deleteThingRowId,
+        };
+        this.toggle('deleteThing')
         this.props.dispatch(deleteThingAction(
-            this.state.project._id,
-            this.state.deleteThingRowId,
-            this.manageToastAlerts
+            data.project_id,
+            data.thing_id,
+            this.callback
         ))
     }
 
     deleteCodec() {
-        this.deleteCodecModalToggle(0)
+        const data = {
+            project_id: this.state.project._id,
+            codec_id: this.state.deleteCodecRowId,
+        };
+        this.toggle('deleteCodec')
         this.props.dispatch(deleteCodecTemplateAction(
-            this.state.project._id,
-            this.state.deleteCodecRowId,
-            this.manageToastAlerts
+            data.project_id,
+            data.codec_id,
+            this.callback
         ))
     }
 
     deleteScenario() {
-        this.deleteScenarioModalToggle(0)
+        const data = {
+            project_id: this.state.project._id,
+            scenario_id: this.state.deleteScenarioRowId,
+        };
+        this.toggle('deleteScenario')
         this.props.dispatch(deleteScenarioAction(
-            this.state.project._id,
-            this.state.deleteScenarioRowId,
-            this.manageToastAlerts
+            data.project_id,
+            data.scenario_id,
+            this.callback
         ))
-    }
-
-    manageToastAlerts(status, message) {
-        if (status === true) {
-            // this.deleteThingModalToggle()
-            this.loadProject()
-
-            toast('آیتم مورد نظر حذف شد', {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                className: css({
-                    background: '#dbf2e3',
-                    color: '#28623c'
-                }),
-                progressClassName: css({
-                    background: '#28623c'
-                })
-            });
-        } else {
-            toast(message, {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                className: css({
-                    background: '#fee2e1',
-                    color: '#813838',
-                }),
-                progressClassName: css({
-                    background: '#813838'
-                })
-            });
-        }
     }
 
     componentWillMount() {
@@ -190,28 +166,6 @@ class ProjectsManage extends Component {
         }
     }
 
-    deleteThingModalToggle(id) {
-        this.setState({
-            deleteThingModal: !this.state.deleteThingModal,
-            deleteThingRowId: id
-        });
-    }
-
-    deleteCodecModalToggle(id) {
-        this.setState({
-            deleteCodecModal: !this.state.deleteCodecModal,
-            deleteCodecRowId: id
-        });
-    }
-
-    deleteScenarioModalToggle(id) {
-        this.setState({
-            deleteScenarioModal: !this.state.deleteScenarioModal,
-            deleteScenarioRowId: id
-        });
-    }
-
-
     loadProject() {
         const splitedUrl = window.location.href.split('/');
         if (splitedUrl[splitedUrl.length - 1]) {
@@ -223,14 +177,12 @@ class ProjectsManage extends Component {
     }
 
     render() {
-        let aliases = this.state.project.aliases ? this.state.project.aliases : [];
-        console.log()
         return (
             <div>
                 <Spinner display={this.props.loading}/>
                 <ToastContainer className="text-right"/>
 
-                <Modal isOpen={this.state.deleteScenarioModal} toggle={this.deleteScenarioModalToggle}
+                <Modal isOpen={this.state.deleteScenarioModal} toggle={() => this.toggle('deleteScenario')}
                        className="text-right">
                     <ModalHeader>حذف سناریو</ModalHeader>
                     <ModalBody>
@@ -242,11 +194,12 @@ class ProjectsManage extends Component {
                         <Button color="primary" className="ml-1" onClick={() => {
                             this.deleteScenario()
                         }}>حذف</Button>
-                        <Button color="danger" onClick={this.deleteScenarioModalToggle}>انصراف</Button>
+                        <Button color="danger" onClick={() => this.toggle('deleteScenario')}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.deleteCodecModal} toggle={this.deleteCodecModalToggle} className="text-right">
+                <Modal isOpen={this.state.deleteCodecModal} toggle={() => this.toggle('deleteCodec')}
+                       className="text-right">
                     <ModalHeader>حذف قالب</ModalHeader>
                     <ModalBody>
                         <h3>آیا از حذف قالب مطمئن هستید ؟</h3>
@@ -257,12 +210,14 @@ class ProjectsManage extends Component {
                         <Button color="primary" className="ml-1" onClick={() => {
                             this.deleteCodec()
                         }}>حذف</Button>
-                        <Button color="danger" onClick={this.deleteCodecModalToggle}>انصراف</Button>
+                        <Button color="danger" onClick={() => this.toggle('deleteCodec')}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
 
 
-                <Modal isOpen={this.state.deleteThingModal} toggle={this.deleteThingModalToggle} className="text-right">
+                <Modal isOpen={this.state.deleteThingModal}
+                       toggle={() => this.toggle('deleteThing')}
+                       className="text-right">
                     <ModalHeader>حذف شی</ModalHeader>
                     <ModalBody>
                         <h3>آیا از حذف شی مطمئن هستید ؟</h3>
@@ -273,11 +228,11 @@ class ProjectsManage extends Component {
                         <Button color="primary" className="ml-1" onClick={() => {
                             this.deleteThing()
                         }}>حذف</Button>
-                        <Button color="danger" onClick={this.deleteThingModalToggle}>انصراف</Button>
+                        <Button color="danger" onClick={() => this.toggle('deleteThing')}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.dataModal} toggle={this.dataModalToggle} className="text-right">
+                <Modal isOpen={this.state.dataModal} toggle={() => this.toggle('downlink')} className="text-right">
                     <ModalHeader>ارسال داده</ModalHeader>
                     <ModalBody>
                         {this.state.modalDownlinkRows.map(row => this.renderDownlinkRow(row.id, row.key, row.value))}
@@ -293,19 +248,19 @@ class ProjectsManage extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={this.downLinksAdd}>ثبت</Button>
-                        <Button color="danger" onClick={this.dataModalToggle}>انصراف</Button>
+                        <Button color="danger" onClick={() => this.toggle('downlink')}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.OTAAmodal} toggle={this.toggleOTAA} className="text-right">
+                <Modal isOpen={this.state.OTAAModal} toggle={() => this.toggle('OTAA')} className="text-right">
                     <ModalHeader className={'ltr'}>Over-the-Air Activation</ModalHeader>
                     <ModalBody>
-                        <Form>
+                        <Form className={'english'}>
                             <FormGroup row>
                                 <Col sm={9}>
-                                    <Input value={this.state.keys['appKey']} onChange={(event) => {
+                                    <Input defaultValue={this.state.keys['appKey']} onChange={(event) => {
                                         this.setState({
-                                            OTTA: {
+                                            OTAA: {
                                                 appKey: event.target.value
                                             }
                                         })
@@ -320,22 +275,30 @@ class ProjectsManage extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
-                            this.toggleOTAA()
-                            this.props.dispatch(activeThingAction(this.state.OTTA, this.state.selectedThing,
-                                this.state.project._id, this.callback))
+                            const data = {
+                                OTAA: this.state.OTAA,
+                                project_id: this.state.project,
+                                thing_id: this.state.selectedThing,
+                            };
+                            this.toggle('OTAA')
+                            this.props.dispatch(activeThingAction(
+                                data.OTAA,
+                                data.thing_id,
+                                data.project_id,
+                                this.callback))
                         }}>ارسال</Button>
-                        <Button color="danger" onClick={this.toggleOTAA}>انصراف</Button>
+                        <Button color="danger" onClick={() => this.toggle('OTAA')}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
 
-                <Modal size={'lg'} isOpen={this.state.ABPmodel} toggle={this.toggleABP}
+                <Modal size={'lg'} isOpen={this.state.ABPModal} toggle={() => this.toggle('ABP')}
                        className="text-right">
                     <ModalHeader className={'ltr'}>Activation By Personalization</ModalHeader>
                     <ModalBody>
                         <Form className={'english'}>
                             <FormGroup row>
                                 <Col sm={7}>
-                                    <Input value={this.state.keys['devAddr']} name="devAddr"
+                                    <Input defaultValue={this.state.keys['devAddr']} name="devAddr"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -353,7 +316,7 @@ class ProjectsManage extends Component {
 
                             <FormGroup row>
                                 <Col sm={7}>
-                                    <Input value={this.state.keys['appSKey']} name="appSKey"
+                                    <Input defaultValue={this.state.keys['appSKey']} name="appSKey"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -371,7 +334,7 @@ class ProjectsManage extends Component {
 
                             <FormGroup row>
                                 <Col sm={7}>
-                                    <Input value={this.state.keys['nwkSKey']} name="nwkSKey"
+                                    <Input defaultValue={this.state.keys['nwkSKey']} name="nwkSKey"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -388,7 +351,7 @@ class ProjectsManage extends Component {
                             </FormGroup>
                             <FormGroup row>
                                 <Col sm={7}>
-                                    <Input value={this.state.keys['fCntDown']} name="fCntDown"
+                                    <Input defaultValue={this.state.keys['fCntDown']} name="fCntDown"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -404,7 +367,7 @@ class ProjectsManage extends Component {
                             </FormGroup>
                             <FormGroup row>
                                 <Col sm={7}>
-                                    <Input value={this.state.keys['fCntUp']} name="fCntUp"
+                                    <Input defaultValue={this.state.keys['fCntUp']} name="fCntUp"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -416,17 +379,18 @@ class ProjectsManage extends Component {
                                            placeholder="12"
                                            type="text"/>
                                 </Col>
-                                <Label sm={5}>Downlink Frame Counter : </Label>
+                                <Label sm={5}>Downlink Frame Counter:</Label>
                             </FormGroup>
 
                             <FormGroup row>
                                 <Col sm={7}>
-                                    <Input value={this.state.keys['skipFCntCheck']} name="skipFCntCheck"
-                                           onChange={(event) => {
+                                    <Input value={'skipFCntCheck'} name="skipFCntCheck"
+                                           defaultChecked={!!this.state.keys.skipFCntCheck}
+                                           onChange={() => {
                                                this.setState({
                                                    ABP: {
                                                        ...this.state.ABP,
-                                                       [event.target.name]: event.target.value ? 1 : 0
+                                                       skipFCntCheck: !this.state.ABP.skipFCntCheck
                                                    }
                                                })
                                            }} type="checkbox"/>
@@ -437,11 +401,19 @@ class ProjectsManage extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
-                            this.toggleABP()
-                            this.props.dispatch(activeThingAction(this.state.ABP,
-                                this.state.selectedThing, this.state.project._id, this.callback))
+                            const data = {
+                                ABP: this.state.ABP,
+                                thing_id: this.state.selectedThing,
+                                project_id: this.state.project._id
+                            }
+                            this.toggle('ABP')
+                            this.props.dispatch(activeThingAction(
+                                data.ABP,
+                                data.thing_id,
+                                data.project_id,
+                                this.callback))
                         }}>ارسال</Button>
-                        <Button color="danger" onClick={this.toggleABP}>انصراف</Button>
+                        <Button color="danger" onClick={() => this.toggle('ABP')}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
 
@@ -686,14 +658,6 @@ class ProjectsManage extends Component {
         );
     }
 
-    toggle(key) {
-        let tooltipOpen = this.state.tooltipOpen;
-        tooltipOpen[key] = tooltipOpen[key] === undefined || !tooltipOpen[key]
-        this.setState({
-            tooltipOpen
-        });
-    }
-
     getAliases() {
         let aliases = this.state.project.aliases ? this.state.project.aliases : [];
         return Object.keys(aliases).map((key) => {
@@ -732,6 +696,10 @@ class ProjectsManage extends Component {
 
     }
 
+    uploadExcel() {
+        window.location = `#/things/excel/${this.state.project._id}`
+    }
+
     deleteAlias(event) {
         const key = event.target.value;
         const newState = {
@@ -746,18 +714,6 @@ class ProjectsManage extends Component {
         this.setState(newState)
     }
 
-    dataModalToggle(id) {
-        this.setState({
-            dataModal: !this.state.dataModal,
-            modalDownlinkRows: [],
-            DownlinkThingRowId: id
-        });
-    }
-
-    uploadExcel() {
-        window.location = `#/things/excel/${this.state.project._id}`
-    }
-
     downloadExcel() {
         this.props.dispatch(DownloadThingsExcelAction(this.state.project._id))
     }
@@ -770,44 +726,10 @@ class ProjectsManage extends Component {
         window.location = `#/scenario/${this.state.project._id}/new`
     }
 
-    toggleOTAA() {
-        this.setState({
-            OTAAmodal: !this.state.OTAAmodal
-        });
-    }
-
-    toggleABP() {
-        this.setState({
-            ABPmodel: !this.state.ABPmodel
-        });
-    }
-
-
     callback(status, message) {
-        if (!status)
-            toast(message, {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                className: css({
-                    background: '#fee2e1',
-                    color: '#813838',
-                }),
-                progressClassName: css({
-                    background: '#813838'
-                })
-            });
-        else
-            toast('با موفقیت انجام شد', {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                className: css({
-                    background: '#dbf2e3',
-                    color: '#28623c'
-                }),
-                progressClassName: css({
-                    background: '#28623c'
-                })
-            });
+        toastAlerts(status, message);
+        this.loadProject()
     }
-
 
     renderCodecs() {
         if (this.state.project.templates)
@@ -855,10 +777,10 @@ class ProjectsManage extends Component {
                             }
                             return (<div>
                                 <Button className="ml-1" onClick={() => {
-                                    row.type === 'ABP' ? this.toggleABP() : this.toggleOTAA()
-                                    this.setState({
-                                        selectedThing: row._id,
-                                        keys: row.keys
+                                    console.log(row.keys.length)
+                                    this.toggle(row.type === 'ABP' ? 'ABP' : 'OTAA', {
+                                        id: row._id,
+                                        keys: row.keys.length !== 0 ? row.keys : {skipFCntCheck: true}
                                     })
                                 }} color="success" size="sm">فعال سازی</Button>
                                 <Button onClick={() => {
@@ -867,17 +789,18 @@ class ProjectsManage extends Component {
                                 <Button onClick={() => {
                                     window.location = `#/codec/${this.state.project._id}/${row._id}`
                                 }} className="ml-1" color="secondary" size="sm">ارسال codec</Button>
-                                <Button onClick={() => this.dataModalToggle(row._id)} className="ml-1" color="primary"
+                                <Button onClick={() => this.toggle('downlink', row._id)} className="ml-1"
+                                        color="primary"
                                         size="sm">ارسال داده (داون لینک)</Button>
-                                <Button onClick={() => this.deleteThingModalToggle(row._id)} className="ml-1"
+                                <Button onClick={() => this.toggle('deleteThing', row._id)} className="ml-1"
                                         color="danger"
                                         size="sm">حذف شئ</Button>
-                                <Badge id={`key-${row._id}`} color={badgeColor}>وضعیت </Badge>
-                                <Tooltip placement="top" isOpen={this.state.tooltipOpen[row._id]}
-                                         target={`key-${row._id}`}
-                                         toggle={() => this.toggle(row._id)}>
+                                <Badge id={`tooltip-${row._id}`} color={badgeColor}>وضعیت </Badge>
+
+                                {row.last_seen_at['time'] &&
+                                <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
                                     {row.last_seen_at.time}
-                                </Tooltip>
+                                </UncontrolledTooltip>}
                             </div>);
                         }
                     },
@@ -899,7 +822,7 @@ class ProjectsManage extends Component {
                         Header: 'امکانات',
                         filterable: false,
                         accessor: row => <div>
-                            <Button onClick={() => this.deleteScenarioModalToggle(row._id)}
+                            <Button onClick={() => this.toggle('deleteScenario', row._id)}
                                     className="ml-1 float-left" color="danger" size="sm">حذف</Button>
                             <Button className="ml-1 float-left" onClick={() => {
                                 window.location = `#/scenario/${this.state.project._id}/${row._id}`
@@ -927,7 +850,7 @@ class ProjectsManage extends Component {
                         Header: 'امکانات',
                         filterable: false,
                         accessor: row => <div>
-                            <Button onClick={() => this.deleteCodecModalToggle(row._id)}
+                            <Button onClick={() => this.toggle('deleteCodec', row._id)}
                                     className="ml-1 float-left" color="danger" size="sm">حذف</Button>
                             <Button onClick={() => {
                                 window.location = `#/template/${this.state.project._id}/${row._id}`
@@ -959,6 +882,46 @@ class ProjectsManage extends Component {
                 ]
         }
 
+    }
+
+    toggle(modal, id) {
+        let state = {};
+        if (modal == 'deleteThing')
+            state = {
+                deleteThingModal: !this.state.deleteThingModal,
+                deleteThingRowId: id ? id : ''
+            }
+        if (modal == 'deleteCodec')
+            state = {
+                deleteCodecModal: !this.state.deleteCodecModal,
+                deleteCodecRowId: id ? id : ''
+            }
+        if (modal == 'deleteScenario')
+            state = {
+                deleteScenarioModal: !this.state.deleteScenarioModal,
+                deleteScenarioRowId: id ? id : ''
+            }
+        if (modal == 'downlink')
+            state = {
+                dataModal: !this.state.dataModal,
+                modalDownlinkRows: [],
+                DownlinkThingRowId: id ? id : ''
+            }
+        if (modal == 'ABP')
+            state = {
+                selectedThing: id ? id.id : '',
+                keys: id ? id.keys : '',
+                ABPModal: !this.state.ABPModal,
+                ABP: id ? {...id.keys} : {skipFCntCheck: true}
+            }
+        if (modal == 'OTAA')
+            state = {
+                selectedThing: id ? id.id : '',
+                keys: id ? id.keys : '',
+                OTAAModal: !this.state.OTAAModal,
+                OTAA: id ? {...id.keys} : {}
+            }
+        this.setState(state);
     }
 
 

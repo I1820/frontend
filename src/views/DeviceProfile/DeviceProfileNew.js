@@ -419,7 +419,7 @@ class DeviceProfileNew extends Component {
                 ...this.state.form,
                 [name]: !this.state.form[name]
             }
-        }, () => console.log(this.state.form))
+        })
     }
 
     submitForm() {
