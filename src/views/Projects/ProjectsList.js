@@ -222,11 +222,6 @@ class ProjectsList extends Component {
     }
 
 
-    showProject() {
-        window.location = '#/projects/view'
-    }
-
-
     onCreateProject(status, message) {
         console.log(status, message)
 

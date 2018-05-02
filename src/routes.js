@@ -40,7 +40,7 @@ const routes = {
   '/profile': 'حساب کاربری',
   '/projects/list': 'Projects List',
   '/projects/new': 'Add New Project',
-  '/projects/view': 'View Project',
+  '/projects/view': 'نمایش پروژه',
   '/projects/manage': 'مدیریت پروژه',
   '/things': 'اشیاء',
   '/things/excel': 'آپلود فایل Excel',

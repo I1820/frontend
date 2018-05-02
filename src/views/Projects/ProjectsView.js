@@ -189,7 +189,7 @@ class ProjectsView extends Component {
 
     getThings() {
         let things = []
-        this.state.project.things.forEach((thing) => {
+        this.state.project.things && this.state.project.things.forEach((thing) => {
                 things.push({text: thing.name, id: thing._id})
             }
         )
