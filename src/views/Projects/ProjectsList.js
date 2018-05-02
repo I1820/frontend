@@ -43,14 +43,12 @@ class ProjectsList extends Component {
         this.toggle = this.toggle.bind(this);
         this.showProject = this.showProject.bind(this);
         this.onCreateProject = this.onCreateProject.bind(this);
-        this.deleteModalToggle = this.deleteModalToggle.bind(this);
         this.deleteProject = this.deleteProject.bind(this);
-        this.manageToastAlerts = this.manageToastAlerts.bind(this);
         this.loadProjects = this.loadProjects.bind(this);
         this.reactTableColumns = this.reactTableColumns.bind(this);
 
         this.state = {
-            modal: false,
+            createModal: false,
             deleteModal: false,
             projects: [{}],
             deleteRowId: 0
@@ -72,51 +70,22 @@ class ProjectsList extends Component {
     }
 
     deleteProject() {
-        this.deleteModalToggle(this.state.deleteRowId)
+        this.toggle('delete', this.state.deleteRowId)
         this.props.dispatch(deleteProjectAction(
             this.state.deleteRowId,
-            ()=>{
+            () => {
                 this.loadProjects();
-                toastAlerts(true,'با موفقیت حذف شد.')
+                toastAlerts(true, 'با موفقیت حذف شد.')
             }
         ))
     }
 
-    manageToastAlerts(status) {
-        if (status === true) {
-            this.loadProjects()
-            // this.deleteModalToggle()
-
-            toast('پروژه مورد نظر با موفقیت حذف شد', {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                className: css({
-                    background: '#dbf2e3',
-                    color: '#28623c'
-                }),
-                progressClassName: css({
-                    background: '#28623c'
-                })
-            });
-        } else {
-            toast(status.toString(), {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                className: css({
-                    background: '#fee2e1',
-                    color: '#813838',
-                }),
-                progressClassName: css({
-                    background: '#813838'
-                })
-            });
-        }
-    }
 
     render() {
         return (
             <div>
-                <ToastContainer className="text-right"/>
                 <Spinner display={this.props.loading}/>
-                <Modal isOpen={this.state.deleteModal} toggle={this.deleteModalToggle} className="text-right">
+                <Modal isOpen={this.state.deleteModal} toggle={() => this.toggle('delete')} className="text-right">
                     <ModalHeader>حذف پروژه</ModalHeader>
                     <ModalBody>
                         <h3>آیا از حذف پروژه مطمئن هستید؟</h3>
@@ -127,12 +96,12 @@ class ProjectsList extends Component {
                         <Button color="primary" className="ml-1" onClick={() => {
                             this.deleteProject(this.state.deleteRowId)
                         }}>حذف</Button>
-                        <Button color="danger" onClick={this.deleteModalToggle}>انصراف</Button>
+                        <Button color="danger" onClick={() => this.toggle('delete')}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
 
 
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className="text-right">
+                <Modal isOpen={this.state.createModal} toggle={() => this.toggle('create')} className="text-right">
                     <ModalHeader>پروژه جدید</ModalHeader>
                     <ModalBody>
                         <Form>
@@ -159,13 +128,13 @@ class ProjectsList extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
-                            this.toggle()
+                            this.toggle('create')
                             this.props.dispatch(createProject({
                                 'name': this.state.projectName,
                                 'description': this.state.projectDesc,
                             }, this.onCreateProject))
                         }}>ذخیره</Button>
-                        <Button color="danger" onClick={this.toggle}>انصراف</Button>
+                        <Button color="danger" onClick={() => this.toggle('create')}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
 
@@ -193,7 +162,7 @@ class ProjectsList extends Component {
                         />
                     </CardBody>
                     <CardFooter>
-                        <Button onClick={this.toggle} color="primary">پروژه جدید</Button>
+                        <Button onClick={() => this.toggle('create')} color="primary">پروژه جدید</Button>
                     </CardFooter>
                 </Card>
             </div>
@@ -231,25 +200,27 @@ class ProjectsList extends Component {
                             size="sm">نمایش</Button>
                     <Button onClick={() => this.manageProject(row._id)} className="ml-1" color="warning"
                             size="sm">مدیریت</Button>
-                    <Button onClick={() => this.deleteModalToggle(row._id)} className="ml-1" color="danger"
+                    <Button onClick={() => this.toggle('delete', row._id)} className="ml-1" color="danger"
                             size="sm">حذف</Button>
                 </div>
             }
         ];
     }
 
-    toggle() {
-        this.setState({
-            modal: !this.state.modal
-        });
+    toggle(modal, id) {
+        let state = {};
+        if (modal == 'delete')
+            state = {
+                deleteModal: !this.state.deleteModal,
+                deleteRowId: id
+            }
+        if (modal == 'create')
+            state = {
+                createModal: !this.state.createModal,
+            }
+        this.setState(state);
     }
 
-    deleteModalToggle(id) {
-        this.setState({
-            deleteModal: !this.state.deleteModal,
-            deleteRowId: id
-        });
-    }
 
     showProject() {
         window.location = '#/projects/view'
@@ -257,10 +228,12 @@ class ProjectsList extends Component {
 
 
     onCreateProject(status, message) {
-        toastAlerts(true, 'پروژه با موفقیت ساخته شد')
-        if (status) {
-            this.loadProjects()
-        }
+        console.log(status, message)
+
+        if (status)
+            toastAlerts(status, 'پروژه با موفقیت ساخته شد')
+        else
+            toastAlerts(status, message)
     }
 
     loadProjects() {
