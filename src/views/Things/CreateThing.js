@@ -234,13 +234,13 @@ class CreateThing extends Component {
             lat: document.getElementById('fld_lat').value,
             long: document.getElementById('fld_lng').value,
             devEUI: this.state.thing.devEUI,
-            thing_profile_slug: this.thing_profile_slug,
+            thing_profile_slug: this.state.thing_profile_slug,
             type: this.state.thing.type
         }
         if (this.state.thing._id === undefined)
             this.props.dispatch(createThingAction(data, this.state.project, this.callback))
         else
-            this.props.dispatch(editThingAction(this.state.thing._id, data, this.callback))
+            this.props.dispatch(editThingAction(this.state.project, this.state.thing._id, data, this.callback))
     }
 
     callback(status, message) {

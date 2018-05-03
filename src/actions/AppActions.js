@@ -207,9 +207,9 @@ export function getThingAction(thingId) {
 }
 
 
-export function editThingAction(thingId, data, cb) {
+export function editThingAction(projectId, thingId, data, cb) {
     return (dispatch) => {
-        const promise = editThingAPI(projectId, thingId, data, dispatch)
+        const promise = editThingAPI(thingId, data, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 dispatch(setThing(response.result))
@@ -508,7 +508,7 @@ export function activeThingAction(data, projectId, thingId, cb) {
         const promise = activeThing(data, projectId, thingId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                cb(true,'با موفقیت فعال شد')
+                cb(true, 'با موفقیت فعال شد')
             } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
                 cb(false, response.result)
@@ -522,7 +522,7 @@ export function deleteThingAction(projectId, thingId, cb) {
         const promise = deleteThingAPI(projectId, thingId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                cb(true,'با موفقیت حذف شد')
+                cb(true, 'با موفقیت حذف شد')
             } else {
                 cb(false, response.result)
             }
@@ -535,7 +535,7 @@ export function deleteCodecTemplateAction(projectId, codecId, cb) {
         const promise = deleteCodecTemplate(projectId, codecId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                cb(true,'کدک با موفقیت حذف شد')
+                cb(true, 'کدک با موفقیت حذف شد')
             } else {
                 cb(false, response.result)
             }
@@ -548,7 +548,7 @@ export function deleteScenarioAction(projectId, scenarioId, cb) {
         const promise = deleteScenario(projectId, scenarioId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                cb(true,'با موفقیت حذف شد')
+                cb(true, 'با موفقیت حذف شد')
             } else {
                 cb(false, response.result)
             }
@@ -562,11 +562,12 @@ export function uploadExcelAction(file, projectId, cb) {
 
         const promise = uploadExcelAPI(file, projectId, dispatch)
         promise.then((response) => {
-            if (response.status === 200) {
+            console.log(response)
+            if (response.status === 200 && response.data.code == 200) {
                 // window.location.reload()
-                cb(response.data.result.res)
+                cb(response.data.result.res, 'با موفقیت انجام شد')
             } else {
-                // cb(false,response.result)
+                cb(false, response.data.result)
                 // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         }).catch((e) => {
@@ -775,7 +776,7 @@ export function sendDownlinkAction(thingId, data, cb) {
         const promise = newDownlinkAPI(thingId, data, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                cb(true,'با موفقیت فرستاده شد')
+                cb(true, 'با موفقیت فرستاده شد')
             } else {
                 cb(false, response.result)
             }
