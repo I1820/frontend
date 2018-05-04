@@ -122,7 +122,7 @@ class Dashboard extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}> بازه زمانی : </Label>
+                                <Label sm={3}> بازه زمانی:</Label>
                                 <Col sm={9}>
                                     <Input type="select" onChange={(event) => {
                                         this.setState({
@@ -141,7 +141,10 @@ class Dashboard extends Component {
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
                             this.toggle('setWidgetChart')
-                            this.props.dispatch(setDashboardWidgetChartAction(this.state.widget, null, toastAlerts))
+                            this.props.dispatch(setDashboardWidgetChartAction({
+                                ...this.state.widget,
+                                devEUI: this.devEUI
+                            }, null, toastAlerts))
                             this.refresh()
                         }}>ارسال</Button>
                         <Button color="danger" onClick={() => this.toggle('setWidgetChart')}>انصراف</Button>
