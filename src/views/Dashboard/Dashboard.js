@@ -47,7 +47,9 @@ class Dashboard extends Component {
             things: [],
             selectedChart: 0,
             modal: false,
-            widget: {}
+            widget: {
+                window: 1
+            }
         }
     }
 
