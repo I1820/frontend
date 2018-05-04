@@ -140,8 +140,6 @@ class Dashboard extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
-                            console.log({...this.state.widget, devEUI: this.devEUI})
-                            return;
                             this.toggle('setWidgetChart')
                             this.props.dispatch(setDashboardWidgetChartAction(this.state.widget, null, toastAlerts))
                             this.refresh()
