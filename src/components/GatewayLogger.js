@@ -137,7 +137,7 @@ export default class GatewayLogger extends Component {
             streamFetch(`/gateway/${this.props.gateway}/frames?since=${this.state.refreshPeriod / 1000}`,
                 (response) => {
                     if (response && response.result && response.result.frames)
-                        this.setState({data: [...response.result.frames, ...this.state.data]}, () => console.log(this.state.data))
+                        this.setState({data: [...response.result.frames, ...this.state.data]})
                 })
         }, this.state.refreshPeriod)
         this.setState({interval})
@@ -157,7 +157,7 @@ export default class GatewayLogger extends Component {
                 ...this.state.collapses,
                 [id]: !this.state.collapses[id]
             }
-        }, () => console.log(this.state.collapses))
+        })
     }
 
 }
