@@ -84,6 +84,7 @@ class CreateThing extends Component {
         if (splitedUrl[splitedUrl.length - 1] !== 'new') {
             props.things.forEach((thing) => {
                 if (thing._id === splitedUrl[splitedUrl.length - 1]) {
+                    this.thing_profile_slug = thing.profile.thing_profile_slug;
                     this.setState({
                         thing: {
                             ...thing,
@@ -234,7 +235,7 @@ class CreateThing extends Component {
             lat: document.getElementById('fld_lat').value,
             long: document.getElementById('fld_lng').value,
             devEUI: this.state.thing.devEUI,
-            thing_profile_slug: this.state.thing_profile_slug,
+            thing_profile_slug: this.thing_profile_slug,
             type: this.state.thing.type
         }
         if (this.state.thing._id === undefined)
