@@ -15,6 +15,7 @@ import {
     Label,
     Tooltip,
     Input,
+    UncontrolledTooltip,
     Table, Modal, ModalHeader, ModalBody, Badge
 } from 'reactstrap';
 import { connect } from 'react-redux';

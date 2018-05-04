@@ -73,9 +73,9 @@ class ProjectsList extends Component {
         this.toggle('delete', this.state.deleteRowId)
         this.props.dispatch(deleteProjectAction(
             this.state.deleteRowId,
-            () => {
+            (status, response) => {
                 this.loadProjects();
-                toastAlerts(true, 'با موفقیت حذف شد.')
+                toastAlerts(status, response)
             }
         ))
     }
@@ -223,8 +223,6 @@ class ProjectsList extends Component {
 
 
     onCreateProject(status, message) {
-        console.log(status, message)
-
         if (status)
             toastAlerts(status, 'پروژه با موفقیت ساخته شد')
         else

@@ -41,6 +41,7 @@ class ProjectsView extends Component {
         this.renderPeriodPicker = this.renderPeriodPicker.bind(this)
         this.renderTimePicker = this.renderTimePicker.bind(this)
         this.getData = this.getData.bind(this)
+        this.draw = this.draw.bind(this)
         this.state = {
             selectedThing: {ids: []},
             period: 5000,
@@ -153,16 +154,16 @@ class ProjectsView extends Component {
         this.state.project.things.forEach((thing) => {
             things[thing.interface.devEUI] = thing.name
         })
-        console.log(things)
 
         let sensors = []
         this.state.data.map((d, i) => {
             _.allKeys(d.data).map((k, i2) => {
-                if (_.find(sensors, {name: `${k}':'${things[d.thingid]}`}) === undefined) {
+                if (_.find(sensors, {name: `${things[d.thingid]}: ${k}`}) === undefined) {
                     sensors.push({
                         label: k,
-                        name: `${k}':'${things[d.thingid]}`,
-                        data: []
+                        name: `${things[d.thingid]}: ${k}`,
+                        data: [],
+                        colorIndex: k % 6
                     })
                 }
             })
@@ -181,7 +182,6 @@ class ProjectsView extends Component {
         })
 
         config.series = sensors
-
         this.setState({
             config
         })
@@ -211,7 +211,7 @@ class ProjectsView extends Component {
     render() {
         return (
             <div>
-                <Spinner display={this.props.loading && this.state.data.length === 0 && !this.state.interval}/>
+                <Spinner display={this.props.loading && !this.state.interval}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">دریافت داده</CardTitle>
@@ -299,7 +299,7 @@ class ProjectsView extends Component {
                     </CardHeader>
                     <CardBody>
                         <ReactTable
-                            data={this.state.data}
+                            data={[...this.state.data].reverse()}
                             columns={this.reactTableColumns()}
                             pageSizeOptions={[10, 15, 25, 50]}
                             nextText='بعدی'
@@ -391,7 +391,7 @@ class ProjectsView extends Component {
             this.state.until,
             this.state.auto ? this.state.window : undefined,
             (status, data) => {
-                this.setState({data})
+                this.setState({data: data.reverse()})
                 this.draw()
                 if (cb)
                     cb()
@@ -401,7 +401,7 @@ class ProjectsView extends Component {
     clearInter() {
         clearInterval(this.state.interval);
         this.setState({
-            interval: undefined
+            interval: 0
         })
     }
 }
