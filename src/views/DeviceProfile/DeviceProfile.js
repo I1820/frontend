@@ -20,7 +20,7 @@ import {
     Input,
     Table
 } from 'reactstrap';
-import { getThingProfileListAction, deleteDeviceProfileAction } from '../../actions/AppActions';
+import {getThingProfileListAction, deleteDeviceProfileAction, forwardTo} from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import Spinner from '../Spinner/Spinner';
 import ReactTable from 'react-table'
@@ -37,6 +37,7 @@ class DeviceProfile extends Component {
         this.callback = this.callback.bind(this)
         this.deleteProfile = this.deleteProfile.bind(this)
         this.loadProfiles = this.loadProfiles.bind(this)
+
 
         this.state = {
             modal: false,
@@ -149,6 +150,8 @@ class DeviceProfile extends Component {
                 accessor: row => <div>
                     <Button onClick={() => this.toggle('delete', row._id)} className="ml-1" color="danger"
                             size="sm">حذف</Button>
+                  <Button onClick={()=>forwardTo(`device-profile/${row._id}`)} className="ml-1" color="primary"
+                          size="sm">مشاهده</Button>
                 </div>
             }
         ];
