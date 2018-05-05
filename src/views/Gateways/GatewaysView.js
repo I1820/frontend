@@ -24,6 +24,7 @@ import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
 import connect from "react-redux/es/connect/connect";
 import {getSingleGatewayAction} from "../../actions/AppActions";
 import Spinner from "../Spinner/Spinner";
+import GatewayLogger from '../../components/GatewayLogger';
 
 
 const _ = require("lodash");
@@ -159,7 +160,6 @@ class GatewaysView extends Component {
 
     componentWillReceiveProps(props) {
         const splitedUrl = window.location.href.split('/');
-        const me = this;
         if (splitedUrl[splitedUrl.length - 1]) {
             props.gateway.forEach((gateway) => {
                 if (gateway._id === splitedUrl[splitedUrl.length - 1]) {
@@ -183,6 +183,7 @@ class GatewaysView extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
+                <GatewayLogger gateway={this.state.gateway._id}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">نمایش Gateway</CardTitle>

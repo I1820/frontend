@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Row,
     Col,
@@ -19,9 +19,10 @@ import {
     PaginationItem,
     PaginationLink
 } from 'reactstrap';
-import {getThingProfileListAction, uploadExcelAction} from "../../actions/AppActions";
-import connect from "react-redux/es/connect/connect";
-import Spinner from "../Spinner/Spinner";
+import { getThingProfileListAction, uploadExcelAction } from '../../actions/AppActions';
+import connect from 'react-redux/es/connect/connect';
+import Spinner from '../Spinner/Spinner';
+import { toastAlerts } from '../Shared/toast_alert';
 
 
 class ThingsExcel extends Component {
@@ -92,17 +93,6 @@ class ThingsExcel extends Component {
                             }
                             </tbody>
                         </Table>
-                        <Pagination>
-                            <PaginationItem>
-                                <PaginationLink previous href="#"/>
-                            </PaginationItem>
-                            <PaginationItem active>
-                                <PaginationLink href="#">1</PaginationLink>
-                            </PaginationItem>
-                            <PaginationItem>
-                                <PaginationLink next href="#"/>
-                            </PaginationItem>
-                        </Pagination>
                     </CardBody>
                 </Card>
             </div>
@@ -111,31 +101,34 @@ class ThingsExcel extends Component {
 
     renderLog(res, key) {
         return (
-            <tr id={key}>
+            <tr id={key} key={key}>
                 <td>{key + 1}</td>
                 <td>{res}</td>
                 <td>
                     <Badge
                         color={typeof(this.state.result[res]) === 'string'
                             ? 'danger' : 'success'}>{typeof(this.state.result[res]) === 'string' ?
-                        this.state.result[res] : 'OK'}</Badge>
+                        this.state.result[res] : 'با موفقیت انجام شد'}</Badge>
                 </td>
             </tr>
         )
     }
 
-    callback(result) {
-        console.log(result)
-        if (result)
+    callback(status, result) {
+        if (status) {
             this.setState({
-                result
-            })
+                result: {...status}
+            });
+            toastAlerts(true, result)
+        }
+        else
+            toastAlerts(false, result)
     }
 }
 
 function mapStateToProps(state) {
     return {
-        loading:state.homeReducer.currentlySending
+        loading: state.homeReducer.currentlySending
     }
 }
 

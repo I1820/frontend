@@ -84,6 +84,7 @@ class CreateThing extends Component {
         if (splitedUrl[splitedUrl.length - 1] !== 'new') {
             props.things.forEach((thing) => {
                 if (thing._id === splitedUrl[splitedUrl.length - 1]) {
+                    this.thing_profile_slug = thing.profile.thing_profile_slug;
                     this.setState({
                         thing: {
                             ...thing,
@@ -240,7 +241,7 @@ class CreateThing extends Component {
         if (this.state.thing._id === undefined)
             this.props.dispatch(createThingAction(data, this.state.project, this.callback))
         else
-            this.props.dispatch(editThingAction(this.state.thing._id, data, this.callback))
+            this.props.dispatch(editThingAction(this.state.project, this.state.thing._id, data, this.callback))
     }
 
     callback(status, message) {

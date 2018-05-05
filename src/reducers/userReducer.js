@@ -1,4 +1,4 @@
-import {INIT_USER, UPDATE_USER, FREE} from '../constants/AppConstants'
+import { INIT_USER, UPDATE_USER, FREE } from '../constants/AppConstants'
 import _ from 'underscore'
 
 const assign = Object.assign || require('object.assign')
@@ -14,16 +14,20 @@ export function userReducer(state = initialState, action) {
                     username: action.newState.user.other_info.org_name,
                     email: action.newState.user.email,
                     other_info: action.newState.user.other_info,
-                    token: action.newState.token
+                    token: action.newState.token,
+                    keep: action.newState.keep
                 })
             } else {
                 return assign({}, state, {
                     type: 'REAL',
                     username: action.newState.user.name,
                     mobile: action.newState.user.mobile,
+                    phone: action.newState.user.phone,
                     email: action.newState.user.email,
                     other_info: action.newState.user.other_info,
-                    token: action.newState.token
+                    token: action.newState.token,
+                    keep: action.newState.keep
+
                 })
             }
         case UPDATE_USER:
@@ -39,6 +43,8 @@ export function userReducer(state = initialState, action) {
                     type: 'REAL',
                     username: action.newState.user.name,
                     email: action.newState.user.email,
+                    phone: action.newState.user.phone,
+                    mobile: action.newState.user.mobile,
                     other_info: action.newState.user.other_info
                 })
             }

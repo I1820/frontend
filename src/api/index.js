@@ -3,22 +3,26 @@ import {
     postConfig,
     getConfig,
     patchConfig,
+    putConfig,
     uploadConfig,
     deleteConfig
 } from './config'
+import { setAuthState, initUser } from '../actions/AppActions'
+
 
 import _ from 'underscore'
 import { sendingRequest, logout } from '../actions/AppActions'
-import axios, { post } from 'axios';
+import axios, { post, get } from 'axios';
 import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://backback.ceit.aut.ac.ir/api/v1'
+const BASE_URL = 'http://backback.ceit.aut.ac.ir:50024/api/v1'
 
 const endpoints = {
     login: '/login',
     register: '/register',
     logout: '/logout',
+    refresh: '/refresh',
 
     createProject: '/project',
     listProject: '/project',
@@ -72,7 +76,19 @@ function fetchData(endpoint = '/404', config = {}, dispatch) {
                 dispatch(sendingRequest(false))
                 const {status, message, code} = controler(json)
                 if ((code === 701 || code === 401) && endpoint !== endpoints.login) {
-                    dispatch(logout())
+                    console.log(message === 'token expired' && store.getState().userReducer.keep)
+                    if (message === 'token expired' && store.getState().userReducer.keep) {
+                        const promise = fetchData(endpoints.refresh, putConfig(), dispatch);
+                        promise.then((response) => {
+                            if (response.status === 'OK') {
+                                dispatch(setAuthState(true))
+                                dispatch(initUser({...response.result, keep: true}))
+                            }
+                        })
+                    }
+                    else {
+                        dispatch(logout())
+                    }
                 }
                 if (!status || (code && str(code).startsWith('7'))) {
                     return resolve({status: 'FAILED', result: message})
@@ -219,9 +235,10 @@ module.exports.createGateway = function (data, dispatch) {
 }
 
 module.exports.uploadExcel = function (data, projectId, dispatch) {
-    const url = `${BASE_URL}/project/${projectId}/things/from-excel`
+    const url = `${BASE_URL}/things/from-excel`
     const formData = new FormData();
     formData.append('things', data)
+    formData.append('project_id', projectId)
     const config = {
         headers: {
             'Authorization': 'Bearer ' + store.getState().userReducer.token,
@@ -229,6 +246,18 @@ module.exports.uploadExcel = function (data, projectId, dispatch) {
         }
     }
     return post(url, formData, config)
+}
+
+module.exports.DownloadThingsExcel = function (projectId, dispatch) {
+    const url = `${BASE_URL}/project/${projectId}/things/export`
+    const config = {
+        headers: {
+            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Content-Type': 'multipart/form-data'
+        }
+    }
+    return get(url, config)
+
 }
 
 
@@ -273,6 +302,12 @@ module.exports.editProfile = function (data, dispatch) {
     const config = patchConfig()
     Object.assign(config, {body: getFormData(data)})
     return fetchData(`/user/update`, config, dispatch)
+}
+
+module.exports.changePassword = function (data, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/user/password`, config, dispatch)
 }
 
 module.exports.deleteDeviceProfile = function (profileId, dispatch) {

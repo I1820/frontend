@@ -37,6 +37,7 @@ class Dashboard extends Component {
         this.refresh = this.refresh.bind(this)
         this.getThings = this.getThings.bind(this)
         this.renderCharts = this.renderCharts.bind(this)
+        this.devEUI = ''
         this.state = {
             charts: {},
             modalToggle: {
@@ -46,7 +47,9 @@ class Dashboard extends Component {
             things: [],
             selectedChart: 0,
             modal: false,
-            widget: {}
+            widget: {
+                window: 1
+            }
         }
     }
 
@@ -70,7 +73,6 @@ class Dashboard extends Component {
 
 
     render() {
-        let widget = {}
         return (
 
             <div>
@@ -84,7 +86,9 @@ class Dashboard extends Component {
                                 <Label sm={3}> عنوان : </Label>
                                 <Col sm={9}>
                                     <Input onChange={(event) => {
-                                        widget.title = event.target.value
+                                        this.setState({
+                                            widget: {...this.state.widget, title: event.target.value}
+                                        })
                                     }} type="text"/>
                                 </Col>
                             </FormGroup>
@@ -93,12 +97,13 @@ class Dashboard extends Component {
                                 <Col sm={9}>
                                     <Select2
                                         style={{width: '100%'}}
+                                        value={this.devEUI}
                                         data={this.state.things.map((thing) => {
                                             return {text: thing.name, id: thing.dev_eui}
                                         })}
                                         ref="tags"
                                         onSelect={(event) => {
-                                            widget.devEUI = event.target.value
+                                            this.devEUI = event.target.value
                                         }}
                                         options={
                                             {
@@ -112,15 +117,19 @@ class Dashboard extends Component {
                                 <Label sm={3}> کلید : </Label>
                                 <Col sm={9}>
                                     <Input onChange={(event) => {
-                                        widget.key = event.target.value
+                                        this.setState({
+                                            widget: {...this.state.widget, key: event.target.value}
+                                        })
                                     }} type="text"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label sm={3}> بازه زمانی : </Label>
+                                <Label sm={3}> بازه زمانی:</Label>
                                 <Col sm={9}>
                                     <Input type="select" onChange={(event) => {
-                                        widget.window = event.target.value
+                                        this.setState({
+                                            widget: {...this.state.widget, window: event.target.value}
+                                        })
                                     }}>
                                         <option value={1}>یک ساعت اخیر</option>
                                         <option value={5}>5 ساعت اخیر</option>
@@ -134,7 +143,10 @@ class Dashboard extends Component {
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
                             this.toggle('setWidgetChart')
-                            this.props.dispatch(setDashboardWidgetChartAction(widget, null, toastAlerts))
+                            this.props.dispatch(setDashboardWidgetChartAction({
+                                ...this.state.widget,
+                                devEUI: this.devEUI
+                            }, null, toastAlerts))
                             this.refresh()
                         }}>ارسال</Button>
                         <Button color="danger" onClick={() => this.toggle('setWidgetChart')}>انصراف</Button>

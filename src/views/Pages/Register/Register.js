@@ -11,19 +11,14 @@ import {
     InputGroup,
     InputGroupAddon,
     InputGroupText,
-    TabContent,
-    TabPane,
-    Nav,
-    NavItem,
-    NavLink,
-    Label
 } from 'reactstrap';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { register } from "../../../actions/AppActions";
-import { ToastContainer, toast } from 'react-toastify';
+import { register } from '../../../actions/AppActions';
+import { toastAlerts } from '../../Shared/toast_alert';
 import { css } from 'glamor';
-import { style } from "react-toastify";
+import { ToastContainer } from 'react-toastify';
+import { style } from 'react-toastify';
 
 style({
     colorProgressDefault: 'white',
@@ -34,347 +29,102 @@ class Register extends Component {
 
     constructor(props) {
         super(props);
-
-        this.toggle = this.toggle.bind(this);
         this.realRegister = this.realRegister.bind(this);
-        this.legalRegister = this.legalRegister.bind(this);
-        this.goTologinPage = this.goTologinPage.bind(this);
-
-        this.state = {
-            activeTab: '1',
-        };
     }
 
     realRegister() {
-        if( this.state.realPassword == this.state.realPasswordRepeat ) {
+        if (this.state.passwordRepeat === this.state.password) {
             this.props.dispatch(register({
                 'legal': 0,
-                'name': this.state.realFirstName + ' ' + this.state.realLastName,
-                'email': this.state.realEmail,
-                'mobile': this.state.realMobile,
-                'password': this.state.realPassword,
-                'other_info': JSON.stringify({
-                    'phone': this.state.realTel,
-                    'address': this.state.realAddress,
-                })
+                'name': this.state.name,
+                'email': this.state.email,
+                'password': this.state.password,
             }, this.manageToastAlerts))
-        } else {
-            this.manageToastAlerts('رمز عبور با تکرار برابر نیست')
-        }
+        } else
+            toastAlerts(false, 'کلمه عبور و تکرار آن یکسان نیستند.')
+
     }
 
-    legalRegister() {
-        if( this.state.legalPasswordRepeat == this.state.legalPassword ) {
-            this.props.dispatch(register({
-                'legal': 1,
-                'email': this.state.legalEmail,
-                'password': this.state.legalPassword,
-                'mobile': this.state.legalMobile,
-                'org_interface_name': this.state.legalFirstName,
-                'org_interface_last_name': this.state.legalLastName,
-                'org_interface_phone': this.state.legalPhone,
-                'org_interface_mobile': this.state.legalMobile,
-                'type': this.state.legalOrgType,
-                'org_name': this.state.legalOrgName,
-                'reg_number': this.state.legalOrgRegName,
-                'ec_code': this.state.legalEcCode,
-            }, this.manageToastAlerts))
-        } else {
-            this.manageToastAlerts('رمز عبور با تکرار برابر نیست')
-        }
-    }
 
     manageToastAlerts(status) {
-        if(status === true) {
-            toast('ثبت نام با موفقیت انجام شد', {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                className: css({
-                    background: '#dbf2e3',
-                    color: '#28623c'
-                }),
-                progressClassName: css({
-                    background: '#28623c'
-                })
-            });
+        if (status === true) {
+            toastAlerts(status, 'ثبت نام با موفقیت انجام شد و لینک فعال سازی برای شما ارسال شد')
         } else {
-            toast(status, {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                className: css({
-                    background: '#fee2e1',
-                    color: '#813838',
-                }),
-                progressClassName: css({
-                    background: '#813838'
-                })
-            });
+            toastAlerts(false, status)
         }
     }
 
-    toggle(tab) {
-        if (this.state.activeTab !== tab) {
-            this.setState({
-                activeTab: tab
-            });
-        }
+
+    render() {
+        return (
+            <div className="app flex-row align-items-center mt-4">
+                <Container>
+                    <Row className="justify-content-center">
+                        <Col md="6">
+                            <Card className="mx-0 mx-sm-4">
+                                <CardBody className="p-4 text-right">
+                                    <h1>ثبت نام</h1>
+                                    <p className="text-muted">پروفایل خود را بسازید</p>
+
+                                    <br/>
+                                    <div>
+                                        {/* حقیقی */}
+                                        <InputGroup className="mb-3">
+                                            <InputGroupAddon addonType="prepend">
+                                                <InputGroupText>
+                                                    <i className="icon-user"></i>
+                                                </InputGroupText>
+                                            </InputGroupAddon>
+                                            <Input type="text" placeholder="نام و نام خانوادگی"
+                                                   onChange={event => this.setState({name: event.target.value})}/>
+                                        </InputGroup>
+
+                                        <InputGroup className="mb-4">
+                                            <InputGroupAddon addonType="prepend">
+                                                <InputGroupText>
+                                                    @
+                                                </InputGroupText>
+                                            </InputGroupAddon>
+                                            <Input type="text" placeholder="پست الکترونیکی"
+                                                   onChange={event => this.setState({email: event.target.value})}/>
+                                        </InputGroup>
+
+                                        <InputGroup className="mb-4">
+                                            <InputGroupAddon addonType="prepend">
+                                                <InputGroupText>
+                                                    <i className="icon-lock"></i>
+                                                </InputGroupText>
+                                            </InputGroupAddon>
+                                            <Input type="password" placeholder="کلمه عبور"
+                                                   onChange={event => this.setState({password: event.target.value})}/>
+                                        </InputGroup>
+
+                                        <InputGroup className="mb-4">
+                                            <InputGroupAddon addonType="prepend">
+                                                <InputGroupText>
+                                                    <i className="icon-lock"></i>
+                                                </InputGroupText>
+                                            </InputGroupAddon>
+                                            <Input type="password" placeholder="تکرار کلمه عبور"
+                                                   onChange={event => this.setState({passwordRepeat: event.target.value})}/>
+                                        </InputGroup>
+
+                                        <Button color="success" onClick={this.realRegister} block>ثبت نام</Button>
+                                        <Button color="primary"
+                                                onClick={() => window.location = '#/login'}
+                                                block>بازگشت به لاگین</Button>
+
+                                    </div>
+
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Container>
+                <ToastContainer className="text-right"/>
+            </div>
+        );
     }
-
-    goTologinPage() {
-        window.location = '#/login'
-    }
-
-  render() {
-    return (
-      <div className="app flex-row align-items-center mt-4">
-        <ToastContainer className="text-right" />
-        <Container>
-          <Row className="justify-content-center">
-            <Col md="6">
-              <Card className="mx-0 mx-sm-4">
-                <CardBody className="p-4 text-right">
-                  <h1>ثبت نام</h1>
-                  <p className="text-muted">پروفایل خود را بسازید</p>
-
-                  <br />
-
-                <Nav tabs>
-                    <NavItem>
-                        <NavLink
-                        className={classnames({ active: this.state.activeTab === '1' })}
-                        onClick={() => { this.toggle('1'); }}>
-                            حقیقی
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink
-                        className={classnames({ active: this.state.activeTab === '2' })}
-                        onClick={() => { this.toggle('2'); }}>
-                            حقوقی
-                        </NavLink>
-                    </NavItem>
-                </Nav>
-
-                <br />
-
-                <TabContent activeTab={this.state.activeTab} className="border-0">
-
-                    <TabPane tabId="1">
-                        {/* حقیقی */}
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-user"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="نام"
-                          onChange={event => this.setState({realFirstName: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText><i className="icon-user"></i></InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="نام خانوادگی"
-                          onChange={event => this.setState({realLastName: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-phone"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="تلفن ثابت"
-                          onChange={event => this.setState({realTel: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-4">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-screen-smartphone"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="تلفن همراه"
-                          onChange={event => this.setState({realMobile: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-4">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-location-pin"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="آدرس"
-                          onChange={event => this.setState({realAddress: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-4">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              @
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="پست الکترونیکی"
-                          onChange={event => this.setState({realEmail: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-4">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-lock"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="password" placeholder="کلمه عبور"
-                          onChange={event => this.setState({realPassword: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-4">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-lock"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="password" placeholder="تکرار کلمه عبور"
-                          onChange={event => this.setState({realPasswordRepeat: event.target.value})} />
-                        </InputGroup>
-
-                        <Button color="success" onClick={this.realRegister} block>ثبت نام</Button>
-                        <Button color="primary" onClick={this.goTologinPage} block>بازگشت به لاگین</Button>
-
-                    </TabPane>
-
-
-
-
-                    <TabPane tabId="2">
-                        {/* حقوقی */}
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-user"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="نام رابط"
-                          onChange={event => this.setState({legalFirstName: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText><i className="icon-user"></i></InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="نام خانوادگی رابط"
-                          onChange={event => this.setState({legalLastName: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-3">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-phone"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="تلفن رابط"
-                          onChange={event => this.setState({legalPhone: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-4">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-screen-smartphone"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="موبایل شخصی"
-                          onChange={event => this.setState({legalMobile: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-4">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              @
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="email" placeholder="ایمیل رابط"
-                          onChange={event => this.setState({legalEmail: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-4">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-home"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="اسم مجموعه"
-                          onChange={event => this.setState({legalOrgName: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-4">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-folder-alt"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                            <Input type="select" onChange={event => this.setState({legalOrgType: event.target.value})}>
-                                <option value="0">انتخاب نوع مجموعه</option>
-                                <option value="سازمانی">سازمانی</option>
-                                <option value="شرکت">شرکت</option>
-                                <option value="نظامی">نظامی</option>
-                                <option value="NGO">NGO</option>
-                            </Input>
-                        </InputGroup>
-
-                        <InputGroup className="mb-4">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-layers"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="شماره ثبت"
-                          onChange={event => this.setState({legalOrgRegName: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-4">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-notebook"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="text" placeholder="کد اقتصادی"
-                          onChange={event => this.setState({legalEcCode: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-4">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-lock"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="password" placeholder="کلمه عبور"
-                          onChange={event => this.setState({legalPassword: event.target.value})} />
-                        </InputGroup>
-
-                        <InputGroup className="mb-4">
-                          <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                              <i className="icon-lock"></i>
-                            </InputGroupText>
-                          </InputGroupAddon>
-                          <Input type="password" placeholder="تکرار کلمه عبور"
-                          onChange={event => this.setState({legalPasswordRepeat: event.target.value})} />
-                        </InputGroup>
-
-                        <Button color="success" onClick={this.legalRegister} block>ثبت نام</Button>
-                        <Button color="primary" onClick={this.loginPage} block>بازگشت به لاگین</Button>
-
-                    </TabPane>
-
-                </TabContent>
-
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    );
-  }
 }
 
 
