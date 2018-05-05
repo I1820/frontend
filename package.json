@@ -31,6 +31,7 @@
     "webpack-dev-server": "2.11.1"
   },
   "dependencies": {
+    "ansi-html": "^0.0.7",
     "axios": "^0.18.0",
     "babel-runtime": "^6.26.0",
     "blessed": "^0.1.81",
@@ -48,7 +49,7 @@
     "prop-types": "^15.6.1",
     "react": "^16.3.1",
     "react-ace": "^5.9.0",
-    "react-advance-jalaali-datepicker": "^0.2.0",
+    "react-advance-jalaali-datepicker": "^0.3.4",
     "react-async-script": "^0.9.1",
     "react-chartjs-2": "2.7.0",
     "react-dom": "16.2.0",
