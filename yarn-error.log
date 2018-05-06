@@ -1,17 +1,30 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js remove react-select2-wrapper
+  C:\Program Files\nodejs\node.exe C:\Program Files\Yarn\bin\yarn.js
 
 PATH: 
-  C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Program Files (x86)\Yarn\bin;C:\Program Files (x86)\MySQL\MySQL Fabric 1.5 & MySQL Utilities 1.5\;C:\Program Files (x86)\MySQL\MySQL Fabric 1.5 & MySQL Utilities 1.5\Doctrine extensions for PHP\;c:\Users\sepeh\AppData\Roaming\npm;N:\android-sdk-windows\platform-tools;C:\Program Files (x86)\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files\Microsoft SQL Server\110\DTS\Binn\;C:\Program Files\Calibre2\;C:\oracle\instantclient_12_2;C:\Program Files\nodejs\;C:\Go\bin;C:\Ruby24-x64\bin;C:\Cadence\SPB_16.6\openaccess\bin\win32\opt;C:\Cadence\SPB_16.6\tools\capture;C:\Cadence\SPB_16.6\tools\pspice;C:\Cadence\SPB_16.6\tools\specctra\bin;C:\Cadence\SPB_16.6\tools\fet\bin;C:\Cadence\SPB_16.6\tools\libutil\bin;C:\Cadence\SPB_16.6\tools\bin;C:\Cadence\SPB_16.6\tools\pcb\bin;C:\Program Files (x86)\Microsoft VS Code\bin;C:\Users\sepeh\AppData\Local\Microsoft\WindowsApps;C:\oracle\instantclient_12_2;C:\Users\sepeh\AppData\Roaming\npm;C:\Users\sepeh\AppData\Local\Programs\Python\Python36-32\Scripts;C:\Python27;;%USERPROFILE%\AppData\Local\Microsoft\WindowsApps
+  C:\ProgramData\Oracle\Java\javapath;C:\Program Files\Python36-32\Scripts\;C:\Program Files\Python36-32\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\JetBrains\PyCharm 2017.3.3\jre32\bin;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\Yarn\bin\;C:\Users\Admin\AppData\Local\Microsoft\WindowsApps;C:\Users\Admin\AppData\Roaming\npm;C:\Users\Admin\AppData\Local\Yarn\bin
 
 Yarn version: 
-  0.21.3
+  1.6.0
 
 Node version: 
-  9.4.0
+  8.11.1
 
 Platform: 
-  win32 x64
+  win32 ia32
+
+Trace: 
+  Error: https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz: ESOCKETTIMEDOUT
+      at ClientRequest.<anonymous> (C:\Program Files\Yarn\lib\cli.js:133786:19)
+      at Object.onceWrapper (events.js:313:30)
+      at emitNone (events.js:106:13)
+      at ClientRequest.emit (events.js:208:7)
+      at TLSSocket.emitTimeout (_http_client.js:711:34)
+      at Object.onceWrapper (events.js:313:30)
+      at emitNone (events.js:106:13)
+      at TLSSocket.emit (events.js:208:7)
+      at TLSSocket.Socket._onTimeout (net.js:420:8)
+      at ontimeout (timers.js:482:11)
 
 npm manifest: 
   {
@@ -47,32 +60,41 @@ npm manifest:
       "webpack-dev-server": "2.11.1"
     },
     "dependencies": {
+      "ansi-html": "^0.0.7",
       "axios": "^0.18.0",
       "babel-runtime": "^6.26.0",
+      "blessed": "^0.1.81",
       "bootstrap": "4.0.0",
       "chart.js": "2.7.1",
       "flag-icon-css": "2.9.0",
       "font-awesome": "4.7.0",
       "history": "4.7.2",
       "jquery": "^3.3.1",
+      "js-file-download": "^0.4.1",
       "js-md5": "^0.7.3",
       "lodash": "^4.17.5",
       "moment-jalaali": "^0.7.2",
       "object.assign": "^4.1.0",
       "prop-types": "^15.6.1",
-      "react": "16.2.0",
+      "react": "^16.3.1",
       "react-ace": "^5.9.0",
-      "react-advance-jalaali-datepicker": "^0.2.0",
+      "react-advance-jalaali-datepicker": "^0.3.4",
       "react-async-script": "^0.9.1",
       "react-chartjs-2": "2.7.0",
       "react-dom": "16.2.0",
       "react-google-maps": "^9.4.5",
       "react-google-recaptcha": "^0.9.7",
+      "react-grid-layout": "^0.16.6",
       "react-highcharts": "^16.0.2",
       "react-json-pretty": "^1.7.5",
+      "react-json-view": "^1.16.6",
+      "react-lazylog": "^3.1.3",
       "react-modal-dialog": "^4.0.7",
       "react-redux": "^5.0.7",
       "react-router-dom": "4.2.2",
+      "react-select2-wrapper": "^1.0.4-beta6",
+      "react-stonecutter": "^0.3.9",
+      "react-table": "^6.8.2",
       "react-toastify": "^3.3.4",
       "react-transition-group": "2.2.1",
       "reactstrap": "5.0.0-beta",
@@ -190,7 +212,7 @@ Lockfile:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   
-  ansi-html@0.0.7:
+  ansi-html@0.0.7, ansi-html@^0.0.7:
     version "0.0.7"
     resolved "https://registry.yarnpkg.com/ansi-html/-/ansi-html-0.0.7.tgz#813584021962a9e9e6fd039f940d12f56ca7859e"
   
@@ -945,6 +967,10 @@ Lockfile:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   
+  base16@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/base16/-/base16-1.0.0.tgz#e297f60d7ec1014a7a971a39ebc8a98c0b681e70"
+  
   base64-js@^1.0.2:
     version "1.2.3"
     resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.2.3.tgz#fb13668233d9614cf5fb4bce95a9ba4096cdf801"
@@ -978,6 +1004,10 @@ Lockfile:
   binary-extensions@^1.0.0:
     version "1.11.0"
     resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.11.0.tgz#46aa1751fb6a2f93ee5e689bb1087d4b14c6c205"
+  
+  blessed@^0.1.81:
+    version "0.1.81"
+    resolved "https://registry.yarnpkg.com/blessed/-/blessed-0.1.81.tgz#f962d687ec2c369570ae71af843256e6d0ca1129"
   
   block-stream@*:
     version "0.0.9"
@@ -1374,7 +1404,7 @@ Lockfile:
       isobject "^3.0.0"
       static-extend "^0.1.1"
   
-  classnames@^2.1.2, classnames@^2.2.3, classnames@^2.2.5:
+  classnames@2.x, classnames@^2.1.2, classnames@^2.2.3, classnames@^2.2.5:
     version "2.2.5"
     resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
   
@@ -1633,7 +1663,7 @@ Lockfile:
       safe-buffer "^5.0.1"
       sha.js "^2.4.8"
   
-  create-react-class@^15.5.2:
+  create-react-class@^15.5.2, create-react-class@^15.5.3:
     version "15.6.3"
     resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
     dependencies:
@@ -1961,7 +1991,7 @@ Lockfile:
     dependencies:
       utila "~0.3"
   
-  dom-helpers@^3.2.0:
+  "dom-helpers@^2.4.0 || ^3.0.0", dom-helpers@^3.2.0:
     version "3.3.1"
     resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-3.3.1.tgz#fc1a4e15ffdf60ddde03a480a9c0fece821dd4a6"
   
@@ -2070,6 +2100,10 @@ Lockfile:
       memory-fs "^0.4.0"
       object-assign "^4.0.1"
       tapable "^0.2.7"
+  
+  enquire.js@^2.1.1:
+    version "2.1.6"
+    resolved "https://registry.yarnpkg.com/enquire.js/-/enquire.js-2.1.6.tgz#3e8780c9b8b835084c3f60e166dbc3c2a3c89814"
   
   entities@~1.1.1:
     version "1.1.1"
@@ -2206,6 +2240,10 @@ Lockfile:
   etag@~1.8.1:
     version "1.8.1"
     resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
+  
+  ev-emitter@^1.0.0:
+    version "1.1.1"
+    resolved "https://registry.yarnpkg.com/ev-emitter/-/ev-emitter-1.1.1.tgz#8f18b0ce5c76a5d18017f71c0a795c65b9138f2a"
   
   event-emitter@~0.3.5:
     version "0.3.5"
@@ -2379,7 +2417,13 @@ Lockfile:
     dependencies:
       websocket-driver ">=0.5.1"
   
-  fbjs@^0.8.1, fbjs@^0.8.12, fbjs@^0.8.16, fbjs@^0.8.9:
+  fbemitter@^2.0.0:
+    version "2.1.1"
+    resolved "https://registry.yarnpkg.com/fbemitter/-/fbemitter-2.1.1.tgz#523e14fdaf5248805bb02f62efc33be703f51865"
+    dependencies:
+      fbjs "^0.8.4"
+  
+  fbjs@^0.8.0, fbjs@^0.8.1, fbjs@^0.8.12, fbjs@^0.8.16, fbjs@^0.8.4, fbjs@^0.8.9:
     version "0.8.16"
     resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
     dependencies:
@@ -2390,6 +2434,10 @@ Lockfile:
       promise "^7.1.1"
       setimmediate "^1.0.5"
       ua-parser-js "^0.7.9"
+  
+  fetch-readablestream@^0.1.0:
+    version "0.1.0"
+    resolved "https://registry.yarnpkg.com/fetch-readablestream/-/fetch-readablestream-0.1.0.tgz#2219bccea9bf3b97cb599624094099eafaa400be"
   
   file-loader@1.1.6:
     version "1.1.6"
@@ -2468,6 +2516,13 @@ Lockfile:
     dependencies:
       inherits "^2.0.1"
       readable-stream "^2.0.4"
+  
+  flux@^3.1.3:
+    version "3.1.3"
+    resolved "https://registry.yarnpkg.com/flux/-/flux-3.1.3.tgz#d23bed515a79a22d933ab53ab4ada19d05b2f08a"
+    dependencies:
+      fbemitter "^2.0.0"
+      fbjs "^0.8.0"
   
   follow-redirects@^1.3.0:
     version "1.4.1"
@@ -3012,7 +3067,13 @@ Lockfile:
     version "3.3.7"
     resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.7.tgz#612289bfb3c220e186a58118618d5be8c1bab021"
   
-  immutable@^3.7.4:
+  imagesloaded@^4.1.3:
+    version "4.1.4"
+    resolved "https://registry.yarnpkg.com/imagesloaded/-/imagesloaded-4.1.4.tgz#1376efcd162bb768c34c3727ac89cc04051f3cc7"
+    dependencies:
+      ev-emitter "^1.0.0"
+  
+  immutable@^3.7.4, immutable@^3.8.2:
     version "3.8.2"
     resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
   
@@ -3392,6 +3453,10 @@ Lockfile:
     version "2.4.3"
     resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.3.tgz#2e545ec2b0f2957f41356510205214e98fad6582"
   
+  js-file-download@^0.4.1:
+    version "0.4.1"
+    resolved "https://registry.yarnpkg.com/js-file-download/-/js-file-download-0.4.1.tgz#de0dd2d661d5635f506a73b962ab58ddb650bedb"
+  
   js-md5@^0.7.3:
     version "0.7.3"
     resolved "https://registry.yarnpkg.com/js-md5/-/js-md5-0.7.3.tgz#b4f2fbb0b327455f598d6727e38ec272cd09c3f2"
@@ -3583,11 +3648,27 @@ Lockfile:
     version "4.5.0"
     resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
   
+  lodash.curry@^4.0.1:
+    version "4.1.1"
+    resolved "https://registry.yarnpkg.com/lodash.curry/-/lodash.curry-4.1.1.tgz#248e36072ede906501d75966200a86dab8b23170"
+  
+  lodash.debounce@^4.0.8:
+    version "4.0.8"
+    resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  
+  lodash.difference@^4.0.2:
+    version "4.5.0"
+    resolved "https://registry.yarnpkg.com/lodash.difference/-/lodash.difference-4.5.0.tgz#9ccb4e505d486b91651345772885a2df27fd017c"
+  
+  lodash.flow@^3.3.0:
+    version "3.5.0"
+    resolved "https://registry.yarnpkg.com/lodash.flow/-/lodash.flow-3.5.0.tgz#87bf40292b8cf83e4e8ce1a3ae4209e20071675a"
+  
   lodash.get@^4.4.2:
     version "4.4.2"
     resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
   
-  lodash.isequal@^4.1.1:
+  lodash.isequal@^4.0.0, lodash.isequal@^4.1.1:
     version "4.5.0"
     resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
   
@@ -3599,6 +3680,10 @@ Lockfile:
     version "3.0.2"
     resolved "https://registry.yarnpkg.com/lodash.isobject/-/lodash.isobject-3.0.2.tgz#3c8fb8d5b5bf4bf90ae06e14f2a530a4ed935e1d"
   
+  lodash.keyby@^4.6.0:
+    version "4.6.0"
+    resolved "https://registry.yarnpkg.com/lodash.keyby/-/lodash.keyby-4.6.0.tgz#7f6a1abda93fd24e22728a4d361ed8bcba5a4354"
+  
   lodash.memoize@^4.1.2:
     version "4.1.2"
     resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
@@ -3606,6 +3691,14 @@ Lockfile:
   lodash.mergewith@^4.6.0:
     version "4.6.1"
     resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.1.tgz#639057e726c3afbdb3e7d42741caa8d6e4335927"
+  
+  lodash.omit@^4.5.0:
+    version "4.5.0"
+    resolved "https://registry.yarnpkg.com/lodash.omit/-/lodash.omit-4.5.0.tgz#6eb19ae5a1ee1dd9df0b969e66ce0b7fa30b5e60"
+  
+  lodash.partition@^4.6.0:
+    version "4.6.0"
+    resolved "https://registry.yarnpkg.com/lodash.partition/-/lodash.partition-4.6.0.tgz#a38e46b73469e0420b0da1212e66d414be364ba4"
   
   lodash.tail@^4.1.1:
     version "4.1.1"
@@ -3635,7 +3728,7 @@ Lockfile:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
   
-  loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0, loose-envify@^1.3.1:
+  loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0, loose-envify@^1.3.0, loose-envify@^1.3.1:
     version "1.3.1"
     resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.3.1.tgz#d1a8ad33fa9ce0e713d65fdd0ac8b748d478c848"
     dependencies:
@@ -3843,6 +3936,10 @@ Lockfile:
       pumpify "^1.3.3"
       stream-each "^1.1.0"
       through2 "^2.0.0"
+  
+  mitt@^1.1.2:
+    version "1.1.3"
+    resolved "https://registry.yarnpkg.com/mitt/-/mitt-1.1.3.tgz#528c506238a05dce11cd914a741ea2cc332da9b8"
   
   mixin-deep@^1.2.0:
     version "1.3.1"
@@ -4374,6 +4471,10 @@ Lockfile:
     version "0.2.0"
     resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
   
+  performance-now@^2.1.0:
+    version "2.1.0"
+    resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
+  
   pify@^2.0.0:
     version "2.3.0"
     resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
@@ -4697,7 +4798,7 @@ Lockfile:
     dependencies:
       asap "~2.0.3"
   
-  prop-types@>=15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1:
+  prop-types@15.x, prop-types@>=15.5.0, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1:
     version "15.6.1"
     resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
     dependencies:
@@ -4753,6 +4854,10 @@ Lockfile:
     version "1.4.1"
     resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
   
+  pure-color@^1.2.0:
+    version "1.3.0"
+    resolved "https://registry.yarnpkg.com/pure-color/-/pure-color-1.3.0.tgz#1fe064fb0ac851f0de61320a8bf796836422f33e"
+  
   q@^1.1.2:
     version "1.5.1"
     resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
@@ -4791,6 +4896,12 @@ Lockfile:
   querystringify@~1.0.0:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-1.0.0.tgz#6286242112c5b712fa654e526652bf6a13ff05cb"
+  
+  raf@^3.1.0:
+    version "3.4.0"
+    resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.0.tgz#a28876881b4bc2ca9117d4138163ddb80f781575"
+    dependencies:
+      performance-now "^2.1.0"
   
   randomatic@^1.1.3:
     version "1.1.7"
@@ -4843,9 +4954,9 @@ Lockfile:
       lodash.isequal "^4.1.1"
       prop-types "^15.5.8"
   
-  react-advance-jalaali-datepicker@^0.2.0:
-    version "0.2.0"
-    resolved "https://registry.yarnpkg.com/react-advance-jalaali-datepicker/-/react-advance-jalaali-datepicker-0.2.0.tgz#d479c5d219127639fb4ab88c0959c07619677003"
+  react-advance-jalaali-datepicker@^0.3.4:
+    version "0.3.4"
+    resolved "https://registry.yarnpkg.com/react-advance-jalaali-datepicker/-/react-advance-jalaali-datepicker-0.3.4.tgz#9560814db0d1321138cf58b0af00a8be2b166862"
     dependencies:
       babel-runtime "^6.6.1"
       moment-jalaali "^0.7.0"
@@ -4855,6 +4966,15 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-async-script/-/react-async-script-0.9.1.tgz#d4a496c726fab0c6ef05998ab16e50c742820b60"
     dependencies:
       prop-types ">=15.5.0"
+  
+  react-base16-styling@^0.5.3:
+    version "0.5.3"
+    resolved "https://registry.yarnpkg.com/react-base16-styling/-/react-base16-styling-0.5.3.tgz#3858f24e9c4dd8cbd3f702f3f74d581ca2917269"
+    dependencies:
+      base16 "^1.0.0"
+      lodash.curry "^4.0.1"
+      lodash.flow "^3.3.0"
+      pure-color "^1.2.0"
   
   react-center-component@^3.0.0:
     version "3.0.0"
@@ -4876,6 +4996,13 @@ Lockfile:
       fbjs "^0.8.16"
       loose-envify "^1.1.0"
       object-assign "^4.1.1"
+      prop-types "^15.6.0"
+  
+  react-draggable@3.x, "react-draggable@^2.2.6 || ^3.0.3":
+    version "3.0.5"
+    resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-3.0.5.tgz#c031e0ed4313531f9409d6cd84c8ebcec0ddfe2d"
+    dependencies:
+      classnames "^2.2.5"
       prop-types "^15.6.0"
   
   react-google-maps@^9.4.5:
@@ -4900,6 +5027,16 @@ Lockfile:
     dependencies:
       prop-types ">=15.5.0"
   
+  react-grid-layout@^0.16.6:
+    version "0.16.6"
+    resolved "https://registry.yarnpkg.com/react-grid-layout/-/react-grid-layout-0.16.6.tgz#9b2407a2b946c2260ebaf66f13b556e1da4efeb2"
+    dependencies:
+      classnames "2.x"
+      lodash.isequal "^4.0.0"
+      prop-types "15.x"
+      react-draggable "3.x"
+      react-resizable "1.x"
+  
   react-highcharts@^16.0.2:
     version "16.0.2"
     resolved "https://registry.yarnpkg.com/react-highcharts/-/react-highcharts-16.0.2.tgz#7bdae039f9abb3f753ba88b6578d52630c18537a"
@@ -4911,6 +5048,27 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-json-pretty/-/react-json-pretty-1.7.5.tgz#7fa9551c73e5800477acdeaedc03680c674a5255"
     dependencies:
       create-react-class "^15.5.2"
+  
+  react-json-view@^1.16.6:
+    version "1.16.6"
+    resolved "https://registry.yarnpkg.com/react-json-view/-/react-json-view-1.16.6.tgz#5e8f00bac41485a803283e7eb1116006e5693f79"
+    dependencies:
+      flux "^3.1.3"
+      react-base16-styling "^0.5.3"
+      react-textarea-autosize "^5.1.0"
+  
+  react-lazylog@^3.1.3:
+    version "3.1.3"
+    resolved "https://registry.yarnpkg.com/react-lazylog/-/react-lazylog-3.1.3.tgz#bac646c62caad280d33c0de5b3be81bf10d54ad6"
+    dependencies:
+      fetch-readablestream "^0.1.0"
+      immutable "^3.8.2"
+      mitt "^1.1.2"
+      prop-types "^15.6.1"
+      react-virtualized "^9.10.1"
+      text-encoding-utf-8 "^1.0.1"
+      web-streams-polyfill "^1.3.2"
+      whatwg-fetch "^2.0.4"
   
   react-modal-dialog@^4.0.7:
     version "4.0.7"
@@ -4924,6 +5082,14 @@ Lockfile:
       lodash "^3.9.3"
       narcissus "^1.0.0"
       react-center-component "^3.0.0"
+  
+  react-motion@^0.5.0:
+    version "0.5.2"
+    resolved "https://registry.yarnpkg.com/react-motion/-/react-motion-0.5.2.tgz#0dd3a69e411316567927917c6626551ba0607316"
+    dependencies:
+      performance-now "^0.2.0"
+      prop-types "^15.5.8"
+      raf "^3.1.0"
   
   react-popper@^0.7.2:
     version "0.7.5"
@@ -4942,6 +5108,13 @@ Lockfile:
       lodash-es "^4.17.5"
       loose-envify "^1.1.0"
       prop-types "^15.6.0"
+  
+  react-resizable@1.x:
+    version "1.7.5"
+    resolved "https://registry.yarnpkg.com/react-resizable/-/react-resizable-1.7.5.tgz#83eb75bb3684da6989bbbf4f826e1470f0af902e"
+    dependencies:
+      prop-types "15.x"
+      react-draggable "^2.2.6 || ^3.0.3"
   
   react-router-dom@4.2.2:
     version "4.2.2"
@@ -4974,6 +5147,32 @@ Lockfile:
       select2 "^4.0.0"
       shallow-equal-fuzzy "^0.0.2"
   
+  react-stonecutter@^0.3.9:
+    version "0.3.9"
+    resolved "https://registry.yarnpkg.com/react-stonecutter/-/react-stonecutter-0.3.9.tgz#013648f2da649993aed7464721cf93e0c56d7f1d"
+    dependencies:
+      enquire.js "^2.1.1"
+      imagesloaded "^4.1.3"
+      lodash.debounce "^4.0.8"
+      lodash.omit "^4.5.0"
+      lodash.partition "^4.6.0"
+      prop-types "^15.5.10"
+      react-motion "^0.5.0"
+      react-transition-group-plus "^0.5.0-alpha.1"
+      shallowequal "^1.0.2"
+  
+  react-table@^6.8.2:
+    version "6.8.2"
+    resolved "https://registry.yarnpkg.com/react-table/-/react-table-6.8.2.tgz#3a5aefabc85953300d16786fa307c30610db9adc"
+    dependencies:
+      classnames "^2.2.5"
+  
+  react-textarea-autosize@^5.1.0:
+    version "5.2.1"
+    resolved "https://registry.yarnpkg.com/react-textarea-autosize/-/react-textarea-autosize-5.2.1.tgz#2b78f9067180f41b08ac59f78f1581abadd61e54"
+    dependencies:
+      prop-types "^15.6.0"
+  
   react-toastify@^3.3.4:
     version "3.3.4"
     resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-3.3.4.tgz#29f882653a41d8958a0da3ea8f07115a775eda6e"
@@ -4981,6 +5180,17 @@ Lockfile:
       glamor "^2.20.40"
       prop-types "^15.6.0"
       react-transition-group "^2.2.1"
+  
+  react-transition-group-plus@^0.5.0-alpha.1:
+    version "0.5.3"
+    resolved "https://registry.yarnpkg.com/react-transition-group-plus/-/react-transition-group-plus-0.5.3.tgz#266082b65e0b3855cff61b852dee5bad4b7c98e3"
+    dependencies:
+      create-react-class "^15.5.3"
+      lodash.assign "^4.2.0"
+      lodash.difference "^4.0.2"
+      lodash.keyby "^4.6.0"
+      object-assign "^4.0.1"
+      prop-types "^15.5.10"
   
   react-transition-group@2.2.1, react-transition-group@^2.2.0, react-transition-group@^2.2.1:
     version "2.2.1"
@@ -4993,9 +5203,19 @@ Lockfile:
       prop-types "^15.5.8"
       warning "^3.0.0"
   
-  react@16.2.0:
-    version "16.2.0"
-    resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
+  react-virtualized@^9.10.1:
+    version "9.18.5"
+    resolved "https://registry.yarnpkg.com/react-virtualized/-/react-virtualized-9.18.5.tgz#42dd390ebaa7ea809bfcaf775d39872641679b89"
+    dependencies:
+      babel-runtime "^6.26.0"
+      classnames "^2.2.3"
+      dom-helpers "^2.4.0 || ^3.0.0"
+      loose-envify "^1.3.0"
+      prop-types "^15.6.0"
+  
+  react@^16.3.1:
+    version "16.3.1"
+    resolved "https://registry.yarnpkg.com/react/-/react-16.3.1.tgz#4a2da433d471251c69b6033ada30e2ed1202cfd8"
     dependencies:
       fbjs "^0.8.16"
       loose-envify "^1.1.0"
@@ -5523,6 +5743,10 @@ Lockfile:
     version "0.0.2"
     resolved "https://registry.yarnpkg.com/shallow-equal-fuzzy/-/shallow-equal-fuzzy-0.0.2.tgz#999717c968d36223b1bd7ea95405b697b19fd55c"
   
+  shallowequal@^1.0.2:
+    version "1.0.2"
+    resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.0.2.tgz#1561dbdefb8c01408100319085764da3fcf83f8f"
+  
   shebang-command@^1.2.0:
     version "1.2.0"
     resolved "https://registry.yarnpkg.com/shebang-command/-/shebang-command-1.2.0.tgz#44aac65b695b03398968c39f363fee5deafdf1ea"
@@ -5914,6 +6138,10 @@ Lockfile:
       fstream "^1.0.2"
       inherits "2"
   
+  text-encoding-utf-8@^1.0.1:
+    version "1.0.2"
+    resolved "https://registry.yarnpkg.com/text-encoding-utf-8/-/text-encoding-utf-8-1.0.2.tgz#585b62197b0ae437e3c7b5d0af27ac1021e10d13"
+  
   through2@^2.0.0:
     version "2.0.3"
     resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.3.tgz#0004569b37c7c74ba39c43f3ced78d1ad94140be"
@@ -6236,6 +6464,10 @@ Lockfile:
     dependencies:
       minimalistic-assert "^1.0.0"
   
+  web-streams-polyfill@^1.3.2:
+    version "1.3.2"
+    resolved "https://registry.yarnpkg.com/web-streams-polyfill/-/web-streams-polyfill-1.3.2.tgz#3719245e909282d93967825f44bcd550e9c03995"
+  
   webpack-dev-middleware@1.12.2:
     version "1.12.2"
     resolved "https://registry.yarnpkg.com/webpack-dev-middleware/-/webpack-dev-middleware-1.12.2.tgz#f8fc1120ce3b4fc5680ceecb43d777966b21105e"
@@ -6323,9 +6555,9 @@ Lockfile:
     version "0.1.3"
     resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.3.tgz#5d2ff22977003ec687a4b87073dfbbac146ccf29"
   
-  whatwg-fetch@>=0.10.0:
-    version "2.0.3"
-    resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.3.tgz#9c84ec2dcf68187ff00bc64e1274b442176e1c84"
+  whatwg-fetch@>=0.10.0, whatwg-fetch@^2.0.4:
+    version "2.0.4"
+    resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.4.tgz#dde6a5df315f9d39991aa17621853d720b85566f"
   
   whet.extend@~0.9.9:
     version "0.9.9"
@@ -6470,6 +6702,3 @@ Lockfile:
       cliui "^2.1.0"
       decamelize "^1.0.0"
       window-size "0.1.0"
-
-Trace: 
-  Error: EPERM: operation not permitted, unlink 'N:\IOT Platform Project\web panel\iotrc-web-panel\node_modules\react-select2-wrapper\lib\components'
