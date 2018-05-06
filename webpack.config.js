@@ -30,7 +30,7 @@ module.exports = (env = {}) => {
       compress: true,
       hot: true,
       open: true,
-      disableHostCheck: false
+      disableHostCheck: true
     },
     module: {
       rules: [
