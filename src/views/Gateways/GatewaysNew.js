@@ -13,6 +13,8 @@ import {
     Input
 } from 'reactstrap';
 
+import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+
 import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
 import {createGatewayAction} from "../../actions/AppActions";
 import connect from "react-redux/es/connect/connect";
@@ -202,26 +204,33 @@ class GatewaysNew extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">افزودن Gateway</CardTitle>
                     </CardHeader>
                     <CardBody>
-                        <Form>
-                            <FormGroup row>
+                        <AvForm>
+                            <AvGroup row>
                                 <Label sm={2}>اسم :</Label>
                                 <Col sm={5}>
-                                    <Input type="text"
-                                           placeholder="گذرگاه پژوهشکده"
-                                           maxLength="50"
-                                           onChange={event => this.setState({name: event.target.value})}/>
+                                    <AvInput type="text"
+                                             placeholder="گذرگاه پژوهشکده"
+                                             maxLength="50"
+                                             name={'name'}
+                                             onChange={event => this.setState({name: event.target.value})}
+                                             required/>
+                                    <br/>
+                                    <AvFeedback>الزامی است</AvFeedback>
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row>
+                            </AvGroup>
+                            <AvGroup row>
                                 <Label sm={2}>شناسه گذرگاه</Label>
                                 <Col sm={5}>
-                                    <Input type="text" dir="ltr"
-                                           placeholder="AA00CC11DD22EE33"
-                                           maxLength="16"
-                                           value={this.formatMAC(this.state.mac)}
-                                           onChange={event => this.setState({mac: event.target.value})}/>
+                                    <AvInput type="text" dir="ltr"
+                                             placeholder="AA00CC11DD22EE33"
+                                             maxLength="16"
+                                             name={'macAddress'}
+                                             value={this.formatMAC(this.state.mac)}
+                                             onChange={event => this.setState({mac: event.target.value})}
+                                             required/>
+                                    <AvFeedback>الزامی است</AvFeedback>
                                 </Col>
-                            </FormGroup>
+                            </AvGroup>
                             <FormGroup row>
                                 <Label sm={2}>توضیحات : </Label>
                                 <Col sm={5}>
@@ -254,7 +263,7 @@ class GatewaysNew extends Component {
 
                             <MapWithASearchBox/>
 
-                        </Form>
+                        </AvForm>
                     </CardBody>
                     <CardFooter>
                         <Button color="primary" onClick={this.submitForm}>ثبت اطلاعات</Button>

@@ -20,6 +20,9 @@ import {
     Input,
     Table
 } from 'reactstrap';
+
+import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+
 import ReactTable from 'react-table'
 import { toastAlerts } from '../Shared/toast_alert';
 import 'react-table/react-table.css'
@@ -104,27 +107,33 @@ class ProjectsList extends Component {
                 <Modal isOpen={this.state.createModal} toggle={() => this.toggle('create')} className="text-right">
                     <ModalHeader>پروژه جدید</ModalHeader>
                     <ModalBody>
-                        <Form>
-                            <FormGroup row>
+                        <AvForm>
+                            <AvGroup row>
                                 <Label sm={3}>نام پروژه : </Label>
                                 <Col sm={9}>
-                                    <Input type="text"
-                                           onChange={event => this.setState({
+                                    <AvInput type="text"
+                                             name={'projectName'}
+                                             onChange={event => this.setState({
                                                projectName: event.target.value
-                                           })}/>
+                                             })}
+                                             required/>
+                                    <AvFeedback>الزامی است</AvFeedback>
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row>
+                            </AvGroup>
+                            <AvGroup row>
                                 <Label sm={3}>توضیحات :‌ </Label>
                                 <Col sm={9}>
-                                    <Input type="textarea" name=""
-                                           rows="2"
-                                           onChange={event => this.setState({
+                                    <AvInput type="textarea"
+                                             name={'projectDescription'}
+                                             rows="2"
+                                             onChange={event => this.setState({
                                                projectDesc: event.target.value
-                                           })}/>
+                                             })}
+                                             required/>
+                                    <AvFeedback>الزامی است</AvFeedback>
                                 </Col>
-                            </FormGroup>
-                        </Form>
+                            </AvGroup>
+                        </AvForm>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
