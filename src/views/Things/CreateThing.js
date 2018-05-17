@@ -184,7 +184,7 @@ class CreateThing extends Component {
                                 <Col sm={5}>
                                     <Input value={this.state.thing.lat ?
                                         this.state.thing.lat : 0} type="text" id="fld_lat"
-                                           dir="ltr" readOnly={true}/>
+                                           dir="ltr"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -192,7 +192,7 @@ class CreateThing extends Component {
                                 <Col sm={5}>
                                     <Input value={this.state.thing.long ?
                                         this.state.thing.long : 0} dir="ltr" id="fld_lng"
-                                           type="text" readOnly={true}/>
+                                           type="text"/>
                                 </Col>
                             </FormGroup>
                         </Form>

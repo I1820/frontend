@@ -40,7 +40,7 @@ import {
     getProjectData as getThingDataAPI, createCodec as createCodecAPI,
     createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
     DownloadThingsExcel as DownloadThingsExcelAPI,
-    createGateway as createGatewayAPI,
+    createGateway as createGatewayAPI,updateGateway as updateGatewayAPI,
     deleteProject as deleteProjectAPI,
     deleteDeviceProfile as deleteDeviceProfileAPI,
     deleteGateway as deleteGatewaysAPI,
@@ -698,10 +698,26 @@ export function createGatewayAction(data, cb) {
         promise.then((response) => {
 
             if (response.status === 'OK') {
-                cb(true)
+                cb(true, 'با موفقیت ساخته شد')
             } else {
                 cb(false, response.result)
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+                // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+export function updateGatewayAction(data, cb) {
+    return (dispatch) => {
+        const promise = updateGatewayAPI(data, dispatch)
+        promise.then((response) => {
+
+            if (response.status === 'OK') {
+                cb(true, 'با موفقیت انجام شد')
+                dispatch(setSingleGateway(response.result.gateway))
+            } else {
+                cb(false, response.result)
+                // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         })
     }

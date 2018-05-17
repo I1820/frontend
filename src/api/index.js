@@ -234,6 +234,12 @@ module.exports.createGateway = function (data, dispatch) {
     return fetchData(`/gateway`, config, dispatch)
 }
 
+module.exports.updateGateway = function (data, dispatch) {
+    const config = putConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/gateway/${data._id}`, config, dispatch)
+}
+
 module.exports.uploadExcel = function (data, projectId, dispatch) {
     const url = `${BASE_URL}/things/from-excel`
     const formData = new FormData();
