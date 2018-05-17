@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Col,
     Card,
@@ -13,23 +13,24 @@ import {
     Input
 } from 'reactstrap';
 
-import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
-import {createGatewayAction} from "../../actions/AppActions";
-import connect from "react-redux/es/connect/connect";
-import Spinner from "../Spinner/Spinner";
+import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
+import { createGatewayAction } from '../../actions/AppActions';
+import connect from 'react-redux/es/connect/connect';
+import Spinner from '../Spinner/Spinner';
 
-import {ToastContainer, toast} from 'react-toastify';
-import {css} from 'glamor';
-import {style} from "react-toastify";
+import { ToastContainer, toast } from 'react-toastify';
+import { css } from 'glamor';
+import { style } from 'react-toastify';
+import { toastAlerts } from '../Shared/toast_alert';
 
 
 style({
     colorProgressDefault: 'white'
 });
 
-const _ = require("lodash");
-const {compose, withProps, lifecycle} = require("recompose");
-const {SearchBox} = require("react-google-maps/lib/components/places/SearchBox");
+const _ = require('lodash');
+const {compose, withProps, lifecycle} = require('recompose');
+const {SearchBox} = require('react-google-maps/lib/components/places/SearchBox');
 
 const MapWithASearchBox = compose(
     withProps({
@@ -154,42 +155,12 @@ class GatewaysNew extends Component {
 
         this.changeForm = this.changeForm.bind(this)
         this.submitForm = this.submitForm.bind(this)
-        this.manageToastAlerts = this.manageToastAlerts.bind(this)
 
         this.state = {
-            mac: ""
+            mac: ''
         }
     }
 
-    manageToastAlerts(status,message) {
-
-        if (status) {
-            window.location = '#/gateways/list'
-
-
-            toast('gateway جدید ساخته شد', {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                className: css({
-                    background: '#dbf2e3',
-                    color: '#28623c'
-                }),
-                progressClassName: css({
-                    background: '#28623c'
-                })
-            });
-        } else {
-            toast(message, {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                className: css({
-                    background: '#fee2e1',
-                    color: '#813838',
-                }),
-                progressClassName: css({
-                    background: '#813838'
-                })
-            });
-        }
-    }
 
     render() {
 
@@ -218,7 +189,7 @@ class GatewaysNew extends Component {
                                     <Input type="text" dir="ltr"
                                            placeholder="AA00CC11DD22EE33"
                                            maxLength="16"
-                                           value={this.formatMAC(this.state.mac)}
+                                           value={this.state.mac}
                                            onChange={event => this.setState({mac: event.target.value})}/>
                                 </Col>
                             </FormGroup>
@@ -234,13 +205,13 @@ class GatewaysNew extends Component {
                             <FormGroup row>
                                 <Label sm={2}> عرض جغرافیایی:</Label>
                                 <Col sm={5}>
-                                    <Input id="fld_lat" dir="ltr" readOnly={true}/>
+                                    <Input id="fld_lat" dir="ltr"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>طول جغرافیایی:</Label>
                                 <Col sm={5}>
-                                    <Input dir="ltr" id="fld_lng" readOnly={true}/>
+                                    <Input dir="ltr" id="fld_lng"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -264,20 +235,6 @@ class GatewaysNew extends Component {
         );
     }
 
-    formatMAC(value) {
-        return value
-        if (value == undefined)
-            value = ""
-        const r = /([a-f0-9]{2})([a-f0-9]{2})/i
-        let str = value.replace(/[^a-f0-9]/ig, "");
-
-        while (r.test(str)) {
-            str = str.replace(r, '$1' + ':' + '$2');
-        }
-
-        console.log(str.slice(0, 17))
-        return str.slice(0, 17);
-    }
 
     changeForm(event) {
         let state = {}
@@ -293,13 +250,17 @@ class GatewaysNew extends Component {
     submitForm() {
         this.props.dispatch(createGatewayAction({
                 name: this.state.name,
-                mac: this.formatMAC(this.state.mac).replace(/:/g, ''),
+                mac: this.state.mac,
                 description: this.state.description,
                 latitude: document.getElementById('fld_lat').value,
                 longitude: document.getElementById('fld_lng').value,
                 altitude: this.state.altitude
             },
-            this.manageToastAlerts))
+            (status, result) => {
+                // toastAlerts(status, result);
+                window.location = '#/gateways/list'
+            }
+        ))
     }
 }
 
