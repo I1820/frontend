@@ -206,6 +206,7 @@ class GatewaysNew extends Component {
                                 <Label sm={2}>توضیحات : </Label>
                                 <Col sm={5}>
                                     <Input type="textarea"
+                                           style={{resize: 'none'}}
                                            placeholder="گذرگاه سقف"
                                            maxLength="150"
                                            onChange={event => this.setState({description: event.target.value})}/>

@@ -349,7 +349,7 @@ class DeviceProfileNew extends Component {
 
                                     <FormGroup row>
                                         <Col sm={4}>
-                                            <Input dir="ltr" defaultValue={this.state.form.classCTimeout}
+                                            <Input dir="ltr"
                                                    name={'classCTimeout'}
                                                    placeholder={0}
                                                    readOnly={!this.state.new}

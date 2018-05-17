@@ -126,6 +126,7 @@ class CreateThing extends Component {
                                            placeholder={'شی طبقه سوم'}
                                            maxLength={150}
                                            value={this.state.thing.description}
+                                           style={{resize: 'none'}}
                                            type="textarea"/>
                                 </Col>
                             </FormGroup>
@@ -182,7 +183,7 @@ class CreateThing extends Component {
                             <FormGroup row>
                                 <Label sm={3}>عرض جغرافیایی:</Label>
                                 <Col sm={5}>
-                                    <Input value={this.state.thing.lat ?
+                                    <Input defaultValue={this.state.thing.lat ?
                                         this.state.thing.lat : 0} type="text" id="fld_lat"
                                            dir="ltr"/>
                                 </Col>
@@ -190,7 +191,7 @@ class CreateThing extends Component {
                             <FormGroup row>
                                 <Label sm={3}>طول جغرافیایی:</Label>
                                 <Col sm={5}>
-                                    <Input value={this.state.thing.long ?
+                                    <Input defaultValue={this.state.thing.long ?
                                         this.state.thing.long : 0} dir="ltr" id="fld_lng"
                                            type="text"/>
                                 </Col>

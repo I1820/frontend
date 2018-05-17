@@ -453,7 +453,7 @@ class ProjectsManage extends Component {
                                                         description: event.target.value
                                                     }
                                                 })
-                                            }} maxLength="150" type="textarea" name="" rows="2"/>
+                                            }} maxLength="150" type="textarea" style={{resize: 'none'}} name="" rows="2"/>
                                         </div>
                                     </FormGroup>
 
