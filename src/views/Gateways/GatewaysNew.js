@@ -16,10 +16,10 @@ import {
 
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
-import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps"
-import {createGatewayAction} from "../../actions/AppActions";
-import connect from "react-redux/es/connect/connect";
-import Spinner from "../Spinner/Spinner";
+import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
+import { createGatewayAction } from '../../actions/AppActions';
+import connect from 'react-redux/es/connect/connect';
+import Spinner from '../Spinner/Spinner';
 
 import { ToastContainer, toast } from 'react-toastify';
 import { css } from 'glamor';
@@ -266,8 +266,10 @@ class GatewaysNew extends Component {
                 altitude: this.state.altitude
             },
             (status, result) => {
-                // toastAlerts(status, result);
-                window.location = '#/gateways/list'
+                if (status)
+                    window.location = '#/gateways/list'
+                else
+                    toastAlerts(status, result);
             }
         ))
     }
