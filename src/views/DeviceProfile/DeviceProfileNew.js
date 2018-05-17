@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Row,
     Col,
@@ -30,11 +30,14 @@ import 'brace/theme/monokai';
 import 'brace/mode/python';
 import 'brace/snippets/python';
 import 'brace/ext/language_tools';
-import {createThingProfileAction, getDeviceProfile} from '../../actions/AppActions';
+import {
+    createThingProfileAction, DownloadThingProfileThingsExcelAction,
+    getDeviceProfile
+} from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import Spinner from '../Spinner/Spinner';
 import classnames from 'classnames';
-import {toastAlerts} from '../Shared/toast_alert';
+import { toastAlerts } from '../Shared/toast_alert';
 
 class DeviceProfileNew extends Component {
 
@@ -44,6 +47,7 @@ class DeviceProfileNew extends Component {
         this.setForm = this.setForm.bind(this);
         this.submitForm = this.submitForm.bind(this);
         this.toggleTab = this.toggleTab.bind(this);
+        this.thingsExcel = this.thingsExcel.bind(this);
         this.state = {
             new: true,
             collapse: false,
@@ -85,9 +89,9 @@ class DeviceProfileNew extends Component {
             })
 
             this.props.dispatch(getDeviceProfile(splitedUrl[splitedUrl.length - 1], (result, data) => {
-                console.log(result, data)
                 if (result)
                     this.setState({
+                        _id: splitedUrl[splitedUrl.length - 1],
                         form: {
                             ...data.parameters,
                             name: data.name,
@@ -152,11 +156,11 @@ class DeviceProfileNew extends Component {
                                     <AvGroup row>
                                         <Col sm={4}>
                                             <AvInput placeholder={'Name'} value={this.state.form.name}
-                                                   readOnly={!this.state.new}
-                                                   onChange={this.setForm}
-                                                   name={'name'}
-                                                   type="text"
-                                                   required />
+                                                     readOnly={!this.state.new}
+                                                     onChange={this.setForm}
+                                                     name={'name'}
+                                                     type="text"
+                                                     required/>
                                             <br/>
                                             <AvFeedback>الزامی است</AvFeedback>
                                         </Col>
@@ -166,7 +170,7 @@ class DeviceProfileNew extends Component {
 
                                     <FormGroup row>
                                         <Col sm={4}>
-                                            <Input readOnly={!this.state.new}
+                                            <Input readOnly={!this.state.new} disabled={!this.state.new}
                                                    dir="ltr" value={this.state.form.macVersion} name={'macVersion'}
                                                    onChange={this.setForm} type="select">
                                                 <option value={'1.0.0'}>1.0.0</option>
@@ -183,6 +187,7 @@ class DeviceProfileNew extends Component {
                                         <Col sm={4}>
                                             <Input dir="ltr" name={'regParamsRevision'}
                                                    readOnly={!this.state.new}
+                                                   disabled={!this.state.new}
                                                    value={this.state.form.regParamsRevision}
                                                    onChange={this.setForm} type="select">
                                                 <option value={'A'}>A</option>
@@ -212,6 +217,7 @@ class DeviceProfileNew extends Component {
                                         <Col sm={4}>
                                             <Input type="select" dir="ltr" name="supportsJoin" id="select"
                                                    readOnly={!this.state.new}
+                                                   disabled={!this.state.new}
                                                    value={this.state.form.supportsJoin}
                                                    onChange={this.setForm}>
                                                 <option value={1}>OTAA</option>
@@ -297,6 +303,7 @@ class DeviceProfileNew extends Component {
                                         <Col sm={4}>
                                             <Input dir="ltr" name={'pingSlotPeriod'}
                                                    readOnly={!this.state.new}
+                                                   disabled={!this.state.new}
                                                    value={this.state.form.pingSlotPeriod}
                                                    onChange={this.setForm} type="select">
                                                 <option value={32}>Every 2 Seconds</option>
@@ -458,7 +465,7 @@ class DeviceProfileNew extends Component {
                         {
                             this.state.new ?
                                 <Button onClick={this.submitForm} color="primary">ثبت اطلاعات</Button>
-                                : <div/>
+                                : <Button onClick={this.thingsExcel} color="primary">اکسل اشیای متصل</Button>
                         }
                     </CardFooter>
                 </Card>
@@ -505,6 +512,10 @@ class DeviceProfileNew extends Component {
     submitForm() {
         const form = this.state.form
         this.props.dispatch(createThingProfileAction(form, this.callBack))
+    }
+
+    thingsExcel() {
+        this.props.dispatch(DownloadThingProfileThingsExcelAction(this.state._id))
     }
 
     toggleTab(tab) {
