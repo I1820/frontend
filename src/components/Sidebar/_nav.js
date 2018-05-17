@@ -7,11 +7,11 @@ export default {
         icon: 'icon-screen-desktop',
     },
 
-    {
-        name: 'حساب کاربری',
-        url: '/profile',
-        icon: 'icon-user',
-    },
+    // {
+    //     name: 'حساب کاربری',
+    //     url: '/profile',
+    //     icon: 'icon-user',
+    // },
 
     {
         name: 'پروژه ها',

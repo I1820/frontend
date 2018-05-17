@@ -321,6 +321,10 @@ module.exports.deleteDeviceProfile = function (profileId, dispatch) {
     return fetchData(`/thing-profile/${profileId}`, config, dispatch)
 };
 
+module.exports.getDeviceProfileAPI = function (profileId, dispatch) {
+    return fetchData(`/thing-profile/${profileId}`, getConfig(), dispatch)
+};
+
 module.exports.getSingleGateway = function (id, dispatch) {
     const config = getConfig()
     return fetchData('/gateway/' + id, getConfig(), dispatch)

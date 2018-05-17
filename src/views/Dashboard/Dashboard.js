@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     Row,
     Col,
@@ -16,9 +16,12 @@ import {
     Input,
     Table, Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
-import { connect } from 'react-redux';
+
+import {AvForm, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+
+import {connect} from 'react-redux';
 import Select2 from 'react-select2-wrapper';
-import { toastAlerts } from '../Shared/toast_alert';
+import {toastAlerts} from '../Shared/toast_alert';
 
 import {
     deleteDashboardWidgetChartAction, getDashboardAction, getUserThingsAction,
@@ -81,17 +84,21 @@ class Dashboard extends Component {
                        className="text-right">
                     <ModalHeader>افزونه جدید</ModalHeader>
                     <ModalBody>
-                        <Form>
-                            <FormGroup row>
+                        <AvForm>
+                            <AvGroup row>
                                 <Label sm={3}> عنوان : </Label>
                                 <Col sm={9}>
-                                    <Input onChange={(event) => {
-                                        this.setState({
-                                            widget: {...this.state.widget, title: event.target.value}
-                                        })
-                                    }} type="text"/>
+                                    <AvInput name={'name'}
+                                             onChange={(event) => {
+                                                 this.setState({
+                                                     widget: {...this.state.widget, title: event.target.value}
+                                                 })
+                                             }}
+                                             type="text"
+                                             required/>
+                                    <AvFeedback>الزامی است</AvFeedback>
                                 </Col>
-                            </FormGroup>
+                            </AvGroup>
                             <FormGroup row>
                                 <Label sm={3}> شی : </Label>
                                 <Col sm={9}>
@@ -113,16 +120,20 @@ class Dashboard extends Component {
                                     />
                                 </Col>
                             </FormGroup>
-                            <FormGroup row>
+                            <AvGroup row>
                                 <Label sm={3}> کلید : </Label>
                                 <Col sm={9}>
-                                    <Input onChange={(event) => {
-                                        this.setState({
-                                            widget: {...this.state.widget, key: event.target.value}
-                                        })
-                                    }} type="text"/>
+                                <AvInput    name={'key'}
+                                            onChange={(event) => {
+                                                this.setState({
+                                                    widget: {...this.state.widget, key: event.target.value}
+                                                })
+                                            }}
+                                            type="text"
+                                            required/>
+                                    <AvFeedback>الزامی است</AvFeedback>
                                 </Col>
-                            </FormGroup>
+                            </AvGroup>
                             <FormGroup row>
                                 <Label sm={3}> بازه زمانی:</Label>
                                 <Col sm={9}>
@@ -138,7 +149,7 @@ class Dashboard extends Component {
                                     </Input>
                                 </Col>
                             </FormGroup>
-                        </Form>
+                        </AvForm>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {

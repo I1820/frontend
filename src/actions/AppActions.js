@@ -51,25 +51,25 @@ import {
     lint
 } from '../api/index'
 import {
-    activateScenario,
-    activeThing,
-    createCodecTemplate,
-    createThingProfile,
-    deleteCodecTemplate,
-    deleteScenario,
-    getCodecTemplate,
-    getThingCodec,
-    updateCodecTemplate,
-    getCodecTemplateList,
-    getDashboard,
-    getUserThings,
-    getPackage,
-    getScenario,
-    getThingProfileList,
-    setDashboardWidgetChart,
-    deleteDashboardWidgetChart,
-    updateScenarioAPI,
-    viewProfile
+  activateScenario,
+  activeThing,
+  createCodecTemplate,
+  createThingProfile,
+  deleteCodecTemplate,
+  deleteScenario,
+  getCodecTemplate,
+  getThingCodec,
+  updateCodecTemplate,
+  getCodecTemplateList,
+  getDashboard,
+  getUserThings,
+  getPackage,
+  getScenario,
+  getThingProfileList,
+  setDashboardWidgetChart,
+  deleteDashboardWidgetChart,
+  updateScenarioAPI,
+  viewProfile, getDeviceProfileAPI
 } from '../api';
 import fileDownload from 'js-file-download'
 
@@ -469,6 +469,21 @@ export function deleteDeviceProfileAction(profileId, cb) {
         })
     }
 }
+
+export function getDeviceProfile(profileId, cb) {
+  return (dispatch) => {
+    const promise = getDeviceProfileAPI(profileId, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(true,response.result.thing_profile)
+      } else {
+        cb(false, response.result)
+        // window.location = '#/device-profile/list'
+      }
+    })
+  }
+}
+
 
 export function createThingProfileAction(data, cb) {
     return (dispatch) => {
