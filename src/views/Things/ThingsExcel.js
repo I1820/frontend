@@ -52,7 +52,7 @@ class ThingsExcel extends Component {
                     </CardHeader>
                     <CardBody>
                         <Form>
-                            <p>برای ساخت دسته ای شی مانند فایل اکسل نمونه را در سامانه بارگذاری نمایید</p>
+                          <p>برای ساخت دسته ای شی مانند فایل اکسل <a href='./files/sample.csv'>نمونه </a> را در سامانه بارگذاری نمایید</p>
                             <br/>
                             <FormGroup row>
                                 <Col sm={12}>
