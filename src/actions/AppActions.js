@@ -890,13 +890,14 @@ export function sendCodecAction(thingId, projectId, codec, cb) {
     }
 }
 
-export function createCodecTemplateAction(projectId, data) {
+export function createCodecTemplateAction(projectId, data, cb) {
     return (dispatch) => {
         const promise = createCodecTemplate(projectId, data, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 forwardTo(`projects/manage/${projectId}`)
             } else {
+                cb(false, response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         }).catch((err) => {
@@ -905,13 +906,14 @@ export function createCodecTemplateAction(projectId, data) {
     }
 }
 
-export function updateCodecTemplateAction(codec_id, projectId, data) {
+export function updateCodecTemplateAction(codec_id, projectId, data,cb) {
     return (dispatch) => {
         const promise = updateCodecTemplate(codec_id, projectId, data, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 forwardTo(`projects/manage/${projectId}`)
             } else {
+                cb(false, response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         }).catch((err) => {

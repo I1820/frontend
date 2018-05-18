@@ -21,6 +21,7 @@ import {
 } from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import Spinner from '../Spinner/Spinner';
+import { toastAlerts } from '../Shared/toast_alert';
 
 class AddTemplate extends Component {
 
@@ -146,15 +147,21 @@ class AddTemplate extends Component {
 
 
         if (this.state.id === undefined)
-            this.props.dispatch(createCodecTemplateAction(this.state.project, {
-                name: this.state.name,
-                code: this.state.code
-            }))
+            this.props.dispatch(createCodecTemplateAction(
+                this.state.project, {
+                    name: this.state.name,
+                    code: this.state.code
+                },
+                toastAlerts
+            ))
         else
-            this.props.dispatch(updateCodecTemplateAction(this.state.id, this.state.project, {
-                name: this.state.name,
-                code: this.state.code
-            }))
+            this.props.dispatch(updateCodecTemplateAction(
+                this.state.id,
+                this.state.project, {
+                    name: this.state.name,
+                    code: this.state.code
+                }, toastAlerts
+            ))
     }
 }
 
