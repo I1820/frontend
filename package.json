@@ -53,6 +53,7 @@
     "react-advance-jalaali-datepicker": "^0.3.4",
     "react-async-script": "^0.9.1",
     "react-chartjs-2": "2.7.0",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "16.2.0",
     "react-google-maps": "^9.4.5",
     "react-google-recaptcha": "^0.9.7",
