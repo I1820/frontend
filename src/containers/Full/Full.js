@@ -174,8 +174,8 @@ class Full extends Component {
                                 <Route path="/charts" name="Charts" component={Charts}/>
                                 <Redirect from="/" to="/dashboard"/>
                             </Switch>
-                            <ToastContainer className="text-right"/>
                         </Container>
+                        <ToastContainer className="text-right"/>
                     </main>
                     <Aside/>
                 </div>
