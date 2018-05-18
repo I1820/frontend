@@ -21,8 +21,6 @@ import { createGatewayAction } from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import Spinner from '../Spinner/Spinner';
 
-import { ToastContainer, toast } from 'react-toastify';
-import { css } from 'glamor';
 import { style } from 'react-toastify';
 import { toastAlerts } from '../Shared/toast_alert';
 

@@ -30,7 +30,7 @@ const _ = require('lodash');
 const {compose, withProps, lifecycle} = require('recompose');
 const {SearchBox} = require('react-google-maps/lib/components/places/SearchBox');
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from 'react-toastify';
 import Select2 from 'react-select2-wrapper';
@@ -103,7 +103,6 @@ class CreateThing extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
-                <ToastContainer className="text-right"/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">اطلاعات شی</CardTitle>

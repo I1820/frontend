@@ -96,6 +96,7 @@ class Full extends Component {
     render() {
         return (
             <div className="app">
+                <ToastContainer className="text-right"/>
                 <Header/>
                 <div className="app-body">
                     <Sidebar {...this.props}/>
@@ -175,7 +176,6 @@ class Full extends Component {
                                 <Redirect from="/" to="/dashboard"/>
                             </Switch>
                         </Container>
-                        <ToastContainer className="text-right"/>
                     </main>
                     <Aside/>
                 </div>
