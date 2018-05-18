@@ -51,6 +51,7 @@ class ProjectsView extends Component {
             auto: false,
             config: {
                 chart: {
+                    type:'column',
                     style: {
                         fontFamily: 'Tahoma'
                     }

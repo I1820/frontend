@@ -120,6 +120,8 @@ class Full extends Component {
                                 <Route path="/device-profile/new" name="DeviceProfileNew" component={DeviceProfileNew}/>
                                 <Route path="/device-profile" name="ViewDeviceProfile" component={DeviceProfileNew}/>
 
+                                <Route path="/things/list" name="ThingsList" component={ThingsList}/>
+
                                 <Route path="/payment-portal/management" name="PaymentPortalManagment"
                                        component={PaymentPortalManagment}/>
 

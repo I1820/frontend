@@ -15,7 +15,8 @@ export function userReducer(state = initialState, action) {
                     email: action.newState.user.email,
                     other_info: action.newState.user.other_info,
                     token: action.newState.token,
-                    keep: action.newState.keep
+                    keep: action.newState.keep,
+                    is_admin:action.newState.user.is_admin
                 })
             } else {
                 return assign({}, state, {
@@ -26,7 +27,8 @@ export function userReducer(state = initialState, action) {
                     email: action.newState.user.email,
                     other_info: action.newState.user.other_info,
                     token: action.newState.token,
-                    keep: action.newState.keep
+                    keep: action.newState.keep,
+                    is_admin:action.newState.user.is_admin
 
                 })
             }

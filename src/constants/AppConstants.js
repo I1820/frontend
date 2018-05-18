@@ -28,3 +28,4 @@ export const NEW_PACKAGE = 'NEW_PACKAGE'
 export const SELECT_USER = "SELECT_USER"
 export const SELECT_PACKAGE = 'SELECT_PACKAGE'
 export const PAYMENT_RESULT = 'PAYMENT_RESULT'
+export const GET_USERS = 'GET_USERS'

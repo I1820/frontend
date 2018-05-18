@@ -65,12 +65,12 @@ const translate = (error) => {
     return Errors[error] !== undefined ? Errors[error] : error
 }
 
-function fetchData(endpoint = '/404', config = {}, dispatch) {
+function fetchData(endpoint = '/404', config = {}, dispatch, newUrl = false) {
 
     return new Promise((resolve, reject) => {
         dispatch(sendingRequest(true))
 
-        fetch(BASE_URL + endpoint, config)
+        fetch(newUrl ? endpoint : BASE_URL + endpoint, config)
             .then((response) => response.json())
             .then((json) => {
                 dispatch(sendingRequest(false))
@@ -192,6 +192,11 @@ module.exports.editAliases = function (id, data, dispatch) {
 module.exports.getThing = function (thingId, dispatch) {
     return fetchData(`/things/${thingId}`, getConfig(), dispatch)
 }
+
+module.exports.getThings = function (dispatch) {
+  return fetchData(`/things`, getConfig(), dispatch)
+}
+
 
 module.exports.getGateways = function (dispatch) {
     return fetchData('/gateway', getConfig(), dispatch)
@@ -424,3 +429,8 @@ module.exports.deleteDashboardWidgetChart = function (id, dispatch) {
     const config = deleteConfig()
     return fetchData(`/user/widget/charts?id=${id}`, config, dispatch)
 }
+
+module.exports.getUsers = function (dispatch) {
+  return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users`, getConfig(), dispatch,true)
+}
+

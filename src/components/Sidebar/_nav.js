@@ -2,9 +2,10 @@ export default {
   items: [
 
     {
-        name: 'داشبورد',
-        url: '/dashboard',
-        icon: 'icon-screen-desktop',
+      name: 'داشبورد',
+      url: '/dashboard',
+      icon: 'icon-screen-desktop',
+      type: 'global'
     },
 
     // {
@@ -14,9 +15,16 @@ export default {
     // },
 
     {
-        name: 'پروژه ها',
-        url: '/projects/list',
-        icon: 'icon-layers',
+      name: 'پروژه ها',
+      url: '/projects/list',
+      icon: 'icon-layers',
+      type: 'user'
+    },
+    {
+      name: 'اشیا',
+      url: '/things/list',
+      icon: 'icon-wifi',
+      type: 'user'
     },
     // {
     //     name: 'بسته‌ها',
@@ -34,31 +42,36 @@ export default {
     //     icon: 'icon-puzzle',
     // },
     {
-        name: 'گذرگاه ها',
-        url: '/gateways/list',
-        icon: 'icon-direction',
+      name: 'گذرگاه ها',
+      url: '/gateways/list',
+      icon: 'icon-direction',
+      type: 'user'
     },
 
     {
-        name: 'پروفایل اشیا',
-        url: '/device-profile/list',
-        icon: 'icon-grid',
+      name: 'پروفایل اشیا',
+      url: '/device-profile/list',
+      icon: 'icon-grid',
+      type: 'user'
     },
-    // {
-    //     name: 'مدیریت پرتال پرداخت',
-    //     url: '/payment-portal/management',
-    //     icon: 'icon-grid',
-    // },
-    // {
-    //     name: 'مدیریت بسته‌ها',
-    //     url: '/Package/Managment',
-    //     icon: 'icon-grid',
-    // },
-    // {
-    //     name: 'مدیریت کاربران',
-    //     url: '/Users/Managment',
-    //     icon: 'icon-grid',
-    // },
+    {
+      name: 'مدیریت پرتال پرداخت',
+      url: '/payment-portal/management',
+      icon: 'icon-grid',
+      type: 'admin'
+    },
+    {
+      name: 'مدیریت بسته‌ها',
+      url: '/Package/Managment',
+      icon: 'icon-grid',
+      type: 'admin'
+    },
+    {
+      name: 'مدیریت کاربران',
+      url: '/Users/Managment',
+      icon: 'icon-grid',
+      type: 'admin'
+    },
     // {
     //     name: 'اشیاء',
     //     url: '/things',

@@ -25,16 +25,16 @@
 /* global fetch */
 
 import {
-    SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
-    UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
-    SET_GATEWAY, NEW_PACKAGE, SELECT_USER, SELECT_PACKAGE, PAYMENT_RESULT, GET_PACKAGED
+  SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
+  UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
+  SET_GATEWAY, NEW_PACKAGE, SELECT_USER, SELECT_PACKAGE, PAYMENT_RESULT, GET_PACKAGED, GET_USERS
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
     login as loginAPI, logout as logoutAPI, register as registerAPI,
     listProject as listProjectsAPI, editProject as editProjectAPI,
     getProject as getProjectAPI, createProject as createProjectAPI,
-    editProfile as editProfileAPI, changePassword as changePasswordAPI, listThings as listThingsAPI,
+    editProfile as editProfileAPI, changePassword as changePasswordAPI, getThings as listThingsAPI,
     getThing as getThingAPI, connectThing as connectThingAPI,
     createThing as createThingAPI, editThing as editThingAPI, editAliases as editAliasesAPI,
     getProjectData as getThingDataAPI, createCodec as createCodecAPI,
@@ -52,25 +52,25 @@ import {
     lint
 } from '../api/index'
 import {
-    activateScenario,
-    activeThing,
-    createCodecTemplate,
-    createThingProfile,
-    deleteCodecTemplate,
-    deleteScenario,
-    getCodecTemplate,
-    getThingCodec,
-    updateCodecTemplate,
-    getCodecTemplateList,
-    getDashboard,
-    getUserThings,
-    getPackage,
-    getScenario,
-    getThingProfileList,
-    setDashboardWidgetChart,
-    deleteDashboardWidgetChart,
-    updateScenarioAPI,
-    viewProfile, getDeviceProfileAPI
+  activateScenario,
+  activeThing,
+  createCodecTemplate,
+  createThingProfile,
+  deleteCodecTemplate,
+  deleteScenario,
+  getCodecTemplate,
+  getThingCodec,
+  updateCodecTemplate,
+  getCodecTemplateList,
+  getDashboard,
+  getUserThings,
+  getPackage,
+  getScenario,
+  getThingProfileList,
+  setDashboardWidgetChart,
+  deleteDashboardWidgetChart,
+  updateScenarioAPI,
+  viewProfile, getDeviceProfileAPI, getUsers
 } from '../api';
 import fileDownload from 'js-file-download'
 
@@ -1035,4 +1035,22 @@ export function deleteDashboardWidgetChartAction(id, cb) {
             }
         })
     }
+}
+
+
+export function getUsersAction(cb = () => {}) {
+  return (dispatch) => {
+    const promise = getUsers(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(true, response.result.scenario)
+        dispatch({type: GET_USERS, newState: response.result.users})
+      } else {
+        cb(false)
+      }
+    }).catch((err) => {
+      cb(false)
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
 }
