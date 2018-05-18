@@ -33,7 +33,7 @@ import {
 } from '../../actions/AppActions';
 import Spinner from '../Spinner/Spinner';
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from 'react-toastify';
 import ReactTable from 'react-table'
@@ -181,7 +181,6 @@ class ProjectsManage extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
-                <ToastContainer className="text-right"/>
 
                 <Modal isOpen={this.state.deleteScenarioModal} toggle={() => this.toggle('deleteScenario')}
                        className="text-right">
@@ -453,7 +452,7 @@ class ProjectsManage extends Component {
                                                         description: event.target.value
                                                     }
                                                 })
-                                            }} maxLength="150" type="textarea" name="" rows="2"/>
+                                            }} maxLength="150" type="textarea" style={{resize: 'none'}} name="" rows="2"/>
                                         </div>
                                     </FormGroup>
 

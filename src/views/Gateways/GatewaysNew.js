@@ -21,8 +21,6 @@ import { createGatewayAction } from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import Spinner from '../Spinner/Spinner';
 
-import { ToastContainer, toast } from 'react-toastify';
-import { css } from 'glamor';
 import { style } from 'react-toastify';
 import { toastAlerts } from '../Shared/toast_alert';
 
@@ -170,7 +168,6 @@ class GatewaysNew extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
-                <ToastContainer className="text-right"/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">افزودن Gateway</CardTitle>
@@ -206,6 +203,7 @@ class GatewaysNew extends Component {
                                 <Label sm={2}>توضیحات : </Label>
                                 <Col sm={5}>
                                     <Input type="textarea"
+                                           style={{resize: 'none'}}
                                            placeholder="گذرگاه سقف"
                                            maxLength="150"
                                            onChange={event => this.setState({description: event.target.value})}/>

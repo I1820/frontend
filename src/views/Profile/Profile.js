@@ -18,7 +18,7 @@ import {
 import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import classnames from 'classnames';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from 'react-toastify';
 import { editProfile, getProfileAction, changePassword } from '../../actions/AppActions';
@@ -100,7 +100,6 @@ class Profile extends Component {
         return (
 
             <div className={'row'}>
-                <ToastContainer className="text-right"/>
                 <Spinner display={this.props.loading}/>
                 <div className="col-md-12 col-lg-7">
                     <Card className="text-justify">

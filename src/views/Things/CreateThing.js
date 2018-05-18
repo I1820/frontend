@@ -30,7 +30,7 @@ const _ = require('lodash');
 const {compose, withProps, lifecycle} = require('recompose');
 const {SearchBox} = require('react-google-maps/lib/components/places/SearchBox');
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from 'react-toastify';
 import Select2 from 'react-select2-wrapper';
@@ -103,7 +103,6 @@ class CreateThing extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
-                <ToastContainer className="text-right"/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">اطلاعات شی</CardTitle>
@@ -126,6 +125,7 @@ class CreateThing extends Component {
                                            placeholder={'شی طبقه سوم'}
                                            maxLength={150}
                                            value={this.state.thing.description}
+                                           style={{resize: 'none'}}
                                            type="textarea"/>
                                 </Col>
                             </FormGroup>
@@ -182,17 +182,17 @@ class CreateThing extends Component {
                             <FormGroup row>
                                 <Label sm={3}>عرض جغرافیایی:</Label>
                                 <Col sm={5}>
-                                    <Input value={this.state.thing.lat ?
-                                        this.state.thing.lat : 0} type="text" id="fld_lat"
+                                    <Input defaultValue={this.state.thing.lat ?
+                                        this.state.thing.lat : 0} type="number" id="fld_lat"
                                            dir="ltr"/>
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={3}>طول جغرافیایی:</Label>
                                 <Col sm={5}>
-                                    <Input value={this.state.thing.long ?
+                                    <Input defaultValue={this.state.thing.long ?
                                         this.state.thing.long : 0} dir="ltr" id="fld_lng"
-                                           type="text"/>
+                                           type="number"/>
                                 </Col>
                             </FormGroup>
                         </Form>
