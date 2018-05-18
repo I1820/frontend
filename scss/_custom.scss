@@ -1504,3 +1504,17 @@ ults__option[aria-disabled=true] {
 .select2-container--classic.select2-container--open .select2-dropdown {
   border-color: #5897fb;
 }
+
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #cccccc  !important;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #cccccc  !important;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #cccccc !important;
+}
