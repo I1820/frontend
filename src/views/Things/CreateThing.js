@@ -184,7 +184,7 @@ class CreateThing extends Component {
                                 <Label sm={3}>عرض جغرافیایی:</Label>
                                 <Col sm={5}>
                                     <Input defaultValue={this.state.thing.lat ?
-                                        this.state.thing.lat : 0} type="text" id="fld_lat"
+                                        this.state.thing.lat : 0} type="number" id="fld_lat"
                                            dir="ltr"/>
                                 </Col>
                             </FormGroup>
@@ -193,7 +193,7 @@ class CreateThing extends Component {
                                 <Col sm={5}>
                                     <Input defaultValue={this.state.thing.long ?
                                         this.state.thing.long : 0} dir="ltr" id="fld_lng"
-                                           type="text"/>
+                                           type="number"/>
                                 </Col>
                             </FormGroup>
                         </Form>
