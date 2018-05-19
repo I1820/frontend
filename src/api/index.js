@@ -363,7 +363,7 @@ module.exports.deleteScenario = function (projectId, scenarioId, dispatch) {
 module.exports.newDownlink = function (thingId, data, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
-    return fetchData(`/things/${thingId}/codec`, config, dispatch)
+    return fetchData(`/things/${thingId}/send`, config, dispatch)
 }
 
 module.exports.createCodecTemplate = function (projectId, data, dispatch) {
