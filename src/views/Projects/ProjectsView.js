@@ -164,7 +164,7 @@ class ProjectsView extends Component {
                         label: k,
                         name: `${things[d.thingid]}: ${k}`,
                         data: [],
-                        colorIndex: k % 6
+                        colorIndex: ((((k.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)) % 10) + 10) % 10)
                     })
                 }
             })
