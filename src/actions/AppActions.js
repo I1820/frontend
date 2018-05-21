@@ -611,16 +611,18 @@ export function DownloadThingProfileThingsExcelAction(profileId) {
 
 /*  project actions */
 
-export function createScenario(projectId, data) {
+export function createScenario(projectId, data,cb) {
     return (dispatch) => {
         const promise = createScenarioAPI(data, projectId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 forwardTo(`projects/manage/${projectId}`)
             } else {
+                cb(false,response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         }).catch((err) => {
+            cb(false,'خطای نامشخص')
             dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
         })
     }
@@ -633,9 +635,11 @@ export function updateScenarioAction(projectId, scenarioId, data) {
             if (response.status === 'OK') {
                 forwardTo(`projects/manage/${projectId}`)
             } else {
+                cb(false,response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         }).catch((err) => {
+            cb(false,'خطای نامشخص')
             dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
         })
     }
