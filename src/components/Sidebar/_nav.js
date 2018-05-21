@@ -23,7 +23,7 @@ export default {
     {
       name: 'اشیا',
       url: '/things/list',
-      icon: 'icon-wifi',
+      icon: 'icon-feed',
       type: 'user'
     },
     // {
