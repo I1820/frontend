@@ -25,9 +25,31 @@
 /* global fetch */
 
 import {
-  SET_AUTH, CHANGE_FORM, SENDING_REQUEST, SET_ERROR_MESSAGE, INIT_USER, SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT,
-  UPDATE_USER, FREE, GET_THINGS, FETCH_THING, GET_THINGS_PROFILE, FETCH_THING_PROFILE, GET_GATEWAYS, FETCH_CODEC_LIST,
-  SET_GATEWAY, NEW_PACKAGE, SELECT_USER, SELECT_PACKAGE, PAYMENT_RESULT, GET_PACKAGED, GET_USERS
+    SET_AUTH,
+    CHANGE_FORM,
+    SENDING_REQUEST,
+    SET_ERROR_MESSAGE,
+    INIT_USER,
+    SELECT_PROJECT,
+    GET_PROJECTS,
+    FETCH_PROJECT,
+    UPDATE_USER,
+    FREE,
+    GET_THINGS,
+    FETCH_THING,
+    GET_THINGS_PROFILE,
+    FETCH_THING_PROFILE,
+    GET_GATEWAYS,
+    FETCH_CODEC_LIST,
+    SET_GATEWAY,
+    NEW_PACKAGE,
+    SELECT_USER,
+    PAYMENT_RESULT,
+    GET_USER_PACKAGES,
+    GET_ADMIN_PACKAGES,
+    GET_DISCOUNTS,
+    GET_PACKAGE,
+    GET_USERS
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -49,28 +71,39 @@ import {
     getGateways,
     deleteThing as deleteThingAPI,
     newDownlink as newDownlinkAPI,
-    lint
+    lint,
+    base_url
 } from '../api/index'
 import {
-  activateScenario,
-  activeThing,
-  createCodecTemplate,
-  createThingProfile,
-  deleteCodecTemplate,
-  deleteScenario,
-  getCodecTemplate,
-  getThingCodec,
-  updateCodecTemplate,
-  getCodecTemplateList,
-  getDashboard,
-  getUserThings,
-  getPackage,
-  getScenario,
-  getThingProfileList,
-  setDashboardWidgetChart,
-  deleteDashboardWidgetChart,
-  updateScenarioAPI,
-  viewProfile, getDeviceProfileAPI, getUsers
+    activateScenario,
+    activeThing,
+    createCodecTemplate,
+    createThingProfile,
+    deleteCodecTemplate,
+    deleteScenario,
+    getCodecTemplate,
+    getThingCodec,
+    updateCodecTemplate,
+    getCodecTemplateList,
+    getDashboard,
+    getUserThings,
+    getAdminPackage,
+    getPackage,
+    deletePackage,
+    createPackage,
+    updatePackage,
+    getDiscounts,
+    deleteDiscount,
+    createDiscount,
+    activatePackage,
+    getUserPackage,
+    buyPackage,
+    getScenario,
+    getThingProfileList,
+    setDashboardWidgetChart,
+    deleteDashboardWidgetChart,
+    updateScenarioAPI,
+    viewProfile, getDeviceProfileAPI, getUsers
 } from '../api';
 import fileDownload from 'js-file-download'
 
@@ -340,10 +373,6 @@ export function SelectUser(newState = NEW_OBJECT) {
     return {type: SELECT_USER, newState}
 }
 
-export function selectPackage(newState = NEW_OBJECT) {
-    forwardTo('selectedPackage/' + newState)
-    return {type: SELECT_PACKAGE, newState}
-}
 
 export function resultOfPay(newState) {
     newState == 'success' ? forwardTo('paymentResult/S/' + newState) : forwardTo('paymentResult/F/' + newState)
@@ -611,18 +640,18 @@ export function DownloadThingProfileThingsExcelAction(profileId) {
 
 /*  project actions */
 
-export function createScenario(projectId, data,cb) {
+export function createScenario(projectId, data, cb) {
     return (dispatch) => {
         const promise = createScenarioAPI(data, projectId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 forwardTo(`projects/manage/${projectId}`)
             } else {
-                cb(false,response.result)
+                cb(false, response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         }).catch((err) => {
-            cb(false,'خطای نامشخص')
+            cb(false, 'خطای نامشخص')
             dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
         })
     }
@@ -635,11 +664,11 @@ export function updateScenarioAction(projectId, scenarioId, data) {
             if (response.status === 'OK') {
                 forwardTo(`projects/manage/${projectId}`)
             } else {
-                cb(false,response.result)
+                cb(false, response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         }).catch((err) => {
-            cb(false,'خطای نامشخص')
+            cb(false, 'خطای نامشخص')
             dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
         })
     }
@@ -910,7 +939,7 @@ export function createCodecTemplateAction(projectId, data, cb) {
     }
 }
 
-export function updateCodecTemplateAction(codec_id, projectId, data,cb) {
+export function updateCodecTemplateAction(codec_id, projectId, data, cb) {
     return (dispatch) => {
         const promise = updateCodecTemplate(codec_id, projectId, data, dispatch)
         promise.then((response) => {
@@ -977,13 +1006,187 @@ export function lintCode(projectId, code, cb) {
 
 /* packages action */
 
-export function getPackagesAction() {
+export function getAdminPackagesAction() {
     return (dispatch) => {
-        const promise = getPackage(dispatch)
+        const promise = getAdminPackage(dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
-                dispatch({type: GET_PACKAGED, newState: response.result.packages})
+                dispatch({type: GET_ADMIN_PACKAGES, newState: response.result.packages})
             } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+/* packages action */
+
+export function getDiscountsAction() {
+    return (dispatch) => {
+        const promise = getDiscounts(dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch({type: GET_DISCOUNTS, newState: response.result.discounts})
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+/* packages action */
+
+export function deleteDiscountAction(discountId, cb) {
+    return (dispatch) => {
+        const promise = deleteDiscount(discountId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb && cb(true, 'با موفقیت حدف شد.');
+                dispatch(getDiscountsAction())
+            } else {
+                cb && cb(false, response.result);
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+/* packages action */
+
+export function createDiscountAction(value, cb) {
+    return (dispatch) => {
+        const promise = createDiscount(value, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb && cb(true, 'با موفقیت اضافه شد.');
+                dispatch(getDiscountsAction())
+            } else {
+                cb && cb(false, response.result);
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+
+/* packages action */
+
+export function getPackageAction(packageId) {
+    return (dispatch) => {
+        const promise = getPackage(packageId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch({type: GET_PACKAGE, newState: response.result.package})
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+/* packages action */
+
+export function createPackagesAction(data, cb) {
+    return (dispatch) => {
+        const promise = createPackage(data, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                forwardTo('admin/packages')
+            } else {
+                cb && cb(false, response.result)
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((err) => {
+            cb && cb(false, 'خطای نامشخص')
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
+}
+
+/* packages action */
+
+export function updatePackagesAction(packageId, data, cb) {
+    return (dispatch) => {
+        const promise = updatePackage(packageId, data, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                forwardTo('admin/packages')
+            } else {
+                cb && cb(false, response.result)
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((err) => {
+            cb && cb(false, 'خطای نامشخص')
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
+}
+
+/* packages action */
+
+export function deletePackagesAction(packageId, cb) {
+    return (dispatch) => {
+        const promise = deletePackage(packageId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb && cb(true, 'با موفقیت حذف شد')
+                dispatch(new getAdminPackagesAction())
+            } else {
+                cb && cb(false, response.result)
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((err) => {
+            cb && cb(false, 'خطای نامشخص')
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
+}
+
+/* packages action */
+
+export function activatePackagesAction(packageId, active, cb) {
+    return (dispatch) => {
+        const promise = activatePackage(packageId, active, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb && cb(true, 'با موفقیت انجام شد')
+                dispatch(new getAdminPackagesAction())
+            } else {
+                cb && cb(false, response.result)
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        }).catch((err) => {
+            cb && cb(false, 'خطای نامشخص')
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
+}
+
+/* packages action */
+
+export function getUserPackagesAction() {
+    return (dispatch) => {
+        const promise = getUserPackage(dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch({type: GET_USER_PACKAGES, newState: response.result.packages})
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+/* packages action */
+
+export function buyPackagesAction(packageId, code, cb) {
+    return (dispatch) => {
+        const promise = buyPackage(packageId, code, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                window.location = base_url() + `/payment/${response.result.invoice._id}/pay`
+            } else {
+                cb && cb(false, response.result)
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         })
@@ -1042,19 +1245,20 @@ export function deleteDashboardWidgetChartAction(id, cb) {
 }
 
 
-export function getUsersAction(cb = () => {}) {
-  return (dispatch) => {
-    const promise = getUsers(dispatch)
-    promise.then((response) => {
-      if (response.status === 'OK') {
-        cb(true, response.result.scenario)
-        dispatch({type: GET_USERS, newState: response.result.users})
-      } else {
-        cb(false)
-      }
-    }).catch((err) => {
-      cb(false)
-      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-    })
-  }
+export function getUsersAction(cb = () => {
+}) {
+    return (dispatch) => {
+        const promise = getUsers(dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb(true, response.result.scenario)
+                dispatch({type: GET_USERS, newState: response.result.users})
+            } else {
+                cb(false)
+            }
+        }).catch((err) => {
+            cb(false)
+            dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        })
+    }
 }

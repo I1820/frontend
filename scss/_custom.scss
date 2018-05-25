@@ -186,9 +186,12 @@ body {
 }
 
 .back3 {
-  background-image: url('https://www.sarina724.com/frontend/web/upload/200-200/20161008021954.jpg');
+  background-image: url('https://cdn.zarinpal.com/panel/v1/assets/images/ZarinPal-Logo.svg');
   background-repeat: no-repeat;
-  background-size: 120px 110px;
+  background-size: 130px;
+  background-position: center center;
+  width: 150px;
+  height: 100px;
   text-align: center;
 }
 
@@ -1505,14 +1508,13 @@ ults__option[aria-disabled=true] {
   border-color: #5897fb;
 }
 
-
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #cccccc  !important;
+  color: #cccccc !important;
   opacity: 1; /* Firefox */
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: #cccccc  !important;
+  color: #cccccc !important;
 }
 
 ::-ms-input-placeholder { /* Microsoft Edge */

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     Row,
@@ -24,26 +24,44 @@ import {
     ListGroupItem,
     Alert
 } from 'reactstrap';
-import {resultOfPay} from '../../actions/AppActions'
+import { buyPackagesAction, forwardTo, getPackageAction } from '../../actions/AppActions'
+import { toastAlerts } from '../Shared/toast_alert';
 
 
 class SelectedPackage extends Component {
 
     constructor(props) {
         super(props);
+        this.pay = this.pay.bind(this)
         this.state = {
-            result: 'failure',
-            // 'success failure',
-            yourPick: ''
-          };
+            package: {},
+            agree: false,
+            discountCode: ''
+        };
     }
 
+    componentWillReceiveProps(props) {
+        this.setState({
+            package: props.package,
+        })
+    }
+
+    componentWillMount() {
+        this.props.dispatch(getPackageAction(this.props.match.params.id))
+    }
+
+    pay() {
+        if (this.state.agree === false) {
+            toastAlerts(false, 'لطفا قوانین را بپذیرید')
+            return
+        }
+        this.props.dispatch(buyPackagesAction(this.props.match.params.id, this.state.discountCode, toastAlerts))
+    }
 
     render() {
-        const isCurrent = this.state.yourPick 
         return (
             <div>
-                
+
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">بسته منتخب </CardTitle>
@@ -51,197 +69,143 @@ class SelectedPackage extends Component {
                     <CardBody>
                         <Alert color="primary">
                             <h4 className="alert-heading">توجه</h4>
-                            <p>
-                            لطفا پس از حصول اطمینان از انتخاب صحیح بسته، بر روی دکمه پرداخت کلیک کنید.
-                            </p>
-                            
-                        </Alert>       
-                        
+                            <p>{'لطفا پس از حصول اطمینان از انتخاب صحیح بسته، بر روی دکمه پرداخت کلیک کنید.'}</p>
+                        </Alert>
                         <Card>
-                         <CardHeader>
-                            <CardTitle className="mb-0 font-weight-bold h6">   
-                              <i className="fa fa-align-justify"></i><strong>  مشخصات خریدار </strong>
-                            </CardTitle>
-                         </CardHeader>
-                         <CardBody>
-                            <ListGroup>
-                                <ListGroupItem>
-                                    <Row>
-                                        <Col md='6'><strong>نام و نام‌خانوادگی</strong></Col>
-                                        <Col md='6'><span>{this.props.data.username}</span></Col>
-                                    </Row>  
-                                </ListGroupItem>
-                                <ListGroupItem>
-                                    <Row>
-                                        <Col md='6'><strong>ایمیل</strong></Col>
-                                        <Col md='6'><span>{this.props.data.email}</span></Col>
-                                    </Row>  
-                                </ListGroupItem>
-                                <ListGroupItem>
-                                    <Row>
-                                        <Col md='6'><strong> تلفن همراه</strong></Col>
-                                        <Col md='6'><span>{this.props.data.other_info.mobile}</span></Col>
-                                    </Row>  
-                                </ListGroupItem>
-                          
-                             </ListGroup>
-                         </CardBody>    
-                        </Card>
+                            <CardHeader>
+                                <CardTitle className="mb-0 font-weight-bold h6">
+                                    <i className="fa fa-align-justify"/><strong> مشخصات خریدار </strong>
+                                </CardTitle>
+                            </CardHeader>
+                            <CardBody>
+                                <ListGroup>
+                                    <ListGroupItem>
+                                        <Row>
+                                            <Col md='6'><strong>{'نام و نام‌خانوادگی'}</strong></Col>
+                                            <Col md='6'><span>{this.props.data.username}</span></Col>
+                                        </Row>
+                                    </ListGroupItem>
+                                    <ListGroupItem>
+                                        <Row>
+                                            <Col md='6'><strong>ایمیل</strong></Col>
+                                            <Col md='6'><span>{this.props.data.email}</span></Col>
+                                        </Row>
+                                    </ListGroupItem>
+                                    <ListGroupItem>
+                                        <Row>
+                                            <Col md='6'><strong> تلفن همراه</strong></Col>
+                                            <Col md='6' style={{
+                                                direction: 'ltr',
+                                                textAlign: 'right'
+                                            }}><span>{this.props.data.mobile}</span></Col>
+                                        </Row>
+                                    </ListGroupItem>
 
-
-                        <Card>
-                         <CardHeader>
-                            <CardTitle className="mb-0 font-weight-bold h6"> 
-                                <i className="fa fa-align-justify"></i><strong> مشخصات بسته </strong>
-                            </CardTitle>
-                         </CardHeader>
-                         <CardBody>
-                            <ListGroup>
-                                <ListGroupItem>
-                                    <Row>
-                                        <Col md='6'><strong> نام بسته</strong></Col>
-                                        <Col md='6'><span></span></Col>
-                                    </Row>  
-                                </ListGroupItem>
-                                <ListGroupItem>
-                                    <Row>
-                                        <Col md='6'><strong> مبلغ قابل پرداخت</strong></Col>
-                                        <Col md='6'><span></span><span> ریال</span></Col>
-                                    </Row>  
-                                </ListGroupItem>
-                                <ListGroupItem>
-                                    <Row>
-                                        <Col md='6'><strong>تعداد سنسور</strong></Col>
-                                        <Col md='6'><span></span></Col>
-                                    </Row>  
-                                </ListGroupItem>
-                                <ListGroupItem>
-                                    <Row>
-                                        <Col md='6'><strong>مهلت بسته</strong></Col>
-                                        <Col md='6'><span></span></Col>
-                                    </Row> 
-                                </ListGroupItem>
-                             </ListGroup>
-                         </CardBody>    
+                                </ListGroup>
+                            </CardBody>
                         </Card>
 
 
                         <Card>
                             <CardHeader>
-                                <CardTitle className="mb-0 font-weight-bold h6">   <i className="icon-basket-loaded icons"></i>  درگاه پرداخت   {isCurrent}   </CardTitle>
+                                <CardTitle className="mb-0 font-weight-bold h6">
+                                    <i className="fa fa-align-justify"/><strong>مشخصات بسته:</strong>
+                                </CardTitle>
                             </CardHeader>
                             <CardBody>
-                                    {/* <Row>
-                                        <Col md='2'>
-                                          
-                                            <div>
-                                                <Input className="pay-input-style back2" type="radio" id="radio2"  
-                                                       value="ملت"
-                                                       onChange={this.paymentGateway.bind(this)}/>
-                                                <Label check htmlFor="radio2"> </Label>
-                                            </div>
-                                        </Col>    
-                                        <Col md='2'>
-                                            <div >
-                                                <Input className="pay-input-style back1" type="radio"  id="radio1"  
-                                                       value='پارسیان'
-                                                       onChange={this.paymentGateway.bind(this)}/>
-                                                <Label check htmlFor="radio1">  </Label>
-                                            </div>
-                                        </Col>
-                                        <Col md='2'>
-                                            <div >
-                                                <Input className="pay-input-style back3" type="radio" id="radio3" 
-                                                       value="آینده"
-                                                       onChange={this.paymentGateway.bind(this)}/>
-                                                <Label check htmlFor="radio3"> </Label>
-                                            </div>
-                                            
-                                        </Col> 
-                                    </Row>   */}
+                                <ListGroup>
+                                    <ListGroupItem>
+                                        <Row>
+                                            <Col md='6'><strong> نام بسته</strong></Col>
+                                            <Col md='6'><span>{this.state.package.name}</span></Col>
+                                        </Row>
+                                    </ListGroupItem>
+                                    <ListGroupItem>
+                                        <Row>
+                                            <Col md='6'><strong> مبلغ قابل پرداخت</strong></Col>
+                                            <Col md='6'><span>{this.state.package.price}</span><span>تومان</span></Col>
+                                        </Row>
+                                    </ListGroupItem>
+                                    <ListGroupItem>
+                                        <Row>
+                                            <Col md='6'><strong>تعداد سنسور</strong></Col>
+                                            <Col md='6'><span>{this.state.package.node_num}</span></Col>
+                                        </Row>
+                                    </ListGroupItem>
+                                    <ListGroupItem>
+                                        <Row>
+                                            <Col md='6'><strong>تعداد پروژه</strong></Col>
+                                            <Col md='6'><span>{this.state.package.project_num}</span></Col>
+                                        </Row>
+                                    </ListGroupItem>
+                                    <ListGroupItem>
+                                        <Row>
+                                            <Col md='6'><strong>زمان بسته</strong></Col>
+                                            <Col md='6'><span>{this.state.package.time}</span></Col>
+                                        </Row>
+                                    </ListGroupItem>
+                                </ListGroup>
+                            </CardBody>
+                        </Card>
 
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="mb-0 font-weight-bold h6"> <i
+                                    className="icon-basket-loaded icons"/>درگاه پرداخت</CardTitle>
+                            </CardHeader>
+                            <CardBody>
+                                <Row>
+                                    <Col md="5">
+                                        <Input className="pay-input-style back3" type="radio" id="radio3" name="radios"
+                                               defaultChecked={true}
+                                               value="زرین پال"/>
+                                    </Col>
+                                </Row>
 
-                                    <Row>
-                                        <Col md="3">
-                                        <div  >
-                                            <Input className="pay-input-style back1" type="radio"  name="radios" 
-                                                    value='پارسیان'
-                                                    onChange={this.paymentGateway.bind(this)}/>
-                                            <Label check className="" htmlFor="radio1">  </Label>
-                                        </div>
-                                        </Col> 
-                                        <Col md="3">
-                                        <div>
-                                            <Input className="pay-input-style back2" type="radio" id="radio2" name="radios" value="ملت"
-                                                    onChange={this.paymentGateway.bind(this)}/>
-                                            <Label check className="" htmlFor="radio2"> </Label>
-                                        </div>
-                                        </Col>   
-                                        <Col md="3">
-                                      
-                                            <Input className="pay-input-style back3" type="radio" id="radio3" name="radios" value="آینده"
-                                                onChange={this.paymentGateway.bind(this)}/>
-                                            <Label check className="" htmlFor="radio3"> </Label>
-                                      
-                                        </Col>
-                                        <Col md="3"> </Col>
-                                    </Row>
-
-                            </CardBody>    
-                            </Card>
-
-                    
-                    
-                    
-                    
-                    
-                    
-                         <Alert color="dark">
+                            </CardBody>
+                        </Card>
+                        <Alert color="dark">
                             <Col md="9">
                                 <div>
-                                    <FormGroup check inline>
-                                        <Input className="form-check-input" type="checkbox" id="inline-checkbox" name="inline-checkbox1" value="ok"/>
-                                        <Label className="form-check-label" check htmlFor="inline-checkbox">  <span >  قوانین و مقررات را قبول می‌کنم.</span></Label>
+                                    <FormGroup check inline style={{marginRight: '0'}}>
+                                        <Input type="checkbox"
+                                               name="inline-checkbox1" style={{marginLeft: '10px'}}
+                                               onChange={() => this.setState({agree: !this.state.agree})}/>
+                                        <Label className="form-check-label" check htmlFor="inline-checkbox"> <span> قوانین و مقررات را قبول می‌کنم.</span></Label>
                                     </FormGroup>
                                 </div>
-                                <div >
-                                    <Row >
-                                        <Col md='3'>
-                                            <Button color="success" onClick={() => this.props.dispatch(resultOfPay(this.state.result))}>
-                                                پرداخت از طریق بانک
-                                            </Button>{' '}
+                                <br/>
+                                <div>
+                                    <Row>
+                                        <Col md='4'><strong>کد تخفیف دارید؟</strong></Col>
+                                        <Col md='6'>
+                                            <Input type="text"
+                                                   maxLength={15}
+                                                   onChange={(e) => this.setState({discountCode: e.target.value})}/>
                                         </Col>
-                                        <Col md='3'>
-                                          <Button color="secondary">انصراف</Button>{' '}
-                                        </Col>  
                                     </Row>
                                 </div>
+                                <div>
+                                    <Button color="success" onClick={this.pay}>
+                                        {'پرداخت از طریق درگاه'}
+                                    </Button>{' '}
+                                    <Button onClick={() => forwardTo('packages')} color="danger">انصراف</Button>{' '}
+                                </div>
                             </Col>
-                         </Alert>
-                    
-                    
-                    
-                    
+                        </Alert>
                     </CardBody>
-
-
-
-                    {/* <CardFooter>
-                        <Button color="primary">ثبت اطلاعات</Button>
-                    </CardFooter> */}
                 </Card>
             </div>
         );
     }
-    paymentGateway(e) {
-        this.setState({ yourPick: e.target.value })
-    
-      }
+
 }
 
 function select(state) {
     return {
-      data: state.userReducer
+        data: state.userReducer,
+        package: state.packageReducer.package
     };
-  }
+}
+
 export default connect(select)(SelectedPackage);

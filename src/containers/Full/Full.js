@@ -15,8 +15,8 @@ import News from '../../views/News/';
 import PaymentPortalManagment from '../../views/PaymentPortalManagment/PamentPortalList.js'
 
 //PackageManagment
-import PackageManagment from '../../views/PackageManagment/PackageList'
-import NewPackage from '../../views/PackageManagment/PackageManage'
+import PackageList from '../../views/PackageManagement/PackageList'
+import NewPackage from '../../views/PackageManagement/PackageManage'
 //usersManagement
 import UsersList from '../../views/UserPaymentManagment/UsersList'
 import UserInfo from '../../views/UserPaymentManagment/UserInfo'
@@ -35,10 +35,8 @@ import ProjectsManage from '../../views/Projects/ProjectsManage.js';
 import ProjectsView from '../../views/Projects/ProjectsView.js';
 
 //package
-import ShowPackages from '../../views/Packages'
+import MyPackages from '../../views/Packages/MyPckages'
 import SelectedPackage from '../../views/Packages/SelectedPackage'
-import SuccessPayment from '../../views/Packages/SuccessPayment'
-import UnSuccessPayment from '../../views/Packages/FailurePayment'
 import Transactions from '../../views/Packages/Transactions'
 import BuyedPackages from '../../views/Packages/BuyedPackage'
 
@@ -108,9 +106,11 @@ class Full extends Component {
                                 <Route path="/news" name="News" component={News}/>
                                 <Route path="/profile" name="Profile" component={Profile}/>
 
-                                <Route path="/Package/Managment" name="PackageManagment" component={PackageManagment}/>
-                                <Route path="/Package/New" name="NewPackage" component={NewPackage}/>
-                                <Route path="/Users/Managment" name="UsersList" component={UsersList}/>
+                                <Route path="/admin/packages" name="PackageList" component={PackageList}/>
+                                <Route path="/admin/users" name="UsersList" component={UsersList}/>
+
+                                <Route path="/package/new" name="NewPackage" component={NewPackage}/>
+                                <Route path="/package/:id" name="EditPackage" component={NewPackage}/>
                                 <Route path="/user/info/" name="UserInfo" component={UserInfo}/>
 
                                 <Route path="/gateways/new" name="GatewaysNew" component={GatewaysNew}/>
@@ -122,8 +122,6 @@ class Full extends Component {
 
                                 <Route path="/things/list" name="ThingsList" component={ThingsList}/>
 
-                                <Route path="/payment-portal/management" name="PaymentPortalManagment"
-                                       component={PaymentPortalManagment}/>
 
                                 <Route path="/scenario" name="addScenario" component={addScenario}/>
                                 <Route path="/codec" name="sendCodec" component={sendCodec}/>
@@ -133,15 +131,18 @@ class Full extends Component {
                                 <Route path="/projects/manage" name="ProjectsManage" component={ProjectsManage}/>
                                 <Route path="/projects/view" name="ProjectsView" component={ProjectsView}/>
 
-                                <Route path="/packages" name="packages" component={ShowPackages}/>
-                                <Route path="/selectedPackage/" name="selectedPackage" component={SelectedPackage}/>
-                                <Route path="/paymentResult/S/" name="SuccessPayment" component={SuccessPayment}/>
-                                <Route path="/paymentResult/F/" name="UnSuccessPayment" component={UnSuccessPayment}/>
+                                <Route path="/packages" name="packages" component={MyPackages}/>
+                                <Route path="/selectedPackage/:id" name="selectedPackage" component={SelectedPackage}/>
+
                                 <Route path="/transactions" name="Transactions" component={Transactions}/>
                                 <Route path="/buyedPackages" name="BuyedPackages" component={BuyedPackages}/>
 
                                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
                                 <Route path="/things" name="createThing" component={CreateThing}/>
+
+
+                                <Route path="/payment-portal/management" name="PaymentPortalManagment"
+                                       component={PaymentPortalManagment}/>
                                 <Route path="/theme/colors" name="Colors" component={Colors}/>
                                 <Route path="/theme/typography" name="Typography" component={Typography}/>
                                 <Route path="/base/cards" name="Cards" component={Cards}/>
@@ -183,8 +184,8 @@ class Full extends Component {
                 </div>
                 <Footer/>
             </div>
-        );
+    );
     }
-}
+    }
 
-export default Full;
+    export default Full;

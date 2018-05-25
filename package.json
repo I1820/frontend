@@ -45,6 +45,7 @@
     "js-file-download": "^0.4.1",
     "js-md5": "^0.7.3",
     "lodash": "^4.17.5",
+    "moment": "^2.22.1",
     "moment-jalaali": "^0.7.2",
     "object.assign": "^4.1.0",
     "prop-types": "^15.6.1",

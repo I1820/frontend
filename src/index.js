@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {HashRouter, Route, Switch, Redirect} from 'react-router-dom';
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 // Redux provider
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 
 //Redux Store
 import store from './store/index'
@@ -28,6 +28,8 @@ import Login from './views/Pages/Login/'
 import Register from './views/Pages/Register/'
 import Page404 from './views/Pages/Page404/'
 import Page500 from './views/Pages/Page500/'
+import SuccessPayment from './views/Packages/SuccessPayment'
+import FailurePayment from './views/Packages/FailurePayment'
 
 
 function PrivateRoute({component: Component, ...rest}) {
@@ -68,7 +70,6 @@ function RegisterRoute({component: Component, authed, ...rest}) {
 }
 
 
-
 ReactDOM.render((
     <Provider store={store}>
         <HashRouter>
@@ -77,6 +78,8 @@ ReactDOM.render((
                 <RegisterRoute exact path="/register" name="Register Page" component={Register}/>
                 <Route exact path="/404" name="Page 404" component={Page404}/>
                 <Route exact path="/500" name="Page 500" component={Page500}/>
+                <Route path="/payment/success/" name="SuccessPayment" component={SuccessPayment}/>
+                <Route path="/payment/failure/" name="FailurePayment" component={FailurePayment}/>
                 <PrivateRoute path="/" name="Home" component={Full}/>
             </Switch>
         </HashRouter>

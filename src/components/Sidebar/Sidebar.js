@@ -156,7 +156,6 @@ class Sidebar extends Component {
     // nav list
     const navList = (items) => {
       return items.map((item, index) => {
-        console.log(this.state.user,item)
         if (this.state.user.indexOf(item.type) > -1)
           return navType(item, index)
       });

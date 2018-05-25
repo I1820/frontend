@@ -194,7 +194,7 @@ module.exports.getThing = function (thingId, dispatch) {
 }
 
 module.exports.getThings = function (dispatch) {
-  return fetchData(`/things`, getConfig(), dispatch)
+    return fetchData(`/things`, getConfig(), dispatch)
 }
 
 
@@ -398,8 +398,56 @@ module.exports.getScenario = function (projectId, scenarioId, dispatch) {
     return fetchData(`/project/${projectId}/scenario/${scenarioId}`, getConfig(), dispatch)
 }
 
-module.exports.getPackage = function (dispatch) {
+module.exports.getAdminPackage = function (dispatch) {
+    return fetchData(`/packages/all`, getConfig(), dispatch)
+}
+
+module.exports.getDiscounts = function (dispatch) {
+    return fetchData(`/discount`, getConfig(), dispatch)
+}
+
+module.exports.deleteDiscount = function (id, dispatch) {
+    return fetchData(`/discount/${id}`, deleteConfig(), dispatch)
+}
+
+module.exports.createDiscount = function (value, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData({value: value})})
+    return fetchData(`/discount`, config, dispatch)
+}
+
+module.exports.getPackage = function (packageId, dispatch) {
+    return fetchData(`/packages/${packageId}`, getConfig(), dispatch)
+}
+
+module.exports.createPackage = function (data, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/packages`, config, dispatch)
+}
+
+module.exports.updatePackage = function (packageId, data, dispatch) {
+    const config = patchConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/packages/${packageId}`, config, dispatch)
+}
+
+
+module.exports.deletePackage = function (packageId, dispatch) {
+    return fetchData(`/packages/${packageId}`, deleteConfig(), dispatch)
+}
+
+module.exports.activatePackage = function (packageId, active, dispatch) {
+    return fetchData(`/packages/${packageId}/activate?active=${active ? 1 : 0}`, getConfig(), dispatch)
+}
+
+module.exports.getUserPackage = function (dispatch) {
     return fetchData(`/packages`, getConfig(), dispatch)
+}
+
+module.exports.buyPackage = function (packageId, code, dispatch) {
+    const url = code ? `/packages/${packageId}/invoice?code=${code}` : `/packages/${packageId}/invoice`;
+    return fetchData(url, getConfig(), dispatch)
 }
 
 
@@ -431,6 +479,10 @@ module.exports.deleteDashboardWidgetChart = function (id, dispatch) {
 }
 
 module.exports.getUsers = function (dispatch) {
-  return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users`, getConfig(), dispatch,true)
+    return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users`, getConfig(), dispatch, true)
+}
+
+module.exports.base_url = function () {
+    return BASE_URL;
 }
 
