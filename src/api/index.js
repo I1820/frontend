@@ -213,7 +213,7 @@ module.exports.createThing = function (data, projectId, dispatch) {
 //     return fetchData('/project/' + projectId + '/things/' + thingId, projectControler.find, getConfig(), dispatch)
 // }
 //
-module.exports.getProjectData = function (thing_ids, projectId, since, until, window, dispatch) {
+module.exports.getThingsMainData = function (thing_ids, projectId, since, until, window, dispatch) {
     const config = postConfig()
     Object.assign(config, {
         body: getFormData({
@@ -225,6 +225,20 @@ module.exports.getProjectData = function (thing_ids, projectId, since, until, wi
         })
     })
     return fetchData(`/things/data`, config, dispatch)
+}
+
+module.exports.getThingsSampleData = function (thing_ids, projectId, since, until, window, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {
+        body: getFormData({
+            'project_id': projectId,
+            since,
+            window,
+            until,
+            thing_ids
+        })
+    })
+    return fetchData(`/things/data/sample`, config, dispatch)
 }
 
 
@@ -303,7 +317,7 @@ module.exports.updateScenarioAPI = function (data, projectId, scenarioId, dispat
     return fetchData(`/project/${projectId}/scenario/${scenarioId}`, config, dispatch)
 }
 
-module.exports.activeThing = function (data, thingId, projectId, dispatch) {
+module.exports.sendThingKeys = function (data, thingId, projectId, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
     return fetchData(`/things/${thingId}/activate`, config, dispatch)
@@ -348,6 +362,11 @@ module.exports.getSingleGateway = function (id, dispatch) {
 module.exports.deleteThing = function (projectId, thingId, dispatch) {
     const config = deleteConfig()
     return fetchData(`/things/${thingId}`, config, dispatch)
+};
+
+module.exports.activateThing = function (thingId, active, dispatch) {
+    const config = getConfig()
+    return fetchData(`/things/${thingId}/activate?active=${active ? 1 : 0}`, config, dispatch)
 };
 
 module.exports.deleteCodecTemplate = function (projectId, codecId, dispatch) {

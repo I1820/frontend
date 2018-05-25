@@ -59,7 +59,7 @@ import {
     editProfile as editProfileAPI, changePassword as changePasswordAPI, getThings as listThingsAPI,
     getThing as getThingAPI, connectThing as connectThingAPI,
     createThing as createThingAPI, editThing as editThingAPI, editAliases as editAliasesAPI,
-    getProjectData as getThingDataAPI, createCodec as createCodecAPI,
+    createCodec as createCodecAPI,
     createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
     DownloadThingsExcel as DownloadThingsExcelAPI,
     DownloadThingProfileThingsExcel as DownloadThingProfileThingsExcelAPI,
@@ -76,7 +76,7 @@ import {
 } from '../api/index'
 import {
     activateScenario,
-    activeThing,
+    sendThingKeys,
     createCodecTemplate,
     createThingProfile,
     deleteCodecTemplate,
@@ -103,7 +103,12 @@ import {
     setDashboardWidgetChart,
     deleteDashboardWidgetChart,
     updateScenarioAPI,
-    viewProfile, getDeviceProfileAPI, getUsers
+    viewProfile,
+    getDeviceProfileAPI,
+    getUsers,
+    getThingsMainData,
+    getThingsSampleData,
+    activateThing,
 } from '../api';
 import fileDownload from 'js-file-download'
 
@@ -458,9 +463,22 @@ export function cleanErrorMessage() {
     setErrorMessage('')
 }
 
-export function getDataAction(things, projectId, offset, limit, window, callback) {
+export function getThingsMainDataAction(things, projectId, offset, limit, window, callback) {
     return (dispatch) => {
-        const promise = getThingDataAPI(things, projectId, offset, limit, window, dispatch)
+        const promise = getThingsMainData(things, projectId, offset, limit, window, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                callback(true, response.result.data)
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+export function getThingsSampleDataAction(things, projectId, offset, limit, window, callback) {
+    return (dispatch) => {
+        const promise = getThingsSampleData(things, projectId, offset, limit, window, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 callback(true, response.result.data)
@@ -548,9 +566,9 @@ export function createThingAction(data, project, cb) {
     }
 }
 
-export function activeThingAction(data, projectId, thingId, cb) {
+export function sendThingKeysAction(data, projectId, thingId, cb) {
     return (dispatch) => {
-        const promise = activeThing(data, projectId, thingId, dispatch)
+        const promise = sendThingKeys(data, projectId, thingId, dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 cb(true, 'با موفقیت فعال شد')
@@ -568,6 +586,19 @@ export function deleteThingAction(projectId, thingId, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 cb(true, 'با موفقیت حذف شد')
+            } else {
+                cb(false, response.result)
+            }
+        })
+    }
+}
+
+export function activateThingAction(thingId, active, cb) {
+    return (dispatch) => {
+        const promise = activateThing(thingId, active, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb(true, 'با موفقیت انجام شد')
             } else {
                 cb(false, response.result)
             }

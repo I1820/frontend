@@ -23,12 +23,14 @@ import _ from 'underscore'
 const ReactHighcharts = require('react-highcharts');
 import moment from 'moment-jalaali'
 import JSONPretty from 'react-json-pretty';
-import { getCodecTemplateListAction, getDataAction, getProject } from '../../actions/AppActions';
+import {
+    getCodecTemplateListAction, getProject,
+    getThingsSampleDataAction, getThingsMainDataAction
+} from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import { DateTimeRangePicker, DateTimePicker } from 'react-advance-jalaali-datepicker';
 import Select2 from 'react-select2-wrapper';
 import Spinner from '../Spinner/Spinner';
-import { css } from 'glamor';
 import { toastAlerts } from '../Shared/toast_alert';
 import ReactTable from 'react-table'
 
@@ -51,7 +53,7 @@ class ProjectsView extends Component {
             auto: false,
             config: {
                 chart: {
-                    type:'column',
+                    type: 'column',
                     style: {
                         fontFamily: 'Tahoma'
                     }
@@ -164,7 +166,10 @@ class ProjectsView extends Component {
                         label: k,
                         name: `${things[d.thingid]}: ${k}`,
                         data: [],
-                        colorIndex: ((((k.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0)) % 10) + 10) % 10)
+                        colorIndex: ((((k.split('').reduce(function (a, b) {
+                            a = ((a << 5) - a) + b.charCodeAt(0);
+                            return a & a
+                        }, 0)) % 10) + 10) % 10)
                     })
                 }
             })
@@ -386,7 +391,7 @@ class ProjectsView extends Component {
     }
 
     getData(cb) {
-        this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing),
+        this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
             this.state.project._id,
             this.state.since,
             this.state.until,
