@@ -62,7 +62,7 @@ class PackageList extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user._id !== undefined)
+    if (nextProps.user !== undefined && nextProps.user._id !== undefined)
       if (nextProps.user._id === this.state.userId)
         this.setState({
           userInfo: nextProps.user
