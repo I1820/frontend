@@ -111,7 +111,7 @@ class Full extends Component {
 
                                 <Route path="/package/new" name="NewPackage" component={NewPackage}/>
                                 <Route path="/package/:id" name="EditPackage" component={NewPackage}/>
-                                <Route path="/user/info/" name="UserInfo" component={UserInfo}/>
+                                <Route path="/admin/user/info/:user" name="UserInfo" component={UserInfo}/>
 
                                 <Route path="/gateways/new" name="GatewaysNew" component={GatewaysNew}/>
                                 <Route path="/gateways/list" name="Gateways" component={Gateways}/>

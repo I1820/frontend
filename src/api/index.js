@@ -482,6 +482,16 @@ module.exports.getUsers = function (dispatch) {
     return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users`, getConfig(), dispatch, true)
 }
 
+module.exports.getUser = function (userID,dispatch) {
+  return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users/${userID}`, getConfig(), dispatch, true)
+}
+module.exports.getUserTransaction = function (userID,dispatch) {
+  return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users/${userID}/transactions`, getConfig(), dispatch, true)
+}
+module.exports.activeUser = function (userID,action=0,dispatch) {
+  return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users/${userID}/ban?active=${action}`, getConfig(), dispatch, true)
+}
+
 module.exports.base_url = function () {
     return BASE_URL;
 }

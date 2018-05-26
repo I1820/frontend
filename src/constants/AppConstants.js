@@ -30,4 +30,5 @@ export const GET_DISCOUNTS = 'GET_DISCOUNTS'
 export const NEW_PACKAGE = 'NEW_PACKAGE'
 export const SELECT_USER = "SELECT_USER"
 export const PAYMENT_RESULT = 'PAYMENT_RESULT'
+export const FETCH_USER = 'FETCH_USER'
 export const GET_USERS = 'GET_USERS'

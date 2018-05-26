@@ -48,7 +48,7 @@ class UsersList extends Component {
   }
 
   componentWillReceiveProps(props) {
-    this.setState({items: props.users, usersInfo: props.users})
+    this.setState({items: props.usersList, usersInfo: props.usersList})
   }
 
   render() {
@@ -114,19 +114,15 @@ class UsersList extends Component {
       //     {row.active === true ? 'فعال' : 'غیرفعال'}
       //   </Badge>
       // // },
-      // {
-      //   id: 'rowTools',
-      //   Header: 'امکانات',
-      //   filterable: false,
-      //   accessor: row => <div>
-      //     <Button onClick={() => this.showProject(row._id)} className="ml-1" color="success"
-      //             size="sm">نمایش</Button>
-      //     <Button onClick={() => this.manageProject(row._id)} className="ml-1" color="warning"
-      //             size="sm">مدیریت</Button>
-      //     <Button onClick={() => this.toggle('delete', row._id)} className="ml-1" color="danger"
-      //             size="sm">حذف</Button>
-      //   </div>
-      // }
+      {
+        id: 'rowTools',
+        Header: 'امکانات',
+        filterable: false,
+        accessor: row => <div>
+          <Button onClick={() => window.location=`#/admin/user/info/${row._id}`} className="ml-1" color="warning"
+                  size="sm">مدیریت</Button>
+        </div>
+      }
     ];
   }
 
@@ -149,7 +145,7 @@ class UsersList extends Component {
 function mapStateToProps(state) {
   return {
     loading: state.homeReducer.currentlySending,
-    users: state.adminReducer.users
+    usersList: state.adminReducer.usersList
   };
 }
 
