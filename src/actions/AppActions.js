@@ -78,7 +78,7 @@ import {
 } from '../api/index'
 import {
   activateScenario,
-  activeThing,
+  sendThingKeys,
   createCodecTemplate,
   createThingProfile,
   deleteCodecTemplate,
@@ -105,7 +105,12 @@ import {
   setDashboardWidgetChart,
   deleteDashboardWidgetChart,
   updateScenarioAPI,
-  viewProfile, getDeviceProfileAPI, getUsers, getUser, activeUser
+  viewProfile,
+  getDeviceProfileAPI,
+  getUsers,
+  getThingsMainData,
+  getThingsSampleData,
+  activateThing,
 } from '../api';
 import fileDownload from 'js-file-download'
 
@@ -460,17 +465,30 @@ export function cleanErrorMessage() {
   setErrorMessage('')
 }
 
-export function getDataAction(things, projectId, offset, limit, window, callback) {
-  return (dispatch) => {
-    const promise = getThingDataAPI(things, projectId, offset, limit, window, dispatch)
-    promise.then((response) => {
-      if (response.status === 'OK') {
-        callback(true, response.result.data)
-      } else {
-        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-      }
-    })
-  }
+export function getThingsMainDataAction(things, projectId, offset, limit, window, callback) {
+    return (dispatch) => {
+        const promise = getThingsMainData(things, projectId, offset, limit, window, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                callback(true, response.result.data)
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
+}
+
+export function getThingsSampleDataAction(things, projectId, offset, limit, window, callback) {
+    return (dispatch) => {
+        const promise = getThingsSampleData(things, projectId, offset, limit, window, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                callback(true, response.result.data)
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+            }
+        })
+    }
 }
 
 /* thing profile actions */
@@ -550,18 +568,18 @@ export function createThingAction(data, project, cb) {
   }
 }
 
-export function activeThingAction(data, projectId, thingId, cb) {
-  return (dispatch) => {
-    const promise = activeThing(data, projectId, thingId, dispatch)
-    promise.then((response) => {
-      if (response.status === 'OK') {
-        cb(true, 'با موفقیت فعال شد')
-      } else {
-        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-        cb(false, response.result)
-      }
-    })
-  }
+export function sendThingKeysAction(data, projectId, thingId, cb) {
+    return (dispatch) => {
+        const promise = sendThingKeys(data, projectId, thingId, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb(true, 'با موفقیت فعال شد')
+            } else {
+                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+                cb(false, response.result)
+            }
+        })
+    }
 }
 
 export function deleteThingAction(projectId, thingId, cb) {
@@ -575,6 +593,19 @@ export function deleteThingAction(projectId, thingId, cb) {
       }
     })
   }
+}
+
+export function activateThingAction(thingId, active, cb) {
+    return (dispatch) => {
+        const promise = activateThing(thingId, active, dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                cb(true, 'با موفقیت انجام شد')
+            } else {
+                cb(false, response.result)
+            }
+        })
+    }
 }
 
 export function deleteCodecTemplateAction(projectId, codecId, cb) {

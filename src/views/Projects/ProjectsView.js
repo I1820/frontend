@@ -1,20 +1,21 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { Bar, Line } from 'react-chartjs-2';
 import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Badge,
-  FormGroup,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  CardTitle,
-  Button,
-  ButtonGroup,
-  Label,
-  Input,
-  Table, PaginationItem, PaginationLink, Pagination
+    Row,
+    Col,
+    Card,
+    Form,
+    Badge,
+    FormGroup,
+    CardHeader,
+    CardBody,
+    CardFooter,
+    CardTitle,
+    Button,
+    ButtonGroup,
+    Label,
+    Input,
+    Table, PaginationItem, PaginationLink, Pagination
 } from 'reactstrap';
 
 import _ from 'underscore'
@@ -22,7 +23,10 @@ import _ from 'underscore'
 const ReactHighcharts = require('react-highcharts');
 import moment from 'moment-jalaali'
 import JSONPretty from 'react-json-pretty';
-import {getCodecTemplateListAction, getDataAction, getProject} from '../../actions/AppActions';
+import {
+    getCodecTemplateListAction, getProject,
+    getThingsSampleDataAction, getThingsMainDataAction
+} from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import {DateTimeRangePicker, DateTimePicker} from 'react-advance-jalaali-datepicker';
 import Select2 from 'react-select2-wrapper';
@@ -467,7 +471,7 @@ class ProjectsView extends Component {
 
 
   getData(cb) {
-    this.props.dispatch(getDataAction(JSON.stringify(this.state.selectedThing),
+    this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
       this.state.project._id,
       this.state.since,
       this.state.until,
