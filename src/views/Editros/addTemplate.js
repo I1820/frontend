@@ -8,6 +8,7 @@ import {
     Button, FormGroup, Form, Label, Col, Input,
 } from 'reactstrap';
 
+import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
 import AceEditor from 'react-ace';
 
@@ -68,16 +69,18 @@ class AddTemplate extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">ویرایشگر قالب codec</CardTitle>
                     </CardHeader>
                     <CardBody>
-                        <Form>
-                            <FormGroup row>
+                        <AvForm>
+                            <AVGroup row>
                                 <Label sm={1}>نام قالب:</Label>
                                 <Col sm={5}>
-                                    <Input value={this.state.name}
+                                    <AvInput value={this.state.name}
                                            onChange={(event) => {
                                                this.setState({name: event.target.value})
                                            }} type="text"/>
+                                    <br/>
+                                    <AvFeedback>الزامی است</AvFeedback>
                                 </Col>
-                            </FormGroup>
+                            </AVGroup>
                             <FormGroup row>
                                 <AceEditor
                                     onChange={(code) => this.state.code = code}
@@ -100,7 +103,7 @@ class AddTemplate extends Component {
                                     }}
                                 />
                             </FormGroup>
-                        </Form>
+                        </AvForm>
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.sendTemplate} className="ml-1" color="primary" size="md">ارسال

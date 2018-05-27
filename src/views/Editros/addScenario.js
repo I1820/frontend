@@ -8,6 +8,7 @@ import {
     Button, FormGroup, Form, Label, Col, Input,
 } from 'reactstrap';
 
+import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
 import AceEditor from 'react-ace';
 
@@ -68,17 +69,19 @@ class AddScenario extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">ویرایشگر سناریو</CardTitle>
                     </CardHeader>
                     <CardBody>
-                        <Form>
-                            <FormGroup row>
+                        <AvForm>
+                            <AvGroup row>
                                 <Label sm={2}>نام سناریو:</Label>
                                 <Col sm={5}>
-                                    <Input onChange={(event) => {
+                                    <AvInput onChange={(event) => {
                                         this.setState({name: event.target.value})
                                     }}
                                            value={this.state.name}
                                            type="text"/>
+                                    <br/>
+                                    <AvFeedback>الزامی است</AvFeedback>
                                 </Col>
-                            </FormGroup>
+                            </AvGroup>
                             <FormGroup row>
                                 <AceEditor
                                     onChange={(code) => this.state.code = code}
@@ -101,7 +104,7 @@ class AddScenario extends Component {
                                     }}
                                 />
                             </FormGroup>
-                        </Form>
+                        </AvForm>
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.sendScenario} className="ml-1" color="primary" size="md">ارسال
