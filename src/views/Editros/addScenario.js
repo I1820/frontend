@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     Card,
     CardHeader,
@@ -8,7 +8,7 @@ import {
     Button, FormGroup, Form, Label, Col, Input,
 } from 'reactstrap';
 
-import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
 
 import AceEditor from 'react-ace';
 
@@ -22,7 +22,7 @@ import {
 } from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import Spinner from '../Spinner/Spinner';
-import { toastAlerts } from '../Shared/toast_alert';
+import {toastAlerts} from '../Shared/toast_alert';
 
 class AddScenario extends Component {
 
@@ -74,11 +74,14 @@ class AddScenario extends Component {
                             <AvGroup row>
                                 <Label sm={2}>نام سناریو:</Label>
                                 <Col sm={5}>
-                                    <AvInput onChange={(event) => {
+                                    <AvInput
+                                        name="name"
+                                        onChange={(event) => {
                                         this.setState({name: event.target.value})
                                     }}
-                                           value={this.state.name}
-                                           type="text"/>
+                                             value={this.state.name}
+                                             type="text"
+                                             required/>
                                     <br/>
                                     <AvFeedback>الزامی است</AvFeedback>
                                 </Col>
