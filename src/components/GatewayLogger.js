@@ -8,10 +8,12 @@ import {
     CardFooter,
     CardTitle,
     Button,
+    UncontrolledTooltip
 } from 'reactstrap';
 import ReactTable from 'react-table'
 import ReactJson from 'react-json-view'
 import Loading from './Loading'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 export default class GatewayLogger extends Component {
 
@@ -25,6 +27,7 @@ export default class GatewayLogger extends Component {
         super(props)
         this.start = this.start.bind(this)
         this.stop = this.stop.bind(this)
+        this.clear = this.clear.bind(this)
         this.reactTableColumns = this.reactTableColumns.bind(this)
         this.toggleCollapse = this.toggleCollapse.bind(this)
         this.state = {
@@ -42,15 +45,16 @@ export default class GatewayLogger extends Component {
                     <CardTitle className="mb-0 font-weight-bold h6">لایو فریم</CardTitle>
                 </CardHeader>
                 <CardHeader style={{display: 'flex', alignItems: 'center'}}>
-                    <Button onClick={() => this.stop()} color="danger">توقف</Button>
-                    <Button onClick={() => this.start()} color="primary">شروع</Button>
+                    <Button onClick={() => this.stop()} color="danger" style={{marginRight: '5px'}}>توقف</Button>
+                    <Button onClick={() => this.start()} color="primary" style={{marginRight: '5px'}}>شروع</Button>
+                    <Button onClick={() => this.clear()} style={{marginRight: '5px'}}>پاک کردن</Button>
                     <Loading size={'30px'} isOpen={this.state.interval}/>
                 </CardHeader>
                 <CardBody>
                     <ReactTable
                         data={this.state.data}
                         columns={this.reactTableColumns()}
-                        pageSizeOptions={[10, 115, 25]}
+                        pageSizeOptions={[10, 15, 25]}
                         nextText='بعدی'
                         previousText='قبلی'
                         filterable={true}
@@ -83,8 +87,10 @@ export default class GatewayLogger extends Component {
                 maxWidth: 100,
             },
             {
+                id: 'devAddress',
                 Header: 'آدرس',
-                accessor: 'uplinkframe.phypayloadjson.macPayload.fhdr.devAddr',
+                accessor: row => row.uplinkframe ? row.uplinkframe.phypayloadjson.macPayload.fhdr.devAddr :
+                    row.downlinkframe.phypayloadjson.macPayload.fhdr.devAddr,
                 maxWidth: 200,
                 filterMethod: (filter, row) =>
                     row[filter.id].startsWith(filter.value) ||
@@ -93,17 +99,19 @@ export default class GatewayLogger extends Component {
             {
                 id: 'frequency',
                 Header: 'فرکانس',
-                accessor: row => row.uplinkframe.txinfo.frequency / Math.pow(10, 6),
+                accessor: row => (row.uplinkframe ? row.uplinkframe.txinfo.frequency : row.downlinkframe.txinfo.frequency) / Math.pow(10, 6),
                 maxWidth: 100,
             },
             {
+                id: 'bandwidth',
                 Header: 'پهنای باند',
-                accessor: 'uplinkframe.txinfo.datarate.bandwidth',
+                accessor: row => row.uplinkframe ? row.uplinkframe.txinfo.datarate.bandwidth : row.downlinkframe.txinfo.datarate.bandwidth,
                 maxWidth: 100,
             },
             {
-                Header: 'فاکتور سرعت',
-                accessor: 'uplinkframe.txinfo.datarate.spreadfactor',
+                Header: 'فاکتور گسترش',
+                id: 'spreadFactor',
+                accessor: row => row.uplinkframe ? row.uplinkframe.txinfo.datarate.spreadfactor : row.downlinkframe.txinfo.datarate.spreadfactor,
                 maxWidth: 100,
             },
             {
@@ -114,6 +122,13 @@ export default class GatewayLogger extends Component {
                     <div style={{textAlign: 'left', direction: 'ltr'}}>
                         <div style={{textAlign: 'center'}}>
                             <Button onClick={() => this.toggleCollapse(row._id)} color="info">نمایش</Button>
+                            <CopyToClipboard text={
+                                row.uplinkframe ? row.uplinkframe.phypayloadjson.macPayload.frmPayload[0].bytes :
+                                    row.downlinkframe.phypayloadjson.macPayload.frmPayload[0].bytes
+                            }>
+                                <i color="info" className={'icon-docs'}
+                                   style={{marginLeft: '10px', cursor: 'pointer'}}/>
+                            </CopyToClipboard>
                         </div>
                         <ReactJson
                             name={'Frame'}
@@ -126,8 +141,10 @@ export default class GatewayLogger extends Component {
                             theme={'shapeshifter:inverted'}
                             displayObjectSize={false}
                             displayDataTypes={false}
-                            src={row.uplinkframe.phypayloadjson}/>
+                            src={row.uplinkframe ? row.uplinkframe.phypayloadjson : row.downlinkframe.phypayloadjson}/>
                     </div>
+
+
             }
         ];
     }
@@ -148,6 +165,12 @@ export default class GatewayLogger extends Component {
         clearInterval(this.state.interval);
         this.setState({
             interval: 0
+        })
+    }
+
+    clear() {
+        this.setState({
+            data: []
         })
     }
 

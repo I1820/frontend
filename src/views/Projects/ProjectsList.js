@@ -30,8 +30,6 @@ import 'react-table/react-table.css'
 import { connect } from 'react-redux';
 import { createProject, getProjects, deleteProjectAction } from '../../actions/AppActions';
 import Spinner from '../Spinner/Spinner';
-import { ToastContainer, toast } from 'react-toastify';
-import { css } from 'glamor';
 import { style } from 'react-toastify';
 
 style({
@@ -126,6 +124,7 @@ class ProjectsList extends Component {
                                     <AvInput type="textarea"
                                              name={'projectDescription'}
                                              rows="2"
+                                             style={{resize: 'none'}}
                                              onChange={event => this.setState({
                                                projectDesc: event.target.value
                                              })}

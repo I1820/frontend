@@ -50,6 +50,10 @@ module.exports = (env = {}) => {
           loader: 'html-loader'
         },
         {
+          test: /\.csv$/,
+          loader: 'file-loader'
+        },
+        {
           test: /\.(scss)$/,
           use: ['css-hot-loader'].concat(extractSCSS.extract({
             fallback: 'style-loader',
@@ -72,13 +76,25 @@ module.exports = (env = {}) => {
           })
         },
         {
-          test: /\.(png|jpg|jpeg|gif|ico)$/,
+          test: /\.(png|jpg|jpeg|gif|ico|csv)$/,
           use: [
             {
               // loader: 'url-loader'
               loader: 'file-loader',
               options: {
                 name: './img/[name].[hash].[ext]'
+              }
+            }
+          ]
+        },
+        {
+          test: /\.(csv)$/,
+          use: [
+            {
+              // loader: 'url-loader'
+              loader: 'file-loader',
+              options: {
+                name: './files/[name].[hash].[ext]'
               }
             }
           ]
@@ -105,6 +121,11 @@ module.exports = (env = {}) => {
       ),
       new CopyWebpackPlugin([
           {from: './public/img', to: 'img'}
+        ],
+        {copyUnmodified: false}
+      ),
+      new CopyWebpackPlugin([
+          {from: './public/files', to: 'files'}
         ],
         {copyUnmodified: false}
       )

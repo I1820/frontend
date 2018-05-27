@@ -1,0 +1,2 @@
+"operation","name","type","description","lat","long","period","devEUI","thing_profile_slug","appKey","appSKey","nwkSKey","devAddr","fCntDown","fCntUp","skipFCntCheck"
+"add","Sample Thing","lora","","35.7024852","51.4023424","10","0000000000000001","1","","","","","","","true"

@@ -65,12 +65,12 @@ const translate = (error) => {
     return Errors[error] !== undefined ? Errors[error] : error
 }
 
-function fetchData(endpoint = '/404', config = {}, dispatch) {
+function fetchData(endpoint = '/404', config = {}, dispatch, newUrl = false) {
 
     return new Promise((resolve, reject) => {
         dispatch(sendingRequest(true))
 
-        fetch(BASE_URL + endpoint, config)
+        fetch(newUrl ? endpoint : BASE_URL + endpoint, config)
             .then((response) => response.json())
             .then((json) => {
                 dispatch(sendingRequest(false))
@@ -193,6 +193,11 @@ module.exports.getThing = function (thingId, dispatch) {
     return fetchData(`/things/${thingId}`, getConfig(), dispatch)
 }
 
+module.exports.getThings = function (dispatch) {
+    return fetchData(`/things`, getConfig(), dispatch)
+}
+
+
 module.exports.getGateways = function (dispatch) {
     return fetchData('/gateway', getConfig(), dispatch)
 }
@@ -208,7 +213,7 @@ module.exports.createThing = function (data, projectId, dispatch) {
 //     return fetchData('/project/' + projectId + '/things/' + thingId, projectControler.find, getConfig(), dispatch)
 // }
 //
-module.exports.getProjectData = function (thing_ids, projectId, since, until, window, dispatch) {
+module.exports.getThingsMainData = function (thing_ids, projectId, since, until, window, dispatch) {
     const config = postConfig()
     Object.assign(config, {
         body: getFormData({
@@ -222,6 +227,20 @@ module.exports.getProjectData = function (thing_ids, projectId, since, until, wi
     return fetchData(`/things/data`, config, dispatch)
 }
 
+module.exports.getThingsSampleData = function (thing_ids, projectId, since, until, window, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {
+        body: getFormData({
+            'project_id': projectId,
+            since,
+            window,
+            until,
+            thing_ids
+        })
+    })
+    return fetchData(`/things/data/sample`, config, dispatch)
+}
+
 
 module.exports.createCodec = function (data, thingId, projectId, dispatch) {
     const config = postConfig()
@@ -232,6 +251,12 @@ module.exports.createGateway = function (data, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
     return fetchData(`/gateway`, config, dispatch)
+}
+
+module.exports.updateGateway = function (data, dispatch) {
+    const config = putConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/gateway/${data._id}`, config, dispatch)
 }
 
 module.exports.uploadExcel = function (data, projectId, dispatch) {
@@ -257,7 +282,17 @@ module.exports.DownloadThingsExcel = function (projectId, dispatch) {
         }
     }
     return get(url, config)
+}
 
+module.exports.DownloadThingProfileThingsExcel = function (profileId, dispatch) {
+    const url = `${BASE_URL}/thing-profile/${profileId}/things-excel`
+    const config = {
+        headers: {
+            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Content-Type': 'multipart/form-data'
+        }
+    }
+    return get(url, config)
 }
 
 
@@ -282,7 +317,7 @@ module.exports.updateScenarioAPI = function (data, projectId, scenarioId, dispat
     return fetchData(`/project/${projectId}/scenario/${scenarioId}`, config, dispatch)
 }
 
-module.exports.activeThing = function (data, thingId, projectId, dispatch) {
+module.exports.sendThingKeys = function (data, thingId, projectId, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
     return fetchData(`/things/${thingId}/activate`, config, dispatch)
@@ -329,6 +364,11 @@ module.exports.deleteThing = function (projectId, thingId, dispatch) {
     return fetchData(`/things/${thingId}`, config, dispatch)
 };
 
+module.exports.activateThing = function (thingId, active, dispatch) {
+    const config = getConfig()
+    return fetchData(`/things/${thingId}/activate?active=${active ? 1 : 0}`, config, dispatch)
+};
+
 module.exports.deleteCodecTemplate = function (projectId, codecId, dispatch) {
     const config = deleteConfig()
     return fetchData(`/project/${projectId}/codec/${codecId}`, config, dispatch)
@@ -342,7 +382,7 @@ module.exports.deleteScenario = function (projectId, scenarioId, dispatch) {
 module.exports.newDownlink = function (thingId, data, dispatch) {
     const config = postConfig()
     Object.assign(config, {body: getFormData(data)})
-    return fetchData(`/things/${thingId}/codec`, config, dispatch)
+    return fetchData(`/things/${thingId}/send`, config, dispatch)
 }
 
 module.exports.createCodecTemplate = function (projectId, data, dispatch) {
@@ -377,8 +417,56 @@ module.exports.getScenario = function (projectId, scenarioId, dispatch) {
     return fetchData(`/project/${projectId}/scenario/${scenarioId}`, getConfig(), dispatch)
 }
 
-module.exports.getPackage = function (dispatch) {
+module.exports.getAdminPackage = function (dispatch) {
+    return fetchData(`/packages/all`, getConfig(), dispatch)
+}
+
+module.exports.getDiscounts = function (dispatch) {
+    return fetchData(`/discount`, getConfig(), dispatch)
+}
+
+module.exports.deleteDiscount = function (id, dispatch) {
+    return fetchData(`/discount/${id}`, deleteConfig(), dispatch)
+}
+
+module.exports.createDiscount = function (value, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData({value: value})})
+    return fetchData(`/discount`, config, dispatch)
+}
+
+module.exports.getPackage = function (packageId, dispatch) {
+    return fetchData(`/packages/${packageId}`, getConfig(), dispatch)
+}
+
+module.exports.createPackage = function (data, dispatch) {
+    const config = postConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/packages`, config, dispatch)
+}
+
+module.exports.updatePackage = function (packageId, data, dispatch) {
+    const config = patchConfig()
+    Object.assign(config, {body: getFormData(data)})
+    return fetchData(`/packages/${packageId}`, config, dispatch)
+}
+
+
+module.exports.deletePackage = function (packageId, dispatch) {
+    return fetchData(`/packages/${packageId}`, deleteConfig(), dispatch)
+}
+
+module.exports.activatePackage = function (packageId, active, dispatch) {
+    return fetchData(`/packages/${packageId}/activate?active=${active ? 1 : 0}`, getConfig(), dispatch)
+}
+
+module.exports.getUserPackage = function (dispatch) {
     return fetchData(`/packages`, getConfig(), dispatch)
+}
+
+module.exports.buyPackage = function (packageId, code, dispatch) {
+    const url = code ? `/packages/${packageId}/invoice?code=${code}` : `/packages/${packageId}/invoice`;
+    return fetchData(url, getConfig(), dispatch)
 }
 
 
@@ -408,3 +496,22 @@ module.exports.deleteDashboardWidgetChart = function (id, dispatch) {
     const config = deleteConfig()
     return fetchData(`/user/widget/charts?id=${id}`, config, dispatch)
 }
+
+module.exports.getUsers = function (dispatch) {
+    return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users`, getConfig(), dispatch, true)
+}
+
+module.exports.getUser = function (userID,dispatch) {
+  return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users/${userID}`, getConfig(), dispatch, true)
+}
+module.exports.getUserTransaction = function (userID,dispatch) {
+  return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users/${userID}/transactions`, getConfig(), dispatch, true)
+}
+module.exports.activeUser = function (userID,action=0,dispatch) {
+  return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users/${userID}/ban?active=${action}`, getConfig(), dispatch, true)
+}
+
+module.exports.base_url = function () {
+    return BASE_URL;
+}
+

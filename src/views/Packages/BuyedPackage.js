@@ -1,17 +1,12 @@
 import React, {Component} from "react";
 import Data from './packageData'
-import {selectPackage} from '../../actions/AppActions'
 import {
     Row,
     Col,
     Card,
     CardHeader,
-    CardBlock,
-    Button,
     CardTitle,
     CardBody,
-    Table,
-    CardFooter,
     ListGroup,
     ListGroupItem,
     Badge

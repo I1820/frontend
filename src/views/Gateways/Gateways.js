@@ -18,7 +18,7 @@ import ReactTable from 'react-table'
 import connect from 'react-redux/es/connect/connect';
 import { getGatewaysAction, deleteGatewaysAction } from '../../actions/AppActions';
 import Spinner from '../Spinner/Spinner';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { css } from 'glamor';
 
 
@@ -85,7 +85,6 @@ class Gateways extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
-                <ToastContainer className="text-right"/>
                 <Modal isOpen={this.state.deleteModal} toggle={this.deleteModalToggle} className="text-right">
                     <ModalHeader>حذف Gateway</ModalHeader>
                     <ModalBody>

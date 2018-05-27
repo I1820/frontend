@@ -95,7 +95,7 @@ class DeviceProfile extends Component {
                         <ReactTable
                             data={this.props.profiles}
                             columns={this.reactTableColumns()}
-                            pageSizeOptions={[10, 115, 25]}
+                            pageSizeOptions={[10, 15, 25]}
                             nextText='بعدی'
                             previousText='قبلی'
                             filterable={true}

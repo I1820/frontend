@@ -1,16 +1,35 @@
-import {GET_PACKAGED, FREE} from '../constants/AppConstants'
-import _ from 'underscore'
+import {
+    GET_ADMIN_PACKAGES,
+    GET_USER_PACKAGES,
+    GET_PACKAGE,
+    GET_DISCOUNTS,
+    FREE
+} from '../constants/AppConstants'
 
-export function packageReducer(state = [], action) {
+export function packageReducer(state = {adminPackages: [], userPackages: [], discounts: [], package: {}}, action) {
     switch (action.type) {
-        case GET_PACKAGED:
-            state = []
-            return [
+        case GET_ADMIN_PACKAGES:
+            return {
                 ...state,
-                ...action.newState
-            ]
+                adminPackages: [...action.newState],
+            }
+        case GET_USER_PACKAGES:
+            return {
+                ...state,
+                userPackages: [...action.newState]
+            }
+        case GET_PACKAGE:
+            return {
+                ...state,
+                package: {...action.newState}
+            }
+        case GET_DISCOUNTS:
+            return {
+                ...state,
+                discounts: [...action.newState]
+            }
         case FREE:
-            return []
+            return {adminPackages: [], userPackages: [], package: {}}
         default:
             return state
     }

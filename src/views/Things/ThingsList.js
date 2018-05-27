@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Row,
   Col,
@@ -16,79 +16,82 @@ import {
   Input,
   Table
 } from 'reactstrap';
+import {connect} from "react-redux";
+import Spinner from '../Spinner/Spinner';
+import {getThings} from "../../actions/AppActions";
 
 
 class ThingsList extends Component {
 
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+    this.renderThings = this.renderThings.bind(this)
+  }
 
 
-    render() {
-        return(
-            <div>
-                <Card className="text-justify">
-                    <CardHeader>
-                        <CardTitle className="mb-0 font-weight-bold h6">لیست اشیاء</CardTitle>
-                    </CardHeader>
-                    <CardBody>
-                        <Table hover responsive className="table-outline">
-                            <thead className="thead-light">
-                                <tr>
-                                    <th>#</th>
-                                    <th>نام شی</th>
-                                    <th>توضیحات</th>
-                                    <th>آدرس فیزیکی</th>
-                                    <th>پروژه های متصل</th>
-                                    <th>امکانات</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>1</th>
-                                    <td>عنوان تست پروژه اینجا</td>
-                                    <td>توضیحات تست اینجاست</td>
-                                    <td>0000052</td>
-                                    <td>پروژه تست</td>
-                                    <td>
-                                        <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
-                                        <Button className="ml-1" color="danger" size="sm">حذف</Button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>2</th>
-                                    <td>عنوان تست پروژه اینجا</td>
-                                    <td>توضیحات تست اینجاست</td>
-                                    <td>0000052</td>
-                                    <td>پروژه تست</td>
-                                    <td>
-                                        <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
-                                        <Button className="ml-1" color="danger" size="sm">حذف</Button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>3</th>
-                                    <td>عنوان تست پروژه اینجا</td>
-                                    <td>توضیحات تست اینجاست</td>
-                                    <td>0000052</td>
-                                    <td>پروژه تست</td>
-                                    <td>
-                                        <Button className="ml-1" color="warning" size="sm">ویرایش</Button>
-                                        <Button className="ml-1" color="danger" size="sm">حذف</Button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </Table>
-                    </CardBody>
-                    <CardFooter>
-                        <Button color="primary">شی جدید</Button>
-                    </CardFooter>
-                </Card>
-            </div>
-        );
-    }
+  componentDidMount() {
+    this.props.dispatch(getThings())
+  }
 
+
+  render() {
+    return (
+      <div>
+        <Spinner display={this.props.loading}/>
+        <Card className="text-justify">
+          <CardHeader>
+            <CardTitle className="mb-0 font-weight-bold h6">لیست اشیاء</CardTitle>
+          </CardHeader>
+          <CardBody>
+            <Table hover responsive className="table-outline">
+              <thead className="thead-light">
+              <tr>
+                <th>#</th>
+                <th>نام شی</th>
+                <th>توضیحات</th>
+                <th>آدرس فیزیکی</th>
+                <th>پروژه های متصل</th>
+                <th>امکانات</th>
+              </tr>
+              </thead>
+              <tbody>
+              {
+                this.renderThings()
+              }
+              </tbody>
+            </Table>
+          </CardBody>
+          <CardFooter>
+          </CardFooter>
+        </Card>
+      </div>
+    );
+  }
+
+  renderThings() {
+    return this.props.things.map((thing, key) => {
+      return (
+        <tr>
+          <th>{key + 1}</th>
+          <td>{thing.name}</td>
+          <td>{thing.description}</td>
+          <td>{thing.interface.devEUI}</td>
+          <td>{thing.project.name}</td>
+          <td>
+            <Button onClick={()=>{window.location = `#/projects/manage/${thing.project._id}`}} className="ml-1" color="warning" size="sm">مشاهده پروژه</Button>
+          </td>
+        </tr>
+      )
+    })
+  }
 }
 
-export default ThingsList;
+function mapStateToProps(state) {
+  return {
+    things: state.thingReducer,
+    loading: state.homeReducer.currentlySending
+  };
+}
+
+
+export default connect(mapStateToProps)(ThingsList);

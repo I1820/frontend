@@ -20,7 +20,7 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import {
-    activeThingAction,
+    sendThingKeysAction,
     editProjectAction,
     getProject,
     deleteThingAction,
@@ -29,11 +29,11 @@ import {
     deleteCodecTemplateAction,
     deleteScenarioAction,
     editAliasesAction,
-    sendDownlinkAction, DownloadThingsExcelAction,
+    sendDownlinkAction, DownloadThingsExcelAction, activateThingAction,
 } from '../../actions/AppActions';
 import Spinner from '../Spinner/Spinner';
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from 'react-toastify';
 import ReactTable from 'react-table'
@@ -55,6 +55,7 @@ class ProjectsManage extends Component {
         this.uploadExcel = this.uploadExcel.bind(this)
         this.downloadExcel = this.downloadExcel.bind(this)
         this.deleteThing = this.deleteThing.bind(this)
+        this.activateThing = this.activateThing.bind(this)
         this.deleteCodec = this.deleteCodec.bind(this)
         this.deleteScenario = this.deleteScenario.bind(this)
         this.loadProject = this.loadProject.bind(this)
@@ -82,6 +83,11 @@ class ProjectsManage extends Component {
             deleteScenarioModal: false,
             deleteScenarioRowId: 0,
             DownlinkThingRowId: 0,
+            activateThing: {
+                modal: false,
+                rowId: 0,
+                active: 0
+            },
             newAlias: {key: '', alias: ''}
         };
         this.el_refs = {
@@ -118,6 +124,19 @@ class ProjectsManage extends Component {
         this.props.dispatch(deleteThingAction(
             data.project_id,
             data.thing_id,
+            this.callback
+        ))
+    }
+
+    activateThing() {
+        const data = {
+            active: this.state.activateThing.active,
+            thing_id: this.state.activateThing.rowId,
+        };
+        this.toggle('activateThing')
+        this.props.dispatch(activateThingAction(
+            data.thing_id,
+            data.active,
             this.callback
         ))
     }
@@ -181,7 +200,6 @@ class ProjectsManage extends Component {
         return (
             <div>
                 <Spinner display={this.props.loading}/>
-                <ToastContainer className="text-right"/>
 
                 <Modal isOpen={this.state.deleteScenarioModal} toggle={() => this.toggle('deleteScenario')}
                        className="text-right">
@@ -230,6 +248,22 @@ class ProjectsManage extends Component {
                             this.deleteThing()
                         }}>حذف</Button>
                         <Button color="danger" onClick={() => this.toggle('deleteThing')}>انصراف</Button>
+                    </ModalFooter>
+                </Modal>
+
+                <Modal isOpen={this.state.activateThing.modal}
+                       toggle={() => this.toggle('activateThing')}
+                       className="text-right">
+                    <ModalHeader>{this.state.activateThing.active ? 'فعال سازی ' : 'غیرفعال سازی '} شی</ModalHeader>
+                    <ModalBody>
+                        <h3>{'آیا از '}{this.state.activateThing.active ? 'فعال سازی ' : 'غیرفعال سازی '}{'شی مطمئن هستید؟'}</h3>
+                        <br/>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" className="ml-1" onClick={() => {
+                            this.activateThing()
+                        }}>{this.state.activateThing.active ? 'فعال سازی ' : 'غیرفعال سازی '}</Button>
+                        <Button color="danger" onClick={() => this.toggle('activateThing')}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
 
@@ -282,7 +316,7 @@ class ProjectsManage extends Component {
                                 thing_id: this.state.selectedThing,
                             };
                             this.toggle('OTAA')
-                            this.props.dispatch(activeThingAction(
+                            this.props.dispatch(sendThingKeysAction(
                                 data.OTAA,
                                 data.thing_id,
                                 data.project_id,
@@ -408,7 +442,7 @@ class ProjectsManage extends Component {
                                 project_id: this.state.project._id
                             }
                             this.toggle('ABP')
-                            this.props.dispatch(activeThingAction(
+                            this.props.dispatch(sendThingKeysAction(
                                 data.ABP,
                                 data.thing_id,
                                 data.project_id,
@@ -453,7 +487,8 @@ class ProjectsManage extends Component {
                                                         description: event.target.value
                                                     }
                                                 })
-                                            }} maxLength="150" type="textarea" name="" rows="2"/>
+                                            }} maxLength="150" type="textarea" style={{resize: 'none'}} name=""
+                                                   rows="2"/>
                                         </div>
                                     </FormGroup>
 
@@ -758,18 +793,19 @@ class ProjectsManage extends Component {
                         filterMethod: (filter, row) =>
                             row[filter.id].startsWith(filter.value) ||
                             row[filter.id].endsWith(filter.value),
-                        maxWidth: 200
+                        maxWidth: 180
                     },
                     {
                         Header: 'نوع',
                         accessor: 'type',
                         filterMethod: (filter, row) => row[filter.id].startsWith(filter.value.toUpperCase()),
-                        maxWidth: 100
+                        maxWidth: 60
                     },
                     {
-                        id: 'rowTools',
-                        Header: 'امکانات',
+                        id: 'status',
+                        Header: 'وضعیت',
                         filterable: false,
+                        maxWidth: 350,
                         accessor: row => {
                             let badgeColor = 'success'
                             switch (row.last_seen_at.status) {
@@ -777,13 +813,36 @@ class ProjectsManage extends Component {
                                     badgeColor = 'secondary'
                             }
                             return (<div>
+                                <Badge id={`tooltip-${row._id}`} color={badgeColor}>{'اخرین تاریخ دریافت داده'}</Badge>
+                                {row.last_seen_at['time'] &&
+                                <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
+                                    {row.last_seen_at.time}
+                                </UncontrolledTooltip>}
+                                {' '}
+                                <Badge color={row.active ? 'success' : 'secondary'}>
+                                    {'وضعیت:'} {row.active ? 'فعال' : 'غیرفعال'}
+                                </Badge>
+                                {' '}
+                                <Badge color={'secondary'}>
+                                    {'اخرین زمان پارس داده'}
+                                </Badge>
+
+                            </div>);
+                        }
+                    },
+                    {
+                        id: 'rowTools',
+                        Header: 'امکانات',
+                        filterable: false,
+                        accessor: row => {
+                            return (<div>
                                 <Button className="ml-1" onClick={() => {
                                     console.log(row.keys.length)
                                     this.toggle(row.type === 'ABP' ? 'ABP' : 'OTAA', {
                                         id: row._id,
                                         keys: row.keys.length !== 0 ? row.keys : {skipFCntCheck: true}
                                     })
-                                }} color="success" size="sm">فعال سازی</Button>
+                                }} color="success" size="sm">ارسال کلید</Button>
                                 <Button onClick={() => {
                                     window.location = `#/things/${this.state.project._id}/${row._id}`
                                 }} className="ml-1" color="warning" size="sm">ویرایش</Button>
@@ -796,12 +855,15 @@ class ProjectsManage extends Component {
                                 <Button onClick={() => this.toggle('deleteThing', row._id)} className="ml-1"
                                         color="danger"
                                         size="sm">حذف شئ</Button>
-                                <Badge id={`tooltip-${row._id}`} color={badgeColor}>وضعیت </Badge>
+                                <Button
+                                    onClick={
+                                        () => this.toggle('activateThing', {
+                                            rowId: row._id,
+                                            active: row.active ? 0 : 1
+                                        })}
+                                    className="ml-1" color="warning"
+                                    size="sm">{row.active ? 'غیر فعال سازی' : 'فعال سازی'}</Button>
 
-                                {row.last_seen_at['time'] &&
-                                <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
-                                    {row.last_seen_at.time}
-                                </UncontrolledTooltip>}
                             </div>);
                         }
                     },
@@ -922,7 +984,16 @@ class ProjectsManage extends Component {
                 OTAAModal: !this.state.OTAAModal,
                 OTAA: id ? {...id.keys} : {}
             }
-        this.setState(state);
+        if (modal == 'activateThing')
+            state = {
+                activateThing: {
+                    modal: !this.state.activateThing.modal,
+                    rowId: id && id.rowId ? id.rowId : 0,
+                    active: id && id.active ? id.active : 0
+                }
+
+            }
+        this.setState(state, () => console.log(state));
     }
 
 

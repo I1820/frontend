@@ -6,6 +6,7 @@ import {thingReducer} from './thingReducer'
 import {gatewayReducer} from './gatewayReducer'
 import {thingProfileReducer} from "./thingProfileReducer";
 import {packageReducer} from "./packageReducer";
+import {adminReducer} from "./adminReducer";
 
 const rootReducer = combineReducers({
   homeReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   thingReducer,
   gatewayReducer,
   thingProfileReducer,
-  packageReducer
+  packageReducer,
+  adminReducer
 })
 
 export default rootReducer

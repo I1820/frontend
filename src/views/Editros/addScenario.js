@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Card,
     CardHeader,
@@ -19,9 +19,10 @@ import 'brace/ext/language_tools';
 import {
     connectThing, createScenario, getScenarioAction, getThingProfileListAction, lintCode,
     updateScenarioAction
-} from "../../actions/AppActions";
-import connect from "react-redux/es/connect/connect";
-import Spinner from "../Spinner/Spinner";
+} from '../../actions/AppActions';
+import connect from 'react-redux/es/connect/connect';
+import Spinner from '../Spinner/Spinner';
+import { toastAlerts } from '../Shared/toast_alert';
 
 class AddScenario extends Component {
 
@@ -31,8 +32,8 @@ class AddScenario extends Component {
         this.sendScenario = this.sendScenario.bind(this)
 
         this.state = {
-            code: "",
-            name: "",
+            code: '',
+            name: '',
             lint: []
         }
     }
@@ -141,8 +142,8 @@ class AddScenario extends Component {
             else if (lint.type === 'convention')
                 color = 'cadetblue'
             return <p key={`log-${key}`} style={{fontFamily: 'sans-serif', color}}>
-                    line  {lint.line}:{lint.column} - {lint.type}: {lint.message}!
-                 </p>
+                line {lint.line}:{lint.column} - {lint.type}: {lint.message}!
+            </p>
         })
     }
 
@@ -151,12 +152,12 @@ class AddScenario extends Component {
             this.props.dispatch(createScenario(this.state.project, {
                 name: this.state.name,
                 code: this.state.code
-            }))
+            }, toastAlerts))
         else
             this.props.dispatch(updateScenarioAction(this.state.project, this.state.id, {
                 name: this.state.name,
                 code: this.state.code
-            }))
+            }, toastAlerts))
     }
 }
 
