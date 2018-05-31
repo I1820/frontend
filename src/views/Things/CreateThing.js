@@ -123,7 +123,6 @@ class CreateThing extends Component {
                                              maxLength={50}
                                              onChange={this.changeForm} type="text"
                                              required/>
-                                    <br/>
                                     <AvFeedback>الزامی است</AvFeedback>
                                 </Col>
                             </AvGroup>
@@ -157,16 +156,20 @@ class CreateThing extends Component {
                                            onChange={this.changeForm} type="number"/>
                                 </Col>
                             </FormGroup>
-                            <FormGroup row>
+                            <AvGroup row>
                                 <Label sm={3}>شناسه یکتا(devEUI):</Label>
                                 <Col sm={5}>
-                                    <Input readOnly={this.state.thing._id !== undefined} value={this.state.thing.devEUI}
-                                           name="devEUI" dir="ltr"
-                                           maxLength={16}
-                                           placeholder={'0000000000000000'}
-                                           onChange={this.changeForm} type="text"/>
+                                    <AvInput readOnly={this.state.thing._id !== undefined}
+                                             value={this.state.thing.devEUI}
+                                             name="devEUI" dir="ltr"
+                                             maxLength={16}
+                                             pattern="^[0-9A-Fa-f]{16}$"
+                                             required
+                                             placeholder={'0011aa222B99FFaa'}
+                                             onChange={this.changeForm} type="text"/>
+                                    <AvFeedback>شناسه معتبر نیست</AvFeedback>
                                 </Col>
-                            </FormGroup>
+                            </AvGroup>
                             <FormGroup row>
                                 <Label sm={3} htmlFor="select">پروفایل شی:</Label>
                                 <Col md="5">
