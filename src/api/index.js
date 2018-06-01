@@ -17,6 +17,7 @@ import store from '../store'
 /* global fetch */
 
 const BASE_URL = 'http://backback.ceit.aut.ac.ir:50024/api/v1'
+const BASE_ADMIN_URL = 'http://backback.ceit.aut.ac.ir:50024/api/admin'
 
 const endpoints = {
     login: '/login',
@@ -498,17 +499,21 @@ module.exports.deleteDashboardWidgetChart = function (id, dispatch) {
 }
 
 module.exports.getUsers = function (dispatch) {
-    return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users`, getConfig(), dispatch, true)
+    return fetchData(`${BASE_ADMIN_URL}/users`, getConfig(), dispatch, true)
 }
 
-module.exports.getUser = function (userID,dispatch) {
-  return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users/${userID}`, getConfig(), dispatch, true)
+module.exports.getUser = function (userID, dispatch) {
+    return fetchData(`${BASE_ADMIN_URL}/users/${userID}`, getConfig(), dispatch, true)
 }
-module.exports.getUserTransaction = function (userID,dispatch) {
-  return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users/${userID}/transactions`, getConfig(), dispatch, true)
+module.exports.getUserTransaction = function (userID, dispatch) {
+    return fetchData(`${BASE_ADMIN_URL}/users/${userID}/transactions`, getConfig(), dispatch, true)
 }
-module.exports.activeUser = function (userID,action=0,dispatch) {
-  return fetchData(`http://backback.ceit.aut.ac.ir:50024/api/admin/users/${userID}/ban?active=${action}`, getConfig(), dispatch, true)
+module.exports.activeUser = function (userID, action = 0, dispatch) {
+    return fetchData(`${BASE_ADMIN_URL}/users/${userID}/ban?active=${action}`, getConfig(), dispatch, true)
+}
+
+module.exports.impersonateUser = function (userID, active = 1, dispatch) {
+    return fetchData(`${BASE_ADMIN_URL}/users/${userID}/impersonate?active=${active}`, getConfig(), dispatch, true)
 }
 
 module.exports.base_url = function () {

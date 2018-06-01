@@ -21,11 +21,14 @@ import {
   Input
 
 } from 'reactstrap'
-import Data from './userData'
 import {connect} from 'react-redux';
 import Spinner from "../Spinner/Spinner";
-import {activeUserAction, getUserAction, getUserTrancationsAction} from "../../actions/AppActions";
+import {
+    activeUserAction, getUserAction, getUserTransactionsAction,
+    impersonateUserAction
+} from '../../actions/AppActions';
 import ReactTable from 'react-table'
+import { toastAlerts } from '../Shared/toast_alert';
 
 class PackageList extends Component {
   constructor(props) {
@@ -55,7 +58,7 @@ class PackageList extends Component {
       userId: this.props.match.params.user
     })
     this.props.dispatch(getUserAction(this.props.match.params.user))
-    this.props.dispatch(getUserTrancationsAction(this.props.match.params.user, (transactions) => {
+    this.props.dispatch(getUserTransactionsAction(this.props.match.params.user, (transactions) => {
       this.setState({transactions})
     }))
   }
@@ -120,6 +123,11 @@ class PackageList extends Component {
 
                   }))} className="ml-1" color="warning"
                         size="sm">{this.state.userInfo.active ? 'غیر فعال سازی کاربر' : 'فعال سازی کاربر'}</Button>
+
+                <Button onClick={() => this.props.dispatch(impersonateUserAction(this.state.userId,1,toastAlerts))} className="ml-1" color="info"
+                        size="sm">{'Impersonate'}</Button>
+
+
               </CardFooter>
             </Card>
           </Col>
