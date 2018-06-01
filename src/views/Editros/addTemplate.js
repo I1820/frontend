@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     Card,
     CardHeader,
@@ -8,6 +8,7 @@ import {
     Button, FormGroup, Form, Label, Col, Input,
 } from 'reactstrap';
 
+import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
 
 import AceEditor from 'react-ace';
 
@@ -21,7 +22,7 @@ import {
 } from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import Spinner from '../Spinner/Spinner';
-import { toastAlerts } from '../Shared/toast_alert';
+import {toastAlerts} from '../Shared/toast_alert';
 
 class AddTemplate extends Component {
 
@@ -69,16 +70,21 @@ class AddTemplate extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">ویرایشگر قالب codec</CardTitle>
                     </CardHeader>
                     <CardBody>
-                        <Form>
-                            <FormGroup row>
+                        <AvForm>
+                            <AvGroup row>
                                 <Label sm={1}>نام قالب:</Label>
                                 <Col sm={5}>
-                                    <Input value={this.state.name}
-                                           onChange={(event) => {
-                                               this.setState({name: event.target.value})
-                                           }} type="text"/>
+                                    <AvInput
+                                        name="name"
+                                        value={this.state.name}
+                                        onChange={(event) => {
+                                            this.setState({name: event.target.value})
+                                        }} type="text"
+                                        required/>
+                                    <br/>
+                                    <AvFeedback>الزامی است</AvFeedback>
                                 </Col>
-                            </FormGroup>
+                            </AvGroup>
                             <FormGroup row>
                                 <AceEditor
                                     onChange={(code) => this.state.code = code}
@@ -101,7 +107,7 @@ class AddTemplate extends Component {
                                     }}
                                 />
                             </FormGroup>
-                        </Form>
+                        </AvForm>
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.sendTemplate} className="ml-1" color="primary" size="md">ارسال
