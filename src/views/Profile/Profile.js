@@ -18,12 +18,13 @@ import {
 import {connect} from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import classnames from 'classnames';
-import {ToastContainer, toast} from 'react-toastify';
+import {toast} from 'react-toastify';
 import {css} from 'glamor';
 import {style} from 'react-toastify';
-import {editProfile, getProfileAction, changePassword} from '../../actions/AppActions';
+import { editProfile, getProfileAction, changePassword, impersonateUserAction } from '../../actions/AppActions';
 import Phone from 'react-phone-number-input'
 import Select2 from "react-select2-wrapper";
+import { toastAlerts } from '../Shared/toast_alert';
 
 style({
   colorProgressDefault: 'white'
@@ -43,6 +44,7 @@ class Profile extends Component {
       phone: this.props.userInfo.phone ? this.props.userInfo.phone : '',
       address: this.props.userInfo.other_info ? this.props.userInfo.other_info.address : '',
       mobile: this.props.userInfo.mobile ? this.props.userInfo.mobile : '',
+      impersonated: !!this.props.userInfo.impersonated
     }
     console.log(this.props.userInfo)
   }
@@ -102,7 +104,6 @@ class Profile extends Component {
     return (
 
       <div className={'row'}>
-        <ToastContainer className="text-right"/>
         <Spinner display={this.props.loading}/>
         <div className="col-md-12 col-lg-7">
           <Card className="text-justify">
@@ -188,6 +189,9 @@ class Profile extends Component {
             </CardBody>
             <CardFooter>
               <Button color="primary" onClick={this.editUserProfile}>ذخیره تغییرات</Button>
+                {' '}
+                {this.state.impersonated ?
+                    <Button color="primary" onClick={() => this.props.dispatch(impersonateUserAction(0,0,toastAlerts))}>خروج از حالت شخص سوم</Button> :''}
             </CardFooter>
           </Card>
         </div>
