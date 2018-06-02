@@ -776,7 +776,7 @@ class ProjectsManage extends Component {
     }
 
     addThing() {
-        window.location = `#/things/${this.state.project._id}/new`
+        window.location = `#/things/new/${this.state.project._id}`
     }
 
     addScenario() {
@@ -865,7 +865,7 @@ class ProjectsManage extends Component {
                                     })
                                 }} color="success" size="sm">ارسال کلید</Button>
                                 <Button onClick={() => {
-                                    window.location = `#/things/${this.state.project._id}/${row._id}`
+                                    window.location = `#/things/edit/${this.state.project._id}/${row._id}`
                                 }} className="ml-1" color="warning" size="sm">ویرایش</Button>
                                 <Button onClick={() => {
                                     window.location = `#/codec/${this.state.project._id}/${row._id}`

@@ -231,9 +231,6 @@ class ProjectsList extends Component {
 
 
     onCreateProject(status, message) {
-        if (status)
-            toastAlerts(status, 'پروژه با موفقیت ساخته شد')
-        else
             toastAlerts(status, message)
     }
 

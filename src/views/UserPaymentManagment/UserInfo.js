@@ -18,17 +18,19 @@ import {
   ModalFooter,
   Badge,
   Label,
-  Input
-
+  Input,
 } from 'reactstrap'
+
+import {AvForm, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+
 import {connect} from 'react-redux';
 import Spinner from "../Spinner/Spinner";
 import {
-    activeUserAction, getUserAction, getUserTransactionsAction,
-    impersonateUserAction
+  activeUserAction, changePasswordAction, createProject, getUserAction, getUserTransactionsAction,
+  impersonateUserAction
 } from '../../actions/AppActions';
 import ReactTable from 'react-table'
-import { toastAlerts } from '../Shared/toast_alert';
+import {toastAlerts} from '../Shared/toast_alert';
 
 class PackageList extends Component {
   constructor(props) {
@@ -37,7 +39,9 @@ class PackageList extends Component {
     this.renderPackage = this.renderPackage.bind(this)
     this.renderThing = this.renderThing.bind(this)
     this.renderTransaction = this.renderTransaction.bind(this)
+    this.toggle = this.toggle.bind(this)
     this.state = {
+      modal: false,
       userInfo: {
         name: "",
         email: "",
@@ -80,6 +84,36 @@ class PackageList extends Component {
 
       <div className="animated fadeIn text-justify">
         <Spinner display={this.props.loading}/>
+
+        <Modal isOpen={this.state.modal} toggle={() => this.toggle()} className="text-right">
+          <ModalHeader>{`تغییر گذرواژه ${this.state.userInfo.name}`}</ModalHeader>
+          <ModalBody>
+            <AvForm>
+              <AvGroup row>
+                <Label sm={3}>'گذرواژه جدید : </Label>
+                <Col sm={9}>
+                  <AvInput type="password"
+                           name={'password'}
+                           onChange={event => this.setState({
+                             password: event.target.value
+                           })}
+                           required/>
+                  <AvFeedback>الزامی است</AvFeedback>
+                </Col>
+              </AvGroup>
+            </AvForm>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" className="ml-1" onClick={() => {
+              this.toggle()
+              this.props.dispatch(changePasswordAction(
+                this.state.userInfo._id,
+                this.state.password,
+                this.onChangePassword))
+            }}>ذخیره</Button>
+            <Button color="danger" onClick={() => this.toggle('create')}>انصراف</Button>
+          </ModalFooter>
+        </Modal>
 
         <Row>
           <Col xs="36" sm="18" md="12">
@@ -124,9 +158,12 @@ class PackageList extends Component {
                   }))} className="ml-1" color="warning"
                         size="sm">{this.state.userInfo.active ? 'غیر فعال سازی کاربر' : 'فعال سازی کاربر'}</Button>
 
-                <Button onClick={() => this.props.dispatch(impersonateUserAction(this.state.userId,1,toastAlerts))} className="ml-1" color="info"
+                <Button onClick={() => this.props.dispatch(impersonateUserAction(this.state.userId, 1, toastAlerts))}
+                        className="ml-1" color="info"
                         size="sm">{'Impersonate'}</Button>
-
+                <Button className="ml-1" color="danger"
+                        onClick={() => this.toggle()}
+                        size="sm">{'تغییر گذرواژه'}</Button>
 
               </CardFooter>
             </Card>
@@ -259,7 +296,8 @@ class PackageList extends Component {
         <th>{key + 1}</th>
         <td>{el.packName}</td>
         <td>{el.cost}</td>
-        <td>{el.state === true ? <Badge color="success"> فعال</Badge> : <Badge color="danger"> غیر فعال</Badge>}</td>
+        <td>{el.state === true ? <Badge color="success"> فعال</Badge> :
+          <Badge color="danger"> غیر فعال</Badge>}</td>
         <td>
 
           <Label className="switch switch-text switch-pill switch-success">
@@ -282,6 +320,13 @@ class PackageList extends Component {
 
       </tr>
     )
+  }
+
+  toggle() {
+    console.log("modal", this.state.modal)
+    this.setState({
+      modal: !this.state.modal
+    })
   }
 
   renderTransaction() {
@@ -309,6 +354,16 @@ class PackageList extends Component {
         </Badge>
       }
     ];
+  }
+
+  onChangePassword(status, message) {
+    if (status, message) {
+      if (status)
+        toastAlerts(status, 'پروژه با موفقیت ساخته شد')
+      else
+        toastAlerts(status, message)
+    }
+
   }
 }
 

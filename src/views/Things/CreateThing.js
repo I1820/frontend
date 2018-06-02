@@ -68,17 +68,18 @@ class CreateThing extends Component {
 
     componentWillMount() {
         this.props.dispatch(getThingProfileListAction())
+
         const splitedUrl = window.location.href.split('/');
         this.setState({
-            project: splitedUrl[5],
+            project: this.props.match.params.project_id
         })
-        if (splitedUrl[6] !== 'new') {
+        if (this.props.match.params.type !== 'new') {
             this.setState({
-                project: splitedUrl[5],
-                thingId: splitedUrl[6],
+                project: this.props.match.params.project_id,
+                thingId: this.props.match.params.thing_id
             })
 
-            this.props.dispatch(getThingAction(splitedUrl[6]))
+            this.props.dispatch(getThingAction(this.props.match.params.thing_id))
         }
     }
 
