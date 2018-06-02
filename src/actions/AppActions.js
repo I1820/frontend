@@ -124,10 +124,10 @@ import fileDownload from 'js-file-download'
  */
 export function login(username, password, captcha, keep, errorCallback) {
   return (dispatch) => {
-    if (captcha === undefined) {
-      errorCallback('لطفا برروی گزینه من ربات نیستم کلیک کنید')
-      return
-    }
+    // if (captcha === undefined) {
+    //   errorCallback('لطفا برروی گزینه من ربات نیستم کلیک کنید')
+    //   return
+    // }
 
     // Show the loading indicator, hide the last error
     // If no username or password was specified, throw a field-missing error

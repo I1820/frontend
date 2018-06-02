@@ -114,12 +114,12 @@ class Full extends Component {
                 <Route path="/admin/user/info/:user" name="UserInfo" component={UserInfo}/>
 
                 <Route path="/gateways/new" name="GatewaysNew" component={GatewaysNew}/>
-                <Route path="/gateways/list" name="Gateways" component={Gateways}/>
-                <Route path="/gateways/view" name="GatewaysView" component={GatewaysView}/>
-                <Route path="/device-profile/list" name="DeviceProfile" component={DeviceProfile}/>
+                <Route path="/gateways/view/:id" name="GatewaysView" component={GatewaysView}/>
+                <Route path="/gateways" name="Gateways" component={Gateways}/>
+
                 <Route path="/device-profile/new" name="DeviceProfileNew" component={DeviceProfileNew}/>
                 <Route path="/device-profile/view/:id" name="ViewDeviceProfile" component={DeviceProfileNew}/>
-
+                <Route path="/device-profile" name="DeviceProfile" component={DeviceProfile}/>
 
                 <Route path="/scenario" name="addScenario" component={addScenario}/>
                 <Route path="/codec" name="sendCodec" component={sendCodec}/>
