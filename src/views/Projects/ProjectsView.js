@@ -33,7 +33,7 @@ import Spinner from '../Spinner/Spinner';
 import {css} from 'glamor';
 import {toastAlerts} from '../Shared/toast_alert';
 import ReactTable from 'react-table'
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'Recharts'
+import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 
 class ProjectsView extends Component {
 
