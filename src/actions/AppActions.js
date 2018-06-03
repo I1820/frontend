@@ -50,7 +50,8 @@ import {
     GET_DISCOUNTS,
     GET_PACKAGE,
     GET_USERS,
-    FETCH_USER
+    FETCH_USER,
+    SET_TOKEN
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -832,12 +833,13 @@ export function deleteGatewaysAction(profileId, cb) {
 
 //user action
 
-export function getProfileAction() {
+export function getProfileAction(cb) {
     return (dispatch) => {
         const promise = viewProfile(dispatch)
         promise.then((response) => {
             if (response.status === 'OK') {
                 dispatch(initUser(response.result))
+                cb  && cb(true)
             } else {
             }
         })
@@ -1365,6 +1367,12 @@ export function impersonateUserAction(userId, active = 1, cb) {
             cb(false, 'خطای نامشخص')
             dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
         })
+    }
+}
+
+export function setTokenAction(token) {
+    return (dispatch) => {
+        dispatch({type: SET_TOKEN, newState: {token: token}});
     }
 }
 

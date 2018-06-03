@@ -30,6 +30,7 @@ import Page404 from './views/Pages/Page404/'
 import Page500 from './views/Pages/Page500/'
 import SuccessPayment from './views/Packages/SuccessPayment'
 import FailurePayment from './views/Packages/FailurePayment'
+import AutoLogin from './views/Pages/Login/AutoLogin';
 
 
 function PrivateRoute({component: Component, ...rest}) {
@@ -80,6 +81,7 @@ ReactDOM.render((
                 <Route exact path="/500" name="Page 500" component={Page500}/>
                 <Route path="/payment/success/" name="SuccessPayment" component={SuccessPayment}/>
                 <Route path="/payment/failure/" name="FailurePayment" component={FailurePayment}/>
+                <Route path="/auto-login/:token/" name="autoLogin" component={AutoLogin}/>
                 <PrivateRoute path="/" name="Home" component={Full}/>
             </Switch>
         </HashRouter>
