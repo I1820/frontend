@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
-    Row,
-    Col,
-    Card,
-    Form,
-    Badge,
-    FormGroup,
-    CardHeader,
-    CardBody,
-    CardFooter,
-    CardTitle,
-    Button,
-    ButtonGroup,
-    Label,
-    Input,
-    Table, PaginationItem, PaginationLink, Pagination
+  Row,
+  Col,
+  Card,
+  Form,
+  Badge,
+  FormGroup,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  CardTitle,
+  Button,
+  ButtonGroup,
+  Label,
+  Input,
+  Table, PaginationItem, PaginationLink, Pagination
 } from 'reactstrap';
 
 import _ from 'underscore'
@@ -23,8 +23,8 @@ const ReactHighcharts = require('react-highcharts');
 import moment from 'moment-jalaali'
 import JSONPretty from 'react-json-pretty';
 import {
-    getCodecTemplateListAction, getProject,
-    getThingsSampleDataAction, getThingsMainDataAction
+  getCodecTemplateListAction, getProject,
+  getThingsSampleDataAction, getThingsMainDataAction
 } from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import {DateTimeRangePicker, DateTimePicker} from 'react-advance-jalaali-datepicker';
@@ -34,6 +34,9 @@ import {css} from 'glamor';
 import {toastAlerts} from '../Shared/toast_alert';
 import ReactTable from 'react-table'
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
+import {GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
+
+const {compose, withProps, lifecycle} = require('recompose');
 
 class ProjectsView extends Component {
 
@@ -46,6 +49,7 @@ class ProjectsView extends Component {
     this.drawLineChart = this.drawLineChart.bind(this)
     this.renderChart = this.renderChart.bind(this)
     this.drawBarChart = this.drawBarChart.bind(this)
+    this.renderThingLocation = this.renderThingLocation.bind(this)
     this.state = {
       showLineChart: true,
       showBarChart: false,
@@ -164,9 +168,13 @@ class ProjectsView extends Component {
       things[thing.interface.devEUI] = thing.name
     })
 
+    let location = {}
     let sensors = []
     this.state.data.map((d, i) => {
       _.allKeys(d.data).map((k, i2) => {
+        if (k === '_location')
+          location = d.data[k]
+        else
         if (_.find(sensors, {name: `${things[d.thingid]}: ${k}`}) === undefined) {
           sensors.push({
             label: k,
@@ -196,6 +204,7 @@ class ProjectsView extends Component {
     config.series = sensors
     this.setState({
       config
+      , location
     })
   }
 
@@ -279,15 +288,15 @@ class ProjectsView extends Component {
                 <Label sm={2}> نوع نمودار :</Label>
                 <Col sm={4}>
                   <Input type="select" name="type"
-                         onChange={(event)=>{
-                           if(event.target.value === "line")
+                         onChange={(event) => {
+                           if (event.target.value === "line")
                              this.setState({
-                               showBarChart:false,
-                               showLineChart:true
+                               showBarChart: false,
+                               showLineChart: true
                              })
-                           else   this.setState({
-                             showBarChart:true,
-                             showLineChart:false
+                           else this.setState({
+                             showBarChart: true,
+                             showLineChart: false
                            })
 
                          }} id="select">
@@ -349,6 +358,7 @@ class ProjectsView extends Component {
             />
           </CardBody>
         </Card>
+        {this.renderThingLocation()}
       </div>
     );
   }
@@ -359,7 +369,7 @@ class ProjectsView extends Component {
     else if (this.state.showBarChart)
       return (
         <BarChart width={1200} height={700} data={this.state.barchartData}
-                 >
+        >
           <CartesianGrid strokeDasharray="3 3"/>
           <XAxis dataKey="name"/>
           <YAxis/>
@@ -477,9 +487,9 @@ class ProjectsView extends Component {
       this.state.auto ? this.state.window : undefined,
       (status, data) => {
         this.setState({data: data.reverse()})
-        if(this.state.showLineChart)
+        if (this.state.showLineChart)
           this.drawLineChart()
-        else if(this.state.showBarChart)
+        else if (this.state.showBarChart)
           this.drawBarChart()
         if (cb)
           cb()
@@ -492,8 +502,95 @@ class ProjectsView extends Component {
       interval: 0
     })
   }
+
+  renderThingLocation() {
+    if (this.state.location)
+      return (
+        <Card className="text-justify">
+          <CardHeader>
+            <CardTitle className="mb-0 font-weight-bold h6">محل قرارگیری شی</CardTitle>
+          </CardHeader>
+          <CardBody>
+            <Map marker={{
+              lat: this.state.location.coordinates[1],
+              lng:  this.state.location.coordinates[0],
+            }}/>
+          </CardBody>
+        </Card>)
+  }
 }
 
+const Map = compose(
+  withProps({
+    googleMapURL: 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places',
+    loadingElement: <div style={{height: `100%`}}/>,
+    containerElement: <div style={{height: `400px`}}/>,
+    mapElement: <div style={{height: `100%`}}/>,
+  }),
+  lifecycle({
+    componentWillReceiveProps(props) {
+      if (props.marker !== undefined) {
+        this.setState({
+          marker: props.marker
+        })
+      }
+
+    },
+    componentWillMount() {
+      const refs = {}
+      const marker = this.props.marker !== undefined ? this.props.marker : {
+        lat: 35.7024852, lng: 51.4023424
+      }
+      this.setState({
+        bounds: null,
+        center: marker,
+        marker,
+        onMapMounted: ref => {
+          refs.map = ref;
+        },
+        onBoundsChanged: () => {
+          this.setState({
+            bounds: refs.map.getBounds(),
+            center: refs.map.getCenter(),
+          })
+        },
+        onPlacesChanged: () => {
+          const places = refs.searchBox.getPlaces();
+          const bounds = new google.maps.LatLngBounds();
+
+          places.forEach(place => {
+            if (place.geometry.viewport) {
+              bounds.union(place.geometry.viewport)
+            } else {
+              bounds.extend(place.geometry.location)
+            }
+          });
+          const nextMarkers = places.map(place => ({
+            position: place.geometry.location,
+          }));
+          const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
+
+          this.setState({
+            center: nextCenter,
+            markers: nextMarkers,
+          });
+          // refs.map.fitBounds(bounds);
+        },
+      })
+    },
+  }),
+  withScriptjs,
+  withGoogleMap
+)(props =>
+  <GoogleMap
+    ref={props.onMapMounted}
+    defaultZoom={12}
+    center={props.marker}
+    onBoundsChanged={props.onBoundsChanged}
+  >
+    <Marker position={props.marker}/>
+  </GoogleMap>
+);
 
 function mapStateToPropes(state) {
   return {
