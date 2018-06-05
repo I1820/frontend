@@ -28,8 +28,12 @@ import {
   setDashboardWidgetChartAction
 } from '../../actions/AppActions';
 import moment from 'moment-jalaali';
+import _ from "underscore";
+import {GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
 
 const ReactHighcharts = require('react-highcharts');
+
+const {compose, withProps, lifecycle} = require('recompose');
 
 class Dashboard extends Component {
 
@@ -56,7 +60,7 @@ class Dashboard extends Component {
   }
 
   toggle(modal) {
-    this.setState({modalToggle: {...this.state.modalToggle, [modal]: !this.state.modalToggle[modal]}})
+    this.setState({location:false,modalToggle: {...this.state.modalToggle, [modal]: !this.state.modalToggle[modal]}})
   }
 
   componentDidMount() {
@@ -119,7 +123,7 @@ class Dashboard extends Component {
                   />
                 </Col>
               </FormGroup>
-              <AvGroup row>
+              <AvGroup style={{display: this.state.location ? 'none' : 'flex'}} row>
                 <Label sm={3}> کلید : </Label>
                 <Col sm={9}>
                   <AvInput name={'key'}
@@ -133,7 +137,7 @@ class Dashboard extends Component {
                   <AvFeedback>الزامی است</AvFeedback>
                 </Col>
               </AvGroup>
-              <FormGroup row>
+              <FormGroup style={{display: this.state.location ? 'none' : 'flex'}} row>
                 <Label sm={3}> بازه زمانی:</Label>
                 <Col sm={9}>
                   <Input type="select" onChange={(event) => {
@@ -152,13 +156,22 @@ class Dashboard extends Component {
                 <Label sm={3}> نوع افزونه:</Label>
                 <Col sm={9}>
                   <Input type="select" onChange={(event) => {
-                    this.setState({
-                      widget: {...this.state.widget, type: event.target.value}
-                    })
+                    console.log(event.target.value, event.target.value === 'map')
+                    if (event.target.value === 'map')
+                      this.setState({
+                        location: true,
+                        widget: {...this.state.widget, key: '_location', type: event.target.value}
+                      })
+                    else
+                      this.setState({
+                        location: false,
+                        widget: {...this.state.widget, type: event.target.value}
+                      })
                   }}>
                     <option value={'bar'}>نمودار میله ای</option>
                     <option value={'line'}>نمودار خطی</option>
                     <option value={'table'}>جدول</option>
+                    <option value={'map'}>نقشه</option>
                   </Input>
                 </Col>
               </FormGroup>
@@ -299,7 +312,7 @@ class Dashboard extends Component {
             </div>
           )
         }
-        else {
+        else if (this.state.charts[key].type === 'table') {
           return (
             <div className="col-md-12 col-lg-6" key={key}>
               <Card className="text-justify">
@@ -334,6 +347,30 @@ class Dashboard extends Component {
             </div>
           )
         }
+        else {
+          if (this.state.charts[key].data[0] && this.state.charts[key].data[0].value &&
+            this.state.charts[key].data[0].value.coordinates)
+            return (
+              <div className="col-md-12 col-lg-6" key={key}>
+                <Card className="text-justify">
+                  <CardHeader>
+                    <CardTitle
+                      className="mb-0 font-weight-bold h6">{this.state.charts[key].title}</CardTitle>
+                  </CardHeader>
+                  <CardBody>
+                    <Map marker={{
+                      lat: this.state.charts[key].data[0].value.coordinates[1],
+                      lng: this.state.charts[key].data[0].value.coordinates[0]
+                    }}/>
+                  </CardBody>
+                  <CardFooter>
+                    <Button onClick={() => {
+                      this.setState({selectedChart: key}, () => this.toggle('deleteWidgetChart'))
+                    }} color="danger">حذف</Button>
+                  </CardFooter>
+                </Card>
+              </div>)
+        }
       })
 
     )
@@ -352,8 +389,9 @@ class Dashboard extends Component {
         accessor: row => moment(row.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')
       },
       {
-        accessor: 'value',
+        id: 'value',
         Header: 'داده دریافت شده',
+        accessor: row => JSON.stringify(row.value)
       },
     ];
   }
@@ -380,5 +418,79 @@ class Dashboard extends Component {
 function mapStateToProps(state) {
   return {};
 }
+
+
+const Map = compose(
+  withProps({
+    googleMapURL: 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places',
+    loadingElement: <div style={{height: `100%`}}/>,
+    containerElement: <div style={{height: `400px`}}/>,
+    mapElement: <div style={{height: `100%`}}/>,
+  }),
+  lifecycle({
+    componentWillReceiveProps(props) {
+      if (props.marker !== undefined) {
+        this.setState({
+          marker: props.marker
+        })
+      }
+
+    },
+    componentWillMount() {
+      const refs = {}
+      const marker = this.props.marker !== undefined ? this.props.marker : {
+        lat: 35.7024852, lng: 51.4023424
+      }
+      this.setState({
+        bounds: null,
+        center: marker,
+        marker,
+        onMapMounted: ref => {
+          refs.map = ref;
+        },
+        onBoundsChanged: () => {
+          this.setState({
+            bounds: refs.map.getBounds(),
+            center: refs.map.getCenter(),
+          })
+        },
+        onPlacesChanged: () => {
+          const places = refs.searchBox.getPlaces();
+          const bounds = new google.maps.LatLngBounds();
+
+          places.forEach(place => {
+            if (place.geometry.viewport) {
+              bounds.union(place.geometry.viewport)
+            } else {
+              bounds.extend(place.geometry.location)
+            }
+          });
+          const nextMarkers = places.map(place => ({
+            position: place.geometry.location,
+          }));
+          const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
+
+          this.setState({
+            center: nextCenter,
+            markers: nextMarkers,
+          });
+          // refs.map.fitBounds(bounds);
+        },
+      })
+    },
+  }),
+  withScriptjs,
+  withGoogleMap
+)(props =>
+  <GoogleMap
+    ref={props.onMapMounted}
+    defaultZoom={12}
+    center={props.marker}
+    onBoundsChanged={props.onBoundsChanged}
+  >
+    <Marker position={props.marker}/>
+  </GoogleMap>
+);
+
 
 export default connect(mapStateToProps)(Dashboard);
