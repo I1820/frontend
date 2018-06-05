@@ -898,7 +898,12 @@ class ProjectsManage extends Component {
                 <Button onClick={() => this.toggle('downlink', row._id)} className="ml-1"
                         color="primary"
                         size="sm">ارسال داده (داون لینک)</Button>
-                <Button onClick={() => this.toggle('deleteThing', row._id)} className="ml-1"
+                <Button onClick={() => {this.toggle('deleteThing', row._id)
+                  this.setState({
+                    downlinkFport:"",
+                    downlinkConfirmed:""
+                  })
+                }} className="ml-1"
                         color="danger"
                         size="sm">حذف شئ</Button>
                 <Button
