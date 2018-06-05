@@ -195,7 +195,6 @@ body {
   text-align: center;
 }
 
-
 .portal-style {
   position: relative;
   text-align: center;
@@ -1497,6 +1496,10 @@ ults__option[aria-disabled=true] {
 .select2-container--classic .select2-results__option--highlighted[aria-selected] {
   background-color: #3875d7;
   color: white;
+}
+
+.text-center {
+  text-align: center
 }
 
 .select2-container--classic .select2-results__group {

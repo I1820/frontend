@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import { Container } from 'reactstrap';
+import React, {Component} from 'react';
+import {Switch, Route, Redirect} from 'react-router-dom';
+import {Container} from 'reactstrap';
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
@@ -88,104 +88,106 @@ import Badges from '../../views/Notifications/Badges/';
 import Modals from '../../views/Notifications/Modals/';
 import sendCodec from '../../views/Editros/sendCodec';
 import addTemplate from '../../views/Editros/addTemplate';
-import { ToastContainer } from 'react-toastify';
+import {ToastContainer} from 'react-toastify';
 
 class Full extends Component {
-    render() {
-        return (
-            <div className="app">
-                <ToastContainer className="text-right"/>
-                <Header/>
-                <div className="app-body">
-                    <Sidebar {...this.props}/>
-                    <main className="main">
-                        <Breadcrumb/>
-                        <Container fluid>
-                            <Switch>
-                                <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
-                                <Route path="/news" name="News" component={News}/>
-                                <Route path="/profile" name="Profile" component={Profile}/>
+  render() {
+    return (
+      <div className="app">
+        <ToastContainer className="text-right"/>
+        <Header/>
+        <div className="app-body">
+          <Sidebar {...this.props}/>
+          <main className="main">
+            <Breadcrumb/>
+            <Container fluid>
+              <Switch>
+                <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
+                <Route path="/news" name="News" component={News}/>
+                <Route path="/profile" name="Profile" component={Profile}/>
 
-                                <Route path="/admin/packages" name="PackageList" component={PackageList}/>
-                                <Route path="/admin/users" name="UsersList" component={UsersList}/>
+                <Route path="/admin/packages" name="PackageList" component={PackageList}/>
+                <Route path="/admin/users" name="UsersList" component={UsersList}/>
 
-                                <Route path="/package/new" name="NewPackage" component={NewPackage}/>
-                                <Route path="/package/:id" name="EditPackage" component={NewPackage}/>
-                                <Route path="/admin/user/info/:user" name="UserInfo" component={UserInfo}/>
+                <Route path="/package/new" name="NewPackage" component={NewPackage}/>
+                <Route path="/package/:id" name="EditPackage" component={NewPackage}/>
+                <Route path="/admin/user/info/:user" name="UserInfo" component={UserInfo}/>
 
-                                <Route path="/gateways/new" name="GatewaysNew" component={GatewaysNew}/>
-                                <Route path="/gateways/list" name="Gateways" component={Gateways}/>
-                                <Route path="/gateways/view" name="GatewaysView" component={GatewaysView}/>
-                                <Route path="/device-profile/list" name="DeviceProfile" component={DeviceProfile}/>
-                                <Route path="/device-profile/new" name="DeviceProfileNew" component={DeviceProfileNew}/>
-                                <Route path="/device-profile" name="ViewDeviceProfile" component={DeviceProfileNew}/>
+                <Route path="/gateways/new" name="GatewaysNew" component={GatewaysNew}/>
+                <Route path="/gateways/view/:id" name="GatewaysView" component={GatewaysView}/>
+                <Route path="/gateways" name="Gateways" component={Gateways}/>
 
-                                <Route path="/things/list" name="ThingsList" component={ThingsList}/>
+                <Route path="/device-profile/new" name="DeviceProfileNew" component={DeviceProfileNew}/>
+                <Route path="/device-profile/view/:id" name="ViewDeviceProfile" component={DeviceProfileNew}/>
+                <Route path="/device-profile" name="DeviceProfile" component={DeviceProfile}/>
 
-
-                                <Route path="/scenario" name="addScenario" component={addScenario}/>
-                                <Route path="/codec" name="sendCodec" component={sendCodec}/>
-                                <Route path="/template" name="addTemplate" component={addTemplate}/>
-
-                                <Route path="/projects/list" name="ProjectsList" component={ProjectsList}/>
-                                <Route path="/projects/manage" name="ProjectsManage" component={ProjectsManage}/>
-                                <Route path="/projects/view" name="ProjectsView" component={ProjectsView}/>
-
-                                <Route path="/packages" name="packages" component={MyPackages}/>
-                                <Route path="/selectedPackage/:id" name="selectedPackage" component={SelectedPackage}/>
-
-                                <Route path="/transactions" name="Transactions" component={Transactions}/>
-                                <Route path="/buyedPackages" name="BuyedPackages" component={BuyedPackages}/>
-
-                                <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
-                                <Route path="/things" name="createThing" component={CreateThing}/>
+                <Route path="/scenario" name="addScenario" component={addScenario}/>
+                <Route path="/codec" name="sendCodec" component={sendCodec}/>
+                <Route path="/template" name="addTemplate" component={addTemplate}/>
 
 
-                                <Route path="/payment-portal/management" name="PaymentPortalManagment"
-                                       component={PaymentPortalManagment}/>
-                                <Route path="/theme/colors" name="Colors" component={Colors}/>
-                                <Route path="/theme/typography" name="Typography" component={Typography}/>
-                                <Route path="/base/cards" name="Cards" component={Cards}/>
-                                <Route path="/base/forms" name="Forms" component={Forms}/>
-                                <Route path="/base/switches" name="Swithces" component={Switches}/>
-                                <Route path="/base/tables" name="Tables" component={Tables}/>
-                                <Route path="/base/tabs" name="Tabs" component={Tabs}/>
-                                <Route path="/base/breadcrumbs" name="Breadcrumbs" component={Breadcrumbs}/>
-                                <Route path="/base/carousels" name="Carousels" component={Carousels}/>
-                                <Route path="/base/collapses" name="Collapses" component={Collapses}/>
-                                <Route path="/base/dropdowns" name="Dropdowns" component={Dropdowns}/>
-                                <Route path="/base/jumbotrons" name="Jumbotrons" component={Jumbotrons}/>
-                                <Route path="/base/list-groups" name="ListGroups" component={ListGroups}/>
-                                <Route path="/base/navbars" name="Navbars" component={Navbars}/>
-                                <Route path="/base/navs" name="Navs" component={Navs}/>
-                                <Route path="/base/paginations" name="Paginations" component={Paginations}/>
-                                <Route path="/base/popovers" name="Popovers" component={Popovers}/>
-                                <Route path="/base/progress-bar" name="Progress Bar" component={ProgressBar}/>
-                                <Route path="/base/tooltips" name="Tooltips" component={Tooltips}/>
-                                <Route path="/buttons/buttons" name="Buttons" component={Buttons}/>
-                                <Route path="/buttons/button-dropdowns" name="ButtonDropdowns"
-                                       component={ButtonDropdowns}/>
-                                <Route path="/buttons/button-groups" name="ButtonGroups" component={ButtonGroups}/>
-                                <Route path="/buttons/social-buttons" name="Social Buttons" component={SocialButtons}/>
-                                <Route path="/icons/flags" name="Flags" component={Flags}/>
-                                <Route path="/icons/font-awesome" name="Font Awesome" component={FontAwesome}/>
-                                <Route path="/icons/simple-line-icons" name="Simple Line Icons"
-                                       component={SimpleLineIcons}/>
-                                <Route path="/notifications/alerts" name="Alerts" component={Alerts}/>
-                                <Route path="/notifications/badges" name="Badges" component={Badges}/>
-                                <Route path="/notifications/modals" name="Modals" component={Modals}/>
-                                <Route path="/widgets" name="Widgets" component={Widgets}/>
-                                <Route path="/charts" name="Charts" component={Charts}/>
-                                <Redirect from="/" to="/dashboard"/>
-                            </Switch>
-                        </Container>
-                    </main>
-                    <Aside/>
-                </div>
-                <Footer/>
-            </div>
+                <Route path="/projects/manage/:id" name="ProjectsManage" component={ProjectsManage}/>
+                <Route path="/projects/view/:id" name="ProjectsView" component={ProjectsView}/>
+                <Route path="/projects" name="ProjectsList" component={ProjectsList}/>
+
+
+                <Route path="/packages" name="packages" component={MyPackages}/>
+                <Route path="/selectedPackage/:id" name="selectedPackage" component={SelectedPackage}/>
+
+                <Route path="/transactions" name="Transactions" component={Transactions}/>
+                <Route path="/buyedPackages" name="BuyedPackages" component={BuyedPackages}/>
+
+                <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
+                <Route path="/things/edit/:project_id/:thing_id" name="createThing" component={CreateThing}/>
+                <Route path="/things/new/:project_id" name="createThing" component={CreateThing}/>
+                <Route path="/things" name="ThingsList" component={ThingsList}/>
+
+
+                <Route path="/payment-portal/management" name="PaymentPortalManagment"
+                       component={PaymentPortalManagment}/>
+                <Route path="/theme/colors" name="Colors" component={Colors}/>
+                <Route path="/theme/typography" name="Typography" component={Typography}/>
+                <Route path="/base/cards" name="Cards" component={Cards}/>
+                <Route path="/base/forms" name="Forms" component={Forms}/>
+                <Route path="/base/switches" name="Swithces" component={Switches}/>
+                <Route path="/base/tables" name="Tables" component={Tables}/>
+                <Route path="/base/tabs" name="Tabs" component={Tabs}/>
+                <Route path="/base/breadcrumbs" name="Breadcrumbs" component={Breadcrumbs}/>
+                <Route path="/base/carousels" name="Carousels" component={Carousels}/>
+                <Route path="/base/collapses" name="Collapses" component={Collapses}/>
+                <Route path="/base/dropdowns" name="Dropdowns" component={Dropdowns}/>
+                <Route path="/base/jumbotrons" name="Jumbotrons" component={Jumbotrons}/>
+                <Route path="/base/list-groups" name="ListGroups" component={ListGroups}/>
+                <Route path="/base/navbars" name="Navbars" component={Navbars}/>
+                <Route path="/base/navs" name="Navs" component={Navs}/>
+                <Route path="/base/paginations" name="Paginations" component={Paginations}/>
+                <Route path="/base/popovers" name="Popovers" component={Popovers}/>
+                <Route path="/base/progress-bar" name="Progress Bar" component={ProgressBar}/>
+                <Route path="/base/tooltips" name="Tooltips" component={Tooltips}/>
+                <Route path="/buttons/buttons" name="Buttons" component={Buttons}/>
+                <Route path="/buttons/button-dropdowns" name="ButtonDropdowns"
+                       component={ButtonDropdowns}/>
+                <Route path="/buttons/button-groups" name="ButtonGroups" component={ButtonGroups}/>
+                <Route path="/buttons/social-buttons" name="Social Buttons" component={SocialButtons}/>
+                <Route path="/icons/flags" name="Flags" component={Flags}/>
+                <Route path="/icons/font-awesome" name="Font Awesome" component={FontAwesome}/>
+                <Route path="/icons/simple-line-icons" name="Simple Line Icons"
+                       component={SimpleLineIcons}/>
+                <Route path="/notifications/alerts" name="Alerts" component={Alerts}/>
+                <Route path="/notifications/badges" name="Badges" component={Badges}/>
+                <Route path="/notifications/modals" name="Modals" component={Modals}/>
+                <Route path="/widgets" name="Widgets" component={Widgets}/>
+                <Route path="/charts" name="Charts" component={Charts}/>
+                <Redirect from="/" to="/dashboard"/>
+              </Switch>
+            </Container>
+          </main>
+          <Aside/>
+        </div>
+        <Footer/>
+      </div>
     );
-    }
-    }
+  }
+}
 
-    export default Full;
+export default Full;

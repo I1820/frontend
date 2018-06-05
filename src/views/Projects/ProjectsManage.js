@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     Col,
     Card,
@@ -18,7 +18,10 @@ import {
     UncontrolledTooltip,
     Table, Modal, ModalHeader, ModalBody, Badge
 } from 'reactstrap';
-import { connect } from 'react-redux';
+
+import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+
+import {connect} from 'react-redux';
 import {
     sendThingKeysAction,
     editProjectAction,
@@ -33,12 +36,12 @@ import {
 } from '../../actions/AppActions';
 import Spinner from '../Spinner/Spinner';
 
-import { toast } from 'react-toastify';
-import { css } from 'glamor';
-import { style } from 'react-toastify';
+import {toast} from 'react-toastify';
+import {css} from 'glamor';
+import {style} from 'react-toastify';
 import ReactTable from 'react-table'
 import Logger from '../../components/Logger';
-import { toastAlerts } from '../Shared/toast_alert';
+import {toastAlerts} from '../Shared/toast_alert';
 
 style({
     colorProgressDefault: 'white'
@@ -290,23 +293,29 @@ class ProjectsManage extends Component {
                 <Modal isOpen={this.state.OTAAModal} toggle={() => this.toggle('OTAA')} className="text-right">
                     <ModalHeader className={'ltr'}>Over-the-Air Activation</ModalHeader>
                     <ModalBody>
-                        <Form className={'english'}>
-                            <FormGroup row>
+                        <AvForm className={'english'}>
+                            <AvGroup row>
                                 <Col sm={9}>
-                                    <Input defaultValue={this.state.keys['appKey']} onChange={(event) => {
+                                    <AvInput
+                                        name="appKey"
+                                        defaultValue={this.state.keys['appKey']} onChange={(event) => {
                                         this.setState({
                                             OTAA: {
                                                 appKey: event.target.value
                                             }
                                         })
                                     }}
-                                           maxLength={32}
-                                           placeholder="00AA11BB22CC33DD44FF55GG66HH77JJ"
-                                           type="text"/>
+                                        pattern="^[0-9A-Za-z]{32}$"
+                                        required
+                                        maxLength={32}
+                                        placeholder="00AA11BB22CC33DD44FF55GG66HH77JJ"
+                                        type="text"/>
+                                    <br/>
+                                    <AvFeedback>کلید معتبر نیست</AvFeedback>
                                 </Col>
                                 <Label sm={3}>Application key</Label>
-                            </FormGroup>
-                        </Form>
+                            </AvGroup>
+                        </AvForm>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
@@ -330,28 +339,32 @@ class ProjectsManage extends Component {
                        className="text-right">
                     <ModalHeader className={'ltr'}>Activation By Personalization</ModalHeader>
                     <ModalBody>
-                        <Form className={'english'}>
-                            <FormGroup row>
+                        <AvForm className={'english'}>
+                            <AvGroup row>
                                 <Col sm={7}>
-                                    <Input defaultValue={this.state.keys['devAddr']} name="devAddr"
-                                           onChange={(event) => {
-                                               this.setState({
-                                                   ABP: {
-                                                       ...this.state.ABP,
-                                                       [event.target.name]: event.target.value
-                                                   }
-                                               })
-                                           }}
-                                           maxLength={32}
-                                           placeholder="66HH77JJ"
-                                           type="text"/>
+                                    <AvInput defaultValue={this.state.keys['devAddr']} name="devAddr"
+                                             onChange={(event) => {
+                                                 this.setState({
+                                                     ABP: {
+                                                         ...this.state.ABP,
+                                                         [event.target.name]: event.target.value
+                                                     }
+                                                 })
+                                             }}
+                                             pattern="^[0-9A-Fa-f]{32}$"
+                                             placeholder={'0011aa222B99FFaa0011aa222B99FFaa'}
+                                             required
+                                             maxLength={32}
+                                             type="text"/>
+                                    <br/>
+                                    <AvFeedback>آدرس معتبر نیست</AvFeedback>
                                 </Col>
                                 <Label sm={5}>Device Address:</Label>
-                            </FormGroup>
+                            </AvGroup>
 
-                            <FormGroup row>
+                            <AvGroup row>
                                 <Col sm={7}>
-                                    <Input defaultValue={this.state.keys['appSKey']} name="appSKey"
+                                    <AvInput defaultValue={this.state.keys['appSKey']} name="appSKey"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -361,15 +374,19 @@ class ProjectsManage extends Component {
                                                })
                                            }}
                                            maxLength={32}
-                                           placeholder="44FF55GG66HH77JJ00AA11BB22CC33DD"
+                                           pattern="^[0-9A-Za-z]{32}$"
+                                           required
+                                           placeholder="44FF55GG66hh77jj00AA11BB22CC33DD"
                                            type="text"/>
+                                    <br/>
+                                    <AvFeedback>کلید معتبر نیست</AvFeedback>
                                 </Col>
                                 <Label sm={5}>Application Session Key:</Label>
-                            </FormGroup>
+                            </AvGroup>
 
-                            <FormGroup row>
+                            <AvGroup row>
                                 <Col sm={7}>
-                                    <Input defaultValue={this.state.keys['nwkSKey']} name="nwkSKey"
+                                    <AvInput defaultValue={this.state.keys['nwkSKey']} name="nwkSKey"
                                            onChange={(event) => {
                                                this.setState({
                                                    ABP: {
@@ -379,11 +396,15 @@ class ProjectsManage extends Component {
                                                })
                                            }}
                                            maxLength={32}
-                                           placeholder="00AA11BB22CC33DD44FF55GG66HH77JJ"
+                                           pattern="^[0-9A-Za-z]{32}$"
+                                           required
+                                           placeholder="00AA11bb22CC33dd44FF55GG66HH77JJ"
                                            type="text"/>
+                                    <br/>
+                                    <AvFeedback>کلید معتبر نیست</AvFeedback>
                                 </Col>
                                 <Label sm={5}>Network Session Key:</Label>
-                            </FormGroup>
+                            </AvGroup>
                             <FormGroup row>
                                 <Col sm={7}>
                                     <Input defaultValue={this.state.keys['fCntDown']} name="fCntDown"
@@ -396,7 +417,7 @@ class ProjectsManage extends Component {
                                                })
                                            }}
                                            placeholder="12"
-                                           type="text"/>
+                                           type="number"/>
                                 </Col>
                                 <Label sm={5}>Downlink Frame Counter:</Label>
                             </FormGroup>
@@ -412,9 +433,9 @@ class ProjectsManage extends Component {
                                                })
                                            }}
                                            placeholder="12"
-                                           type="text"/>
+                                           type="number"/>
                                 </Col>
-                                <Label sm={5}>Downlink Frame Counter:</Label>
+                                <Label sm={5}>Uplink Frame Counter:</Label>
                             </FormGroup>
 
                             <FormGroup row>
@@ -432,7 +453,7 @@ class ProjectsManage extends Component {
                                 </Col>
                                 <Label sm={5}>Disable Frame Counter Validation:</Label>
                             </FormGroup>
-                        </Form>
+                        </AvForm>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" className="ml-1" onClick={() => {
@@ -755,7 +776,7 @@ class ProjectsManage extends Component {
     }
 
     addThing() {
-        window.location = `#/things/${this.state.project._id}/new`
+        window.location = `#/things/new/${this.state.project._id}`
     }
 
     addScenario() {
@@ -844,7 +865,7 @@ class ProjectsManage extends Component {
                                     })
                                 }} color="success" size="sm">ارسال کلید</Button>
                                 <Button onClick={() => {
-                                    window.location = `#/things/${this.state.project._id}/${row._id}`
+                                    window.location = `#/things/edit/${this.state.project._id}/${row._id}`
                                 }} className="ml-1" color="warning" size="sm">ویرایش</Button>
                                 <Button onClick={() => {
                                     window.location = `#/codec/${this.state.project._id}/${row._id}`

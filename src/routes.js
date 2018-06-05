@@ -38,17 +38,38 @@ const routes = {
   '/widgets': 'Widgets',
   '/news': 'اخبار',
   '/profile': 'حساب کاربری',
-  '/projects/list': 'لیست پروژه‌ها',
-  '/projects/new': 'Add New Project',
+
+  '/projects': 'لیست پروژه‌ها',
   '/projects/view': 'نمایش پروژه',
-  '/projects/manage': 'لیست پروژه ها',
-  '/things': 'اشیاء',
+  '/projects/view/$$': 'نمایش پروژه',
+  '/projects/manage': 'مدیریت پروژه',
+  '/projects/manage/$$': 'مدیریت پروژه',
+
+  '/things': 'لیست اشیاء',
+  '/things/edit': 'ویرایش شی',
+  '/things/edit/$$': 'ویرایش شی',
+  '/things/new': 'ایجاد شی',
+  '/things/new/$$': 'ایجاد شی',
   '/things/excel': 'آپلود فایل Excel',
-  '/things/list': 'لیست اشیا',
-  '/gateways/list': 'Gateways List',
-  '/gateways/new': 'Add New Gateway',
-  '/gateways/view': 'View Gateway',
+  '/things/excel/$$': 'آپلود فایل Excel',
+
+  '/codec/':'ارسال کدک',
+  '/codec/$$':'ارسال کدک',
+  '/scenario/':'ارسال سناریو',
+  '/scenario/$$':'ارسال سناریو',
+  '/template/':'ارسال سناریو',
+  '/template/$$':'ارسال سناریو',
+
+  '/gateways': 'لیست گذرگاه ها',
+  '/gateways/new': 'افزودن گذرگاه',
+  '/gateways/new/$$': 'افزودن گذرگاه',
+  '/gateways/view': 'مشاهده گذرگاه',
+  '/gateways/view/$$': 'مشاهده گذرگاه',
+
   '/device-profile/list': 'پروفایل اشیا',
-  '/device-profile/new': 'Add New Devices Profile',
+  '/device-profile/new': 'افزودن پروفایل اشیا',
+  '/device-profile/new/$$': 'افزودن پروفایل اشیا',
+  '/device-profile/view': 'مشاهده پروفایل اشیا',
+  '/device-profile/view/$$': 'مشاهده پروفایل اشیا'
 };
 export default routes;

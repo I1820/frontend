@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     Container,
     Row,
@@ -12,13 +12,16 @@ import {
     InputGroupAddon,
     InputGroupText,
 } from 'reactstrap';
+
+import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+
 import classnames from 'classnames';
-import { connect } from 'react-redux';
-import { register } from '../../../actions/AppActions';
-import { toastAlerts } from '../../Shared/toast_alert';
-import { css } from 'glamor';
-import { ToastContainer } from 'react-toastify';
-import { style } from 'react-toastify';
+import {connect} from 'react-redux';
+import {register} from '../../../actions/AppActions';
+import {toastAlerts} from '../../Shared/toast_alert';
+import {css} from 'glamor';
+import {ToastContainer} from 'react-toastify';
+import {style} from 'react-toastify';
 
 style({
     colorProgressDefault: 'white',
@@ -63,59 +66,80 @@ class Register extends Component {
                         <Col md="6">
                             <Card className="mx-0 mx-sm-4">
                                 <CardBody className="p-4 text-right">
-                                    <h1>ثبت نام</h1>
-                                    <p className="text-muted">پروفایل خود را بسازید</p>
+                                    <AvForm>
+                                        <h1>ثبت نام</h1>
+                                        <p className="text-muted">پروفایل خود را بسازید</p>
 
-                                    <br/>
-                                    <div>
-                                        {/* حقیقی */}
-                                        <InputGroup className="mb-3">
-                                            <InputGroupAddon addonType="prepend">
-                                                <InputGroupText>
-                                                    <i className="icon-user"></i>
-                                                </InputGroupText>
-                                            </InputGroupAddon>
-                                            <Input type="text" placeholder="نام و نام خانوادگی"
-                                                   onChange={event => this.setState({name: event.target.value})}/>
-                                        </InputGroup>
+                                        <br/>
+                                        <div>
+                                            {/* حقیقی */}
+                                            <AvGroup className="mb-3">
+                                                <InputGroupAddon addonType="prepend">
+                                                    <InputGroupText>
+                                                        <i className="icon-user"></i>
+                                                    </InputGroupText>
+                                                </InputGroupAddon>
+                                                <AvInput
+                                                    name="fullName"
+                                                    type="text" placeholder="نام و نام خانوادگی"
+                                                    onChange={event => this.setState({name: event.target.value})}
+                                                    required/>
+                                                <br/>
+                                                <AvFeedback>الزامی است</AvFeedback>
+                                            </AvGroup>
 
-                                        <InputGroup className="mb-4">
-                                            <InputGroupAddon addonType="prepend">
-                                                <InputGroupText>
-                                                    @
-                                                </InputGroupText>
-                                            </InputGroupAddon>
-                                            <Input type="text" placeholder="پست الکترونیکی"
-                                                   onChange={event => this.setState({email: event.target.value})}/>
-                                        </InputGroup>
+                                            <AvGroup className="mb-4">
+                                                <InputGroupAddon addonType="prepend">
+                                                    <InputGroupText>
+                                                        @
+                                                    </InputGroupText>
+                                                </InputGroupAddon>
+                                                <AvInput
+                                                    name="email"
+                                                    type="email" placeholder="پست الکترونیکی"
+                                                    onChange={event => this.setState({email: event.target.value})}
+                                                    required/>
+                                                <br/>
+                                                <AvFeedback>صحیح نیست</AvFeedback>
+                                            </AvGroup>
 
-                                        <InputGroup className="mb-4">
-                                            <InputGroupAddon addonType="prepend">
-                                                <InputGroupText>
-                                                    <i className="icon-lock"></i>
-                                                </InputGroupText>
-                                            </InputGroupAddon>
-                                            <Input type="password" placeholder="کلمه عبور"
-                                                   onChange={event => this.setState({password: event.target.value})}/>
-                                        </InputGroup>
+                                            <AvGroup className="mb-4">
+                                                <InputGroupAddon addonType="prepend">
+                                                    <InputGroupText>
+                                                        <i className="icon-lock"></i>
+                                                    </InputGroupText>
+                                                </InputGroupAddon>
+                                                <AvInput
+                                                    name="password"
+                                                    name="originalPassword" type="password" placeholder="کلمه عبور"
+                                                    onChange={event => this.setState({password: event.target.value})}
+                                                    required/>
+                                                <br/>
+                                                <AvFeedback>الزامی است</AvFeedback>
+                                            </AvGroup>
 
-                                        <InputGroup className="mb-4">
-                                            <InputGroupAddon addonType="prepend">
-                                                <InputGroupText>
-                                                    <i className="icon-lock"></i>
-                                                </InputGroupText>
-                                            </InputGroupAddon>
-                                            <Input type="password" placeholder="تکرار کلمه عبور"
-                                                   onChange={event => this.setState({passwordRepeat: event.target.value})}/>
-                                        </InputGroup>
+                                            <AvGroup className="mb-4">
+                                                <InputGroupAddon addonType="prepend">
+                                                    <InputGroupText>
+                                                        <i className="icon-lock"></i>
+                                                    </InputGroupText>
+                                                </InputGroupAddon>
+                                                <AvInput
+                                                    name="passwordRepeat"
+                                                    type="password" placeholder="تکرار کلمه عبور"
+                                                    onChange={event => this.setState({passwordRepeat: event.target.value})}
+                                                    validate={{match: {value: 'originalPassword'}}}/>
+                                                <br/>
+                                                <AvFeedback>مطابق با کلمه عبور نیست</AvFeedback>
+                                            </AvGroup>
 
-                                        <Button color="success" onClick={this.realRegister} block>ثبت نام</Button>
-                                        <Button color="primary"
-                                                onClick={() => window.location = '#/login'}
-                                                block>بازگشت به لاگین</Button>
+                                            <Button color="success" onClick={this.realRegister} block>ثبت نام</Button>
+                                            <Button color="primary"
+                                                    onClick={() => window.location = '#/login'}
+                                                    block>بازگشت به لاگین</Button>
 
-                                    </div>
-
+                                        </div>
+                                    </AvForm>
                                 </CardBody>
                             </Card>
                         </Col>

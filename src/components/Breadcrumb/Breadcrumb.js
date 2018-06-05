@@ -22,7 +22,7 @@ const BreadcrumbsItem = ({...rest, match}) => {
   const routeName = findRouteName(match.url);
   if (routeName) {
     return (
-      match.isExact ?
+      match.isExact || findRouteName(match.url+"/$$")?
         (
           <BreadcrumbItem active>{routeName}</BreadcrumbItem>
         ) :

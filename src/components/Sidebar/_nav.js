@@ -10,13 +10,13 @@ export default {
 
         {
             name: 'پروژه ها',
-            url: '/projects/list',
+            url: '/projects',
             icon: 'icon-layers',
             type: 'user'
         },
         {
             name: 'اشیا',
-            url: '/things/list',
+            url: '/things',
             icon: 'icon-feed',
             type: 'user'
         },
@@ -37,7 +37,7 @@ export default {
         // },
         {
             name: 'گذرگاه ها',
-            url: '/gateways/list',
+            url: '/gateways',
             icon: 'icon-direction',
             type: 'user'
         },
