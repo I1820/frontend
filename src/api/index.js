@@ -522,6 +522,10 @@ module.exports.changeAdminPassword = function (userID, password, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/users/${userID}/password`, config, dispatch, true)
 }
 
+module.exports.getUserTransactionsAPI = function (dispatch) {
+  return fetchData(`/payment`, getConfig(), dispatch)
+}
+
 module.exports.base_url = function () {
   return BASE_URL;
 }

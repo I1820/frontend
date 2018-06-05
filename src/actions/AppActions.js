@@ -51,7 +51,8 @@ import {
     GET_PACKAGE,
     GET_USERS,
     FETCH_USER,
-    SET_TOKEN
+    SET_TOKEN,
+  SET_TRANSACTIONS
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -78,41 +79,41 @@ import {
     base_url
 } from '../api/index'
 import {
-    activateScenario,
-    sendThingKeys,
-    createCodecTemplate,
-    createThingProfile,
-    deleteCodecTemplate,
-    deleteScenario,
-    getCodecTemplate,
-    getThingCodec,
-    updateCodecTemplate,
-    getCodecTemplateList,
-    getDashboard,
-    getUserThings,
-    getAdminPackage,
-    getPackage,
-    deletePackage,
-    createPackage,
-    updatePackage,
-    getDiscounts,
-    deleteDiscount,
-    createDiscount,
-    activatePackage,
-    getUserPackage,
-    buyPackage,
-    getScenario,
-    getThingProfileList,
-    setDashboardWidgetChart,
-    deleteDashboardWidgetChart,
-    updateScenarioAPI,
-    viewProfile,
-    getDeviceProfileAPI,
-    getUsers,
-    getThingsMainData,
-    getThingsSampleData,
-    activateThing,
-    activeUser, impersonateUser
+  activateScenario,
+  sendThingKeys,
+  createCodecTemplate,
+  createThingProfile,
+  deleteCodecTemplate,
+  deleteScenario,
+  getCodecTemplate,
+  getThingCodec,
+  updateCodecTemplate,
+  getCodecTemplateList,
+  getDashboard,
+  getUserThings,
+  getAdminPackage,
+  getPackage,
+  deletePackage,
+  createPackage,
+  updatePackage,
+  getDiscounts,
+  deleteDiscount,
+  createDiscount,
+  activatePackage,
+  getUserPackage,
+  buyPackage,
+  getScenario,
+  getThingProfileList,
+  setDashboardWidgetChart,
+  deleteDashboardWidgetChart,
+  updateScenarioAPI,
+  viewProfile,
+  getDeviceProfileAPI,
+  getUsers,
+  getThingsMainData,
+  getThingsSampleData,
+  activateThing,
+  activeUser, impersonateUser, getUserTransactionsAPI
 } from '../api';
 import fileDownload from 'js-file-download'
 
@@ -1366,6 +1367,19 @@ export function impersonateUserAction(userId, active = 1, cb) {
       }
     }).catch((err) => {
       cb(false, 'خطای نامشخص')
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+
+export function getUserTransactions() {
+  return (dispatch) => {
+    const promise = getUserTransactionsAPI(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        dispatch({type: SET_TRANSACTIONS, newState: response.result})
+      }
+    }).catch((err) => {
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
     })
   }

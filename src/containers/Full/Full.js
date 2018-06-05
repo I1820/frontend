@@ -20,6 +20,7 @@ import NewPackage from '../../views/PackageManagement/PackageManage'
 //usersManagement
 import UsersList from '../../views/UserPaymentManagment/UsersList'
 import UserInfo from '../../views/UserPaymentManagment/UserInfo'
+import UserTransactions from '../../views/UserPaymentManagment/UsersTrancations'
 
 import Gateways from '../../views/Gateways/Gateways.js';
 import GatewaysNew from '../../views/Gateways/GatewaysNew.js';
@@ -113,6 +114,8 @@ class Full extends Component {
                 <Route path="/package/:id" name="EditPackage" component={NewPackage}/>
                 <Route path="/admin/user/info/:user" name="UserInfo" component={UserInfo}/>
 
+                <Route path="/transactions" name="UserTransactions" component={UserTransactions}/>
+
                 <Route path="/gateways/new" name="GatewaysNew" component={GatewaysNew}/>
                 <Route path="/gateways/view/:id" name="GatewaysView" component={GatewaysView}/>
                 <Route path="/gateways" name="Gateways" component={Gateways}/>
@@ -134,7 +137,6 @@ class Full extends Component {
                 <Route path="/packages" name="packages" component={MyPackages}/>
                 <Route path="/selectedPackage/:id" name="selectedPackage" component={SelectedPackage}/>
 
-                <Route path="/transactions" name="Transactions" component={Transactions}/>
                 <Route path="/buyedPackages" name="BuyedPackages" component={BuyedPackages}/>
 
                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>

@@ -49,6 +49,12 @@ export default {
             type: 'user'
         },
         {
+            name: 'تراکنش ها',
+            url: '/transactions',
+            icon: 'icon-grid',
+            type: 'user'
+        },
+        {
             name: 'خرید بسته',
             url: '/packages',
             icon: 'icon-grid',

@@ -70,6 +70,8 @@ const routes = {
   '/device-profile/new': 'افزودن پروفایل اشیا',
   '/device-profile/new/$$': 'افزودن پروفایل اشیا',
   '/device-profile/view': 'مشاهده پروفایل اشیا',
-  '/device-profile/view/$$': 'مشاهده پروفایل اشیا'
+  '/device-profile/view/$$': 'مشاهده پروفایل اشیا',
+
+  '/transactions': 'تراکنش های کاربر'
 };
 export default routes;

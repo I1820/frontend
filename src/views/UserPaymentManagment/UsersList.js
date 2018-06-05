@@ -23,7 +23,6 @@ import {
   FormText
 } from 'reactstrap';
 import {getUsersAction, SelectUser} from "../../actions/AppActions";
-import Data from './userData'
 import {connect} from 'react-redux';
 import Spinner from "../Spinner/Spinner";
 import ReactTable from 'react-table'

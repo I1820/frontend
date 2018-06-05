@@ -31,5 +31,6 @@ export const NEW_PACKAGE = 'NEW_PACKAGE'
 export const SELECT_USER = "SELECT_USER"
 export const SET_TOKEN = "SET_TOKEN"
 export const PAYMENT_RESULT = 'PAYMENT_RESULT'
+export const SET_TRANSACTIONS = 'SET_TRANSACTIONS'
 export const FETCH_USER = 'FETCH_USER'
 export const GET_USERS = 'GET_USERS'
