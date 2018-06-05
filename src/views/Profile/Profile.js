@@ -47,9 +47,11 @@ class Profile extends Component {
         this.props.userInfo.phone.split("-")[0]
         : "۰۲۱",
       name: this.props.userInfo.username,
+      legal: this.props.userInfo.legal,
       phone: this.props.userInfo.phone ? this.props.userInfo.phone : '',
       address: this.props.userInfo.other_info ? this.props.userInfo.other_info.address : '',
       mobile: this.props.userInfo.mobile ? this.props.userInfo.mobile : '',
+      legalInfo: this.props.userInfo.legal_info ? this.props.userInfo.legal_info : {},
       impersonated: !!this.props.userInfo.impersonated
     }
     console.log(this.props.userInfo)
@@ -62,12 +64,14 @@ class Profile extends Component {
 
   editUserProfile() {
     this.props.dispatch(editProfile({
+      'legal': this.state.legal,
       'name': this.state.name,
       'mobile': this.state.mobile,
       'phone': this.state.city + "-" + this.state.phone,
       'other_info': JSON.stringify({
         'address': this.state.address,
-      })
+      }),
+      'legal_info': JSON.stringify(this.state.legalInfo)
     }, this.manageToastAlerts))
   }
 
@@ -107,8 +111,8 @@ class Profile extends Component {
   }
 
   render() {
+    console.log(this.state.legal)
     return (
-
       <div className={'row'}>
         <ToastContainer className="text-right"/>
         <Spinner display={this.props.loading}/>
@@ -203,7 +207,83 @@ class Profile extends Component {
                            defaultValue={this.state.address}/>
                   </Col>
                 </FormGroup>
-
+                <FormGroup row>
+                  <Label sm={4}> نوع کاربر :</Label>
+                  <Col sm={8}>
+                    <Input defaultValue={this.state.legal} onChange={(e) => {
+                      this.setState({legal: e.target.value})
+                    }}
+                           type="select" name="type" id="select">
+                      <option value={true}>حقوقی</option>
+                      <option value={false}>حقیقی</option>
+                    </Input>
+                  </Col>
+                </FormGroup>
+              </AvForm>
+              <AvForm style={{display: this.state.legal == 'true' || this.state.legal === true ? 'block' : 'none'}}>
+                <AvGroup row>
+                  <Label sm={4}>نام شرکت:‌ </Label>
+                  <Col sm={8}>
+                    <AvInput
+                      name="fullName"
+                      type="text" onChange={(event) => {
+                      this.setState({
+                        ...this.state,
+                        legalInfo: {
+                          ...this.state.legalInfo,
+                          org_name: event.target.value
+                        }
+                      })
+                    }}
+                      placeholder={'نام شرکت'}
+                      maxLength={100}
+                      defaultValue={this.state.legalInfo.org_name}
+                      required/>
+                    <br/>
+                    <AvFeedback>الزامی است</AvFeedback>
+                  </Col>
+                </AvGroup>
+                <AvGroup row>
+                  <Label sm={4}>نام و نام خانوادگی واسط شرکت:‌ </Label>
+                  <Col sm={8}>
+                    <AvInput
+                      name="fullName"
+                      type="text" onChange={(event) => {
+                      this.setState({
+                        ...this.state,
+                        legalInfo: {
+                          ...this.state.legalInfo,
+                          org_interface_name: event.target.value
+                        }
+                      })
+                    }}
+                      placeholder={'نام و نام خانوادگی'}
+                      maxLength={100}
+                      defaultValue={this.state.legalInfo.org_interface_name}
+                      required/>
+                    <br/>
+                    <AvFeedback>الزامی است</AvFeedback>
+                  </Col>
+                </AvGroup>
+                <AvGroup row>
+                  <Label sm={4}>تلفن همراه واسط شرکت:</Label>
+                  <Col sm={8}>
+                    <Phone
+                      displayInitialValueAsLocalNumber
+                      // country="IR"
+                      style={{direction: "ltr"}}
+                      smartCaret={false}
+                      placeholder=""
+                      value={this.state.legalInfo.org_interface_mobile}
+                      onChange={mobile => this.setState({
+                        ...this.state,
+                        legalInfo: {
+                          ...this.state.legalInfo,
+                          org_interface_mobile: mobile
+                        }
+                      })}/>
+                  </Col>
+                </AvGroup>
               </AvForm>
             </CardBody>
             <CardFooter>
