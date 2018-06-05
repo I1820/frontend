@@ -25,93 +25,94 @@
 /* global fetch */
 
 import {
-  SET_AUTH,
-  CHANGE_FORM,
-  SENDING_REQUEST,
-  SET_ERROR_MESSAGE,
-  INIT_USER,
-  SELECT_PROJECT,
-  GET_PROJECTS,
-  FETCH_PROJECT,
-  UPDATE_USER,
-  FREE,
-  GET_THINGS,
-  FETCH_THING,
-  GET_THINGS_PROFILE,
-  FETCH_THING_PROFILE,
-  GET_GATEWAYS,
-  FETCH_CODEC_LIST,
-  SET_GATEWAY,
-  NEW_PACKAGE,
-  SELECT_USER,
-  PAYMENT_RESULT,
-  GET_USER_PACKAGES,
-  GET_ADMIN_PACKAGES,
-  GET_DISCOUNTS,
-  GET_PACKAGE,
-  GET_USERS,
-  FETCH_USER
+    SET_AUTH,
+    CHANGE_FORM,
+    SENDING_REQUEST,
+    SET_ERROR_MESSAGE,
+    INIT_USER,
+    SELECT_PROJECT,
+    GET_PROJECTS,
+    FETCH_PROJECT,
+    UPDATE_USER,
+    FREE,
+    GET_THINGS,
+    FETCH_THING,
+    GET_THINGS_PROFILE,
+    FETCH_THING_PROFILE,
+    GET_GATEWAYS,
+    FETCH_CODEC_LIST,
+    SET_GATEWAY,
+    NEW_PACKAGE,
+    SELECT_USER,
+    PAYMENT_RESULT,
+    GET_USER_PACKAGES,
+    GET_ADMIN_PACKAGES,
+    GET_DISCOUNTS,
+    GET_PACKAGE,
+    GET_USERS,
+    FETCH_USER,
+    SET_TOKEN
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
-  login as loginAPI, logout as logoutAPI, register as registerAPI,
-  listProject as listProjectsAPI, editProject as editProjectAPI,
-  getProject as getProjectAPI, createProject as createProjectAPI,
-  editProfile as editProfileAPI, changePassword as changePasswordAPI, getThings as listThingsAPI,
-  getThing as getThingAPI, connectThing as connectThingAPI,
-  createThing as createThingAPI, editThing as editThingAPI, editAliases as editAliasesAPI,
-  getProjectData as getThingDataAPI, createCodec as createCodecAPI,
-  createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
-  DownloadThingsExcel as DownloadThingsExcelAPI,
-  DownloadThingProfileThingsExcel as DownloadThingProfileThingsExcelAPI,
-  createGateway as createGatewayAPI, updateGateway as updateGatewayAPI,
-  deleteProject as deleteProjectAPI,
-  deleteDeviceProfile as deleteDeviceProfileAPI,
-  deleteGateway as deleteGatewaysAPI,
-  getSingleGateway as getSingleGatewayAPI,
-  getGateways,
-  deleteThing as deleteThingAPI,
-  newDownlink as newDownlinkAPI,
-  getUserTransaction, getUser,
-  lint,
-  base_url
+    login as loginAPI, logout as logoutAPI, register as registerAPI,
+    listProject as listProjectsAPI, editProject as editProjectAPI,
+    getProject as getProjectAPI, createProject as createProjectAPI,
+    editProfile as editProfileAPI, changePassword as changePasswordAPI, getThings as listThingsAPI,
+    getThing as getThingAPI, connectThing as connectThingAPI,
+    createThing as createThingAPI, editThing as editThingAPI, editAliases as editAliasesAPI,
+    getProjectData as getThingDataAPI, createCodec as createCodecAPI,
+    createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
+    DownloadThingsExcel as DownloadThingsExcelAPI,
+    DownloadThingProfileThingsExcel as DownloadThingProfileThingsExcelAPI,
+    createGateway as createGatewayAPI, updateGateway as updateGatewayAPI,
+    deleteProject as deleteProjectAPI,
+    deleteDeviceProfile as deleteDeviceProfileAPI,
+    deleteGateway as deleteGatewaysAPI,
+    getSingleGateway as getSingleGatewayAPI,
+    getGateways,
+    deleteThing as deleteThingAPI,
+    newDownlink as newDownlinkAPI,
+    getUserTransaction, getUser,
+    lint,
+    base_url
 } from '../api/index'
 import {
-  activateScenario,
-  sendThingKeys,
-  createCodecTemplate,
-  createThingProfile,
-  deleteCodecTemplate,
-  deleteScenario,
-  getCodecTemplate,
-  getThingCodec,
-  updateCodecTemplate,
-  getCodecTemplateList,
-  getDashboard,
-  getUserThings,
-  getAdminPackage,
-  getPackage,
-  deletePackage,
-  createPackage,
-  updatePackage,
-  getDiscounts,
-  deleteDiscount,
-  createDiscount,
-  activatePackage,
-  getUserPackage,
-  buyPackage,
-  getScenario,
-  getThingProfileList,
-  setDashboardWidgetChart,
-  deleteDashboardWidgetChart,
-  updateScenarioAPI,
-  viewProfile,
-  getDeviceProfileAPI,
-  getUsers,
-  getThingsMainData,
-  getThingsSampleData,
-  activateThing,
-  activeUser, impersonateUser, changeAdminPassword
+    activateScenario,
+    sendThingKeys,
+    createCodecTemplate,
+    createThingProfile,
+    deleteCodecTemplate,
+    deleteScenario,
+    getCodecTemplate,
+    getThingCodec,
+    updateCodecTemplate,
+    getCodecTemplateList,
+    getDashboard,
+    getUserThings,
+    getAdminPackage,
+    getPackage,
+    deletePackage,
+    createPackage,
+    updatePackage,
+    getDiscounts,
+    deleteDiscount,
+    createDiscount,
+    activatePackage,
+    getUserPackage,
+    buyPackage,
+    getScenario,
+    getThingProfileList,
+    setDashboardWidgetChart,
+    deleteDashboardWidgetChart,
+    updateScenarioAPI,
+    viewProfile,
+    getDeviceProfileAPI,
+    getUsers,
+    getThingsMainData,
+    getThingsSampleData,
+    activateThing,
+    activeUser, impersonateUser
 } from '../api';
 import fileDownload from 'js-file-download'
 
@@ -832,16 +833,17 @@ export function deleteGatewaysAction(profileId, cb) {
 
 //user action
 
-export function getProfileAction() {
-  return (dispatch) => {
-    const promise = viewProfile(dispatch)
-    promise.then((response) => {
-      if (response.status === 'OK') {
-        dispatch(initUser(response.result))
-      } else {
-      }
-    })
-  }
+export function getProfileAction(cb) {
+    return (dispatch) => {
+        const promise = viewProfile(dispatch)
+        promise.then((response) => {
+            if (response.status === 'OK') {
+                dispatch(initUser(response.result))
+                cb  && cb(true)
+            } else {
+            }
+        })
+    }
 }
 
 export function editProfile(data, cb) {
@@ -1385,5 +1387,11 @@ export function changePasswordAction(userId,password,cb) {
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
     })
   }
+}
+
+export function setTokenAction(token) {
+    return (dispatch) => {
+        dispatch({type: SET_TOKEN, newState: {token: token}});
+    }
 }
 

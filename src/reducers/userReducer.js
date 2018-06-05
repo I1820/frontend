@@ -1,4 +1,4 @@
-import { INIT_USER, UPDATE_USER, FREE } from '../constants/AppConstants'
+import { INIT_USER, UPDATE_USER, SET_TOKEN, FREE } from '../constants/AppConstants'
 import _ from 'underscore'
 
 const assign = Object.assign || require('object.assign')
@@ -22,6 +22,10 @@ export function userReducer(state = initialState, action) {
                 impersonated: 'impersonated' in action.newState.user ? action.newState.user.impersonated : !!state.impersonated
             })
 
+        case SET_TOKEN:
+            return assign({}, state, {
+                token: action.newState.token ? action.newState.token : state.token
+            });
         case UPDATE_USER:
             if (!_.isUndefined(action.newState.user.legal) && action.newState.user.legal === true) {
                 return assign({}, state, {
