@@ -899,7 +899,8 @@ class ProjectsManage extends Component {
                   badgeColor = 'secondary'
               }
               return (<div>
-                <Badge id={`tooltip-${row._id}`} color={badgeColor}>{'اخرین تاریخ دریافت داده'}</Badge>
+                <Badge id={`tooltip-${row._id}`} color={badgeColor}>{row.last_seen_at['time'] ?
+                   'اخرین تاریخ دریافت داده':'داده ای هنوز دریافت نشده است'}</Badge>
                 {row.last_seen_at['time'] &&
                 <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
                   {row.last_seen_at.time}
@@ -909,10 +910,13 @@ class ProjectsManage extends Component {
                   {'وضعیت:'} {row.active ? 'فعال' : 'غیرفعال'}
                 </Badge>
                 {' '}
-                <Badge color={'secondary'}>
-                  {'اخرین زمان پارس داده'}
+                <Badge color={row.last_parsed_at === "" ? 'secondary' : 'success'}>
+                  {row.last_parsed_at && row.last_parsed_at !== "" ? 'اخرین زمان پارس داده' : 'داده ای هنوز پارس نشده است'}
                 </Badge>
-
+                {row.last_parsed_at && row.last_parsed_at !== "" &&
+                <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
+                  {row.last_parsed_at}
+                </UncontrolledTooltip>}
               </div>);
             }
           },
