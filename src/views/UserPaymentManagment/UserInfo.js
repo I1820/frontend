@@ -170,8 +170,7 @@ class PackageList extends Component {
           </Col>
         </Row>
         <Row>
-
-          <Col xs="18" sm="9" md="6">
+          <Col xs="36" sm="18" md="12">
             <Card className="border-success">
               <CardHeader>
                 <CardTitle className="mb-0 font-weight-bold h6"> تراکنش‌های کاربر</CardTitle>
@@ -196,84 +195,7 @@ class PackageList extends Component {
               </CardBody>
             </Card>
           </Col>
-          <Col xs="18" sm="9" md="6">
-            <Card className="border-success">
-              <CardHeader>
-                <CardTitle className="mb-0 font-weight-bold h6"> پروژه‌های کاربر</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <ReactTable
-                  data={[]}
-                  columns={this.renderTransaction()}
-                  pageSizeOptions={[5, 10, 25]}
-                  nextText='بعدی'
-                  previousText='قبلی'
-                  filterable={true}
-                  rowsText='ردیف'
-                  pageText='صفحه'
-                  ofText='از'
-                  minRows='1'
-                  noDataText='داده ای وجود ندارد'
-                  resizable={false}
-                  defaultPageSize={5}
-                  className="-striped -highlight"
-                />
-              </CardBody>
-            </Card>
-          </Col>
         </Row>
-        <Row>
-          <Col xs="18" sm="9" md="6">
-            <Card className="border-success">
-              <CardHeader>
-                <CardTitle className="mb-0 font-weight-bold h6"> بسته‌های کاربر</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <ReactTable
-                  data={[]}
-                  columns={this.renderTransaction()}
-                  pageSizeOptions={[5, 10, 25]}
-                  nextText='بعدی'
-                  previousText='قبلی'
-                  filterable={true}
-                  rowsText='ردیف'
-                  pageText='صفحه'
-                  ofText='از'
-                  minRows='1'
-                  noDataText='داده ای وجود ندارد'
-                  resizable={false}
-                  defaultPageSize={5}
-                  className="-striped -highlight"
-                />
-              </CardBody>
-            </Card>
-          </Col>
-          <Col xs="18" sm="9" md="6">
-            <Card className="border-success">
-              <CardHeader>
-                <CardTitle className="mb-0 font-weight-bold h6"> اشیا کاربر</CardTitle> </CardHeader>
-              <CardBody>
-                <ReactTable
-                  data={[]}
-                  columns={this.renderTransaction()}
-                  pageSizeOptions={[5, 10, 25]}
-                  nextText='بعدی'
-                  previousText='قبلی'
-                  filterable={true}
-                  rowsText='ردیف'
-                  pageText='صفحه'
-                  ofText='از'
-                  minRows='1'
-                  noDataText='داده ای وجود ندارد'
-                  resizable={false}
-                  defaultPageSize={5}
-                  className="-striped -highlight"
-                />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-
       </div>
     )
   }

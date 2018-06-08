@@ -214,14 +214,14 @@ module.exports.createThing = function (data, projectId, dispatch) {
 //     return fetchData('/project/' + projectId + '/things/' + thingId, projectControler.find, getConfig(), dispatch)
 // }
 //
-module.exports.getThingsMainData = function (thing_ids, projectId, since, until, window, dispatch) {
+module.exports.getThingsMainData = function (thing_ids, projectId, offset, limit, since, dispatch) {
   const config = postConfig()
   Object.assign(config, {
     body: getFormData({
       'project_id': projectId,
       since,
-      window,
-      until,
+      offset,
+      limit,
       thing_ids
     })
   })
@@ -526,7 +526,7 @@ module.exports.getUserTransactionsAPI = function (dispatch) {
   return fetchData(`/payment`, getConfig(), dispatch)
 }
 
-module.exports.activateProject = function (projectId,active ,dispatch) {
+module.exports.activateProject = function (projectId, active, dispatch) {
   return fetchData(`/project/${projectId}/activate?active=${active}`, getConfig(), dispatch)
 }
 

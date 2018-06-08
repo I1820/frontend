@@ -100,8 +100,8 @@ class UsersList extends Component {
       {
         Header: 'نوع کاربر',
         id: 'legal',
-        accessor: row => <Badge color={row.legal === true ? 'success' : 'danger'}>
-          {row.active === true ? 'حقوقی' : 'حقیقی'}
+        accessor: row => <Badge color={row.legal !== true ? 'success' : 'danger'}>
+          {row.legal !== true ? 'حقوقی' : 'حقیقی'}
         </Badge>,
         filterable: false,
       },

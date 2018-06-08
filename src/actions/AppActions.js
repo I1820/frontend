@@ -468,9 +468,9 @@ export function cleanErrorMessage() {
   setErrorMessage('')
 }
 
-export function getThingsMainDataAction(things, projectId, offset, limit, window, callback) {
+export function getThingsMainDataAction(things, projectId, offset, limit, since, callback) {
   return (dispatch) => {
-    const promise = getThingsMainData(things, projectId, offset, limit, window, dispatch)
+    const promise = getThingsMainData(things, projectId, offset, limit, since, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         callback(true, response.result.data)

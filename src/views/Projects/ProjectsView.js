@@ -51,6 +51,9 @@ class ProjectsView extends Component {
     this.drawBarChart = this.drawBarChart.bind(this)
     this.renderThingLocation = this.renderThingLocation.bind(this)
     this.state = {
+      pages: 1,
+      pageSize: 10,
+      loading: false,
       showLineChart: true,
       showBarChart: false,
       selectedThing: {ids: []},
@@ -83,6 +86,7 @@ class ProjectsView extends Component {
         },
       },
       data: [],
+      tableData: [],
       keys: []
     }
   }
@@ -174,11 +178,10 @@ class ProjectsView extends Component {
       _.allKeys(d.data).map((k, i2) => {
         if (k === '_location')
           location = d.data[k]
-        else
-        if (_.find(sensors, {name: `${things[d.thingid]}: ${k}`}) === undefined) {
+        else if (_.find(sensors, {name: `${things[d._id.thingid]}: ${k}`}) === undefined) {
           sensors.push({
             label: k,
-            name: `${things[d.thingid]}: ${k}`,
+            name: `${things[d._id.thingid]}: ${k}`,
             data: [],
             colorIndex: ((((k.split("").reduce(function (a, b) {
               a = ((a << 5) - a) + b.charCodeAt(0);
@@ -190,8 +193,8 @@ class ProjectsView extends Component {
     })
 
     this.state.data.map((d) => {
-
-      config.xAxis.categories.push(moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'))
+      config.xAxis.categories.push(moment(d.since, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss') + " " +
+        moment(d.until, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'))
       sensors.map((dataset, index) => {
         if (d.data[dataset.label] === undefined) {
           dataset.data.push(dataset.data.length > 0 ? dataset.data[dataset.data.length - 1] : 0)
@@ -312,6 +315,24 @@ class ProjectsView extends Component {
                 }
                 this.clearInter()
 
+                if (!Date.now) {
+                  Date.now = function () {
+                    return new Date().getTime();
+                  }
+                }
+                if (this.state.since || this.state.window)
+                  this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
+                    this.state.project._id,
+                    0,
+                    this.state.pageSize,
+                    this.state.since ? this.state.since : Math.floor(Date.now()/1000) - this.state.window*60,
+                    (status, data) => {
+                      let pages = 1
+                      if (this.state.pageSize === data.length)
+                        pages++;
+                      this.setState({tableData: data.reverse(), pages})
+                    }));
+
                 this.getData(() => {
                   if (this.state.auto)
                     this.setState({
@@ -341,9 +362,11 @@ class ProjectsView extends Component {
           </CardHeader>
           <CardBody>
             <ReactTable
-              data={[...this.state.data].reverse()}
+              data={[...this.state.tableData]}
+              pages={this.state.pages}
               columns={this.reactTableColumns()}
               pageSizeOptions={[10, 15, 25, 50]}
+              loading={this.state.loading}
               nextText='بعدی'
               previousText='قبلی'
               filterable={true}
@@ -355,6 +378,41 @@ class ProjectsView extends Component {
               resizable={false}
               defaultPageSize={10}
               className="-striped -highlight"
+              manual
+              onFetchData={(state, instance) => {
+                console.log(state, instance)
+                this.setState({loading: false, tableData: [], pageSize: state.pageSize})
+                if (this.state.since || this.state.window)
+                  this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
+                    this.state.project._id,
+                    (state.page) * state.pageSize,
+                    state.pageSize,
+                    this.state.since ? this.state.since : 0,
+                    (status, data) => {
+                      let pages = state.page + 1
+                      console.log(state.pageSize, data.length)
+                      if (state.pageSize === data.length)
+                        pages++;
+                      this.setState({tableData: data.reverse(), loading: false, pages})
+                    }));
+
+                // // show the loading overlay
+                // // fetch your data
+                // Axios.post('mysite.com/data', {
+                //   page: state.page,
+                //   pageSize: state.pageSize,
+                //   sorted: state.sorted,
+                //   filtered: state.filtered
+                // })
+                //   .then((res) => {
+                //     // Update react-table
+                //     this.setState({
+                //       data: res.data.rows,
+                //       pages: res.data.pages,
+                //       loading: false
+                //     })
+                //   })
+              }}
             />
           </CardBody>
         </Card>
@@ -455,7 +513,8 @@ class ProjectsView extends Component {
           keys.push(key)
       })
       data.push({
-        name: moment(row.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'),
+        name: (moment(row.since, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss') + " " +
+          moment(row.until, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')),
         ...row.data
       })
     })
@@ -480,7 +539,7 @@ class ProjectsView extends Component {
 
 
   getData(cb) {
-    this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
+    this.props.dispatch(getThingsSampleDataAction(JSON.stringify(this.state.selectedThing),
       this.state.project._id,
       this.state.since,
       this.state.until,
@@ -513,7 +572,7 @@ class ProjectsView extends Component {
           <CardBody>
             <Map marker={{
               lat: this.state.location.coordinates[1],
-              lng:  this.state.location.coordinates[0],
+              lng: this.state.location.coordinates[0],
             }}/>
           </CardBody>
         </Card>)
