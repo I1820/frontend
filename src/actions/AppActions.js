@@ -905,7 +905,7 @@ export function getThingCodecAction(thingId, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         if (cb)
-          cb(true, response.result.codec)
+          cb(true, response.result)
       } else {
         cb(false)
       }

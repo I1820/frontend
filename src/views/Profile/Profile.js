@@ -148,7 +148,8 @@ class Profile extends Component {
                   <Col sm={5}>
                     <AvInput
                       name="phoneNumber"
-                      type="number" dir="ltr" onChange={(event) => {
+                      onKeyDown={this.handleKeypress}
+                      dir="ltr" onChange={(event) => {
                       this.setState({
                         ...this.state,
                         phone: event.target.value
@@ -377,6 +378,19 @@ class Profile extends Component {
       , {text: "خراسان شمالی", id: "۰۵۸"}
       , {text: "یزد", id: "۰۳۵"}
       , {text: "ایلام", id: "۰۸۴"}]
+  }
+
+
+  handleKeypress(e) {
+    const characterCode = e.key
+    if (characterCode === 'Backspace') return
+
+    const characterNumber = Number(characterCode)
+    if (characterNumber >= 0 && characterNumber <= 9) {
+      return
+    } else {
+      e.preventDefault()
+    }
   }
 }
 

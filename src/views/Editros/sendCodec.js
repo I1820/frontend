@@ -47,10 +47,15 @@ class SendCodec extends Component {
       thing: splitedUrl[6]
     })
     this.props.dispatch(getCodecTemplateListAction(splitedUrl[5], (status, templates) => {
-      this.props.dispatch(getThingCodecAction(splitedUrl[6], (status, codec) => {
-        if (status && codec !== null)
+      this.props.dispatch(getThingCodecAction(splitedUrl[6], (status, result) => {
+        if (status && result !== null)
           this.setState({
-            codec
+            codec: result.codec
+          })
+        if (result.codec_id)
+          this.setState({
+            templateId: result.codec_id,
+            global: true
           })
       }))
       if (status)
