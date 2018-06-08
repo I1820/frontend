@@ -32,7 +32,7 @@ import {
   deleteCodecTemplateAction,
   deleteScenarioAction,
   editAliasesAction,
-  sendDownlinkAction, DownloadThingsExcelAction, activateThingAction,
+  sendDownlinkAction, DownloadThingsExcelAction, activateThingAction, activateProjectAction,
 } from '../../actions/AppActions';
 import Spinner from '../Spinner/Spinner';
 
@@ -72,6 +72,7 @@ class ProjectsManage extends Component {
     this.state = {
       OTAAModal: false,
       ABPModal: false,
+      activeProject: false,
       id: '',
       project: {},
       dataModal: false,
@@ -233,6 +234,33 @@ class ProjectsManage extends Component {
               this.deleteCodec()
             }}>حذف</Button>
             <Button color="danger" onClick={() => this.toggle('deleteCodec')}>انصراف</Button>
+          </ModalFooter>
+        </Modal>
+
+
+        <Modal isOpen={this.state.activeProject} toggle={() => this.toggle('activeProject')}
+               className="text-right">
+          <ModalHeader>{`${this.state.project.active ? 'غیرفعال سازی' : 'فعال سازی'} پروژه `}</ModalHeader>
+          <ModalBody>
+            <h3>{` آیا از  ${this.state.project.active ? 'غیرفعال سازی' : 'فعال سازی'} مطمئن هستید؟  `}</h3>
+            <br/>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" className="ml-1" onClick={() => {
+              this.props.dispatch(activateProjectAction(
+                this.state.project._id,
+                this.state.project.active ? 0 : 1,
+                (result) => {
+                  if (result.success === true)
+                    this.props.dispatch(editProjectAction(this.state.project._id, {
+                      name: this.state.project.name,
+                      description: this.state.project.description
+                    }))
+                }
+              ))
+              this.toggle('activeProject')
+            }}>{this.state.project.active ? 'غیرفعال سازی' : 'فعال سازی'}</Button>
+            <Button color="danger" onClick={() => this.toggle('activeProject')}>انصراف</Button>
           </ModalFooter>
         </Modal>
 
@@ -536,7 +564,16 @@ class ProjectsManage extends Component {
                              rows="2"/>
                     </div>
                   </FormGroup>
-
+                  <FormGroup style={{display: 'flex'}}>
+                    <div style={{minWidth: '65px', width: '20%'}}>
+                      <Label>توضیحات:</Label>
+                    </div>
+                    <div style={{width: '80%'}}>
+                      <Badge color={this.state.project.active === true ? 'success' : 'danger'}>
+                        {this.state.project.active === true ? 'فعال' : 'غیرفعال'}
+                      </Badge>
+                    </div>
+                  </FormGroup>
                 </Form>
               </CardBody>
               <CardFooter>
@@ -545,7 +582,11 @@ class ProjectsManage extends Component {
                     name: this.state.project.name,
                     description: this.state.project.description
                   }))
-                }} color="primary">ثبت اطلاعات</Button>
+                }} className="ml-1" color="primary">ثبت اطلاعات</Button>
+
+                <Button onClick={() => this.toggle('activeProject')} className="ml-1" color="warning">{
+                  this.state.project.active ? 'غیرفعال سازی پروژه' : 'فعال سازی پروژه'
+                }</Button>
               </CardFooter>
             </Card>
           </div>
@@ -898,10 +939,11 @@ class ProjectsManage extends Component {
                 <Button onClick={() => this.toggle('downlink', row._id)} className="ml-1"
                         color="primary"
                         size="sm">ارسال داده (داون لینک)</Button>
-                <Button onClick={() => {this.toggle('deleteThing', row._id)
+                <Button onClick={() => {
+                  this.toggle('deleteThing', row._id)
                   this.setState({
-                    downlinkFport:"",
-                    downlinkConfirmed:""
+                    downlinkFport: "",
+                    downlinkConfirmed: ""
                   })
                 }} className="ml-1"
                         color="danger"
@@ -1043,6 +1085,10 @@ class ProjectsManage extends Component {
           active: id && id.active ? id.active : 0
         }
 
+      }
+    if (modal == 'activeProject')
+      state = {
+        activeProject: !this.state.activeProject
       }
     this.setState(state, () => console.log(state));
   }

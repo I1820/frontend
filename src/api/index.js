@@ -526,6 +526,10 @@ module.exports.getUserTransactionsAPI = function (dispatch) {
   return fetchData(`/payment`, getConfig(), dispatch)
 }
 
+module.exports.activateProject = function (projectId,active ,dispatch) {
+  return fetchData(`/project/${projectId}/activate?active=${active}`, getConfig(), dispatch)
+}
+
 module.exports.base_url = function () {
   return BASE_URL;
 }

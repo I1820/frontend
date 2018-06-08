@@ -25,58 +25,58 @@
 /* global fetch */
 
 import {
-    SET_AUTH,
-    CHANGE_FORM,
-    SENDING_REQUEST,
-    SET_ERROR_MESSAGE,
-    INIT_USER,
-    SELECT_PROJECT,
-    GET_PROJECTS,
-    FETCH_PROJECT,
-    UPDATE_USER,
-    FREE,
-    GET_THINGS,
-    FETCH_THING,
-    GET_THINGS_PROFILE,
-    FETCH_THING_PROFILE,
-    GET_GATEWAYS,
-    FETCH_CODEC_LIST,
-    SET_GATEWAY,
-    NEW_PACKAGE,
-    SELECT_USER,
-    PAYMENT_RESULT,
-    GET_USER_PACKAGES,
-    GET_ADMIN_PACKAGES,
-    GET_DISCOUNTS,
-    GET_PACKAGE,
-    GET_USERS,
-    FETCH_USER,
-    SET_TOKEN,
+  SET_AUTH,
+  CHANGE_FORM,
+  SENDING_REQUEST,
+  SET_ERROR_MESSAGE,
+  INIT_USER,
+  SELECT_PROJECT,
+  GET_PROJECTS,
+  FETCH_PROJECT,
+  UPDATE_USER,
+  FREE,
+  GET_THINGS,
+  FETCH_THING,
+  GET_THINGS_PROFILE,
+  FETCH_THING_PROFILE,
+  GET_GATEWAYS,
+  FETCH_CODEC_LIST,
+  SET_GATEWAY,
+  NEW_PACKAGE,
+  SELECT_USER,
+  PAYMENT_RESULT,
+  GET_USER_PACKAGES,
+  GET_ADMIN_PACKAGES,
+  GET_DISCOUNTS,
+  GET_PACKAGE,
+  GET_USERS,
+  FETCH_USER,
+  SET_TOKEN,
   SET_TRANSACTIONS
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
-    login as loginAPI, logout as logoutAPI, register as registerAPI,
-    listProject as listProjectsAPI, editProject as editProjectAPI,
-    getProject as getProjectAPI, createProject as createProjectAPI,
-    editProfile as editProfileAPI, changePassword as changePasswordAPI, getThings as listThingsAPI,
-    getThing as getThingAPI, connectThing as connectThingAPI,
-    createThing as createThingAPI, editThing as editThingAPI, editAliases as editAliasesAPI,
-    getProjectData as getThingDataAPI, createCodec as createCodecAPI,
-    createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
-    DownloadThingsExcel as DownloadThingsExcelAPI,
-    DownloadThingProfileThingsExcel as DownloadThingProfileThingsExcelAPI,
-    createGateway as createGatewayAPI, updateGateway as updateGatewayAPI,
-    deleteProject as deleteProjectAPI,
-    deleteDeviceProfile as deleteDeviceProfileAPI,
-    deleteGateway as deleteGatewaysAPI,
-    getSingleGateway as getSingleGatewayAPI,
-    getGateways,
-    deleteThing as deleteThingAPI,
-    newDownlink as newDownlinkAPI,
-    getUserTransaction, getUser,
-    lint,
-    base_url
+  login as loginAPI, logout as logoutAPI, register as registerAPI,
+  listProject as listProjectsAPI, editProject as editProjectAPI,
+  getProject as getProjectAPI, createProject as createProjectAPI,
+  editProfile as editProfileAPI, changePassword as changePasswordAPI, getThings as listThingsAPI,
+  getThing as getThingAPI, connectThing as connectThingAPI,
+  createThing as createThingAPI, editThing as editThingAPI, editAliases as editAliasesAPI,
+  getProjectData as getThingDataAPI, createCodec as createCodecAPI,
+  createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
+  DownloadThingsExcel as DownloadThingsExcelAPI,
+  DownloadThingProfileThingsExcel as DownloadThingProfileThingsExcelAPI,
+  createGateway as createGatewayAPI, updateGateway as updateGatewayAPI,
+  deleteProject as deleteProjectAPI,
+  deleteDeviceProfile as deleteDeviceProfileAPI,
+  deleteGateway as deleteGatewaysAPI,
+  getSingleGateway as getSingleGatewayAPI,
+  getGateways,
+  deleteThing as deleteThingAPI,
+  newDownlink as newDownlinkAPI,
+  getUserTransaction, getUser,
+  lint,
+  base_url
 } from '../api/index'
 import {
   activateScenario,
@@ -113,7 +113,7 @@ import {
   getThingsMainData,
   getThingsSampleData,
   activateThing,
-  activeUser, impersonateUser, getUserTransactionsAPI
+  activeUser, impersonateUser, getUserTransactionsAPI, activateProject
 } from '../api';
 import fileDownload from 'js-file-download'
 
@@ -835,16 +835,16 @@ export function deleteGatewaysAction(profileId, cb) {
 //user action
 
 export function getProfileAction(cb) {
-    return (dispatch) => {
-        const promise = viewProfile(dispatch)
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                dispatch(initUser(response.result))
-                cb  && cb(true)
-            } else {
-            }
-        })
-    }
+  return (dispatch) => {
+    const promise = viewProfile(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        dispatch(initUser(response.result))
+        cb && cb(true)
+      } else {
+      }
+    })
+  }
 }
 
 export function editProfile(data, cb) {
@@ -1386,8 +1386,7 @@ export function getUserTransactions() {
 }
 
 
-export function changePasswordAction(userId,password,cb) {
-  console.log(userId,password)
+export function changePasswordAction(userId, password, cb) {
   return (dispatch) => {
     const promise = changeAdminPassword(userId, password, dispatch)
     promise.then((response) => {
@@ -1403,9 +1402,23 @@ export function changePasswordAction(userId,password,cb) {
   }
 }
 
+
+export function activateProjectAction(projectId, active, cb) {
+  return (dispatch) => {
+    const promise = activateProject(projectId, active, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(response.result)
+      }
+    }).catch((err) => {
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+
 export function setTokenAction(token) {
-    return (dispatch) => {
-        dispatch({type: SET_TOKEN, newState: {token: token}});
-    }
+  return (dispatch) => {
+    dispatch({type: SET_TOKEN, newState: {token: token}});
+  }
 }
 
