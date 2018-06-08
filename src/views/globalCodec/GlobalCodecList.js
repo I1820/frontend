@@ -62,6 +62,7 @@ class globalCodecsList extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color="primary" className="ml-1" onClick={() => {
+              this.toggle()
               this.props.dispatch(deleteGlobalCodecAction(this.state.deleteCodec, () => {
                 this.props.dispatch(getGlobalCodecsAction());
               }))

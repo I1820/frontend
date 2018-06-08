@@ -951,16 +951,20 @@ export function getCodecTemplateListAction(projectId, cb) {
       if (response.status === 'OK') {
         dispatch({type: FETCH_CODEC_LIST, newState: response.result, id: projectId})
         if (cb)
-          cb(true, response.result.codecs)
+          cb(true, response.result)
       } else {
       }
     })
   }
 }
 
-export function sendCodecAction(thingId, projectId, codec, cb) {
+export function sendCodecAction(thingId, projectId, codec, codec_id, cb) {
   return (dispatch) => {
-    const promise = createCodecAPI({codec}, thingId, projectId, dispatch)
+    let promise
+    if (codec)
+      promise = createCodecAPI({codec}, thingId, projectId, dispatch)
+    else
+      promise = createCodecAPI({codec_id}, thingId, projectId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         forwardTo(`projects/manage/${projectId}`)
@@ -991,6 +995,7 @@ export function createCodecTemplateAction(projectId, data, cb) {
     })
   }
 }
+
 export function createGlobalCodecTemplateAction(data, cb) {
   return (dispatch) => {
     const promise = createGlobalCodecTemplate(data, dispatch)
@@ -1022,6 +1027,7 @@ export function updateCodecTemplateAction(codec_id, projectId, data, cb) {
     })
   }
 }
+
 export function updateGlobalCodecTemplateAction(codec_id, data, cb) {
   return (dispatch) => {
     const promise = updateGlobalCodecTemplate(codec_id, data, dispatch)
@@ -1362,10 +1368,11 @@ export function getGlobalCodecsAction(cb = () => {
     })
   }
 }
-export function deleteGlobalCodecAction(codecId,cb = () => {
+
+export function deleteGlobalCodecAction(codecId, cb = () => {
 }) {
   return (dispatch) => {
-    const promise = deleteGlobalCodec(codecId,dispatch)
+    const promise = deleteGlobalCodec(codecId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         cb(true)
