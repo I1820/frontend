@@ -45,6 +45,8 @@ const routes = {
   '/projects/manage': 'مدیریت پروژه',
   '/projects/manage/$$': 'مدیریت پروژه',
 
+  '/admin/globalCodec': 'مدیریت پروژه',
+
   '/things': 'لیست اشیاء',
   '/things/edit': 'ویرایش شی',
   '/things/edit/$$': 'ویرایش شی',

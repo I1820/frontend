@@ -77,6 +77,11 @@ export default {
             url: '/admin/users',
             icon: 'icon-grid',
             type: 'admin'
+        },       {
+            name: ' قالب های عمومی',
+            url: '/admin/globalCodec',
+            icon: 'icon-grid',
+            type: 'admin'
         },
         // {
         //     name: 'اشیاء',

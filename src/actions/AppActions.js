@@ -50,6 +50,7 @@ import {
   GET_DISCOUNTS,
   GET_PACKAGE,
   GET_USERS,
+  GET_CODECS,
   FETCH_USER,
   SET_TOKEN,
   SET_TRANSACTIONS
@@ -113,7 +114,8 @@ import {
   getThingsMainData,
   getThingsSampleData,
   activateThing,
-  activeUser, impersonateUser, getUserTransactionsAPI, activateProject
+  activeUser, impersonateUser, getUserTransactionsAPI, activateProject, getGlobalCodecs, getGlobalCodecTemplate,
+  updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec
 } from '../api';
 import fileDownload from 'js-file-download'
 
@@ -927,6 +929,21 @@ export function getCodecTemplateAction(projectId, codecId, cb) {
 }
 
 
+export function getGlobalCodecTemplateAction(codecId, cb) {
+  return (dispatch) => {
+    const promise = getGlobalCodecTemplate(codecId, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        if (cb)
+          cb(true, response.result.codec)
+      } else {
+        cb(false)
+      }
+    })
+  }
+}
+
+
 export function getCodecTemplateListAction(projectId, cb) {
   return (dispatch) => {
     const promise = getCodecTemplateList(projectId, dispatch)
@@ -974,6 +991,21 @@ export function createCodecTemplateAction(projectId, data, cb) {
     })
   }
 }
+export function createGlobalCodecTemplateAction(data, cb) {
+  return (dispatch) => {
+    const promise = createGlobalCodecTemplate(data, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        forwardTo(`admin/globalCodec`)
+      } else {
+        cb(false, response.result)
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    }).catch((err) => {
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
 
 export function updateCodecTemplateAction(codec_id, projectId, data, cb) {
   return (dispatch) => {
@@ -981,6 +1013,22 @@ export function updateCodecTemplateAction(codec_id, projectId, data, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         forwardTo(`projects/manage/${projectId}`)
+      } else {
+        cb(false, response.result)
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    }).catch((err) => {
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+export function updateGlobalCodecTemplateAction(codec_id, data, cb) {
+  return (dispatch) => {
+    const promise = updateGlobalCodecTemplate(codec_id, data, dispatch)
+    promise.then((response) => {
+      console.log(response)
+      if (response.status === 'OK') {
+        forwardTo(`admin/globalCodec`)
       } else {
         cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -1294,6 +1342,37 @@ export function getUsersAction(cb = () => {
       }
     }).catch((err) => {
       cb(false)
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+
+export function getGlobalCodecsAction(cb = () => {
+}) {
+  return (dispatch) => {
+    const promise = getGlobalCodecs(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        dispatch({type: GET_CODECS, newState: response.result.codecs})
+      } else {
+        cb(false)
+      }
+    }).catch((err) => {
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+export function deleteGlobalCodecAction(codecId,cb = () => {
+}) {
+  return (dispatch) => {
+    const promise = deleteGlobalCodec(codecId,dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(true)
+      } else {
+        cb(false)
+      }
+    }).catch((err) => {
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
     })
   }

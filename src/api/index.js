@@ -505,6 +505,9 @@ module.exports.getUsers = function (dispatch) {
 module.exports.getUser = function (userID, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/users/${userID}`, getConfig(), dispatch, true)
 }
+module.exports.getGlobalCodecs = function (dispatch) {
+  return fetchData(`${BASE_ADMIN_URL}/codec`, getConfig(), dispatch, true)
+}
 module.exports.getUserTransaction = function (userID, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/users/${userID}/transactions`, getConfig(), dispatch, true)
 }
@@ -529,6 +532,30 @@ module.exports.getUserTransactionsAPI = function (dispatch) {
 module.exports.activateProject = function (projectId, active, dispatch) {
   return fetchData(`/project/${projectId}/activate?active=${active}`, getConfig(), dispatch)
 }
+
+
+module.exports.getGlobalCodecTemplate = function (codecId, dispatch) {
+  return fetchData(`${BASE_ADMIN_URL}/codec/${codecId}`, getConfig(), dispatch,true)
+}
+
+
+module.exports.updateGlobalCodecTemplate = function (codec_id, data, dispatch) {
+  const config = patchConfig()
+  Object.assign(config, {body: getFormData(data)})
+  return fetchData(`${BASE_ADMIN_URL}/codec/${codec_id}`, config, dispatch,true)
+}
+
+
+module.exports.createGlobalCodecTemplate = function ( data, dispatch) {
+  const config = postConfig()
+  Object.assign(config, {body: getFormData(data)})
+  return fetchData(`${BASE_ADMIN_URL}/codec`, config, dispatch,true)
+}
+
+module.exports.deleteGlobalCodec = function ( codecId, dispatch) {
+  return fetchData(`${BASE_ADMIN_URL}/codec/${codecId}`, deleteConfig(), dispatch,true)
+}
+
 
 module.exports.base_url = function () {
   return BASE_URL;

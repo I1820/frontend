@@ -14,6 +14,9 @@ import News from '../../views/News/';
 //Payment Portal Managment
 import PaymentPortalManagment from '../../views/PaymentPortalManagment/PamentPortalList.js'
 
+import globalCodec from '../../views/globalCodec/GlobalCodecList'
+import AddTemplate from '../../views/Editros/addGlobalTemplate'
+
 //PackageManagment
 import PackageList from '../../views/PackageManagement/PackageList'
 import NewPackage from '../../views/PackageManagement/PackageManage'
@@ -128,6 +131,9 @@ class Full extends Component {
                 <Route path="/codec" name="sendCodec" component={sendCodec}/>
                 <Route path="/template" name="addTemplate" component={addTemplate}/>
 
+                <Route path="/admin/globalCodec/edit/:id" name="AddTemplate" component={AddTemplate}/>
+                <Route path="/admin/globalCodec/create" name="AddTemplate" component={AddTemplate}/>
+                <Route path="/admin/globalCodec" name="globalCodec" component={globalCodec}/>
 
                 <Route path="/projects/manage/:id" name="ProjectsManage" component={ProjectsManage}/>
                 <Route path="/projects/view/:id" name="ProjectsView" component={ProjectsView}/>

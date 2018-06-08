@@ -42,6 +42,7 @@ import {style} from 'react-toastify';
 import ReactTable from 'react-table'
 import Logger from '../../components/Logger';
 import {toastAlerts} from '../Shared/toast_alert';
+import moment from "moment-jalaali";
 
 style({
   colorProgressDefault: 'white'
@@ -903,19 +904,19 @@ class ProjectsManage extends Component {
                    'اخرین تاریخ دریافت داده':'داده ای هنوز دریافت نشده است'}</Badge>
                 {row.last_seen_at['time'] &&
                 <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
-                  {row.last_seen_at.time}
+                  {moment(row.last_seen_at.time, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
                 </UncontrolledTooltip>}
                 {' '}
                 <Badge color={row.active ? 'success' : 'secondary'}>
                   {'وضعیت:'} {row.active ? 'فعال' : 'غیرفعال'}
                 </Badge>
                 {' '}
-                <Badge color={row.last_parsed_at === "" ? 'secondary' : 'success'}>
+                <Badge  id={`tooltip2-${row._id}`}  color={row.last_parsed_at === "" ? 'secondary' : 'success'}>
                   {row.last_parsed_at && row.last_parsed_at !== "" ? 'اخرین زمان پارس داده' : 'داده ای هنوز پارس نشده است'}
                 </Badge>
                 {row.last_parsed_at && row.last_parsed_at !== "" &&
-                <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
-                  {row.last_parsed_at}
+                <UncontrolledTooltip placement="top" target={`tooltip2-${row._id}`}>
+                  {moment(row.last_parsed_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
                 </UncontrolledTooltip>}
               </div>);
             }

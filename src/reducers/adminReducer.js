@@ -1,5 +1,5 @@
 import _ from 'underscore'
-import {GET_USERS,FETCH_USER } from "../constants/AppConstants";
+import {GET_USERS, FETCH_USER, GET_CODECS} from "../constants/AppConstants";
 
 export function adminReducer (state = {usersList:[],users:{}}, action) {
   switch (action.type) {
@@ -13,6 +13,8 @@ export function adminReducer (state = {usersList:[],users:{}}, action) {
           ...action.newState.user
         }
       }
+    case GET_CODECS:
+      return {globalCodecs:action.newState}
     default:
       return state
   }
