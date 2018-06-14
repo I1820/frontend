@@ -37,7 +37,7 @@ class AutoLogin extends Component {
                         <div className="animated fadeIn">
                             <Card className="text-justify">
                                 <CardHeader>
-                                    <CardTitle className="mb-0 font-weight-bold h6"> وضعیت پرداخت </CardTitle>
+                                    <CardTitle className="mb-0 font-weight-bold h6">فعال سازی</CardTitle>
                                 </CardHeader>
                                 <CardBody>
                                     <Alert color="success">
