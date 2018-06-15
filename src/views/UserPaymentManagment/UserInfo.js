@@ -292,8 +292,9 @@ class PackageList extends Component {
         Header: 'وضعیت تراکنش',
         id: 'status',
         accessor: row => <Badge color={row.status === true ? 'success' : 'danger'}>
-          {row.active === true ? 'موفق' : 'ناموفق'}
-        </Badge>
+          {row.status === true ? 'موفق' : 'ناموفق'}
+        </Badge>,
+        filterable: false
       }
     ];
   }
