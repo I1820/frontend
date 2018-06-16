@@ -571,8 +571,8 @@ class ProjectsView extends Component {
           </CardHeader>
           <CardBody>
             <Map marker={{
-              lat: this.state.location.coordinates[1],
-              lng: this.state.location.coordinates[0],
+              lat: this.state.location.coordinates ? this.state.location.coordinates[1] : '',
+              lng: this.state.location.coordinates ? this.state.location.coordinates[0] : '',
             }}/>
           </CardBody>
         </Card>)
