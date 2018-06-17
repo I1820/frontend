@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Card,
   CardHeader,
@@ -8,7 +8,7 @@ import {
   Button, FormGroup, Form, Label, Col, Input,
 } from 'reactstrap';
 
-import {toastAlerts} from '../Shared/toast_alert';
+import { toastAlerts } from '../Shared/toast_alert';
 
 
 import AceEditor from 'react-ace';
@@ -22,7 +22,7 @@ import {
 } from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import Spinner from '../Spinner/Spinner';
-import Select2 from "react-select2-wrapper";
+import Select2 from 'react-select2-wrapper';
 
 class SendCodec extends Component {
 
@@ -144,13 +144,15 @@ class SendCodec extends Component {
           <CardFooter>
             <Button onClick={this.sendCodec} className="ml-1" color="primary" size="md">ارسال
               codec</Button>
-            <Button onClick={() => {
-              this.props.dispatch(lintCode(this.state.project, this.state.codec, (status, lint) => {
-                if (status)
-                  this.setState({lint})
-              }))
-            }} className="ml-1" style={{display: this.state.global === false ? 'flex' : 'none'}}
-                    color="warning" size="md">بررسی کدک</Button>
+            <Button
+              onClick={() => {
+                this.props.dispatch(lintCode(this.state.project, this.state.codec, (status, lint) => {
+                    status && this.setState({lint})
+                }))
+              }}
+              className="ml-1"
+              style={{display: this.state.global === false ? 'inline-block' : 'none'}}
+              color="warning" size="md">بررسی کدک</Button>
           </CardFooter>
         </Card>
         <Card style={{display: this.state.global === false ? 'flex' : 'none'}} className="text-justify">

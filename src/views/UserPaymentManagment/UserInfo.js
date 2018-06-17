@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from 'react';
 import {
   Row,
   Col,
@@ -21,16 +21,16 @@ import {
   Input,
 } from 'reactstrap'
 
-import {AvForm, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
-import {connect} from 'react-redux';
-import Spinner from "../Spinner/Spinner";
+import { connect } from 'react-redux';
+import Spinner from '../Spinner/Spinner';
 import {
   activeUserAction, changePasswordAction, createProject, getUserAction, getUserTransactionsAction,
   impersonateUserAction
 } from '../../actions/AppActions';
 import ReactTable from 'react-table'
-import {toastAlerts} from '../Shared/toast_alert';
+import { toastAlerts } from '../Shared/toast_alert';
 
 class PackageList extends Component {
   constructor(props) {
@@ -43,13 +43,18 @@ class PackageList extends Component {
     this.state = {
       modal: false,
       userInfo: {
-        name: "",
-        email: "",
+        name: '',
+        email: '',
         other_info: {
-          address: "",
+          address: '',
+        },
+        legal_info: {
+          org_interface_mobile: '',
+          org_interface_name: '',
+          org_name: '',
         },
         legal: true,
-        mobile: "",
+        mobile: '',
         active: true
       },
       transactions: []
@@ -90,7 +95,7 @@ class PackageList extends Component {
           <ModalBody>
             <AvForm>
               <AvGroup row>
-                <Label sm={3}>'گذرواژه جدید : </Label>
+                <Label sm={3}>گذرواژه جدید:</Label>
                 <Col sm={9}>
                   <AvInput type="password"
                            name={'password'}
@@ -109,7 +114,7 @@ class PackageList extends Component {
               this.props.dispatch(changePasswordAction(
                 this.state.userInfo._id,
                 this.state.password,
-                this.onChangePassword))
+                toastAlerts))
             }}>ذخیره</Button>
             <Button color="danger" onClick={() => this.toggle('create')}>انصراف</Button>
           </ModalFooter>
@@ -148,15 +153,30 @@ class PackageList extends Component {
                       <Col md='3'><span>{this.state.userInfo.active ? 'فعال' : 'غیرفعال'}</span></Col>
                     </Row>
                   </ListGroupItem>
+                  {
+                    this.state.userInfo.legal &&
+                    <ListGroupItem>
+                      <Row>
+                        <Col md='3'><strong>نام شرکت</strong></Col>
+                        <Col md='3'><span>{this.state.userInfo.legal_info.org_name}</span></Col>
+                        <Col md='3'><strong>نام و نام خانوادگی واسط</strong></Col>
+                        <Col md='3'><span>{this.state.userInfo.legal_info.org_interface_name}</span></Col>
+                      </Row>
+                    </ListGroupItem> &&
+                    <ListGroupItem>
+                      <Row>
+                        <Col md='3'><strong>شماره همراه واسط</strong></Col>
+                        <Col md='3'><span>{this.state.userInfo.legal_info.org_interface_mobile}</span></Col>
+                      </Row>
+                    </ListGroupItem>
+                  }
                 </ListGroup>
               </CardBody>
               <CardFooter>
-                <Button onClick={() => this.props.dispatch(activeUserAction(this.state.userId,
-                  this.state.userInfo.active ? 0 : 1,
-                  () => {
-
-                  }))} className="ml-1" color="warning"
-                        size="sm">{this.state.userInfo.active ? 'غیر فعال سازی کاربر' : 'فعال سازی کاربر'}</Button>
+                <Button
+                  onClick={() => this.props.dispatch(activeUserAction(this.state.userId, this.state.userInfo.active ? 0 : 1, toastAlerts))}
+                  className="ml-1" color="warning"
+                  size="sm">{this.state.userInfo.active ? 'غیر فعال سازی کاربر' : 'فعال سازی کاربر'}</Button>
 
                 <Button onClick={() => this.props.dispatch(impersonateUserAction(this.state.userId, 1, toastAlerts))}
                         className="ml-1" color="info"
@@ -245,7 +265,7 @@ class PackageList extends Component {
   }
 
   toggle() {
-    console.log("modal", this.state.modal)
+    console.log('modal', this.state.modal)
     this.setState({
       modal: !this.state.modal
     })
@@ -272,20 +292,11 @@ class PackageList extends Component {
         Header: 'وضعیت تراکنش',
         id: 'status',
         accessor: row => <Badge color={row.status === true ? 'success' : 'danger'}>
-          {row.active === true ? 'موفق' : 'ناموفق'}
-        </Badge>
+          {row.status === true ? 'موفق' : 'ناموفق'}
+        </Badge>,
+        filterable: false
       }
     ];
-  }
-
-  onChangePassword(status, message) {
-    if (status, message) {
-      if (status)
-        toastAlerts(status, 'پروژه با موفقیت ساخته شد')
-      else
-        toastAlerts(status, message)
-    }
-
   }
 }
 

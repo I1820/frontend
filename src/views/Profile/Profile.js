@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Row,
   Col,
@@ -16,18 +16,18 @@ import {
   Table
 } from 'reactstrap';
 
-import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import classnames from 'classnames';
-import {toast, ToastContainer} from 'react-toastify';
-import {css} from 'glamor';
-import {style} from 'react-toastify';
-import {editProfile, getProfileAction, changePassword, impersonateUserAction} from '../../actions/AppActions';
+import { toast, ToastContainer } from 'react-toastify';
+import { css } from 'glamor';
+import { style } from 'react-toastify';
+import { editProfile, getProfileAction, changePassword, impersonateUserAction } from '../../actions/AppActions';
 import Phone from 'react-phone-number-input'
-import Select2 from "react-select2-wrapper";
-import {toastAlerts} from '../Shared/toast_alert';
+import Select2 from 'react-select2-wrapper';
+import { toastAlerts } from '../Shared/toast_alert';
 
 style({
   colorProgressDefault: 'white'
@@ -39,16 +39,15 @@ class Profile extends Component {
   constructor(props) {
     super(props);
 
-    this.manageToastAlerts = this.manageToastAlerts.bind(this)
     this.editUserProfile = this.editUserProfile.bind(this)
     this.changeUserPassword = this.changeUserPassword.bind(this)
     this.state = {
-      city: this.props.userInfo.phone && this.props.userInfo.phone.split("-")[0] ?
-        this.props.userInfo.phone.split("-")[0]
-        : "۰۲۱",
+      city: this.props.userInfo.phone && this.props.userInfo.phone.split('-')[0] ?
+        this.props.userInfo.phone.split('-')[0]
+        : '021',
       name: this.props.userInfo.username,
-      legal: this.props.userInfo.legal,
-      phone: this.props.userInfo.phone ? this.props.userInfo.phone : '',
+      legal: this.props.userInfo.legal ? '1' : '0',
+      phone: this.props.userInfo.phone && this.props.userInfo.phone.split('-')[1] ? this.props.userInfo.phone.split('-')[1] : '',
       address: this.props.userInfo.other_info ? this.props.userInfo.other_info.address : '',
       mobile: this.props.userInfo.mobile ? this.props.userInfo.mobile : '',
       legalInfo: this.props.userInfo.legal_info ? this.props.userInfo.legal_info : {},
@@ -67,51 +66,23 @@ class Profile extends Component {
       'legal': this.state.legal,
       'name': this.state.name,
       'mobile': this.state.mobile,
-      'phone': this.state.city + "-" + this.state.phone,
+      'phone': this.state.city + '-' + this.state.phone,
       'other_info': JSON.stringify({
         'address': this.state.address,
       }),
       'legal_info': JSON.stringify(this.state.legalInfo)
-    }, this.manageToastAlerts))
+    }, toastAlerts))
   }
 
   changeUserPassword() {
     this.props.dispatch(changePassword({
       'password': this.state.password,
       'new_password': this.state.new_password,
-    }, this.manageToastAlerts))
-  }
-
-  manageToastAlerts(status) {
-    if (status === true) {
-      window.location = '#/profile'
-
-      toast('اطلاعات شما با موفقیت ویرایش شد', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        className: css({
-          background: '#dbf2e3',
-          color: '#28623c'
-        }),
-        progressClassName: css({
-          background: '#28623c'
-        })
-      });
-    } else {
-      toast(status, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        className: css({
-          background: '#fee2e1',
-          color: '#813838',
-        }),
-        progressClassName: css({
-          background: '#813838'
-        })
-      });
-    }
+    }, toastAlerts))
   }
 
   render() {
-    console.log(this.state.legal)
+    console.log(this.state)
     return (
       <div className={'row'}>
         <ToastContainer className="text-right"/>
@@ -124,19 +95,20 @@ class Profile extends Component {
             <CardBody>
               <AvForm>
                 <AvGroup row>
-                  <Label sm={4}>نام و نام خانوادگی :‌ </Label>
+                  <Label sm={4}>نام و نام خانوادگی:</Label>
                   <Col sm={8}>
                     <AvInput
                       name="fullName"
-                      type="text" onChange={(event) => {
-                      this.setState({
-                        ...this.state,
-                        name: event.target.value
-                      })
-                    }}
+                      type="text"
+                      onChange={(event) => {
+                        this.setState({
+                          ...this.state,
+                          name: event.target.value
+                        })
+                      }}
                       placeholder={'نام و نام خانوادگی'}
                       maxLength={100}
-                      defaultValue={this.state.name}
+                      value={this.state.name}
                       required/>
                     <br/>
                     <AvFeedback>الزامی است</AvFeedback>
@@ -148,23 +120,22 @@ class Profile extends Component {
                   <Col sm={5}>
                     <AvInput
                       name="phoneNumber"
-                      onKeyDown={this.handleKeypress}
-                      dir="ltr" onChange={(event) => {
-                      this.setState({
-                        ...this.state,
-                        phone: event.target.value
-                      })
-                    }}
-                      placeholder={'۸۸۸۸۸۸۸۸'}
+                      dir="ltr"
+                      onChange={(event) => {
+                        this.setState({
+                          ...this.state,
+                          phone: event.target.value
+                        })
+                      }}
+                      placeholder={'88888888'}
                       maxLength={13}
-                      defaultValue={this.state.phone.split("-")[1] ?
-                        this.state.phone.split("-")[1] : ""}/>
+                      value={this.state.phone}/>
                     <br/>
                     <AvFeedback>الزامی است</AvFeedback>
                   </Col>
-                  <Col sm={1}>
+                  <Col sm={3}>
                     <Select2
-                      onSelect={(e) => this.setState({city: e.target.value})}
+                      onSelect={(e) => this.setState({city: parseInt(e.target.value)})}
                       data={this.getCodes()}
                       value={this.state.city}
                     />
@@ -186,7 +157,7 @@ class Profile extends Component {
                     <Phone
                       displayInitialValueAsLocalNumber
                       // country="IR"
-                      style={{direction: "ltr"}}
+                      style={{direction: 'ltr'}}
                       smartCaret={false}
                       placeholder=""
                       value={this.state.mobile}
@@ -205,23 +176,23 @@ class Profile extends Component {
                     }}
                            placeholder={'تهران - ...'}
                            maxLength={500}
-                           defaultValue={this.state.address}/>
+                           value={this.state.address}/>
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Label sm={4}> نوع کاربر :</Label>
+                  <Label sm={4}> نوع کاربر:</Label>
                   <Col sm={8}>
-                    <Input defaultValue={this.state.legal} onChange={(e) => {
+                    <Input value={this.state.legal} onChange={(e) => {
                       this.setState({legal: e.target.value})
                     }}
                            type="select" name="type" id="select">
-                      <option value={true}>حقوقی</option>
-                      <option value={false}>حقیقی</option>
+                      <option value={1}>حقوقی</option>
+                      <option value={0}>حقیقی</option>
                     </Input>
                   </Col>
                 </FormGroup>
               </AvForm>
-              <AvForm style={{display: this.state.legal == 'true' || this.state.legal === true ? 'block' : 'none'}}>
+              <AvForm style={{display: this.state.legal === '1' ? 'block' : 'none'}}>
                 <AvGroup row>
                   <Label sm={4}>نام شرکت:‌ </Label>
                   <Col sm={8}>
@@ -238,7 +209,7 @@ class Profile extends Component {
                     }}
                       placeholder={'نام شرکت'}
                       maxLength={100}
-                      defaultValue={this.state.legalInfo.org_name}
+                      value={this.state.legalInfo.org_name}
                       required/>
                     <br/>
                     <AvFeedback>الزامی است</AvFeedback>
@@ -260,7 +231,7 @@ class Profile extends Component {
                     }}
                       placeholder={'نام و نام خانوادگی'}
                       maxLength={100}
-                      defaultValue={this.state.legalInfo.org_interface_name}
+                      value={this.state.legalInfo.org_interface_name}
                       required/>
                     <br/>
                     <AvFeedback>الزامی است</AvFeedback>
@@ -272,7 +243,7 @@ class Profile extends Component {
                     <Phone
                       displayInitialValueAsLocalNumber
                       // country="IR"
-                      style={{direction: "ltr"}}
+                      style={{direction: 'ltr'}}
                       smartCaret={false}
                       placeholder=""
                       value={this.state.legalInfo.org_interface_mobile}
@@ -289,10 +260,6 @@ class Profile extends Component {
             </CardBody>
             <CardFooter>
               <Button color="primary" onClick={this.editUserProfile}>ذخیره تغییرات</Button>
-              {' '}
-              {this.state.impersonated ?
-                <Button color="primary" onClick={() => this.props.dispatch(impersonateUserAction(0, 0, toastAlerts))}>خروج
-                  از حالت شخص سوم</Button> : ''}
             </CardFooter>
           </Card>
         </div>
@@ -347,51 +314,39 @@ class Profile extends Component {
   }
 
   getCodes() {
-    return [{text: "تهران", id: "۰۲۱"}
-      , {text: "البرز", id: "۰۲۶"}
-      , {text: "قم", id: "۰۲۵"}
-      , {text: "مرکزی", id: "۰۸۶"}
-      , {text: "زنجان", id: "۰۲۴"}
-      , {text: "سمنان", id: "۰۲۳"}
-      , {text: "همدان", id: "۰۸۱"}
-      , {text: "قزوین", id: "۰۲۸"}
-      , {text: "اصفهان", id: "۰۳۱"}
-      , {text: "آذربایجان غربی", id: "۰۴۴"}
-      , {text: "مازندران", id: "۰۱۱"}
-      , {text: "کهگیلویه و بویراحمد", id: "۰۷۴"}
-      , {text: "کرمانشاه", id: "۰۸۳"}
-      , {text: "خراسان رضوی", id: "۰۵۱"}
-      , {text: "اردبیل", id: "۰۴۵"}
-      , {text: "گلستان", id: "۰۱۷"}
-      , {text: "آذربایجان شرقی", id: "۰۴۱"}
-      , {text: "سیستان و بلوچستان", id: "۰۵۴"}
-      , {text: "کردستان", id: "۰۸۷"}
-      , {text: "فارس", id: "۰۷۱"}
-      , {text: "لرستان", id: "۰۶۶"}
-      , {text: "کرمان", id: "۰۳۴"}
-      , {text: "خراسان جنوبی", id: "۰۵۶"}
-      , {text: "گیلان", id: "۰۱۳"}
-      , {text: "بوشهر", id: "۰۷۷"}
-      , {text: "هرمزگان", id: "۰۷۶"}
-      , {text: "خوزستان", id: "۰۶۱"}
-      , {text: "چهارمحال و بختیاری", id: "۰۳۸"}
-      , {text: "خراسان شمالی", id: "۰۵۸"}
-      , {text: "یزد", id: "۰۳۵"}
-      , {text: "ایلام", id: "۰۸۴"}]
+    return [{text: 'تهران', id: '021'}
+      , {text: 'البرز', id: '026'}
+      , {text: 'قم', id: '025'}
+      , {text: 'مرکزی', id: '086'}
+      , {text: 'زنجان', id: '024'}
+      , {text: 'سمنان', id: '023'}
+      , {text: 'همدان', id: '081'}
+      , {text: 'قزوین', id: '028'}
+      , {text: 'اصفهان', id: '031'}
+      , {text: 'آذربایجان غربی', id: '044'}
+      , {text: 'مازندران', id: '011'}
+      , {text: 'کهگیلویه و بویراحمد', id: '074'}
+      , {text: 'کرمانشاه', id: '083'}
+      , {text: 'خراسان رضوی', id: '051'}
+      , {text: 'اردبیل', id: '045'}
+      , {text: 'گلستان', id: '017'}
+      , {text: 'آذربایجان شرقی', id: '041'}
+      , {text: 'سیستان و بلوچستان', id: '054'}
+      , {text: 'کردستان', id: '087'}
+      , {text: 'فارس', id: '071'}
+      , {text: 'لرستان', id: '066'}
+      , {text: 'کرمان', id: '034'}
+      , {text: 'خراسان جنوبی', id: '056'}
+      , {text: 'گیلان', id: '013'}
+      , {text: 'بوشهر', id: '077'}
+      , {text: 'هرمزگان', id: '076'}
+      , {text: 'خوزستان', id: '061'}
+      , {text: 'چهارمحال و بختیاری', id: '038'}
+      , {text: 'خراسان شمالی', id: '058'}
+      , {text: 'یزد', id: '035'}
+      , {text: 'ایلام', id: '084'}]
   }
 
-
-  handleKeypress(e) {
-    const characterCode = e.key
-    if (characterCode === 'Backspace') return
-
-    const characterNumber = Number(characterCode)
-    if (characterNumber >= 0 && characterNumber <= 9) {
-      return
-    } else {
-      e.preventDefault()
-    }
-  }
 }
 
 function mapStateToProps(state) {

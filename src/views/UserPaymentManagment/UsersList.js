@@ -30,7 +30,6 @@ import ReactTable from 'react-table'
 class UsersList extends Component {
   constructor(props) {
     super(props);
-    this.renderItem = this.renderItem.bind(this)
     this.state = {
       usersInfo: [],
       modal: false,
@@ -77,7 +76,7 @@ class UsersList extends Component {
               minRows='1'
               noDataText='داده ای وجود ندارد'
               resizable={false}
-              defaultPageSize={5}
+              defaultPageSize={10}
               className="-striped -highlight"
             />
           </CardBody>
@@ -100,8 +99,8 @@ class UsersList extends Component {
       {
         Header: 'نوع کاربر',
         id: 'legal',
-        accessor: row => <Badge color={row.legal !== true ? 'success' : 'danger'}>
-          {row.legal !== true ? 'حقوقی' : 'حقیقی'}
+        accessor: row => <Badge color={row.legal ? 'success' : 'danger'}>
+          {row.legal ? 'حقوقی' : 'حقیقی'}
         </Badge>,
         filterable: false,
       },
@@ -125,19 +124,6 @@ class UsersList extends Component {
     ];
   }
 
-
-  renderItem(el, key = 0) {
-    return (
-
-      <tr className="cursorShape" onClick={() => this.props.dispatch(SelectUser(el.name))}>
-        <th>{key + 1}</th>
-        <td>{el.name}</td>
-        <td>{el.email}</td>
-        <td>{!el.legal ? "حقیقی" : "حقوقی"}</td>
-
-      </tr>
-    )
-  }
 
 }
 

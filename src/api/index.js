@@ -321,7 +321,7 @@ module.exports.updateScenarioAPI = function (data, projectId, scenarioId, dispat
 module.exports.sendThingKeys = function (data, thingId, projectId, dispatch) {
   const config = postConfig()
   Object.assign(config, {body: getFormData(data)})
-  return fetchData(`/things/${thingId}/activate`, config, dispatch)
+  return fetchData(`/things/${thingId}/keys`, config, dispatch)
 }
 
 module.exports.deleteProject = function (projectId, dispatch) {

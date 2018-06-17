@@ -7,7 +7,8 @@ import {
   Dropdown
 } from 'reactstrap';
 import connect from "react-redux/es/connect/connect";
-import {logout} from "../../actions/AppActions";
+import { impersonateUserAction, logout } from '../../actions/AppActions';
+import { toastAlerts } from '../../views/Shared/toast_alert';
 
 const md5 = require('js-md5');
 
@@ -50,6 +51,10 @@ class HeaderDropdown extends Component {
         <DropdownMenu right>
           <DropdownItem header tag="div" className="text-center"><strong>{this.state.activeUserInfo.username}</strong></DropdownItem>
           <DropdownItem onClick={this.profileLink}><i className="fa fa-user-o text-primary"></i>حساب کاربری</DropdownItem>
+          {this.state.activeUserInfo.impersonated ?
+            <DropdownItem onClick={() => this.props.dispatch(impersonateUserAction(0, 0, toastAlerts))}>
+              <i className="fa fa-power-off text-danger"></i>{'خروج از حالت شخص سوم'}
+            </DropdownItem> : ''}
           <DropdownItem onClick={() => this.props.dispatch(logout())}><i className="fa fa-power-off text-danger"></i>خروج</DropdownItem>
         </DropdownMenu>
       </Dropdown>

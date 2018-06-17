@@ -115,7 +115,8 @@ import {
   getThingsSampleData,
   activateThing,
   activeUser, impersonateUser, getUserTransactionsAPI, activateProject, getGlobalCodecs, getGlobalCodecTemplate,
-  updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec
+  updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec,
+  changeAdminPassword
 } from '../api';
 import fileDownload from 'js-file-download'
 
@@ -854,10 +855,10 @@ export function editProfile(data, cb) {
     const promise = editProfileAPI(data, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        cb(true)
+        cb && cb(true, 'باموفقیت ویرایش یافت')
         dispatch(updateUser(response.result))
       } else {
-        cb(false)
+        cb && cb(false, response.result)
       }
     }).catch((err) => {
       console.log(err)
@@ -870,9 +871,9 @@ export function changePassword(data, cb) {
     const promise = changePasswordAPI(data, dispatch)
     promise.then((response) => {
       if (response.status === 'OK')
-        cb(true)
+        cb && cb(true, 'با موفقیت ویرایش یافت')
       else
-        cb(response.result)
+        cb && cb(false, response.result)
     }).catch((err) => {
       console.log(err)
     })
@@ -1428,9 +1429,9 @@ export function activeUserAction(userId, action, cb = () => {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch({type: FETCH_USER, newState: response.result})
-        cb(true)
+        cb(true,'با موفقیت انجام شد')
       } else {
-        cb(false)
+        cb(false,response.result)
       }
     }).catch((err) => {
       cb(false)
@@ -1445,7 +1446,7 @@ export function impersonateUserAction(userId, active = 1, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch({type: INIT_USER, newState: response.result})
-        forwardTo("")
+        forwardTo('')
         window.location.reload()
         cb && cb(true, 'با موفقیت انجام شد')
       } else {
@@ -1477,7 +1478,7 @@ export function changePasswordAction(userId, password, cb) {
     const promise = changeAdminPassword(userId, password, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        cb && cb(true, 'با موفقیت انجام شد')
+        cb && cb(true, 'با موفقیت تغییر یافت')
       } else {
         cb && cb(false, response.result)
       }

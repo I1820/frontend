@@ -87,7 +87,7 @@ class UserTransactions extends Component {
         accessor: row => moment(row.created_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')
       },
       {
-        Header: 'نوع بسته',
+        Header: 'نام بسته',
         id: 'package_type',
         accessor: row => row.package.name
       },
@@ -116,8 +116,8 @@ class UserTransactions extends Component {
       {
         Header: 'وضعیت تراکنش',
         id: 'status',
-        accessor: row => <Badge color={row.status === true ? 'success' : 'danger'}>
-          {row.active === status ? 'موفق' : 'نا موفق'}
+        accessor: row => <Badge color={row.status ? 'success' : 'danger'}>
+          {row.status ? 'موفق' : 'نا موفق'}
         </Badge>,
         filterable: false,
       },
