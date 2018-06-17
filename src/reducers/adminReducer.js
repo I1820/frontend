@@ -14,7 +14,7 @@ export function adminReducer (state = {usersList:[],users:{}}, action) {
         }
       }
     case GET_CODECS:
-      return {globalCodecs:action.newState}
+      return {...state, globalCodecs:action.newState}
     default:
       return state
   }

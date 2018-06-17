@@ -84,7 +84,7 @@ class UserTransactions extends Component {
       {
         Header: 'تاریخ تراکنش',
         id: 'created_at',
-        accessor: row => moment(row.created_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')
+        accessor: row => moment(row.created_at, 'YYYY-MM-DD HH:mm:ss').format('HH:mm:ss jYYYY/jM/jD')
       },
       {
         Header: 'نام بسته',
