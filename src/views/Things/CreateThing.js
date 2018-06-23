@@ -37,6 +37,7 @@ import {toast} from 'react-toastify';
 import {css} from 'glamor';
 import {style} from 'react-toastify';
 import Select2 from 'react-select2-wrapper';
+import {toastAlerts} from "../Shared/toast_alert";
 
 style({
   colorProgressDefault: 'white'
@@ -61,7 +62,7 @@ class CreateThing extends Component {
         devEUI: '',
         thing_profile_slug: '',
         period: '',
-        type: '',
+        type: 'LAN',
       }
     }
   }
@@ -98,6 +99,7 @@ class CreateThing extends Component {
               devEUI: thing.dev_eui,
               lat: thing.loc.coordinates[0],
               long: thing.loc.coordinates[1],
+              type: thing.type === 'lan' || thing.type === 'LAN' ? 'LAN' : 'lora'
             },
             thing_profile_slug: thing.profile ? thing.profile.thing_profile_slug : ""
           })
@@ -142,10 +144,10 @@ class CreateThing extends Component {
                 <Label sm={3}> نوع اتصال :</Label>
                 <Col md="5">
                   <Input type="select" name="type"
+                         value={this.state.thing.type}
                          onChange={this.changeForm} id="select">
-                    <option value="0"> انتخاب کنید</option>
                     <option value="LAN">LAN</option>
-                    <option value="Lora">LoRa</option>
+                    <option value="lora">LoRa</option>
                   </Input>
                 </Col>
               </FormGroup>
@@ -171,7 +173,7 @@ class CreateThing extends Component {
                   <AvFeedback>شناسه معتبر نیست</AvFeedback>
                 </Col>
               </AvGroup>
-              <FormGroup row>
+              <FormGroup row style={{display: this.state.thing.type === 'lora' ? 'flex' : 'none'}}>
                 <Label sm={3} htmlFor="select">پروفایل شی:</Label>
                 <Col md="5">
                   <Select2
@@ -189,7 +191,14 @@ class CreateThing extends Component {
                       }
                     }
                   />
-
+                </Col>
+              </FormGroup>
+              <FormGroup row style={{display: this.state.thing.type !== 'lora' ? 'flex' : 'none'}}>
+                <Label sm={3}>آدرس IP:</Label>
+                <Col sm={5}>
+                  <Input value={this.state.thing.IP} name="IP"
+                         placeholder={'1.2.3.4'}
+                         onChange={this.changeForm}/>
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -249,12 +258,13 @@ class CreateThing extends Component {
       long: document.getElementById('fld_lng').value,
       devEUI: this.state.thing.devEUI,
       thing_profile_slug: this.thing_profile_slug,
-      type: this.state.thing.type
+      type: this.state.thing.type,
+      ip:this.state.thing.IP
     }
     if (this.state.thing._id === undefined)
-      this.props.dispatch(createThingAction(data, this.state.project, this.callback))
+      this.props.dispatch(createThingAction(data, this.state.project, toastAlerts))
     else
-      this.props.dispatch(editThingAction(this.state.project, this.state.thing._id, data, this.callback))
+      this.props.dispatch(editThingAction(this.state.project, this.state.thing._id, data, toastAlerts))
   }
 
   callback(status, message) {

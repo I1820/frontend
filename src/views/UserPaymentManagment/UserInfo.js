@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Row,
   Col,
@@ -21,16 +21,17 @@ import {
   Input,
 } from 'reactstrap'
 
-import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import {AvForm, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import {
-  activeUserAction, changePasswordAction, createProject, getUserAction, getUserTransactionsAction,
+  activateProjectAction,
+  activeUserAction, changePasswordAction, createProject, editProjectAction, getUserAction, getUserTransactionsAction,
   impersonateUserAction
 } from '../../actions/AppActions';
 import ReactTable from 'react-table'
-import { toastAlerts } from '../Shared/toast_alert';
+import {toastAlerts} from '../Shared/toast_alert';
 
 class PackageList extends Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class PackageList extends Component {
     this.renderTransaction = this.renderTransaction.bind(this)
     this.toggle = this.toggle.bind(this)
     this.state = {
+      activateUser: false,
       modal: false,
       userInfo: {
         name: '',
@@ -89,6 +91,22 @@ class PackageList extends Component {
 
       <div className="animated fadeIn text-justify">
         <Spinner display={this.props.loading}/>
+
+        <Modal isOpen={this.state.activateUser} toggle={() => this.toggle('active_user')}
+               className="text-right">
+          <ModalHeader>{`${this.state.userInfo.active ? 'غیرفعال سازی' : 'فعال سازی'} کاربر `}</ModalHeader>
+          <ModalBody>
+            <h3>{` آیا از  ${this.state.userInfo.active ? 'غیرفعال سازی' : 'فعال سازی'} مطمئن هستید؟  `}</h3>
+            <br/>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" className="ml-1" onClick={() => {
+              this.props.dispatch(activeUserAction(this.state.userId, this.state.userInfo.active ? 0 : 1, toastAlerts))
+              this.toggle('activeProject')
+            }}>{this.state.userInfo.active ? 'غیرفعال سازی' : 'فعال سازی'}</Button>
+            <Button color="danger" onClick={() => this.toggle('activate_user')}>انصراف</Button>
+          </ModalFooter>
+        </Modal>
 
         <Modal isOpen={this.state.modal} toggle={() => this.toggle()} className="text-right">
           <ModalHeader>{`تغییر گذرواژه ${this.state.userInfo.name}`}</ModalHeader>
@@ -174,7 +192,7 @@ class PackageList extends Component {
               </CardBody>
               <CardFooter>
                 <Button
-                  onClick={() => this.props.dispatch(activeUserAction(this.state.userId, this.state.userInfo.active ? 0 : 1, toastAlerts))}
+                  onClick={() => this.toggle("activate_user")}
                   className="ml-1" color="warning"
                   size="sm">{this.state.userInfo.active ? 'غیر فعال سازی کاربر' : 'فعال سازی کاربر'}</Button>
 
@@ -264,11 +282,16 @@ class PackageList extends Component {
     )
   }
 
-  toggle() {
-    console.log('modal', this.state.modal)
-    this.setState({
-      modal: !this.state.modal
-    })
+  toggle(key) {
+
+    if (key === undefined)
+      this.setState({
+        modal: !this.state.modal
+      })
+    else
+      this.setState({
+        activateUser: !this.state.activateUser
+      })
   }
 
   renderTransaction() {

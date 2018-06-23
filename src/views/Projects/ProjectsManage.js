@@ -72,7 +72,9 @@ class ProjectsManage extends Component {
 
     this.state = {
       OTAAModal: false,
+      OTGModal: false,
       ABPModal: false,
+      lanKey:"",
       activeProject: false,
       id: '',
       project: {},
@@ -218,6 +220,26 @@ class ProjectsManage extends Component {
             <Button color="primary" className="ml-1" onClick={() => {
               this.deleteScenario()
             }}>حذف</Button>
+            <Button color="danger" onClick={() => this.toggle('deleteScenario')}>انصراف</Button>
+          </ModalFooter>
+        </Modal>
+
+
+        <Modal isOpen={this.state.OTGModal} toggle={() => this.toggle('deleteScenario')}
+               className="text-right">
+          <ModalHeader>دریافت کلید</ModalHeader>
+          <ModalBody>
+            <FormGroup style={{display: 'flex'}} row>
+              <Label sm={5}>کلید:</Label>
+              <Col sm={7}>
+                <Input value={this.state.lanKey} maxLength="150" type="textarea" readOnly name="" rows="2"/>
+              </Col>
+            </FormGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" className="ml-1" onClick={() => {
+              this.deleteScenario()
+            }}>بروزرسانی</Button>
             <Button color="danger" onClick={() => this.toggle('deleteScenario')}>انصراف</Button>
           </ModalFooter>
         </Modal>
@@ -567,7 +589,7 @@ class ProjectsManage extends Component {
                   </FormGroup>
                   <FormGroup style={{display: 'flex'}}>
                     <div style={{minWidth: '65px', width: '20%'}}>
-                      <Label>توضیحات:</Label>
+                      <Label>وضعیت:</Label>
                     </div>
                     <div style={{width: '80%'}}>
                       <Badge color={this.state.project.active === true ? 'success' : 'danger'}>
@@ -884,7 +906,7 @@ class ProjectsManage extends Component {
           },
           {
             Header: 'نوع',
-            accessor: 'type',
+            accessor: 'activation',
             filterMethod: (filter, row) => row[filter.id].startsWith(filter.value.toUpperCase()),
             maxWidth: 60
           },
@@ -901,7 +923,7 @@ class ProjectsManage extends Component {
               }
               return (<div>
                 <Badge id={`tooltip-${row._id}`} color={badgeColor}>{row.last_seen_at['time'] ?
-                   'اخرین تاریخ دریافت داده':'داده ای هنوز دریافت نشده است'}</Badge>
+                  'اخرین تاریخ دریافت داده' : 'داده ای هنوز دریافت نشده است'}</Badge>
                 {row.last_seen_at['time'] &&
                 <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
                   {moment(row.last_seen_at.time, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
@@ -911,7 +933,7 @@ class ProjectsManage extends Component {
                   {'وضعیت:'} {row.active ? 'فعال' : 'غیرفعال'}
                 </Badge>
                 {' '}
-                <Badge  id={`tooltip2-${row._id}`}  color={row.last_parsed_at === "" ? 'secondary' : 'success'}>
+                <Badge id={`tooltip2-${row._id}`} color={row.last_parsed_at === "" ? 'secondary' : 'success'}>
                   {row.last_parsed_at && row.last_parsed_at !== "" ? 'اخرین زمان پارس داده' : 'داده ای هنوز پارس نشده است'}
                 </Badge>
                 {row.last_parsed_at && row.last_parsed_at !== "" &&
@@ -929,7 +951,7 @@ class ProjectsManage extends Component {
               return (<div>
                 <Button className="ml-1" onClick={() => {
                   console.log(row.keys.length)
-                  this.toggle(row.type === 'ABP' ? 'ABP' : 'OTAA', {
+                  this.toggle(row.activation === 'ABP' ? 'ABP' : (row.activation === 'OTAA' ? 'OTAA' : 'OTG'), {
                     id: row._id,
                     keys: row.keys.length !== 0 ? row.keys : {skipFCntCheck: true}
                   })
@@ -1095,6 +1117,10 @@ class ProjectsManage extends Component {
       state = {
         activeProject: !this.state.activeProject
       }
+      if(modal === 'OTG')
+        state = {
+          OTGModal: !this.state.OTGModal,
+        }
     this.setState(state, () => console.log(state));
   }
 

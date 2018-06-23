@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Card,
   CardHeader,
   CardBody,
   CardFooter,
   CardTitle,
-  Button, FormGroup, Form, Label, Col, Input,
+  Button, FormGroup, Form, Label, Col, Input, ModalFooter, ModalHeader, ModalBody, Modal,
 } from 'reactstrap';
 
-import { toastAlerts } from '../Shared/toast_alert';
+import {toastAlerts} from '../Shared/toast_alert';
 
 
 import AceEditor from 'react-ace';
@@ -18,7 +18,7 @@ import 'brace/mode/python';
 import 'brace/snippets/python';
 import 'brace/ext/language_tools';
 import {
-  getThingCodecAction, getCodecTemplateListAction, lintCode, sendCodecAction
+  getThingCodecAction, getCodecTemplateListAction, lintCode, sendCodecAction, testCodec
 } from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import Spinner from '../Spinner/Spinner';
@@ -32,10 +32,14 @@ class SendCodec extends Component {
     this.sendCodec = this.sendCodec.bind(this)
 
     this.state = {
+      modal: false,
       global: false,
       codec: '',
       templates: [],
-      lint: []
+      testType: 0,
+      testValue: "",
+      lint: [],
+      testResult:""
     }
   }
 
@@ -71,6 +75,53 @@ class SendCodec extends Component {
     return (
       <div>
         <Spinner display={this.props.loading}/>
+
+
+        <Modal isOpen={this.state.modal} toggle={() => this.setState({modal: !this.state.modal})}
+               className="text-right">
+          <ModalHeader>آزمایش کدک</ModalHeader>
+          <ModalBody>
+            <FormGroup style={{display: 'flex'}} row>
+              <Label sm={5}>مقدار آزمایشی:</Label>
+              <Col sm={7}>
+              <Input maxLength="150" type="textarea" name=""
+                     onChange={(e) => {
+                       this.setState({testValue: e.target.value})
+                     }}
+                     rows="2"/>
+              </Col>
+            </FormGroup>
+            <FormGroup style={{display: 'flex'}} row>
+              <Label sm={5}>نوع آزمایش:</Label>
+              <Col sm={7}>
+              <Input type="select" name="type"
+                     onChange={(e) => {
+                       this.setState({testType: e.target.value})
+                     }} id="select">
+                <option value="0">ارسال داده</option>
+                <option value="1">دریافت داده</option>
+              </Input>
+              </Col>
+            </FormGroup>
+            <FormGroup style={{display: 'flex'}} row>
+              <Label sm={5}>نتیجه آزمایشی:</Label>
+              <Col sm={7}>
+                <Input value={this.state.testResult} maxLength="150" type="textarea" readOnly name="" rows="2"/>
+              </Col>
+            </FormGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={() => {
+              this.setState({testResult:""})
+              this.props.dispatch(testCodec(this.state.thing, {data: this.state.testValue}, this.state.testType, (testResult) => {
+                  this.setState({testResult})
+              }))
+            }} className="ml-1">ارسال</Button>
+            <Button color="danger" onClick={() => this.setState({modal: !this.state.modal})}>انصراف</Button>
+          </ModalFooter>
+        </Modal>
+
+
         <Card className="text-justify">
           <CardHeader>
             <CardTitle className="mb-0 font-weight-bold h6">ویرایشگر codec</CardTitle>
@@ -147,12 +198,18 @@ class SendCodec extends Component {
             <Button
               onClick={() => {
                 this.props.dispatch(lintCode(this.state.project, this.state.codec, (status, lint) => {
-                    status && this.setState({lint})
+                  status && this.setState({lint})
                 }))
               }}
               className="ml-1"
               style={{display: this.state.global === false ? 'inline-block' : 'none'}}
-              color="warning" size="md">بررسی کدک</Button>
+              color="secondary" size="md">بررسی کدک</Button>
+            <Button
+              onClick={() => {
+                this.setState({modal: true})
+              }}
+              className="ml-1"
+              color="warning" size="md">آزمایش کدک</Button>
           </CardFooter>
         </Card>
         <Card style={{display: this.state.global === false ? 'flex' : 'none'}} className="text-justify">

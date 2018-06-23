@@ -346,6 +346,18 @@ module.exports.changePassword = function (data, dispatch) {
   return fetchData(`/user/password`, config, dispatch)
 }
 
+module.exports.resetPasswordAPI = function (data, dispatch) {
+  const config = postConfig()
+  Object.assign(config, {body: getFormData(data)})
+  return fetchData(`/password/email`, config, dispatch)
+}
+
+module.exports.testCodecAPI = function (thingId,data,decode, dispatch) {
+  const config = postConfig()
+  Object.assign(config, {body: getFormData(data)})
+  return fetchData(`/things/${thingId}/test?decode=${decode}`, config, dispatch)
+}
+
 module.exports.deleteDeviceProfile = function (profileId, dispatch) {
   const config = deleteConfig()
   return fetchData(`/thing-profile/${profileId}`, config, dispatch)

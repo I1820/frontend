@@ -51,6 +51,7 @@ class ProjectsView extends Component {
     this.drawBarChart = this.drawBarChart.bind(this)
     this.renderThingLocation = this.renderThingLocation.bind(this)
     this.state = {
+      draw: false,
       pages: 1,
       pageSize: 10,
       loading: false,
@@ -120,7 +121,7 @@ class ProjectsView extends Component {
   }
 
   drawLineChart() {
-    this.setState({showLineChart: true})
+    this.setState({showLineChart: true, draw: true})
     const config = {
       chart: {
         style: {
@@ -203,13 +204,15 @@ class ProjectsView extends Component {
         }
       })
     })
-
     config.series = sensors
     this.setState({
       config
-      , location
+      , location,
+      draw: false
     })
+
   }
+
 
   getThings() {
     let things = []
@@ -235,7 +238,7 @@ class ProjectsView extends Component {
   render() {
     return (
       <div>
-        <Spinner display={this.props.loading && !this.state.interval}/>
+        <Spinner display={(this.props.loading && !this.state.interval) || this.state.draw}/>
         <Card className="text-justify">
           <CardHeader>
             <CardTitle className="mb-0 font-weight-bold h6">دریافت داده</CardTitle>
@@ -244,26 +247,28 @@ class ProjectsView extends Component {
             <Form>
               <FormGroup row>
                 <Label sm={2}>شی ارسال کننده:‌</Label>
-                <Select2
-                  style={{width: '30%'}}
-                  multiple
-                  data={this.getThings()}
-                  ref="tags"
-                  value={this.state.selectedThing.ids}
-                  onSelect={
-                    this.setThing
-                  }
-                  onUnselect={this.setThing}
-                  options={
-                    {
-                      placeholder: 'شی مورد نظر را انتخاب کنید',
+                <Col sm={5}>
+                  <Select2
+                    style={{width: '100%'}}
+                    multiple
+                    data={this.getThings()}
+                    ref="tags"
+                    value={this.state.selectedThing.ids}
+                    onSelect={
+                      this.setThing
                     }
-                  }
-                />
+                    onUnselect={this.setThing}
+                    options={
+                      {
+                        placeholder: 'شی مورد نظر را انتخاب کنید',
+                      }
+                    }
+                  />
+                </Col>
               </FormGroup>
               <FormGroup row>
                 <Label sm={2}>زمان داده:‌</Label>
-                <Col sm={4}>
+                <Col sm={5}>
                   <Input type="select" onChange={
                     (event) => {
                       this.clearInter()
@@ -282,14 +287,15 @@ class ProjectsView extends Component {
                   </Input>
                 </Col>
               </FormGroup>
-              <FormGroup style={{display: this.state.auto ? 'none' : 'block'}} row>
-                <Col sm={6}>
+              <FormGroup style={{display: this.state.auto ? 'none' : 'flex'}} row>
+                <Label sm={2}></Label>
+                <Col sm={5}>
                   {this.renderTimePicker()}
                 </Col>
               </FormGroup>
               <FormGroup row>
                 <Label sm={2}> نوع نمودار :</Label>
-                <Col sm={4}>
+                <Col sm={5}>
                   <Input type="select" name="type"
                          onChange={(event) => {
                            if (event.target.value === "line")
@@ -325,7 +331,7 @@ class ProjectsView extends Component {
                     this.state.project._id,
                     0,
                     this.state.pageSize,
-                    this.state.since ? this.state.since : Math.floor(Date.now()/1000) - this.state.window*60,
+                    this.state.since ? this.state.since : Math.floor(Date.now() / 1000) - this.state.window * 60,
                     (status, data) => {
                       let pages = 1
                       if (this.state.pageSize === data.length)

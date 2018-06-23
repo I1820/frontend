@@ -116,7 +116,7 @@ import {
   activateThing,
   activeUser, impersonateUser, getUserTransactionsAPI, activateProject, getGlobalCodecs, getGlobalCodecTemplate,
   updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec,
-  changeAdminPassword
+  changeAdminPassword, resetPasswordAPI, testCodecAPI
 } from '../api';
 import fileDownload from 'js-file-download'
 
@@ -874,6 +874,32 @@ export function changePassword(data, cb) {
         cb && cb(true, 'با موفقیت ویرایش یافت')
       else
         cb && cb(false, response.result)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+}
+
+
+export function resetPasswordAction(data, cb) {
+  return (dispatch) => {
+    const promise = resetPasswordAPI(data, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK' && response.result.success === true)
+        cb && cb('رمز عبور جدید به ایمیل شما ارسال شد')
+      else
+        cb && cb(response.result)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+}
+
+export function testCodec(thing_id,data,decode, cb) {
+  return (dispatch) => {
+    const promise = testCodecAPI(thing_id,data,decode, dispatch)
+    promise.then((response) => {
+      cb(response.result)
     }).catch((err) => {
       console.log(err)
     })

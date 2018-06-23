@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Row,
   Col,
@@ -16,18 +16,18 @@ import {
   Table
 } from 'reactstrap';
 
-import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import classnames from 'classnames';
-import { toast, ToastContainer } from 'react-toastify';
-import { css } from 'glamor';
-import { style } from 'react-toastify';
-import { editProfile, getProfileAction, changePassword, impersonateUserAction } from '../../actions/AppActions';
+import {toast, ToastContainer} from 'react-toastify';
+import {css} from 'glamor';
+import {style} from 'react-toastify';
+import {editProfile, getProfileAction, changePassword, impersonateUserAction} from '../../actions/AppActions';
 import Phone from 'react-phone-number-input'
 import Select2 from 'react-select2-wrapper';
-import { toastAlerts } from '../Shared/toast_alert';
+import {toastAlerts} from '../Shared/toast_alert';
 
 style({
   colorProgressDefault: 'white'
@@ -75,10 +75,15 @@ class Profile extends Component {
   }
 
   changeUserPassword() {
-    this.props.dispatch(changePassword({
-      'password': this.state.password,
-      'new_password': this.state.new_password,
-    }, toastAlerts))
+    if (this.state.new_password === undefined)
+      toastAlerts(false, "رمز جدید را درست وارد کنید")
+    if (this.state.new_password !== this.state.re_new_password)
+      toastAlerts(false, "رمز جدید با تکرار آن مطابقت ندارد")
+    else
+      this.props.dispatch(changePassword({
+        'password': this.state.password,
+        'new_password': this.state.new_password,
+      }, toastAlerts))
   }
 
   render() {
@@ -301,7 +306,21 @@ class Profile extends Component {
                     <AvFeedback>الزامی است</AvFeedback>
                   </Col>
                 </AvGroup>
-
+                <AvGroup row>
+                  <Label sm={4}>تکرار رمز عبور جدید:</Label>
+                  <Col sm={8}>
+                    <AvInput
+                      name="renewPassword" type="password" onChange={(event) => {
+                      this.setState({
+                        ...this.state,
+                        re_new_password: event.target.value
+                      })
+                    }} placeholder={'تکرار رمز عبور جدید'}
+                      required/>
+                    <br/>
+                    <AvFeedback>الزامی است</AvFeedback>
+                  </Col>
+                </AvGroup>
               </AvForm>
             </CardBody>
             <CardFooter>
