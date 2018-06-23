@@ -116,7 +116,7 @@ import {
   activateThing,
   activeUser, impersonateUser, getUserTransactionsAPI, activateProject, getGlobalCodecs, getGlobalCodecTemplate,
   updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec,
-  changeAdminPassword, resetPasswordAPI, testCodecAPI
+  changeAdminPassword, resetPasswordAPI, testCodecAPI, getUserPermissions
 } from '../api';
 import fileDownload from 'js-file-download'
 
@@ -895,9 +895,9 @@ export function resetPasswordAction(data, cb) {
   }
 }
 
-export function testCodec(thing_id,data,decode, cb) {
+export function testCodec(thing_id, data, decode, cb) {
   return (dispatch) => {
-    const promise = testCodecAPI(thing_id,data,decode, dispatch)
+    const promise = testCodecAPI(thing_id, data, decode, dispatch)
     promise.then((response) => {
       cb(response.result)
     }).catch((err) => {
@@ -1380,6 +1380,8 @@ export function getUsersAction(cb = () => {
   }
 }
 
+
+
 export function getGlobalCodecsAction(cb = () => {
 }) {
   return (dispatch) => {
@@ -1448,6 +1450,23 @@ export function getUserTransactionsAction(userId, cb = () => {
   }
 }
 
+export function getUserPermissionsAction(cb = () => {
+}) {
+  return (dispatch) => {
+    const promise = getUserPermissions(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(response.result.permissions)
+      } else {
+        cb(false)
+      }
+    }).catch((err) => {
+      cb(false)
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+
 export function activeUserAction(userId, action, cb = () => {
 }) {
   return (dispatch) => {
@@ -1455,9 +1474,9 @@ export function activeUserAction(userId, action, cb = () => {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch({type: FETCH_USER, newState: response.result})
-        cb(true,'با موفقیت انجام شد')
+        cb(true, 'با موفقیت انجام شد')
       } else {
-        cb(false,response.result)
+        cb(false, response.result)
       }
     }).catch((err) => {
       cb(false)

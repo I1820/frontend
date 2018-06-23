@@ -523,6 +523,9 @@ module.exports.getGlobalCodecs = function (dispatch) {
 module.exports.getUserTransaction = function (userID, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/users/${userID}/transactions`, getConfig(), dispatch, true)
 }
+module.exports.getUserPermissions = function (dispatch) {
+  return fetchData(`${BASE_ADMIN_URL}/permission`, getConfig(), dispatch, true)
+}
 module.exports.activeUser = function (userID, action = 0, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/users/${userID}/ban?active=${action}`, getConfig(), dispatch, true)
 }

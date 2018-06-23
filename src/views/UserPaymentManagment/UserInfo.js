@@ -27,16 +27,19 @@ import {connect} from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import {
   activateProjectAction,
-  activeUserAction, changePasswordAction, createProject, editProjectAction, getUserAction, getUserTransactionsAction,
+  activeUserAction, changePasswordAction, createProject, editProjectAction, getUserAction, getUserPermissionsAction,
+  getUserTransactionsAction,
   impersonateUserAction
 } from '../../actions/AppActions';
 import ReactTable from 'react-table'
 import {toastAlerts} from '../Shared/toast_alert';
+import Select2 from "react-select2-wrapper";
 
 class PackageList extends Component {
   constructor(props) {
     super(props);
     this.renderProject = this.renderProject.bind(this)
+    this.getPermissions = this.getPermissions.bind(this)
     this.renderPackage = this.renderPackage.bind(this)
     this.renderThing = this.renderThing.bind(this)
     this.renderTransaction = this.renderTransaction.bind(this)
@@ -59,7 +62,8 @@ class PackageList extends Component {
         mobile: '',
         active: true
       },
-      transactions: []
+      transactions: [],
+      permissions:[]
     };
   }
 
@@ -69,6 +73,9 @@ class PackageList extends Component {
       userId: this.props.match.params.user
     })
     this.props.dispatch(getUserAction(this.props.match.params.user))
+    this.props.dispatch(getUserPermissionsAction((permissions) => {
+      this.setState({permissions})
+    }))
     this.props.dispatch(getUserTransactionsAction(this.props.match.params.user, (transactions) => {
       this.setState({transactions})
     }))
@@ -211,6 +218,41 @@ class PackageList extends Component {
           <Col xs="36" sm="18" md="12">
             <Card className="border-success">
               <CardHeader>
+                <CardTitle className="mb-0 font-weight-bold h6">دسترسی های کاربر</CardTitle>
+              </CardHeader>
+              <CardBody>
+                <Select2
+                  style={{width: '100%'}}
+                  multiple
+                  data={this.getPermissions()}
+                  ref="tags"
+                  // value={this.state.selectedThing.ids}
+                  // onSelect={
+                  //   // this.setThing
+                  // }
+                  // onUnselect={
+                  //   // this.setThing
+                  // }
+                  // options={
+                  //   {
+                  //     // placeholder: 'شی مورد نظر را انتخاب کنید',
+                  //   }
+                  // }
+                />
+              </CardBody>
+              <CardFooter>
+                <Button
+                  className="ml-1" color="warning"
+                  size="sm">ثبت دسترسی</Button>
+
+              </CardFooter>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="36" sm="18" md="12">
+            <Card className="border-success">
+              <CardHeader>
                 <CardTitle className="mb-0 font-weight-bold h6"> تراکنش‌های کاربر</CardTitle>
               </CardHeader>
               <CardBody>
@@ -280,6 +322,15 @@ class PackageList extends Component {
 
       </tr>
     )
+  }
+
+  getPermissions(){
+    let permissions = []
+    this.state.permissions && this.state.permissions.forEach((permission) => {
+      permissions.push({text: permission.name, _id: permission._id})
+      }
+    )
+    return permissions
   }
 
   toggle(key) {
