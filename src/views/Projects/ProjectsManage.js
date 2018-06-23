@@ -74,7 +74,7 @@ class ProjectsManage extends Component {
       OTAAModal: false,
       OTGModal: false,
       ABPModal: false,
-      lanKey:"",
+      lanKey: "",
       activeProject: false,
       id: '',
       project: {},
@@ -949,41 +949,47 @@ class ProjectsManage extends Component {
             filterable: false,
             accessor: row => {
               return (<div>
-                <Button className="ml-1" onClick={() => {
-                  console.log(row.keys.length)
-                  this.toggle(row.activation === 'ABP' ? 'ABP' : (row.activation === 'OTAA' ? 'OTAA' : 'OTG'), {
-                    id: row._id,
-                    keys: row.keys.length !== 0 ? row.keys : {skipFCntCheck: true}
-                  })
-                }} color="success" size="sm">ارسال کلید</Button>
-                <Button onClick={() => {
-                  window.location = `#/things/edit/${this.state.project._id}/${row._id}`
-                }} className="ml-1" color="warning" size="sm">ویرایش</Button>
-                <Button onClick={() => {
-                  window.location = `#/codec/${this.state.project._id}/${row._id}`
-                }} className="ml-1" color="secondary" size="sm">ارسال codec</Button>
-                <br/>
-                <Button onClick={() => this.toggle('downlink', row._id)} className="ml-1"
-                        color="primary"
-                        size="sm">ارسال داده (داون لینک)</Button>
-                <Button onClick={() => {
-                  this.toggle('deleteThing', row._id)
-                  this.setState({
-                    downlinkFport: "",
-                    downlinkConfirmed: ""
-                  })
-                }} className="ml-1"
-                        color="danger"
-                        size="sm">حذف شئ</Button>
-                <Button
-                  onClick={
-                    () => this.toggle('activateThing', {
-                      rowId: row._id,
-                      active: row.active ? 0 : 1
-                    })}
-                  className="ml-1" color="warning"
-                  size="sm">{row.active ? 'غیر فعال سازی' : 'فعال سازی'}</Button>
+                <Input type="select" name="type"
+                       onChange={(e) => {
+                         let action = e.target.value
+                         e.target.value = ""
+                         if (action === "send_key") {
+                           this.toggle(row.activation === 'ABP' ? 'ABP' : (row.activation === 'OTAA' ? 'OTAA' : 'OTG'), {
+                             id: row._id,
+                             keys: row.keys.length !== 0 ? row.keys : {skipFCntCheck: true}
+                           })
+                         } else if (action === "edit") {
+                           window.location = `#/things/edit/${this.state.project._id}/${row._id}`
+                         }
+                         else if (action === "send_codec") {
+                           window.location = `#/codec/${this.state.project._id}/${row._id}`
+                         }
+                         else if (action === "send_data") {
+                           this.toggle('downlink', row._id)
+                         }
+                         else if (action === "delete") {
+                           this.toggle('deleteThing', row._id)
+                           this.setState({
+                             downlinkFport: "",
+                             downlinkConfirmed: ""
+                           })
+                         }
+                         else if (action === "deactive") {
+                           this.toggle('activateThing', {
+                             rowId: row._id,
+                             active: row.active ? 0 : 1
+                           })
+                         }
 
+                       }} id="select">
+                  <option value="">امکانات</option>
+                  <option value="send_key">ارسال کلید</option>
+                  <option value="edit">ویرایش</option>
+                  <option value="send_codec">ارسال codec</option>
+                  <option value="send_data">ارسال داده (داون لینک)</option>
+                  <option value="delete">حذف شئ</option>
+                  <option value="deactive">{row.active ? 'غیر فعال سازی' : 'فعال سازی'}</option>
+                </Input>
               </div>);
             }
           },
@@ -1117,10 +1123,10 @@ class ProjectsManage extends Component {
       state = {
         activeProject: !this.state.activeProject
       }
-      if(modal === 'OTG')
-        state = {
-          OTGModal: !this.state.OTGModal,
-        }
+    if (modal === 'OTG')
+      state = {
+        OTGModal: !this.state.OTGModal,
+      }
     this.setState(state, () => console.log(state));
   }
 

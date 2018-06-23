@@ -89,7 +89,7 @@ class CreateThing extends Component {
     if (splitedUrl[splitedUrl.length - 1] !== 'new') {
       props.things.forEach((thing) => {
         if (thing._id === splitedUrl[splitedUrl.length - 1]) {
-          if (thing.profile !== undefined)
+          if (thing.profile !== undefined && thing.profile !== null)
             this.thing_profile_slug = thing.profile.thing_profile_slug;
           else
             this.thing_profile_slug = ''
@@ -97,11 +97,12 @@ class CreateThing extends Component {
             thing: {
               ...thing,
               devEUI: thing.dev_eui,
+              IP:thing.interface.ip,
               lat: thing.loc.coordinates[0],
               long: thing.loc.coordinates[1],
               type: thing.type === 'lan' || thing.type === 'LAN' ? 'LAN' : 'lora'
             },
-            thing_profile_slug: thing.profile ? thing.profile.thing_profile_slug : ""
+            thing_profile_slug: thing.profile !== undefined && thing.profile !== null ? thing.profile.thing_profile_slug : ""
           })
         }
       })
