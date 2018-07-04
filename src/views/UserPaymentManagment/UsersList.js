@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from 'react';
 // import {selectUser} from '../../actions/AppActions'
 import {
   Row,
@@ -22,18 +22,21 @@ import {
   Table,
   FormText
 } from 'reactstrap';
-import {getUsersAction, SelectUser} from "../../actions/AppActions";
-import {connect} from 'react-redux';
-import Spinner from "../Spinner/Spinner";
+import { getUsersAction, getRolesAction, setRoleAction } from '../../actions/AppActions';
+import { connect } from 'react-redux';
+import Spinner from '../Spinner/Spinner';
 import ReactTable from 'react-table'
+import { toastAlerts } from '../Shared/toast_alert';
 
 class UsersList extends Component {
   constructor(props) {
     super(props);
+    this.changeRole = this.changeRole.bind(this)
     this.state = {
       usersInfo: [],
       modal: false,
       deleteModal: false,
+      roles: [],
       items: [],
     }
   }
@@ -43,6 +46,9 @@ class UsersList extends Component {
     // let usersArray = Object.values(usersInfo);
     // this.setState({items: usersArray})
     this.props.dispatch(getUsersAction());
+    this.props.dispatch(getRolesAction(roles => {
+      this.setState({roles: roles})
+    }));
   }
 
   componentWillReceiveProps(props) {
@@ -104,27 +110,45 @@ class UsersList extends Component {
         </Badge>,
         filterable: false,
       },
-      // {
-      //   id: 'projectStatus',
-      //   Header: 'وضعیت',
-      //   filterable: false,
-      //   accessor: row => <Badge color={row.active === true ? 'success' : 'danger'}>
-      //     {row.active === true ? 'فعال' : 'غیرفعال'}
-      //   </Badge>
-      // // },
+      {
+        id: 'role',
+        Header: 'دسترسی‌ها',
+        filterable: false,
+        accessor: row => {
+          return (<div>
+            <Input type="select" name="type" value={row.role ? row.role._id : ''}
+                   onChange={(e) => {
+                     let action = e.target.value
+                     if (action === '')
+                       this.props.dispatch(setRoleAction(row._id, '', this.changeRole))
+                     else
+                       this.props.dispatch(setRoleAction(row._id, action, this.changeRole))
+
+                   }} id="select">
+              <option value={''}>{'ادمین'}</option>
+              {this.state.roles.map(item =>
+                <option key={item._id} value={item._id}>{item.name}</option>
+              )}
+            </Input>
+          </div>);
+        }
+      },
       {
         id: 'rowTools',
         Header: 'امکانات',
         filterable: false,
         accessor: row => <div>
-          <Button onClick={() => window.location=`#/admin/user/info/${row._id}`} className="ml-1" color="warning"
+          <Button onClick={() => window.location = `#/admin/user/info/${row._id}`} className="ml-1" color="warning"
                   size="sm">مدیریت</Button>
         </div>
       }
     ];
   }
 
-
+  changeRole(status, message) {
+    toastAlerts(status, message);
+    this.props.dispatch(getUsersAction())
+  }
 }
 
 function mapStateToProps(state) {

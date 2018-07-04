@@ -118,9 +118,9 @@ class Login extends Component {
                           onChange={(response) => this.setState({recaptcha: response})}/>
                       </InputGroup>
                       <Row>
-                        <Col xs="2" className="text-right">
+                        <Col xs="12" className="text-right">
                           <img
-                            style={{display: this.props.currentlySending ? 'block' : 'none'}}
+                            style={{display: this.props.currentlySending ? 'block' : 'none', margin: "auto"}}
                             src={'img/loading.gif'}/>
                         </Col>
                         <Col xs="12">
@@ -224,7 +224,6 @@ class Login extends Component {
   }
 
   onRespond(errorMessage) {
-    console.log(errorMessage)
     this.setState({
       alert: errorMessage,
       showAlert: true

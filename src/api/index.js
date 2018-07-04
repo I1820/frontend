@@ -7,12 +7,12 @@ import {
   uploadConfig,
   deleteConfig
 } from './config'
-import {setAuthState, initUser, changePassword} from '../actions/AppActions'
+import { setAuthState, initUser, changePassword } from '../actions/AppActions'
 
 
 import _ from 'underscore'
-import {sendingRequest, logout} from '../actions/AppActions'
-import axios, {post, get} from 'axios';
+import { sendingRequest, logout } from '../actions/AppActions'
+import axios, { post, get } from 'axios';
 import store from '../store'
 /* global fetch */
 
@@ -352,7 +352,7 @@ module.exports.resetPasswordAPI = function (data, dispatch) {
   return fetchData(`/password/email`, config, dispatch)
 }
 
-module.exports.testCodecAPI = function (thingId,data,decode, dispatch) {
+module.exports.testCodecAPI = function (thingId, data, decode, dispatch) {
   const config = postConfig()
   Object.assign(config, {body: getFormData(data)})
   return fetchData(`/things/${thingId}/test?decode=${decode}`, config, dispatch)
@@ -523,9 +523,19 @@ module.exports.getGlobalCodecs = function (dispatch) {
 module.exports.getUserTransaction = function (userID, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/users/${userID}/transactions`, getConfig(), dispatch, true)
 }
-module.exports.getUserPermissions = function (dispatch) {
+module.exports.getPermissions = function (dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/permission`, getConfig(), dispatch, true)
 }
+module.exports.getRoles = function (dispatch) {
+  return fetchData(`${BASE_ADMIN_URL}/permission/role`, getConfig(), dispatch, true)
+}
+
+module.exports.setRole = function (userId, roleId, dispatch) {
+  if (roleId)
+    return fetchData(`${BASE_ADMIN_URL}/permission/${userId}/${roleId}`, postConfig(), dispatch, true)
+  return fetchData(`${BASE_ADMIN_URL}/permission/${userId}`, postConfig(), dispatch, true)
+}
+
 module.exports.activeUser = function (userID, action = 0, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/users/${userID}/ban?active=${action}`, getConfig(), dispatch, true)
 }
@@ -550,25 +560,25 @@ module.exports.activateProject = function (projectId, active, dispatch) {
 
 
 module.exports.getGlobalCodecTemplate = function (codecId, dispatch) {
-  return fetchData(`${BASE_ADMIN_URL}/codec/${codecId}`, getConfig(), dispatch,true)
+  return fetchData(`${BASE_ADMIN_URL}/codec/${codecId}`, getConfig(), dispatch, true)
 }
 
 
 module.exports.updateGlobalCodecTemplate = function (codec_id, data, dispatch) {
   const config = patchConfig()
   Object.assign(config, {body: getFormData(data)})
-  return fetchData(`${BASE_ADMIN_URL}/codec/${codec_id}`, config, dispatch,true)
+  return fetchData(`${BASE_ADMIN_URL}/codec/${codec_id}`, config, dispatch, true)
 }
 
 
-module.exports.createGlobalCodecTemplate = function ( data, dispatch) {
+module.exports.createGlobalCodecTemplate = function (data, dispatch) {
   const config = postConfig()
   Object.assign(config, {body: getFormData(data)})
-  return fetchData(`${BASE_ADMIN_URL}/codec`, config, dispatch,true)
+  return fetchData(`${BASE_ADMIN_URL}/codec`, config, dispatch, true)
 }
 
-module.exports.deleteGlobalCodec = function ( codecId, dispatch) {
-  return fetchData(`${BASE_ADMIN_URL}/codec/${codecId}`, deleteConfig(), dispatch,true)
+module.exports.deleteGlobalCodec = function (codecId, dispatch) {
+  return fetchData(`${BASE_ADMIN_URL}/codec/${codecId}`, deleteConfig(), dispatch, true)
 }
 
 

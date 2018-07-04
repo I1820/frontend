@@ -116,7 +116,7 @@ import {
   activateThing,
   activeUser, impersonateUser, getUserTransactionsAPI, activateProject, getGlobalCodecs, getGlobalCodecTemplate,
   updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec,
-  changeAdminPassword, resetPasswordAPI, testCodecAPI, getUserPermissions
+  changeAdminPassword, resetPasswordAPI, testCodecAPI, getPermissions, getRoles, setRole
 } from '../api';
 import fileDownload from 'js-file-download'
 
@@ -1381,7 +1381,6 @@ export function getUsersAction(cb = () => {
 }
 
 
-
 export function getGlobalCodecsAction(cb = () => {
 }) {
   return (dispatch) => {
@@ -1450,18 +1449,49 @@ export function getUserTransactionsAction(userId, cb = () => {
   }
 }
 
-export function getUserPermissionsAction(cb = () => {
-}) {
+export function getPermissionsAction(cb) {
   return (dispatch) => {
-    const promise = getUserPermissions(dispatch)
+    const promise = getPermissions(dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        cb(response.result.permissions)
+        cb && cb(response.result.permissions)
       } else {
-        cb(false)
+        cb && cb(false, response.result)
       }
     }).catch((err) => {
-      cb(false)
+      cb(false, 'اشکال نامشخص')
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+
+export function getRolesAction(cb) {
+  return (dispatch) => {
+    const promise = getRoles(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb && cb(response.result.roles)
+      } else {
+        cb && cb(false, response.result)
+      }
+    }).catch((err) => {
+      cb(false, 'اشکال نامشخص')
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+
+export function setRoleAction(userId, roleId, cb) {
+  return (dispatch) => {
+    const promise = setRole(userId, roleId, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb && cb(true,'با موفقیت انجام شد')
+      } else {
+        cb && cb(false, response.result)
+      }
+    }).catch((err) => {
+      cb(false, 'اشکال نامشخص')
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
     })
   }

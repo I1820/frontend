@@ -134,7 +134,7 @@ class Register extends Component {
                       </AvGroup>
 
                       <img
-                        style={{display: this.props.currentlySending ? 'block' : 'none'}}
+                        style={{display: this.props.currentlySending ? 'block' : 'none', margin: "auto"}}
                         src={'img/loading.gif'}/>
 
                       <Button

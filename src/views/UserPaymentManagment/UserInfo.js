@@ -27,7 +27,7 @@ import {connect} from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import {
   activateProjectAction,
-  activeUserAction, changePasswordAction, createProject, editProjectAction, getUserAction, getUserPermissionsAction,
+  activeUserAction, changePasswordAction, createProject, editProjectAction, getUserAction,
   getUserTransactionsAction,
   impersonateUserAction
 } from '../../actions/AppActions';
@@ -73,9 +73,6 @@ class PackageList extends Component {
       userId: this.props.match.params.user
     })
     this.props.dispatch(getUserAction(this.props.match.params.user))
-    this.props.dispatch(getUserPermissionsAction((permissions) => {
-      this.setState({permissions})
-    }))
     this.props.dispatch(getUserTransactionsAction(this.props.match.params.user, (transactions) => {
       this.setState({transactions})
     }))
@@ -209,41 +206,6 @@ class PackageList extends Component {
                 <Button className="ml-1" color="danger"
                         onClick={() => this.toggle()}
                         size="sm">{'تغییر گذرواژه'}</Button>
-
-              </CardFooter>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="36" sm="18" md="12">
-            <Card className="border-success">
-              <CardHeader>
-                <CardTitle className="mb-0 font-weight-bold h6">دسترسی های کاربر</CardTitle>
-              </CardHeader>
-              <CardBody>
-                <Select2
-                  style={{width: '100%'}}
-                  multiple
-                  data={this.getPermissions()}
-                  ref="tags"
-                  // value={this.state.selectedThing.ids}
-                  // onSelect={
-                  //   // this.setThing
-                  // }
-                  // onUnselect={
-                  //   // this.setThing
-                  // }
-                  // options={
-                  //   {
-                  //     // placeholder: 'شی مورد نظر را انتخاب کنید',
-                  //   }
-                  // }
-                />
-              </CardBody>
-              <CardFooter>
-                <Button
-                  className="ml-1" color="warning"
-                  size="sm">ثبت دسترسی</Button>
 
               </CardFooter>
             </Card>
