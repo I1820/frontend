@@ -3,7 +3,6 @@ import { css } from 'glamor';
 
 
 export function toastAlerts(status, message) {
-    console.log(status,message)
     if (status === true) {
         toast(message, {
             position: toast.POSITION.BOTTOM_RIGHT,

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Row,
   Col,
@@ -17,19 +17,20 @@ import {
   Table, Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import ReactTable from 'react-table'
-import {AvForm, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Select2 from 'react-select2-wrapper';
-import {toastAlerts} from '../Shared/toast_alert';
+import { toastAlerts } from '../Shared/toast_alert';
 
 import {
   deleteDashboardWidgetChartAction, getDashboardAction, getUserThingsAction,
   setDashboardWidgetChartAction
 } from '../../actions/AppActions';
 import moment from 'moment-jalaali';
-import _ from "underscore";
-import {GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
+import _ from 'underscore';
+import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
+import { toPersianNumbers } from '../Shared/helpers';
 
 const ReactHighcharts = require('react-highcharts');
 
@@ -52,6 +53,8 @@ class Dashboard extends Component {
       },
       things: [],
       selectedChart: 0,
+      thing_num: 0,
+      project_num: 0,
       modal: false,
       widget: {
         window: 1
@@ -60,7 +63,7 @@ class Dashboard extends Component {
   }
 
   toggle(modal) {
-    this.setState({location:false,modalToggle: {...this.state.modalToggle, [modal]: !this.state.modalToggle[modal]}})
+    this.setState({location: false, modalToggle: {...this.state.modalToggle, [modal]: !this.state.modalToggle[modal]}})
   }
 
   componentDidMount() {
@@ -210,17 +213,19 @@ class Dashboard extends Component {
 
         <div className="row">
           <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-primary text-center">
+            <Card className="text-white bg-primary text-center" style={{cursor: 'pointer'}}
+                  onClick={() => window.location = '/#/projects'}>
               <CardBody className="pb-0">
-                <h4 className="mb-0 h3 font-weight-bold">{this.state.project_num}</h4>
+                <h4 className="mb-0 h3 font-weight-bold">{toPersianNumbers(this.state.project_num)}</h4>
                 <p>پروژه ثبت شده است</p>
               </CardBody>
             </Card>
           </Col>
           <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-info text-center">
+            <Card className="text-white bg-info text-center" style={{cursor: 'pointer'}}
+                  onClick={() => window.location = '/#/things'}>
               <CardBody className="pb-0">
-                <h4 className="mb-0 h3 font-weight-bold">{this.state.thing_num}</h4>
+                <h4 className="mb-0 h3 font-weight-bold">{toPersianNumbers(this.state.thing_num)}</h4>
                 <p>شی ثبت شده است</p>
               </CardBody>
             </Card>

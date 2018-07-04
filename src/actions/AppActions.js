@@ -159,10 +159,10 @@ export function login(username, password, captcha, keep, errorCallback) {
  */
 export function logout() {
   return (dispatch) => {
-    logoutAPI(dispatch)
     forwardTo('/')
     dispatch(setAuthState(false))
-    dispatch(freeState())
+    const promise = logoutAPI(dispatch)
+    promise.then(() => dispatch(freeState()))
   }
 }
 
@@ -841,6 +841,7 @@ export function getProfileAction(cb) {
   return (dispatch) => {
     const promise = viewProfile(dispatch)
     promise.then((response) => {
+      console.log(response);
       if (response.status === 'OK') {
         dispatch(initUser(response.result))
         cb && cb(true)
@@ -1486,7 +1487,7 @@ export function setRoleAction(userId, roleId, cb) {
     const promise = setRole(userId, roleId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        cb && cb(true,'با موفقیت انجام شد')
+        cb && cb(true, 'با موفقیت انجام شد')
       } else {
         cb && cb(false, response.result)
       }

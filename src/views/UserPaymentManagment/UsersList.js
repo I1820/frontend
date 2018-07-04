@@ -108,6 +108,12 @@ class UsersList extends Component {
         accessor: row => <Badge color={row.legal ? 'success' : 'danger'}>
           {row.legal ? 'حقوقی' : 'حقیقی'}
         </Badge>,
+        maxWidth: 100,
+        filterable: false,
+      }, {
+        Header: 'تاریخ ثبت نام',
+        id: 'created_at',
+        accessor: row => <div style={{textAlign: 'right', direction: 'ltr'}}>{row.created_at}</div>,
         filterable: false,
       },
       {

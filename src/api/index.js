@@ -16,8 +16,10 @@ import axios, { post, get } from 'axios';
 import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://backback.ceit.aut.ac.ir:50024/api/v1'
-const BASE_ADMIN_URL = 'http://backback.ceit.aut.ac.ir:50024/api/admin'
+// const BASE_URL = 'http://backback.ceit.aut.ac.ir:50024/api/v1'
+// const BASE_ADMIN_URL = 'http://backback.ceit.aut.ac.ir:50024/api/admin'
+const BASE_URL = 'http://localhost:8000/api/v1'
+const BASE_ADMIN_URL = 'http://localhost:8000/api/admin'
 
 const endpoints = {
   login: '/login',

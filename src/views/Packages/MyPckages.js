@@ -42,6 +42,8 @@ class MyPackages extends Component {
     }
 
     componentWillReceiveProps(props) {
+      console.log(props.my_package)
+      console.log(moment(parseInt(_.get(props.my_package, 'start_date.$date.$numberLong'))).format())
         this.setState({
             packages: props.packages,
             my_package: {
