@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Row,
   Col,
@@ -17,9 +17,9 @@ import {
   Table
 } from 'reactstrap';
 
-import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
-import {GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
+import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 import connect from 'react-redux/es/connect/connect';
 import {
   createThingAction,
@@ -33,11 +33,11 @@ const _ = require('lodash');
 const {compose, withProps, lifecycle} = require('recompose');
 const {SearchBox} = require('react-google-maps/lib/components/places/SearchBox');
 
-import {toast} from 'react-toastify';
-import {css} from 'glamor';
-import {style} from 'react-toastify';
+import { toast } from 'react-toastify';
+import { css } from 'glamor';
+import { style } from 'react-toastify';
 import Select2 from 'react-select2-wrapper';
-import {toastAlerts} from "../Shared/toast_alert";
+import { toastAlerts } from '../Shared/toast_alert';
 
 style({
   colorProgressDefault: 'white'
@@ -69,26 +69,21 @@ class CreateThing extends Component {
 
   componentWillMount() {
     this.props.dispatch(getThingProfileListAction())
-
-    const splitedUrl = window.location.href.split('/');
     this.setState({
       project: this.props.match.params.project_id
     })
-    if (this.props.match.params.type !== 'new') {
+    if (this.props.match.params.thing_id) {
       this.setState({
-        project: this.props.match.params.project_id,
         thingId: this.props.match.params.thing_id
       })
-
       this.props.dispatch(getThingAction(this.props.match.params.thing_id))
     }
   }
 
   componentWillReceiveProps(props) {
-    const splitedUrl = window.location.href.split('/');
-    if (splitedUrl[splitedUrl.length - 1] !== 'new') {
+    if (this.props.match.params.thing_id !== undefined) {
       props.things.forEach((thing) => {
-        if (thing._id === splitedUrl[splitedUrl.length - 1]) {
+        if (thing._id === this.props.match.params.thing_id) {
           if (thing.profile !== undefined && thing.profile !== null)
             this.thing_profile_slug = thing.profile.thing_profile_slug;
           else
@@ -97,12 +92,12 @@ class CreateThing extends Component {
             thing: {
               ...thing,
               devEUI: thing.dev_eui,
-              IP:thing.interface.ip,
+              IP: thing.interface.ip,
               lat: thing.loc.coordinates[0],
               long: thing.loc.coordinates[1],
               type: thing.type === 'lan' || thing.type === 'LAN' ? 'LAN' : 'lora'
             },
-            thing_profile_slug: thing.profile !== undefined && thing.profile !== null ? thing.profile.thing_profile_slug : ""
+            thing_profile_slug: thing.profile !== undefined && thing.profile !== null ? thing.profile.thing_profile_slug : ''
           })
         }
       })
@@ -260,7 +255,7 @@ class CreateThing extends Component {
       devEUI: this.state.thing.devEUI,
       thing_profile_slug: this.thing_profile_slug,
       type: this.state.thing.type,
-      ip:this.state.thing.IP
+      ip: this.state.thing.IP
     }
     if (this.state.thing._id === undefined)
       this.props.dispatch(createThingAction(data, this.state.project, toastAlerts))

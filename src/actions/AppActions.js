@@ -260,6 +260,7 @@ export function editThingAction(projectId, thingId, data, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(setThing(response.result))
+        cb(true, 'با موفقیت انجام شد');
         forwardTo(`projects/manage/${projectId}`)
       } else {
         cb(false, response.result)
@@ -565,7 +566,7 @@ export function createThingAction(data, project, cb) {
       if (response.status === 'OK') {
         dispatch(setThing(response.result))
         forwardTo(`projects/manage/${project}`)
-        cb(true)
+        cb(true, 'با موفقیت انجام شد');
       } else {
         cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -574,15 +575,29 @@ export function createThingAction(data, project, cb) {
   }
 }
 
-export function sendThingKeysAction(data, projectId, thingId, cb) {
+export function sendThingKeysAction(data, thingId, cb) {
   return (dispatch) => {
-    const promise = sendThingKeys(data, projectId, thingId, dispatch)
+    const promise = sendThingKeys(data, thingId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         cb(true, 'با موفقیت فعال شد')
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
         cb(false, response.result)
+      }
+    })
+  }
+}
+
+export function refreshJWTAction(thingId, cb) {
+  return (dispatch) => {
+    const promise = sendThingKeys({},thingId, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(true, {message: 'با موفقیت فعال شد', token: response.result.keys.JWT});
+      } else {
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        cb(false, {message: response.result})
       }
     })
   }
