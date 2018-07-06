@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Row,
   Col,
@@ -13,21 +13,26 @@ import {
   ButtonGroup,
   Label,
   Input,
+  CardImg,
   Table
 } from 'reactstrap';
 
-import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import classnames from 'classnames';
-import {toast, ToastContainer} from 'react-toastify';
-import {css} from 'glamor';
-import {style} from 'react-toastify';
-import {editProfile, getProfileAction, changePassword, impersonateUserAction} from '../../actions/AppActions';
+import { toast, ToastContainer } from 'react-toastify';
+import { css } from 'glamor';
+import { style } from 'react-toastify';
+import {
+  editProfile, getProfileAction, changePassword, impersonateUserAction,
+  uploadLegalDocAction, uploadPictureAction, updateUser
+} from '../../actions/AppActions';
 import Phone from 'react-phone-number-input'
 import Select2 from 'react-select2-wrapper';
-import {toastAlerts} from '../Shared/toast_alert';
+import { toastAlerts } from '../Shared/toast_alert';
+import { base_files_url } from '../../api/index'
 
 style({
   colorProgressDefault: 'white'
@@ -41,6 +46,8 @@ class Profile extends Component {
 
     this.editUserProfile = this.editUserProfile.bind(this)
     this.changeUserPassword = this.changeUserPassword.bind(this)
+    this.uploadPicture = this.uploadPicture.bind(this)
+    this.uploadLegalDoc = this.uploadLegalDoc.bind(this)
     this.state = {
       city: this.props.userInfo.phone && this.props.userInfo.phone.split('-')[0] ?
         this.props.userInfo.phone.split('-')[0]
@@ -51,6 +58,8 @@ class Profile extends Component {
       address: this.props.userInfo.other_info ? this.props.userInfo.other_info.address : '',
       mobile: this.props.userInfo.mobile ? this.props.userInfo.mobile : '',
       legalInfo: this.props.userInfo.legal_info ? this.props.userInfo.legal_info : {},
+      legal_doc: this.props.userInfo.legal_doc ? this.props.userInfo.legal_doc : '',
+      picture: this.props.userInfo.picture ? this.props.userInfo.picture : '',
       impersonated: !!this.props.userInfo.impersonated
     }
     console.log(this.props.userInfo)
@@ -76,9 +85,9 @@ class Profile extends Component {
 
   changeUserPassword() {
     if (this.state.new_password === undefined)
-      toastAlerts(false, "رمز جدید را درست وارد کنید")
+      toastAlerts(false, 'رمز جدید را درست وارد کنید')
     if (this.state.new_password !== this.state.re_new_password)
-      toastAlerts(false, "رمز جدید با تکرار آن مطابقت ندارد")
+      toastAlerts(false, 'رمز جدید با تکرار آن مطابقت ندارد')
     else
       this.props.dispatch(changePassword({
         'password': this.state.password,
@@ -86,8 +95,37 @@ class Profile extends Component {
       }, toastAlerts))
   }
 
+  uploadLegalDoc(file) {
+    if (!file)
+      toastAlerts(false, 'لطفا فایل را انتخاب کنید')
+    else
+      this.props.dispatch(uploadLegalDocAction(file, (status, data) => {
+        if (status) {
+          toastAlerts(status, data.message)
+          this.setState({legal_doc: data.path})
+        }
+        else
+          toastAlerts(status, data.message)
+      }))
+  }
+
+  uploadPicture(file) {
+    if (!file)
+      toastAlerts(false, 'لطفا عکس را انتخاب کنید')
+    else
+      this.props.dispatch(uploadPictureAction(file, (status, data) => {
+        if (status) {
+          console.log(data);
+          toastAlerts(status, data.message)
+          this.setState({picture: base_files_url() + data.user.picture})
+          this.props.dispatch(updateUser({user: data.user}));
+        }
+        else
+          toastAlerts(status, data.message)
+      }))
+  }
+
   render() {
-    console.log(this.state)
     return (
       <div className={'row'}>
         <ToastContainer className="text-right"/>
@@ -242,6 +280,26 @@ class Profile extends Component {
                     <AvFeedback>الزامی است</AvFeedback>
                   </Col>
                 </AvGroup>
+
+                <AvGroup row>
+                  <Label sm={4}>مستندات حقوقی:</Label>
+                  <Col sm={2}>
+                    {this.state.legal_doc &&
+                    <a target="_blank" href={base_files_url() + this.state.legal_doc}>دانلود</a>}
+                  </Col>
+                  <Col sm={6}>
+                    <AvInput name="fullName"
+                             type="file"
+                             onChange={(event) => {
+                               this.uploadLegalDoc(event.target.files[0])
+                             }}
+                             required/>
+
+                    <br/>
+                    <AvFeedback>الزامی است</AvFeedback>
+                  </Col>
+                </AvGroup>
+
                 <AvGroup row>
                   <Label sm={4}>تلفن همراه واسط شرکت:</Label>
                   <Col sm={8}>
@@ -325,6 +383,31 @@ class Profile extends Component {
             </CardBody>
             <CardFooter>
               <Button color="primary" onClick={this.changeUserPassword}>ذخیره تغییرات</Button>
+            </CardFooter>
+          </Card>
+          <br/>
+          <Card className="text-justify">
+            <CardHeader>
+              <CardTitle className="mb-0 font-weight-bold h6">تصویر پروفایل</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <FormGroup row>
+                <Label sm={4}>ارسال عکس</Label>
+                <Col sm={8}>
+                  <Input type="file"
+                         onChange={(event) => {
+                           this.uploadPicture(event.target.files[0])
+                         }}/>
+                </Col>
+                <br/>
+                <Col sm={2}></Col>
+                <Col sm={8}>
+                  <CardImg width="100%" src={this.state.picture} alt="بدون عکس پروفایل"/>
+                </Col>
+              </FormGroup>
+            </CardBody>
+            <CardFooter>
+              <Button color="primary" onClick={''}>ثبت</Button>
             </CardFooter>
           </Card>
         </div>

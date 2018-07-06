@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Badge,
   DropdownItem,
@@ -6,7 +6,8 @@ import {
   DropdownToggle,
   Dropdown
 } from 'reactstrap';
-import connect from "react-redux/es/connect/connect";
+import { base_files_url } from '../../api/index';
+import connect from 'react-redux/es/connect/connect';
 import { impersonateUserAction, logout } from '../../actions/AppActions';
 import { toastAlerts } from '../../views/Shared/toast_alert';
 
@@ -15,20 +16,20 @@ const md5 = require('js-md5');
 
 class HeaderDropdown extends Component {
 
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.toggle = this.toggle.bind(this);
-        this.profileLink = this.profileLink.bind(this);
+    this.toggle = this.toggle.bind(this);
+    this.profileLink = this.profileLink.bind(this);
 
-        this.state = {
-            dropdownOpen: false,
-            activeUserInfo: this.props.userInfo
-        };
-    }
+    this.state = {
+      dropdownOpen: false,
+      activeUserInfo: this.props.userInfo
+    };
+  }
 
   profileLink() {
-      window.location = '#/profile';
+    window.location = '#/profile';
   }
 
   toggle() {
@@ -39,18 +40,16 @@ class HeaderDropdown extends Component {
 
   dropAccnt() {
 
-      var gravatar_url = "https://www.gravatar.com/avatar/";
-      gravatar_url += md5(this.state.activeUserInfo.email);
-      gravatar_url += "?s=240";
-
     return (
       <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
         <DropdownToggle nav>
-          <img src={gravatar_url} className="img-avatar" alt=""/>
+          <img src={this.props.userInfo.picture} className="img-avatar" alt=""/>
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem header tag="div" className="text-center"><strong>{this.state.activeUserInfo.username}</strong></DropdownItem>
-          <DropdownItem onClick={this.profileLink}><i className="fa fa-user-o text-primary"></i>حساب کاربری</DropdownItem>
+          <DropdownItem header tag="div"
+                        className="text-center"><strong>{this.state.activeUserInfo.username}</strong></DropdownItem>
+          <DropdownItem onClick={this.profileLink}><i className="fa fa-user-o text-primary"></i>{'حساب کاربری'}
+          </DropdownItem>
           {this.state.activeUserInfo.impersonated ?
             <DropdownItem onClick={() => this.props.dispatch(impersonateUserAction(0, 0, toastAlerts))}>
               <i className="fa fa-power-off text-danger"></i>{'خروج از حالت شخص سوم'}
@@ -71,9 +70,9 @@ class HeaderDropdown extends Component {
 
 
 function mapStateToProps(state) {
-    return {
-        userInfo: state.userReducer,
-    };
+  return {
+    userInfo: state.userReducer,
+  };
 }
 
 export default connect(mapStateToProps)(HeaderDropdown);

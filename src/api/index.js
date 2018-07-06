@@ -17,8 +17,10 @@ import store from '../store'
 /* global fetch */
 
 const BASE_URL = 'http://backback.ceit.aut.ac.ir:50024/api/v1'
+const BASE_FILES_URL = 'http://backback.ceit.aut.ac.ir:50024'
 const BASE_ADMIN_URL = 'http://backback.ceit.aut.ac.ir:50024/api/admin'
 // const BASE_URL = 'http://localhost:8000/api/v1'
+// const BASE_FILES_URL = 'http://localhost:8000'
 // const BASE_ADMIN_URL = 'http://localhost:8000/api/admin'
 
 const endpoints = {
@@ -267,6 +269,31 @@ module.exports.uploadExcel = function (data, projectId, dispatch) {
   const formData = new FormData();
   formData.append('things', data)
   formData.append('project_id', projectId)
+  const config = {
+    headers: {
+      'Authorization': 'Bearer ' + store.getState().userReducer.token,
+      'Content-Type': 'multipart/form-data'
+    }
+  }
+  return post(url, formData, config)
+};
+
+module.exports.uploadLegalDoc = function (file, dispatch) {
+  const url = `${BASE_URL}/user/upload`
+  const formData = new FormData();
+  formData.append('file', file)
+  const config = {
+    headers: {
+      'Authorization': 'Bearer ' + store.getState().userReducer.token,
+      'Content-Type': 'multipart/form-data'
+    }
+  }
+  return post(url, formData, config)
+};
+module.exports.uploadPicture = function (file, dispatch) {
+  const url = `${BASE_URL}/user/picture`
+  const formData = new FormData();
+  formData.append('picture', file)
   const config = {
     headers: {
       'Authorization': 'Bearer ' + store.getState().userReducer.token,
@@ -586,5 +613,8 @@ module.exports.deleteGlobalCodec = function (codecId, dispatch) {
 
 module.exports.base_url = function () {
   return BASE_URL;
+};
+module.exports.base_files_url = function () {
+  return BASE_FILES_URL;
 };
 
