@@ -1,5 +1,7 @@
-import {INIT_USER, UPDATE_USER, SET_TOKEN, FREE, SET_TRANSACTIONS} from '../constants/AppConstants'
+import { INIT_USER, UPDATE_USER, SET_TOKEN, FREE, SET_TRANSACTIONS } from '../constants/AppConstants'
 import _ from 'underscore'
+import { base_files_url } from '../api/index'
+const md5 = require('js-md5');
 
 const assign = Object.assign || require('object.assign')
 const initialState = {}
@@ -20,6 +22,9 @@ export function userReducer(state = initialState, action) {
         is_admin: action.newState.user.is_admin,
         package: action.newState.user.package,
         legal_info: action.newState.user.legal_info,
+        legal_doc: action.newState.user.legal_doc,
+        picture: action.newState.user.picture ? base_files_url() + action.newState.user.picture :
+          'https://www.gravatar.com/avatar/' + md5(action.newState.user.email) + '?s240',
         impersonated: 'impersonated' in action.newState.user ? action.newState.user.impersonated : !!state.impersonated,
         transactions: []
       })
@@ -38,6 +43,10 @@ export function userReducer(state = initialState, action) {
         mobile: action.newState.user.mobile,
         other_info: action.newState.user.other_info,
         legal_info: action.newState.user.legal_info,
+        legal_doc: action.newState.user.legal_doc,
+        picture: action.newState.user.picture ? base_files_url() + action.newState.user.picture :
+          'https://www.gravatar.com/avatar/' + md5(action.newState.user.email) + '?s240',
+        package: action.newState.user.package,
       })
 
     case SET_TRANSACTIONS:

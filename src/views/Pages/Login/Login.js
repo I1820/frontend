@@ -53,7 +53,7 @@ class Login extends Component {
         <Container>
           <Row className="justify-content-center">
             <Col md="5" style={{display: this.state.reset ? 'none' : 'flex'}}>
-              <CardGroup>
+              <CardGroup style={{width:"100%"}}>
                 <Card className="p-0 p-sm-4">
                   <CardBody>
                     <AvForm>

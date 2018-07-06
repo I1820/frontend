@@ -7,7 +7,8 @@ const getAuth = () => {
 module.exports.loginConfig = {
   method: 'POST',
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json'
   }
 }
 
@@ -16,17 +17,19 @@ module.exports.postConfig = () => ({
   body: '',
   headers: {
     'Authorization': getAuth(),
-    'Content-Type': 'application/x-www-form-urlencoded'
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json'
   }
 })
 
 module.exports.putConfig = () => ({
-    method: 'PUT',
-    body: '',
-    headers: {
-        'Authorization': getAuth(),
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
+  method: 'PUT',
+  body: '',
+  headers: {
+    'Authorization': getAuth(),
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json'
+  }
 })
 
 module.exports.uploadConfig = () => ({
@@ -34,14 +37,16 @@ module.exports.uploadConfig = () => ({
   body: '',
   headers: {
     'Authorization': getAuth(),
-    'Content-Type': 'multipart/form-data'
+    'Content-Type': 'multipart/form-data',
+    'Accept': 'application/json'
   }
 })
 
 module.exports.getConfig = () => ({
   method: 'GET',
   headers: {
-    'Authorization': getAuth()
+    'Authorization': getAuth(),
+    'Accept': 'application/json'
   }
 })
 
@@ -49,7 +54,8 @@ module.exports.patchConfig = () => ({
   method: 'PATCH',
   headers: {
     'Authorization': getAuth(),
-    'Content-Type': 'application/x-www-form-urlencoded'
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json'
   }
 })
 
@@ -57,6 +63,7 @@ module.exports.deleteConfig = () => ({
   method: 'DELETE',
   headers: {
     'Authorization': getAuth(),
-    'Content-Type': 'application/x-www-form-urlencoded'
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json'
   }
 })

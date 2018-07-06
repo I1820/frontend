@@ -62,7 +62,7 @@ body {
 
 // Header
 .app-header.navbar .navbar-brand {
-  background-size: 100%;
+  background-size: contain;
 }
 
 // Modal
@@ -82,7 +82,7 @@ body {
   left: 0px;
   bottom: 0px;
   right: 0px;
-  z-index: 1000;
+  z-index: 9995;
 
 }
 

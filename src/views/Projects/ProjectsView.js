@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Row,
   Col,
@@ -27,14 +27,14 @@ import {
   getThingsSampleDataAction, getThingsMainDataAction
 } from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
-import {DateTimeRangePicker, DateTimePicker} from 'react-advance-jalaali-datepicker';
+import { DateTimeRangePicker, DateTimePicker } from 'react-advance-jalaali-datepicker';
 import Select2 from 'react-select2-wrapper';
 import Spinner from '../Spinner/Spinner';
-import {css} from 'glamor';
-import {toastAlerts} from '../Shared/toast_alert';
+import { css } from 'glamor';
+import { toastAlerts } from '../Shared/toast_alert';
 import ReactTable from 'react-table'
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
-import {GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
+import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 
 const {compose, withProps, lifecycle} = require('recompose');
 
@@ -184,7 +184,7 @@ class ProjectsView extends Component {
             label: k,
             name: `${things[d._id.thingid]}: ${k}`,
             data: [],
-            colorIndex: ((((k.split("").reduce(function (a, b) {
+            colorIndex: ((((k.split('').reduce(function (a, b) {
               a = ((a << 5) - a) + b.charCodeAt(0);
               return a & a
             }, 0)) % 10) + 10) % 10)
@@ -194,7 +194,7 @@ class ProjectsView extends Component {
     })
 
     this.state.data.map((d) => {
-      config.xAxis.categories.push(moment(d.since, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss') + " " +
+      config.xAxis.categories.push(moment(d.since, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss') + ' ' +
         moment(d.until, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'))
       sensors.map((dataset, index) => {
         if (d.data[dataset.label] === undefined) {
@@ -298,7 +298,7 @@ class ProjectsView extends Component {
                 <Col sm={5}>
                   <Input type="select" name="type"
                          onChange={(event) => {
-                           if (event.target.value === "line")
+                           if (event.target.value === 'line')
                              this.setState({
                                showBarChart: false,
                                showLineChart: true
@@ -519,7 +519,7 @@ class ProjectsView extends Component {
           keys.push(key)
       })
       data.push({
-        name: (moment(row.since, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss') + " " +
+        name: (moment(row.since, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss') + ' ' +
           moment(row.until, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')),
         ...row.data
       })
@@ -577,8 +577,8 @@ class ProjectsView extends Component {
           </CardHeader>
           <CardBody>
             <Map marker={{
-              lat: this.state.location.coordinates ? this.state.location.coordinates[1] : '',
-              lng: this.state.location.coordinates ? this.state.location.coordinates[0] : '',
+              lat: this.state.location.coordinates ? parseFloat(this.state.location.coordinates[1]) : '',
+              lng: this.state.location.coordinates ? parseFloat(this.state.location.coordinates[0]) : '',
             }}/>
           </CardBody>
         </Card>)

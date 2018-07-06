@@ -74,6 +74,7 @@ import {
   getSingleGateway as getSingleGatewayAPI,
   getGateways,
   deleteThing as deleteThingAPI,
+  deleteMultipleThing as deleteThingMultipleAPI,
   newDownlink as newDownlinkAPI,
   getUserTransaction, getUser,
   lint,
@@ -116,9 +117,11 @@ import {
   activateThing,
   activeUser, impersonateUser, getUserTransactionsAPI, activateProject, getGlobalCodecs, getGlobalCodecTemplate,
   updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec,
-  changeAdminPassword, resetPasswordAPI, testCodecAPI, getPermissions, getRoles, setRole
+  changeAdminPassword, resetPasswordAPI, testCodecAPI, getPermissions, getRoles, setRole,
+  uploadLegalDoc, uploadPicture
 } from '../api';
 import fileDownload from 'js-file-download'
+import { toastAlerts } from '../views/Shared/toast_alert';
 
 /**
  * Logs an user in
@@ -210,7 +213,7 @@ export function createProject(state, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(setProject(response.result))
-        cb(true, response.result)
+        cb(true, 'با موفقیت انجام شد.')
       } else {
         cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -260,6 +263,7 @@ export function editThingAction(projectId, thingId, data, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(setThing(response.result))
+        cb(true, 'با موفقیت انجام شد');
         forwardTo(`projects/manage/${projectId}`)
       } else {
         cb(false, response.result)
@@ -547,6 +551,7 @@ export function createThingProfileAction(data, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch({type: FETCH_THING_PROFILE, newState: response.result})
+        cb(true,'با موفقیت انجام شد.')
         forwardTo('device-profile/list')
       } else {
         cb(false, response.result)
@@ -565,7 +570,7 @@ export function createThingAction(data, project, cb) {
       if (response.status === 'OK') {
         dispatch(setThing(response.result))
         forwardTo(`projects/manage/${project}`)
-        cb(true)
+        cb(true, 'با موفقیت انجام شد');
       } else {
         cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -574,9 +579,9 @@ export function createThingAction(data, project, cb) {
   }
 }
 
-export function sendThingKeysAction(data, projectId, thingId, cb) {
+export function sendThingKeysAction(data, thingId, cb) {
   return (dispatch) => {
-    const promise = sendThingKeys(data, projectId, thingId, dispatch)
+    const promise = sendThingKeys(data, thingId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         cb(true, 'با موفقیت فعال شد')
@@ -588,12 +593,38 @@ export function sendThingKeysAction(data, projectId, thingId, cb) {
   }
 }
 
+export function refreshJWTAction(thingId, cb) {
+  return (dispatch) => {
+    const promise = sendThingKeys({}, thingId, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(true, {message: 'با موفقیت فعال شد', token: response.result.keys.JWT});
+      } else {
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        cb(false, {message: response.result})
+      }
+    })
+  }
+}
+
 export function deleteThingAction(projectId, thingId, cb) {
   return (dispatch) => {
     const promise = deleteThingAPI(projectId, thingId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         cb(true, 'با موفقیت حذف شد')
+      } else {
+        cb(false, response.result)
+      }
+    })
+  }
+}
+export function deleteMultipleThingAction(thingIds, cb) {
+  return (dispatch) => {
+    const promise = deleteThingMultipleAPI(thingIds, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(true, 'با موفقیت انجام شد')
       } else {
         cb(false, response.result)
       }
@@ -643,28 +674,71 @@ export function deleteScenarioAction(projectId, scenarioId, cb) {
 
 export function uploadExcelAction(file, projectId, cb) {
   return (dispatch) => {
-
+    dispatch(sendingRequest(true))
     const promise = uploadExcelAPI(file, projectId, dispatch)
     promise.then((response) => {
-      console.log(response)
+      dispatch(sendingRequest(false))
       if (response.status === 200 && response.data.code == 200) {
-        // window.location.reload()
         cb(response.data.result.res, 'با موفقیت انجام شد')
       } else {
         cb(false, response.data.result)
         // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
     }).catch((e) => {
-      console.log(e)
-      // cb(false,e)
+      dispatch(sendingRequest(false))
+      cb(false, 'مشکلی پیش آمد')
+    })
+  }
+}
+
+export function uploadLegalDocAction(file, cb) {
+  return (dispatch) => {
+    dispatch(sendingRequest(true))
+    const promise = uploadLegalDoc(file, dispatch)
+    promise.then((response) => {
+      dispatch(sendingRequest(false))
+      if (response.status === 200 && response.data.code == 200) {
+        cb(true, {message: 'با موفقیت انجام شد', path: response.data.result.path})
+      } else {
+        cb(false, {message: response.data.result})
+        // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    }).catch((e) => {
+      dispatch(sendingRequest(false))
+      cb(false, 'مشکلی پیش آمد')
+    })
+  }
+}
+
+export function uploadPictureAction(file, cb) {
+  return (dispatch) => {
+    dispatch(sendingRequest(true))
+    const promise = uploadPicture(file, dispatch)
+    promise.then((response) => {
+      dispatch(sendingRequest(false))
+      if (response.status === 200 && response.data.code == 200) {
+        cb(true, {message: 'با موفقیت انجام شد', user: response.data.result.user})
+      } else {
+        cb(false, {message: response.data.result})
+        // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    }).catch((e) => {
+      dispatch(sendingRequest(false))
+      cb(false, 'مشکلی پیش آمد')
     })
   }
 }
 
 export function DownloadThingsExcelAction(projectId) {
   return (dispatch) => {
+    dispatch(sendingRequest(true))
     DownloadThingsExcelAPI(projectId).then((response) => {
-      fileDownload(response.data, 'things.csv');
+      dispatch(sendingRequest(false))
+      fileDownload(response.data, 'things.xls', 'application/vnd.ms-excel');
+      toastAlerts(true, 'باموفقیت انجام شد.');
+    }).catch((err) => {
+      toastAlerts(false, 'خطای نامشخص');
+      dispatch(sendingRequest(false))
     })
   }
 }
@@ -750,7 +824,7 @@ export function deleteProjectAction(projectId, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         window.location = '#/projects'
-        cb(true, response.result)
+        cb(true, 'با موفقیت حدف شد.')
       } else {
         cb(false, response.result)
       }

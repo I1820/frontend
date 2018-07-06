@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Col,
   Card,
@@ -19,9 +19,9 @@ import {
   Table, Modal, ModalHeader, ModalBody, Badge
 } from 'reactstrap';
 
-import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {
   sendThingKeysAction,
   editProjectAction,
@@ -32,17 +32,18 @@ import {
   deleteCodecTemplateAction,
   deleteScenarioAction,
   editAliasesAction,
+  refreshJWTAction,
   sendDownlinkAction, DownloadThingsExcelAction, activateThingAction, activateProjectAction,
 } from '../../actions/AppActions';
 import Spinner from '../Spinner/Spinner';
 
-import {toast} from 'react-toastify';
-import {css} from 'glamor';
-import {style} from 'react-toastify';
+import { toast } from 'react-toastify';
+import { css } from 'glamor';
+import { style } from 'react-toastify';
 import ReactTable from 'react-table'
 import Logger from '../../components/Logger';
-import {toastAlerts} from '../Shared/toast_alert';
-import moment from "moment-jalaali";
+import { toastAlerts } from '../Shared/toast_alert';
+import moment from 'moment-jalaali';
 
 style({
   colorProgressDefault: 'white'
@@ -66,15 +67,15 @@ class ProjectsManage extends Component {
     this.downLinksAdd = this.downLinksAdd.bind(this)
     this.renderCodecs = this.renderCodecs.bind(this)
     this.deleteAlias = this.deleteAlias.bind(this)
+    this.refreshToken = this.refreshToken.bind(this)
     this.reactTableColumns = this.reactTableColumns.bind(this);
     this.getAliases = this.getAliases.bind(this);
     this.callback = this.callback.bind(this);
 
     this.state = {
       OTAAModal: false,
-      OTGModal: false,
+      JWTModal: false,
       ABPModal: false,
-      lanKey: "",
       activeProject: false,
       id: '',
       project: {},
@@ -161,6 +162,24 @@ class ProjectsManage extends Component {
     ))
   }
 
+  refreshToken() {
+    const data = {
+      thing_id: this.state.selectedThing,
+    };
+    let tokenCallback = (status, data) => {
+      toastAlerts(status, data.message);
+      if (status) {
+        this.setState({keys: {JWT: data.token}})
+        this.loadProject();
+      }
+    }
+    tokenCallback = tokenCallback.bind(this);
+    this.props.dispatch(refreshJWTAction(
+      data.thing_id,
+      tokenCallback
+    ))
+  }
+
   deleteScenario() {
     const data = {
       project_id: this.state.project._id,
@@ -180,7 +199,6 @@ class ProjectsManage extends Component {
 
   componentWillReceiveProps(props) {
     const splitedUrl = window.location.href.split('/');
-    const me = this;
     if (splitedUrl[splitedUrl.length - 1]) {
       props.projects.forEach((project) => {
 
@@ -225,22 +243,22 @@ class ProjectsManage extends Component {
         </Modal>
 
 
-        <Modal isOpen={this.state.OTGModal} toggle={() => this.toggle('deleteScenario')}
+        <Modal isOpen={this.state.JWTModal} toggle={() => this.toggle('JWT')}
                className="text-right">
           <ModalHeader>دریافت کلید</ModalHeader>
           <ModalBody>
             <FormGroup style={{display: 'flex'}} row>
-              <Label sm={5}>کلید:</Label>
-              <Col sm={7}>
-                <Input value={this.state.lanKey} maxLength="150" type="textarea" readOnly name="" rows="2"/>
+              <Label sm={3}>کلید:</Label>
+              <Col sm={9}>
+                <Input value={this.state.keys.JWT} type="textarea" readOnly name="" rows="6"/>
               </Col>
             </FormGroup>
           </ModalBody>
           <ModalFooter>
             <Button color="primary" className="ml-1" onClick={() => {
-              this.deleteScenario()
-            }}>بروزرسانی</Button>
-            <Button color="danger" onClick={() => this.toggle('deleteScenario')}>انصراف</Button>
+              this.refreshToken()
+            }}>دریافت کلید جدید</Button>
+            <Button color="danger" onClick={() => this.toggle('JWT')}>انصراف</Button>
           </ModalFooter>
         </Modal>
 
@@ -403,7 +421,6 @@ class ProjectsManage extends Component {
               this.props.dispatch(sendThingKeysAction(
                 data.OTAA,
                 data.thing_id,
-                data.project_id,
                 this.callback))
             }}>ارسال</Button>
             <Button color="danger" onClick={() => this.toggle('OTAA')}>انصراف</Button>
@@ -541,7 +558,6 @@ class ProjectsManage extends Component {
               this.props.dispatch(sendThingKeysAction(
                 data.ABP,
                 data.thing_id,
-                data.project_id,
                 this.callback))
             }}>ارسال</Button>
             <Button color="danger" onClick={() => this.toggle('ABP')}>انصراف</Button>
@@ -914,7 +930,6 @@ class ProjectsManage extends Component {
             id: 'status',
             Header: 'وضعیت',
             filterable: false,
-            maxWidth: 350,
             accessor: row => {
               let badgeColor = 'success'
               switch (row.last_seen_at.status) {
@@ -922,8 +937,10 @@ class ProjectsManage extends Component {
                   badgeColor = 'secondary'
               }
               return (<div>
-                <Badge id={`tooltip-${row._id}`} color={badgeColor}>{row.last_seen_at['time'] ?
-                  'اخرین تاریخ دریافت داده' : 'داده ای هنوز دریافت نشده است'}</Badge>
+                {row.type === 'lora' ?
+                  <Badge id={`tooltip-${row._id}`}
+                         color={!row.last_seen_at['time'] ? 'secondary' : 'success'}>{row.last_seen_at['time'] ?
+                    'اخرین تاریخ دریافت داده' : 'عدم دریافت داده'}</Badge> : ''}
                 {row.last_seen_at['time'] &&
                 <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
                   {moment(row.last_seen_at.time, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
@@ -933,48 +950,49 @@ class ProjectsManage extends Component {
                   {'وضعیت:'} {row.active ? 'فعال' : 'غیرفعال'}
                 </Badge>
                 {' '}
-                <Badge id={`tooltip2-${row._id}`} color={row.last_parsed_at === "" ? 'secondary' : 'success'}>
-                  {row.last_parsed_at && row.last_parsed_at !== "" ? 'اخرین زمان پارس داده' : 'داده ای هنوز پارس نشده است'}
+                <Badge id={`tooltip2-${row._id}`} color={!row.last_parsed_at ? 'secondary' : 'success'}>
+                  {row.last_parsed_at && row.last_parsed_at !== '' ? 'اخرین زمان پارس داده' : 'عدم پارس داده'}
                 </Badge>
-                {row.last_parsed_at && row.last_parsed_at !== "" &&
-                <UncontrolledTooltip placement="top" target={`tooltip2-${row._id}`}>
-                  {moment(row.last_parsed_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
-                </UncontrolledTooltip>}
+                {row.last_parsed_at && row.last_parsed_at !== '' ?
+                  <UncontrolledTooltip placement="top" target={`tooltip2-${row._id}`}>
+                    {moment(row.last_parsed_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
+                  </UncontrolledTooltip> : ''}
               </div>);
             }
           },
           {
             id: 'rowTools',
             Header: 'امکانات',
+            maxWidth: 200,
             filterable: false,
             accessor: row => {
               return (<div>
                 <Input type="select" name="type"
                        onChange={(e) => {
                          let action = e.target.value
-                         e.target.value = ""
-                         if (action === "send_key") {
-                           this.toggle(row.activation === 'ABP' ? 'ABP' : (row.activation === 'OTAA' ? 'OTAA' : 'OTG'), {
+                         e.target.value = ''
+                         if (action === 'send_key') {
+                           this.toggle(row.activation === 'ABP' ? 'ABP' : (row.activation === 'OTAA' ? 'OTAA' : 'JWT'), {
                              id: row._id,
                              keys: row.keys.length !== 0 ? row.keys : {skipFCntCheck: true}
                            })
-                         } else if (action === "edit") {
+                         } else if (action === 'edit') {
                            window.location = `#/things/edit/${this.state.project._id}/${row._id}`
                          }
-                         else if (action === "send_codec") {
+                         else if (action === 'send_codec') {
                            window.location = `#/codec/${this.state.project._id}/${row._id}`
                          }
-                         else if (action === "send_data") {
+                         else if (action === 'send_data') {
                            this.toggle('downlink', row._id)
                          }
-                         else if (action === "delete") {
+                         else if (action === 'delete') {
                            this.toggle('deleteThing', row._id)
                            this.setState({
-                             downlinkFport: "",
-                             downlinkConfirmed: ""
+                             downlinkFport: '',
+                             downlinkConfirmed: ''
                            })
                          }
-                         else if (action === "deactive") {
+                         else if (action === 'deactive') {
                            this.toggle('activateThing', {
                              rowId: row._id,
                              active: row.active ? 0 : 1
@@ -983,7 +1001,7 @@ class ProjectsManage extends Component {
 
                        }} id="select">
                   <option value="">امکانات</option>
-                  <option value="send_key">ارسال کلید</option>
+                  <option value="send_key">ارسال/دریافت کلید</option>
                   <option value="edit">ویرایش</option>
                   <option value="send_codec">ارسال codec</option>
                   <option value="send_data">ارسال داده (داون لینک)</option>
@@ -1075,42 +1093,42 @@ class ProjectsManage extends Component {
 
   toggle(modal, id) {
     let state = {};
-    if (modal == 'deleteThing')
+    if (modal === 'deleteThing')
       state = {
         deleteThingModal: !this.state.deleteThingModal,
         deleteThingRowId: id ? id : ''
       }
-    if (modal == 'deleteCodec')
+    if (modal === 'deleteCodec')
       state = {
         deleteCodecModal: !this.state.deleteCodecModal,
         deleteCodecRowId: id ? id : ''
       }
-    if (modal == 'deleteScenario')
+    if (modal === 'deleteScenario')
       state = {
         deleteScenarioModal: !this.state.deleteScenarioModal,
         deleteScenarioRowId: id ? id : ''
       }
-    if (modal == 'downlink')
+    if (modal === 'downlink')
       state = {
         dataModal: !this.state.dataModal,
         modalDownlinkRows: [],
         DownlinkThingRowId: id ? id : ''
       }
-    if (modal == 'ABP')
+    if (modal === 'ABP')
       state = {
         selectedThing: id ? id.id : '',
         keys: id ? id.keys : '',
         ABPModal: !this.state.ABPModal,
         ABP: id ? {...id.keys} : {skipFCntCheck: true}
       }
-    if (modal == 'OTAA')
+    if (modal === 'OTAA')
       state = {
         selectedThing: id ? id.id : '',
         keys: id ? id.keys : '',
         OTAAModal: !this.state.OTAAModal,
         OTAA: id ? {...id.keys} : {}
       }
-    if (modal == 'activateThing')
+    if (modal === 'activateThing')
       state = {
         activateThing: {
           modal: !this.state.activateThing.modal,
@@ -1119,15 +1137,17 @@ class ProjectsManage extends Component {
         }
 
       }
-    if (modal == 'activeProject')
+    if (modal === 'activeProject')
       state = {
         activeProject: !this.state.activeProject
       }
-    if (modal === 'OTG')
+    if (modal === 'JWT')
       state = {
-        OTGModal: !this.state.OTGModal,
+        JWTModal: !this.state.JWTModal,
+        keys: id ? id.keys : {},
+        selectedThing: id ? id.id : ''
       }
-    this.setState(state, () => console.log(state));
+    this.setState(state, () => console.log(this.state));
   }
 
 
