@@ -11,8 +11,6 @@ import connect from 'react-redux/es/connect/connect';
 import { impersonateUserAction, logout } from '../../actions/AppActions';
 import { toastAlerts } from '../../views/Shared/toast_alert';
 
-const md5 = require('js-md5');
-
 
 class HeaderDropdown extends Component {
 

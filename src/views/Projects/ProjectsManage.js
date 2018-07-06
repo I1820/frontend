@@ -937,9 +937,10 @@ class ProjectsManage extends Component {
                   badgeColor = 'secondary'
               }
               return (<div>
-                <Badge id={`tooltip-${row._id}`}
-                       color={row.last_seen_at === '' ? 'secondary' : 'success'}>{row.last_seen_at['time'] ?
-                  'اخرین تاریخ دریافت داده' : 'عدم دریافت داده'}</Badge>
+                {row.type === 'lora' ?
+                  <Badge id={`tooltip-${row._id}`}
+                         color={!row.last_seen_at['time'] ? 'secondary' : 'success'}>{row.last_seen_at['time'] ?
+                    'اخرین تاریخ دریافت داده' : 'عدم دریافت داده'}</Badge> : ''}
                 {row.last_seen_at['time'] &&
                 <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
                   {moment(row.last_seen_at.time, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
@@ -949,13 +950,13 @@ class ProjectsManage extends Component {
                   {'وضعیت:'} {row.active ? 'فعال' : 'غیرفعال'}
                 </Badge>
                 {' '}
-                <Badge id={`tooltip2-${row._id}`} color={row.last_parsed_at === '' ? 'secondary' : 'success'}>
+                <Badge id={`tooltip2-${row._id}`} color={!row.last_parsed_at ? 'secondary' : 'success'}>
                   {row.last_parsed_at && row.last_parsed_at !== '' ? 'اخرین زمان پارس داده' : 'عدم پارس داده'}
                 </Badge>
-                {row.last_parsed_at && row.last_parsed_at !== '' &&
-                <UncontrolledTooltip placement="top" target={`tooltip2-${row._id}`}>
-                  {moment(row.last_parsed_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
-                </UncontrolledTooltip>}
+                {row.last_parsed_at && row.last_parsed_at !== '' ?
+                  <UncontrolledTooltip placement="top" target={`tooltip2-${row._id}`}>
+                    {moment(row.last_parsed_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
+                  </UncontrolledTooltip> : ''}
               </div>);
             }
           },

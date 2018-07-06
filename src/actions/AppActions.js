@@ -74,6 +74,7 @@ import {
   getSingleGateway as getSingleGatewayAPI,
   getGateways,
   deleteThing as deleteThingAPI,
+  deleteMultipleThing as deleteThingMultipleAPI,
   newDownlink as newDownlinkAPI,
   getUserTransaction, getUser,
   lint,
@@ -212,7 +213,7 @@ export function createProject(state, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(setProject(response.result))
-        cb(true, response.result)
+        cb(true, 'با موفقیت انجام شد.')
       } else {
         cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -550,6 +551,7 @@ export function createThingProfileAction(data, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch({type: FETCH_THING_PROFILE, newState: response.result})
+        cb(true,'با موفقیت انجام شد.')
         forwardTo('device-profile/list')
       } else {
         cb(false, response.result)
@@ -611,6 +613,18 @@ export function deleteThingAction(projectId, thingId, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         cb(true, 'با موفقیت حذف شد')
+      } else {
+        cb(false, response.result)
+      }
+    })
+  }
+}
+export function deleteMultipleThingAction(thingIds, cb) {
+  return (dispatch) => {
+    const promise = deleteThingMultipleAPI(thingIds, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(true, 'با موفقیت انجام شد')
       } else {
         cb(false, response.result)
       }
@@ -720,8 +734,11 @@ export function DownloadThingsExcelAction(projectId) {
     dispatch(sendingRequest(true))
     DownloadThingsExcelAPI(projectId).then((response) => {
       dispatch(sendingRequest(false))
-      fileDownload(response.data, 'things.csv');
-      toastAlerts('باموفقیت انجام شد.');
+      fileDownload(response.data, 'things.xls', 'application/vnd.ms-excel');
+      toastAlerts(true, 'باموفقیت انجام شد.');
+    }).catch((err) => {
+      toastAlerts(false, 'خطای نامشخص');
+      dispatch(sendingRequest(false))
     })
   }
 }
@@ -807,7 +824,7 @@ export function deleteProjectAction(projectId, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         window.location = '#/projects'
-        cb(true, response.result)
+        cb(true, 'با موفقیت حدف شد.')
       } else {
         cb(false, response.result)
       }

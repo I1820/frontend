@@ -101,6 +101,16 @@ class UsersList extends Component {
       {
         Header: 'ایمیل',
         accessor: 'email'
+      }, {
+        Header: 'تعداد پروژه',
+        accessor: 'project_num',
+        maxWidth: 80,
+        filterable: false,
+      }, {
+        Header: 'تعداد شی',
+        accessor: 'node_num',
+        maxWidth: 80,
+        filterable: false,
       },
       {
         Header: 'نوع کاربر',
@@ -120,6 +130,7 @@ class UsersList extends Component {
         id: 'role',
         Header: 'دسترسی‌ها',
         filterable: false,
+        maxWidth: 140,
         accessor: row => {
           return (<div>
             <Input type="select" name="type" value={row.role ? row.role._id : ''}
@@ -142,6 +153,7 @@ class UsersList extends Component {
       {
         id: 'rowTools',
         Header: 'امکانات',
+        maxWidth: 80,
         filterable: false,
         accessor: row => <div>
           <Button onClick={() => window.location = `#/admin/user/info/${row._id}`} className="ml-1" color="warning"

@@ -1,6 +1,7 @@
 import { INIT_USER, UPDATE_USER, SET_TOKEN, FREE, SET_TRANSACTIONS } from '../constants/AppConstants'
 import _ from 'underscore'
 import { base_files_url } from '../api/index'
+const md5 = require('js-md5');
 
 const assign = Object.assign || require('object.assign')
 const initialState = {}

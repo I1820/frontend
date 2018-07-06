@@ -308,8 +308,9 @@ module.exports.DownloadThingsExcel = function (projectId, dispatch) {
   const config = {
     headers: {
       'Authorization': 'Bearer ' + store.getState().userReducer.token,
-      'Content-Type': 'multipart/form-data'
-    }
+      'Content-Type': 'multipart/form-data',
+    },
+    responseType: 'blob'
   }
   return get(url, config)
 };
@@ -404,6 +405,16 @@ module.exports.getSingleGateway = function (id, dispatch) {
 module.exports.deleteThing = function (projectId, thingId, dispatch) {
   const config = deleteConfig();
   return fetchData(`/things/${thingId}`, config, dispatch)
+};
+
+module.exports.deleteMultipleThing = function (thingIds, dispatch) {
+  const config = postConfig();
+  Object.assign(config, {
+    body: getFormData({
+      thing_ids: JSON.stringify(thingIds)
+    })
+  });
+  return fetchData(`/things/delete`, config, dispatch)
 };
 
 module.exports.activateThing = function (thingId, active, dispatch) {

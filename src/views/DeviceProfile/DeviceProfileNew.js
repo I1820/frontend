@@ -511,7 +511,7 @@ class DeviceProfileNew extends Component {
 
     submitForm() {
         const form = this.state.form
-        this.props.dispatch(createThingProfileAction(form, this.callBack))
+        this.props.dispatch(createThingProfileAction(form, toastAlerts))
     }
 
     thingsExcel() {
@@ -524,10 +524,6 @@ class DeviceProfileNew extends Component {
                 activeTab: tab
             });
         }
-    }
-
-    callBack(status, response) {
-        toastAlerts(status, response)
     }
 
 }
