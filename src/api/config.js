@@ -4,6 +4,8 @@ const getAuth = () => {
   return 'Bearer ' + store.getState().userReducer.token
 }
 
+module.exports.re_captcha_site_key = "6LdrEGQUAAAAAM8AyheGDWIyNU63bf2kiHiJmsaF"
+
 module.exports.loginConfig = {
   method: 'POST',
   headers: {
