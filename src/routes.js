@@ -55,9 +55,9 @@ const routes = {
   '/things/excel': 'آپلود فایل Excel',
   '/things/excel/$$': 'آپلود فایل Excel',
 
-  '/codec/':'ارسال کدک',
+  '/codec':'ارسال کدک',
   '/codec/$$':'ارسال کدک',
-  '/scenario/':'ارسال سناریو',
+  '/scenario':'ارسال سناریو',
   '/scenario/$$':'ارسال سناریو',
   '/template/':'ارسال سناریو',
   '/template/$$':'ارسال سناریو',

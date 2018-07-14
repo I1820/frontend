@@ -788,13 +788,14 @@ export function updateScenarioAction(projectId, scenarioId, data) {
 }
 
 
-export function editProjectAction(id, state) {
+export function editProjectAction(id, state,cb) {
   return (dispatch) => {
     const promise = editProjectAPI(id, state, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(setProject(response.result))
       } else {
+        cb & cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
     }).catch((e) => {

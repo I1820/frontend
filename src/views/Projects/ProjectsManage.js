@@ -620,7 +620,7 @@ class ProjectsManage extends Component {
                   this.props.dispatch(editProjectAction(this.state.project._id, {
                     name: this.state.project.name,
                     description: this.state.project.description
-                  }))
+                  },this.callback))
                 }} className="ml-1" color="primary">ثبت اطلاعات</Button>
 
                 <Button onClick={() => this.toggle('activeProject')} className="ml-1" color="warning">{
