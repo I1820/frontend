@@ -406,9 +406,6 @@ class Profile extends Component {
                 </Col>
               </FormGroup>
             </CardBody>
-            <CardFooter>
-              <Button color="primary" onClick={''}>ثبت</Button>
-            </CardFooter>
           </Card>
         </div>
       </div>
