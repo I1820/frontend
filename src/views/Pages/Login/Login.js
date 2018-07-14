@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Container,
   Row,
@@ -14,11 +14,16 @@ import {
   InputGroupText
 } from 'reactstrap';
 
-import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+import {
+  re_captcha_site_key,
+} from '../../../api/config'
 
-import {connect} from 'react-redux';
-import {login, resetPasswordAction} from '../../../actions/AppActions';
+import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+
+import { connect } from 'react-redux';
+import { login, resetPasswordAction } from '../../../actions/AppActions';
 import ReCAPTCHA from 'react-google-recaptcha';
+
 
 class Login extends Component {
 
@@ -53,7 +58,7 @@ class Login extends Component {
         <Container>
           <Row className="justify-content-center">
             <Col md="5" style={{display: this.state.reset ? 'none' : 'flex'}}>
-              <CardGroup style={{width:"100%"}}>
+              <CardGroup style={{width: '100%'}}>
                 <Card className="p-0 p-sm-4">
                   <CardBody>
                     <AvForm>
@@ -114,13 +119,13 @@ class Login extends Component {
                           className="g-recaptcha mb-4"
                           size="normal"
                           ref="recaptcha"
-                          sitekey="6LdYh0EUAAAAALOCVNd4y7f5q8oPFwg0nmCO0zM4"
+                          sitekey={re_captcha_site_key}
                           onChange={(response) => this.setState({recaptcha: response})}/>
                       </InputGroup>
                       <Row>
                         <Col xs="12" className="text-right">
                           <img
-                            style={{display: this.props.currentlySending ? 'block' : 'none', margin: "auto"}}
+                            style={{display: this.props.currentlySending ? 'block' : 'none', margin: 'auto'}}
                             src={'img/loading.gif'}/>
                         </Col>
                         <Col xs="12">

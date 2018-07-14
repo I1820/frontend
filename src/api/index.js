@@ -16,9 +16,9 @@ import axios, { post, get } from 'axios';
 import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://backback.ceit.aut.ac.ir:50024/api/v1'
-const BASE_FILES_URL = 'http://backback.ceit.aut.ac.ir:50024'
-const BASE_ADMIN_URL = 'http://backback.ceit.aut.ac.ir:50024/api/admin'
+const BASE_URL = 'http://dev.back.iot.felfel.ml/api/v1'
+const BASE_FILES_URL = 'http://dev.back.iot.felfel.ml'
+const BASE_ADMIN_URL = 'http://dev.back.iot.felfel.ml/api/admin'
 // const BASE_URL = 'http://localhost:8000/api/v1'
 // const BASE_FILES_URL = 'http://localhost:8000'
 // const BASE_ADMIN_URL = 'http://localhost:8000/api/admin'
@@ -45,8 +45,8 @@ const endpoints = {
 };
 
 const Errors = {
-  EMPTY_JSON_RESPONSE: 'EMPTY_JSON_RESPONSE',
-  SOMETHING_IS_NOT_OK: 'SOMETHING_IS_NOT_OK',
+  EMPTY_JSON_RESPONSE: 'پاسخ خالی از سرور',
+  SOMETHING_IS_NOT_OK: 'خطای نامشخص',
 
   'email is required': 'وارد کردن ایمیل ضروری است',
   'invalid credentials': 'ایمیل و یا رمز عبور صحیح نمی باشد'
