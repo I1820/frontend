@@ -1502,6 +1502,10 @@ ults__option[aria-disabled=true] {
   text-align: center
 }
 
+.ReactTable.-striped .rt-tr.-odd {
+  background: rgba(0,0,0,0.07);
+}
+
 .select2-container--classic .select2-results__group {
   cursor: default;
   display: block;
@@ -1524,3 +1528,4 @@ ults__option[aria-disabled=true] {
 ::-ms-input-placeholder { /* Microsoft Edge */
   color: #cccccc !important;
 }
+

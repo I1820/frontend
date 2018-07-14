@@ -22,7 +22,6 @@ import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstr
 import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import classnames from 'classnames';
-import { toast, ToastContainer } from 'react-toastify';
 import { css } from 'glamor';
 import { style } from 'react-toastify';
 import {
@@ -128,7 +127,6 @@ class Profile extends Component {
   render() {
     return (
       <div className={'row'}>
-        <ToastContainer className="text-right"/>
         <Spinner display={this.props.loading}/>
         <div className="col-md-12 col-lg-7">
           <Card className="text-justify">

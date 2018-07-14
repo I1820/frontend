@@ -27,12 +27,14 @@ import {connect} from 'react-redux';
 import Spinner from "../Spinner/Spinner";
 import ReactTable from 'react-table'
 import moment from "moment-jalaali";
+import {toPersianNumbers} from "../Shared/helpers";
 
 class UserTransactions extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      transactions: []
+      transactions: [],
+      total: 0
     }
   }
 
@@ -41,8 +43,14 @@ class UserTransactions extends Component {
   }
 
   componentWillReceiveProps(props) {
-    this.setState({transactions: props.transactions})
-    console.log(props.transactions)
+    let total = 0
+    props.transactions.forEach((transaction) => {
+      if (transaction.status )
+        total += transaction.price
+    })
+
+    this.setState({transactions: props.transactions, total})
+    console.log(this.state)
   }
 
   render() {
@@ -50,6 +58,15 @@ class UserTransactions extends Component {
     return (
 
       <div>
+        <Col xs="12" sm="6" lg="3">
+          <Card className="text-white bg-primary text-center" style={{cursor: 'pointer'}}
+                onClick={() => window.location = '/#/projects'}>
+            <CardBody className="pb-0">
+              <h4 className="mb-0 h3 font-weight-bold">{toPersianNumbers(this.state.total)}</h4>
+              <p>مجموع تراکنش های موفق</p>
+            </CardBody>
+          </Card>
+        </Col>
         <Spinner display={this.props.loading}/>
         <Card className="text-justify">
           <CardHeader>

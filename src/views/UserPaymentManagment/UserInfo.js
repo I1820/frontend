@@ -184,7 +184,10 @@ class PackageList extends Component {
                         <Col md='3'><strong>نام و نام خانوادگی واسط</strong></Col>
                         <Col md='3'><span>{this.state.userInfo.legal_info.org_interface_name}</span></Col>
                       </Row>
-                    </ListGroupItem> &&
+                    </ListGroupItem>
+                  }
+                  {
+                    this.state.userInfo.legal &&
                     <ListGroupItem>
                       <Row>
                         <Col md='3'><strong>شماره همراه واسط</strong></Col>

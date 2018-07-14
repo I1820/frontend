@@ -23,7 +23,7 @@ import {
     ListGroupItem,
     ListGroupItemHeading,
     ListGroupItemText
-    
+
 
 } from 'reactstrap';
 
@@ -46,19 +46,16 @@ class PamentPortalList extends Component {
     }
 
     componentWillMount() {
-      
+
     }
 
-  
+
     render() {
         let portalInfo = this.state.portalInfo;
         const portalInfoArray = Object.values(portalInfo);
         return (
             <div>
-                <ToastContainer className="text-right" />
                 <Spinner display={this.props.loading}/>
-            
-
 
                 <Card className="text-justify">
                     <CardHeader>
@@ -74,19 +71,19 @@ class PamentPortalList extends Component {
                                 <th>وب‌سایت</th>
                                 <th>وضعیت</th>
                                 <th> فعال‌سازی</th>
-                               
+
                             </tr>
                             </thead>
                             <tbody>
                               {
-                                portalInfoArray.map((el, key) => this.renderItem(el, key))   
+                                portalInfoArray.map((el, key) => this.renderItem(el, key))
                               }
                             </tbody>
                         </Table>
 
-                      
+
                     </CardBody>
-                   
+
                 </Card>
 
             </div>
@@ -104,10 +101,10 @@ class PamentPortalList extends Component {
                 <td>{el.website}</td>
                 <td>{el.status === true ? <Badge color="success"> فعال</Badge> :  <Badge color="danger"> غیر فعال</Badge> }</td>
 
-                <td> 
+                <td>
                 <Button outline color="success"><i className="fa fa-edit"></i>فعال‌سازی</Button>
                 </td>
-                
+
             </tr>
         )
     }
