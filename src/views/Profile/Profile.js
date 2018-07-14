@@ -162,12 +162,8 @@ class Profile extends Component {
                     <AvInput
                       name="phoneNumber"
                       dir="ltr"
-                      onChange={(event) => {
-                        this.setState({
-                          ...this.state,
-                          phone: event.target.value
-                        })
-                      }}
+                      type="number"
+                      onInput={event => this.setState({phone: event.target.value.replace(/\D/,'')})}
                       placeholder={'88888888'}
                       maxLength={13}
                       value={this.state.phone}/>
@@ -404,9 +400,6 @@ class Profile extends Component {
                 </Col>
               </FormGroup>
             </CardBody>
-            <CardFooter>
-              <Button color="primary" onClick={''}>ثبت</Button>
-            </CardFooter>
           </Card>
         </div>
       </div>
