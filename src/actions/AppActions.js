@@ -76,7 +76,7 @@ import {
   deleteThing as deleteThingAPI,
   deleteMultipleThing as deleteThingMultipleAPI,
   newDownlink as newDownlinkAPI,
-  getUserTransaction, getUser,
+  getUserTransaction, getUser, getAllTransactions, getTransactionsOverview,
   lint,
   base_url
 } from '../api/index'
@@ -551,7 +551,7 @@ export function createThingProfileAction(data, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch({type: FETCH_THING_PROFILE, newState: response.result})
-        cb(true,'با موفقیت انجام شد.')
+        cb(true, 'با موفقیت انجام شد.')
         forwardTo('device-profile/list')
       } else {
         cb(false, response.result)
@@ -619,6 +619,7 @@ export function deleteThingAction(projectId, thingId, cb) {
     })
   }
 }
+
 export function deleteMultipleThingAction(thingIds, cb) {
   return (dispatch) => {
     const promise = deleteThingMultipleAPI(thingIds, dispatch)
@@ -788,7 +789,7 @@ export function updateScenarioAction(projectId, scenarioId, data) {
 }
 
 
-export function editProjectAction(id, state,cb) {
+export function editProjectAction(id, state, cb) {
   return (dispatch) => {
     const promise = editProjectAPI(id, state, dispatch)
     promise.then((response) => {
@@ -1377,9 +1378,9 @@ export function buyPackagesAction(packageId, code, cb) {
     const promise = buyPackage(packageId, code, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        console.log("invoice",response)
-        if(response.result.invoice.price >= 0)
-        window.location = base_url() + `/payment/${response.result.invoice._id}/pay`
+        console.log('invoice', response)
+        if (response.result.invoice.price >= 0)
+          window.location = base_url() + `/payment/${response.result.invoice._id}/pay`
         else
           window.location = forwardTo('packages')
       } else {
@@ -1513,18 +1514,49 @@ export function getUserAction(userId, cb = () => {
   }
 }
 
-export function getUserTransactionsAction(userId, cb = () => {
-}) {
+export function getUserTransactionsAction(userId, cb) {
   return (dispatch) => {
     const promise = getUserTransaction(userId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        cb(response.result.invoices)
+        cb && cb(response.result.invoices)
       } else {
-        cb(false)
+        cb && cb(false)
       }
     }).catch((err) => {
-      cb(false)
+      cb && cb(false)
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+
+export function getAllTransactionsAction(offset, cb) {
+  return (dispatch) => {
+    const promise = getAllTransactions(offset, 10, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb && cb(response.result)
+      } else {
+        cb && cb(false)
+      }
+    }).catch((err) => {
+      cb && cb(false)
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+
+export function getTransactionsOverviewAction(cb) {
+  return (dispatch) => {
+    const promise = getTransactionsOverview(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb && cb(response.result.overview)
+      } else {
+        cb && cb(false)
+      }
+    }).catch((err) => {
+      cb && cb(false)
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
     })
   }
@@ -1660,9 +1692,9 @@ export function activateProjectAction(projectId, active, cb) {
 }
 
 
-export function updateRoleAction(roleId, permissions,name, cb) {
+export function updateRoleAction(roleId, permissions, name, cb) {
   return (dispatch) => {
-    const promise = updateRole(roleId, permissions,name, dispatch)
+    const promise = updateRole(roleId, permissions, name, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         cb(response.result)
@@ -1672,6 +1704,7 @@ export function updateRoleAction(roleId, permissions,name, cb) {
     })
   }
 }
+
 export function deleteRoleAction(roleId, cb) {
   return (dispatch) => {
     const promise = deleteRole(roleId, dispatch)
@@ -1684,7 +1717,8 @@ export function deleteRoleAction(roleId, cb) {
     })
   }
 }
-export function addRoleAction( permissions,cb) {
+
+export function addRoleAction(permissions, cb) {
   return (dispatch) => {
     const promise = addRole(permissions, dispatch)
     promise.then((response) => {

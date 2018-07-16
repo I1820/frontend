@@ -77,6 +77,11 @@ export default {
       url: '/admin/users',
       icon: 'icon-grid',
       type: 'admin'
+    },{
+      name: 'تراکنش‌های سیستم',
+      url: '/admin/transactions',
+      icon: 'icon-grid',
+      type: 'admin'
     },
     {
       name: 'مدیریت نقش ها',

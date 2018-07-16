@@ -94,6 +94,7 @@ import Modals from '../../views/Notifications/Modals/';
 import sendCodec from '../../views/Editros/sendCodec';
 import addTemplate from '../../views/Editros/addTemplate';
 import {ToastContainer} from 'react-toastify';
+import AllTransactions from '../../views/AdminPayments/AllTransactions';
 
 class Full extends Component {
   render() {
@@ -112,6 +113,7 @@ class Full extends Component {
                 <Route path="/profile" name="Profile" component={Profile}/>
 
                 <Route path="/admin/packages" name="PackageList" component={PackageList}/>
+                <Route path="/admin/transactions" name="AllTransactions" component={AllTransactions}/>
                 <Route path="/admin/users" name="UsersList" component={UsersList}/>
                 <Route path="/admin/roles" name="RoleList" component={RoleList}/>
 
