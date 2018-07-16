@@ -7,12 +7,12 @@ import {
   uploadConfig,
   deleteConfig
 } from './config'
-import {setAuthState, initUser, changePassword} from '../actions/AppActions'
+import { setAuthState, initUser, changePassword } from '../actions/AppActions'
 
 
 import _ from 'underscore'
-import {sendingRequest, logout} from '../actions/AppActions'
-import axios, {post, get} from 'axios';
+import { sendingRequest, logout } from '../actions/AppActions'
+import axios, { post, get } from 'axios';
 import store from '../store'
 /* global fetch */
 
@@ -564,6 +564,12 @@ module.exports.getGlobalCodecs = function (dispatch) {
 module.exports.getUserTransaction = function (userID, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/users/${userID}/transactions`, getConfig(), dispatch, true)
 };
+module.exports.getAllTransactions = function (offset = 0, limit = 10, dispatch) {
+  return fetchData(`${BASE_ADMIN_URL}/payment?offset=${offset}&limit=${limit}`, getConfig(), dispatch, true)
+};
+module.exports.getTransactionsOverview = function (dispatch) {
+  return fetchData(`${BASE_ADMIN_URL}/payment/overview`, getConfig(), dispatch, true)
+};
 module.exports.getPermissions = function (dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/permission`, getConfig(), dispatch, true)
 };
@@ -620,7 +626,7 @@ module.exports.createGlobalCodecTemplate = function (data, dispatch) {
 
 module.exports.updateRole = function (roleId, permissions_ids, name, dispatch) {
   const config = patchConfig()
-  Object.assign(config, {body: getFormData({name,permissions_ids})})
+  Object.assign(config, {body: getFormData({name, permissions_ids})})
   return fetchData(`${BASE_ADMIN_URL}/permission/role/${roleId}`, config, dispatch, true)
 };
 
@@ -632,9 +638,9 @@ module.exports.deleteRole = function (roleId, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/permission/role/${roleId}`, deleteConfig(), dispatch, true)
 };
 
-module.exports.addRole = function (permissions,dispatch) {
+module.exports.addRole = function (permissions, dispatch) {
   const config = postConfig()
-  Object.assign(config, {body: getFormData({name:'نقش جدید',permissions_ids:JSON.stringify(permissions)})})
+  Object.assign(config, {body: getFormData({name: 'نقش جدید', permissions_ids: JSON.stringify(permissions)})})
   return fetchData(`${BASE_ADMIN_URL}/permission/role`, config, dispatch, true)
 };
 

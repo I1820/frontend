@@ -76,7 +76,7 @@ import {
   deleteThing as deleteThingAPI,
   deleteMultipleThing as deleteThingMultipleAPI,
   newDownlink as newDownlinkAPI,
-  getUserTransaction, getUser,
+  getUserTransaction, getUser, getAllTransactions, getTransactionsOverview,
   lint,
   base_url
 } from '../api/index'
@@ -1385,7 +1385,7 @@ export function buyPackagesAction(packageId, code, cb) {
     const promise = buyPackage(packageId, code, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        console.log("invoice", response)
+        console.log('invoice', response)
         if (response.result.invoice.price >= 0)
           window.location = base_url() + `/payment/${response.result.invoice._id}/pay`
         else
@@ -1521,18 +1521,49 @@ export function getUserAction(userId, cb = () => {
   }
 }
 
-export function getUserTransactionsAction(userId, cb = () => {
-}) {
+export function getUserTransactionsAction(userId, cb) {
   return (dispatch) => {
     const promise = getUserTransaction(userId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        cb(response.result.invoices)
+        cb && cb(response.result.invoices)
       } else {
-        cb(false)
+        cb && cb(false)
       }
     }).catch((err) => {
-      cb(false)
+      cb && cb(false)
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+
+export function getAllTransactionsAction(offset, cb) {
+  return (dispatch) => {
+    const promise = getAllTransactions(offset, 10, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb && cb(response.result)
+      } else {
+        cb && cb(false)
+      }
+    }).catch((err) => {
+      cb && cb(false)
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+
+export function getTransactionsOverviewAction(cb) {
+  return (dispatch) => {
+    const promise = getTransactionsOverview(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb && cb(response.result.overview)
+      } else {
+        cb && cb(false)
+      }
+    }).catch((err) => {
+      cb && cb(false)
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
     })
   }
