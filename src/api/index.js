@@ -7,12 +7,12 @@ import {
   uploadConfig,
   deleteConfig
 } from './config'
-import { setAuthState, initUser, changePassword } from '../actions/AppActions'
+import {setAuthState, initUser, changePassword} from '../actions/AppActions'
 
 
 import _ from 'underscore'
-import { sendingRequest, logout } from '../actions/AppActions'
-import axios, { post, get } from 'axios';
+import {sendingRequest, logout} from '../actions/AppActions'
+import axios, {post, get} from 'axios';
 import store from '../store'
 /* global fetch */
 
@@ -617,8 +617,24 @@ module.exports.createGlobalCodecTemplate = function (data, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/codec`, config, dispatch, true)
 };
 
+module.exports.updateRole = function (roleId, permissions_ids, name, dispatch) {
+  const config = patchConfig()
+  Object.assign(config, {body: getFormData({name,permissions_ids})})
+  return fetchData(`${BASE_ADMIN_URL}/permission/role/${roleId}`, config, dispatch, true)
+};
+
 module.exports.deleteGlobalCodec = function (codecId, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/codec/${codecId}`, deleteConfig(), dispatch, true)
+};
+
+module.exports.deleteRole = function (roleId, dispatch) {
+  return fetchData(`${BASE_ADMIN_URL}/permission/role/${roleId}`, deleteConfig(), dispatch, true)
+};
+
+module.exports.addRole = function (permissions,dispatch) {
+  const config = postConfig()
+  Object.assign(config, {body: getFormData({name:'نقش جدید',permissions_ids:JSON.stringify(permissions)})})
+  return fetchData(`${BASE_ADMIN_URL}/permission/role`, config, dispatch, true)
 };
 
 

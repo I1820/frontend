@@ -244,7 +244,6 @@ class SendCodec extends Component {
 
 
   renderTemplates() {
-
     let templates = [{children: [], text: 'قالب شخصی'}, {children: [], text: 'قالب عمومی'}]
     this.state.templates && this.state.templates.codecs && this.state.templates.codecs.forEach((template) => {
         templates[0].children.push({text: template.name, id: template._id, global: false})
@@ -254,8 +253,6 @@ class SendCodec extends Component {
         templates[1].children.push({text: template.name, id: template._id, global: true})
       }
     )
-    console.log(templates)
-    console.log(this.state.templates)
     return templates
   }
 

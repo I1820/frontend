@@ -118,7 +118,7 @@ import {
   activeUser, impersonateUser, getUserTransactionsAPI, activateProject, getGlobalCodecs, getGlobalCodecTemplate,
   updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec,
   changeAdminPassword, resetPasswordAPI, testCodecAPI, getPermissions, getRoles, setRole,
-  uploadLegalDoc, uploadPicture
+  uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole
 } from '../api';
 import fileDownload from 'js-file-download'
 import { toastAlerts } from '../views/Shared/toast_alert';
@@ -746,7 +746,7 @@ export function DownloadThingsExcelAction(projectId) {
 export function DownloadThingProfileThingsExcelAction(profileId) {
   return (dispatch) => {
     DownloadThingProfileThingsExcelAPI(profileId).then((response) => {
-      fileDownload(response.data, 'things.csv');
+      fileDownload(response.data, 'things.xls');
     })
   }
 }
@@ -1377,7 +1377,11 @@ export function buyPackagesAction(packageId, code, cb) {
     const promise = buyPackage(packageId, code, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
+        console.log("invoice",response)
+        if(response.result.invoice.price >= 0)
         window.location = base_url() + `/payment/${response.result.invoice._id}/pay`
+        else
+          window.location = forwardTo('packages')
       } else {
         cb && cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -1497,6 +1501,7 @@ export function getUserAction(userId, cb = () => {
     promise.then((response) => {
       if (response.status === 'OK') {
         // cb(true, response.result.scenario)
+        response.result.user.overview = response.result.overview
         dispatch({type: FETCH_USER, newState: response.result})
       } else {
         cb(false)
@@ -1644,6 +1649,44 @@ export function changePasswordAction(userId, password, cb) {
 export function activateProjectAction(projectId, active, cb) {
   return (dispatch) => {
     const promise = activateProject(projectId, active, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(response.result)
+      }
+    }).catch((err) => {
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+
+
+export function updateRoleAction(roleId, permissions,name, cb) {
+  return (dispatch) => {
+    const promise = updateRole(roleId, permissions,name, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(response.result)
+      }
+    }).catch((err) => {
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+export function deleteRoleAction(roleId, cb) {
+  return (dispatch) => {
+    const promise = deleteRole(roleId, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(response.result)
+      }
+    }).catch((err) => {
+      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+    })
+  }
+}
+export function addRoleAction( permissions,cb) {
+  return (dispatch) => {
+    const promise = addRole(permissions, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         cb(response.result)

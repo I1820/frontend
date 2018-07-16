@@ -22,6 +22,7 @@ import PackageList from '../../views/PackageManagement/PackageList'
 import NewPackage from '../../views/PackageManagement/PackageManage'
 //usersManagement
 import UsersList from '../../views/UserPaymentManagment/UsersList'
+import RoleList from '../../views/UserPaymentManagment/RoleList'
 import UserInfo from '../../views/UserPaymentManagment/UserInfo'
 import UserTransactions from '../../views/UserPaymentManagment/UsersTrancations'
 
@@ -112,6 +113,7 @@ class Full extends Component {
 
                 <Route path="/admin/packages" name="PackageList" component={PackageList}/>
                 <Route path="/admin/users" name="UsersList" component={UsersList}/>
+                <Route path="/admin/roles" name="RoleList" component={RoleList}/>
 
                 <Route path="/package/new" name="NewPackage" component={NewPackage}/>
                 <Route path="/package/:id" name="EditPackage" component={NewPackage}/>
