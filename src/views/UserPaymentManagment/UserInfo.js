@@ -219,8 +219,7 @@ class PackageList extends Component {
         </Row>
         <Row>
           <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-primary text-center" style={{cursor: 'pointer'}}
-                  onClick={() => window.location = '/#/projects'}>
+            <Card className="text-white bg-primary text-center" style={{cursor: 'pointer'}}>
               <CardBody className="pb-0">
                 <h4 className="mb-0 h3 font-weight-bold">{toPersianNumbers(this.state.userInfo.overview.projects)}</h4>
                 <p>پروژه ثبت شده است</p>
@@ -228,8 +227,7 @@ class PackageList extends Component {
             </Card>
           </Col>
           <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-info text-center" style={{cursor: 'pointer'}}
-                  onClick={() => window.location = '/#/things'}>
+            <Card className="text-white bg-info text-center" style={{cursor: 'pointer'}}>
               <CardBody className="pb-0">
                 <h4 className="mb-0 h3 font-weight-bold">{toPersianNumbers(this.state.userInfo.overview.things)}</h4>
                 <p>شی ثبت شده است</p>

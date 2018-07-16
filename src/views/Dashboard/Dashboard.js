@@ -57,6 +57,7 @@ class Dashboard extends Component {
       project_num: 0,
       modal: false,
       widget: {
+        type:'line',
         window: 1
       }
     }
@@ -171,7 +172,6 @@ class Dashboard extends Component {
                         widget: {...this.state.widget, type: event.target.value}
                       })
                   }}>
-                    <option value={'bar'}>نمودار میله ای</option>
                     <option value={'line'}>نمودار خطی</option>
                     <option value={'table'}>جدول</option>
                     <option value={'map'}>نقشه</option>

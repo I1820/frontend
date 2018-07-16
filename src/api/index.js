@@ -321,7 +321,8 @@ module.exports.DownloadThingProfileThingsExcel = function (profileId, dispatch) 
     headers: {
       'Authorization': 'Bearer ' + store.getState().userReducer.token,
       'Content-Type': 'multipart/form-data'
-    }
+    },
+    responseType: 'blob'
   };
   return get(url, config)
 };

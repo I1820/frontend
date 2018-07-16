@@ -386,7 +386,7 @@ class Profile extends Component {
             </CardHeader>
             <CardBody>
               <FormGroup row>
-                <Label sm={4}>ارسال عکس</Label>
+                <Label sm={4}>  (حداکثر 8Mb) ارسال عکس</Label>
                 <Col sm={8}>
                   <Input type="file"
                          onChange={(event) => {

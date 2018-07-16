@@ -59,8 +59,7 @@ class UserTransactions extends Component {
 
       <div>
         <Col xs="12" sm="6" lg="3">
-          <Card className="text-white bg-primary text-center" style={{cursor: 'pointer'}}
-                onClick={() => window.location = '/#/projects'}>
+          <Card className="text-white bg-primary text-center" style={{cursor: 'pointer'}}>
             <CardBody className="pb-0">
               <h4 className="mb-0 h3 font-weight-bold">{toPersianNumbers(this.state.total)}</h4>
               <p>مجموع تراکنش های موفق</p>

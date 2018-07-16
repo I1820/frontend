@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Row,
   Col,
@@ -27,14 +27,14 @@ import {
   getThingsSampleDataAction, getThingsMainDataAction
 } from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
-import { DateTimeRangePicker, DateTimePicker } from 'react-advance-jalaali-datepicker';
+import {DateTimeRangePicker, DateTimePicker} from 'react-advance-jalaali-datepicker';
 import Select2 from 'react-select2-wrapper';
 import Spinner from '../Spinner/Spinner';
-import { css } from 'glamor';
-import { toastAlerts } from '../Shared/toast_alert';
+import {css} from 'glamor';
+import {toastAlerts} from '../Shared/toast_alert';
 import ReactTable from 'react-table'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
-import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
+import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
+import {GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
 
 const {compose, withProps, lifecycle} = require('recompose');
 
@@ -88,7 +88,8 @@ class ProjectsView extends Component {
       },
       data: [],
       tableData: [],
-      keys: []
+      keys: [],
+      visible:[]
     }
   }
 
@@ -131,6 +132,24 @@ class ProjectsView extends Component {
       plotOptions: {
         line: {
           animation: false
+        },
+        series: {
+          events: {
+            legendItemClick: function (event) {
+              var series = this.yAxis.series,
+                seriesLen = series.length,
+                visible = this.visible ? 1 : -1;
+              this.setState({visible})
+              for (var i = 0; i < seriesLen; i++) {
+                if (!series[i].visible) {
+                  visible++;
+                }
+              }
+              if (visible >= 2) {
+                //do some action
+              }
+            }
+          }
         }
       },
       title: {
@@ -492,10 +511,12 @@ class ProjectsView extends Component {
       {
         id: 'time',
         Header: 'زمان دریافت داده',
+        filterable: false,
         accessor: row => moment(row.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')
       },
       {
         Header: 'شی فرستنده',
+        filterable: false,
         accessor: 'thingid'
       },
       {

@@ -121,7 +121,7 @@ import {
   uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole
 } from '../api';
 import fileDownload from 'js-file-download'
-import { toastAlerts } from '../views/Shared/toast_alert';
+import {toastAlerts} from '../views/Shared/toast_alert';
 
 /**
  * Logs an user in
@@ -551,7 +551,7 @@ export function createThingProfileAction(data, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch({type: FETCH_THING_PROFILE, newState: response.result})
-        cb(true,'با موفقیت انجام شد.')
+        cb(true, 'با موفقیت انجام شد.')
         forwardTo('device-profile/list')
       } else {
         cb(false, response.result)
@@ -619,6 +619,7 @@ export function deleteThingAction(projectId, thingId, cb) {
     })
   }
 }
+
 export function deleteMultipleThingAction(thingIds, cb) {
   return (dispatch) => {
     const promise = deleteThingMultipleAPI(thingIds, dispatch)
@@ -718,10 +719,15 @@ export function uploadPictureAction(file, cb) {
       dispatch(sendingRequest(false))
       if (response.status === 200 && response.data.code == 200) {
         cb(true, {message: 'با موفقیت انجام شد', user: response.data.result.user})
-      } else {
-        cb(false, {message: response.data.result})
-        // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      } else
+      // if (response.status === 413)
+      {
+        cb(false, {message: 'حجم آپلود شده بیشتر از حجم مجاز است', user: response.data.result.user})
       }
+      // else {
+      //   cb(false, {message: response.data.result})
+      //   // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      // }
     }).catch((e) => {
       dispatch(sendingRequest(false))
       cb(false, 'مشکلی پیش آمد')
@@ -746,7 +752,7 @@ export function DownloadThingsExcelAction(projectId) {
 export function DownloadThingProfileThingsExcelAction(profileId) {
   return (dispatch) => {
     DownloadThingProfileThingsExcelAPI(profileId).then((response) => {
-      fileDownload(response.data, 'things.xls');
+      fileDownload(response.data, 'things.xls', 'application/vnd.ms-excel');
     })
   }
 }
@@ -758,6 +764,7 @@ export function createScenario(projectId, data, cb) {
     const promise = createScenarioAPI(data, projectId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
+        cb(true, 'با موفقیت انجام شد')
         forwardTo(`projects/manage/${projectId}`)
       } else {
         cb(false, response.result)
@@ -770,11 +777,12 @@ export function createScenario(projectId, data, cb) {
   }
 }
 
-export function updateScenarioAction(projectId, scenarioId, data) {
+export function updateScenarioAction(projectId, scenarioId, data, cb) {
   return (dispatch) => {
     const promise = updateScenarioAPI(data, projectId, scenarioId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
+        cb(true, 'با موفقیت انجام شد')
         forwardTo(`projects/manage/${projectId}`)
       } else {
         cb(false, response.result)
@@ -788,7 +796,7 @@ export function updateScenarioAction(projectId, scenarioId, data) {
 }
 
 
-export function editProjectAction(id, state,cb) {
+export function editProjectAction(id, state, cb) {
   return (dispatch) => {
     const promise = editProjectAPI(id, state, dispatch)
     promise.then((response) => {
@@ -1377,9 +1385,9 @@ export function buyPackagesAction(packageId, code, cb) {
     const promise = buyPackage(packageId, code, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        console.log("invoice",response)
-        if(response.result.invoice.price >= 0)
-        window.location = base_url() + `/payment/${response.result.invoice._id}/pay`
+        console.log("invoice", response)
+        if (response.result.invoice.price >= 0)
+          window.location = base_url() + `/payment/${response.result.invoice._id}/pay`
         else
           window.location = forwardTo('packages')
       } else {
@@ -1660,9 +1668,9 @@ export function activateProjectAction(projectId, active, cb) {
 }
 
 
-export function updateRoleAction(roleId, permissions,name, cb) {
+export function updateRoleAction(roleId, permissions, name, cb) {
   return (dispatch) => {
-    const promise = updateRole(roleId, permissions,name, dispatch)
+    const promise = updateRole(roleId, permissions, name, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         cb(response.result)
@@ -1672,6 +1680,7 @@ export function updateRoleAction(roleId, permissions,name, cb) {
     })
   }
 }
+
 export function deleteRoleAction(roleId, cb) {
   return (dispatch) => {
     const promise = deleteRole(roleId, dispatch)
@@ -1684,7 +1693,8 @@ export function deleteRoleAction(roleId, cb) {
     })
   }
 }
-export function addRoleAction( permissions,cb) {
+
+export function addRoleAction(permissions, cb) {
   return (dispatch) => {
     const promise = addRole(permissions, dispatch)
     promise.then((response) => {
