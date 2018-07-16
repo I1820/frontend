@@ -163,7 +163,7 @@ class Profile extends Component {
                       name="phoneNumber"
                       dir="ltr"
                       type="number"
-                      onInput={event => this.setState({phone: event.target.value.replace(/\D/,'')})}
+                      onInput={event => this.setState({phone: event.target.value.replace(/\D/, '')})}
                       placeholder={'88888888'}
                       maxLength={13}
                       value={this.state.phone}/>
@@ -247,9 +247,9 @@ class Profile extends Component {
                       placeholder={'نام شرکت'}
                       maxLength={100}
                       value={this.state.legalInfo.org_name}
-                      required/>
+                    />
                     <br/>
-                    <AvFeedback>الزامی است</AvFeedback>
+                    {/*<AvFeedback>الزامی است</AvFeedback>*/}
                   </Col>
                 </AvGroup>
                 <AvGroup row>
@@ -269,9 +269,9 @@ class Profile extends Component {
                       placeholder={'نام و نام خانوادگی'}
                       maxLength={100}
                       value={this.state.legalInfo.org_interface_name}
-                      required/>
+                    />
                     <br/>
-                    <AvFeedback>الزامی است</AvFeedback>
+                    {/*<AvFeedback>الزامی است</AvFeedback>*/}
                   </Col>
                 </AvGroup>
 
@@ -287,10 +287,10 @@ class Profile extends Component {
                              onChange={(event) => {
                                this.uploadLegalDoc(event.target.files[0])
                              }}
-                             required/>
+                    />
 
                     <br/>
-                    <AvFeedback>الزامی است</AvFeedback>
+                    {/*<AvFeedback>الزامی است</AvFeedback>*/}
                   </Col>
                 </AvGroup>
 

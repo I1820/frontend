@@ -443,8 +443,8 @@ class ProjectsManage extends Component {
                                }
                              })
                            }}
-                           pattern="^[0-9A-Fa-f]{32}$"
-                           placeholder={'0011aa222B99FFaa0011aa222B99FFaa'}
+                           pattern="^[0-9A-Fa-f]{8}$"
+                           placeholder={'0011223344'}
                            required
                            maxLength={32}
                            type="text"/>
