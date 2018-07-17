@@ -121,7 +121,7 @@ import {
   uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole
 } from '../api';
 import fileDownload from 'js-file-download'
-import {toastAlerts} from '../views/Shared/toast_alert';
+import { toastAlerts } from '../views/Shared/toast_alert';
 
 /**
  * Logs an user in
@@ -924,7 +924,6 @@ export function getProfileAction(cb) {
   return (dispatch) => {
     const promise = viewProfile(dispatch)
     promise.then((response) => {
-      console.log(response);
       if (response.status === 'OK') {
         dispatch(initUser(response.result))
         cb && cb(true)
@@ -1386,10 +1385,13 @@ export function buyPackagesAction(packageId, code, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         console.log('invoice', response)
-        if (response.result.invoice.price >= 0)
+        if (response.result.invoice.price > 0)
           window.location = base_url() + `/payment/${response.result.invoice._id}/pay`
-        else
-          window.location = forwardTo('packages')
+        else {
+          dispatch(getProfileAction(() => forwardTo('packages')))
+          toastAlerts(true, 'بسته به صورت رایگان اضافه شد')
+
+        }
       } else {
         cb && cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -1590,7 +1592,7 @@ export function getRolesAction(cb) {
     const promise = getRoles(dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        cb && cb(response.result.roles)
+        cb && cb(true, response.result.roles)
       } else {
         cb && cb(false, response.result)
       }
@@ -1703,10 +1705,12 @@ export function updateRoleAction(roleId, permissions, name, cb) {
   return (dispatch) => {
     const promise = updateRole(roleId, permissions, name, dispatch)
     promise.then((response) => {
-      if (response.status === 'OK') {
-        cb(response.result)
-      }
+      if (response.status === 'OK')
+        cb && cb(true, 'با موفقیت انجام شد');
+      else
+        cb && cb(false, response.result);
     }).catch((err) => {
+      cb && cb(false, 'خطای نامشخص');
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
     })
   }
@@ -1716,10 +1720,12 @@ export function deleteRoleAction(roleId, cb) {
   return (dispatch) => {
     const promise = deleteRole(roleId, dispatch)
     promise.then((response) => {
-      if (response.status === 'OK') {
-        cb(response.result)
-      }
+      if (response.status === 'OK')
+        cb && cb(true, 'با موفقیت انجام شد');
+      else
+        cb && cb(false, response.result)
     }).catch((err) => {
+      cb && cb(false, 'خطای نامشخص');
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
     })
   }
@@ -1729,10 +1735,13 @@ export function addRoleAction(permissions, cb) {
   return (dispatch) => {
     const promise = addRole(permissions, dispatch)
     promise.then((response) => {
-      if (response.status === 'OK') {
-        cb(response.result)
-      }
+      if (response.status === 'OK')
+        cb && cb(true, 'با موفقیت انجام شد');
+      else
+        cb && cb(false, response.result)
+
     }).catch((err) => {
+      cb && cb(false, 'خطای نامشخص');
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
     })
   }

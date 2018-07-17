@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 // import {selectUser} from '../../actions/AppActions'
 import {
   Row,
@@ -26,11 +26,11 @@ import {
   getUsersAction, getRolesAction, setRoleAction, updateRoleAction,
   getPermissionsAction, deleteRoleAction, addRoleAction
 } from '../../actions/AppActions';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import ReactTable from 'react-table'
-import {toastAlerts} from '../Shared/toast_alert';
-import Select2 from "react-select2-wrapper";
+import { toastAlerts } from '../Shared/toast_alert';
+import Select2 from 'react-select2-wrapper';
 
 class RoleList extends Component {
   constructor(props) {
@@ -42,8 +42,11 @@ class RoleList extends Component {
   }
 
   componentWillMount() {
-    this.props.dispatch(getRolesAction((roles) => {
-      this.setState({roles})
+    this.props.dispatch(getRolesAction((status, roles) => {
+      if (status)
+        this.setState({roles})
+      else
+        toastAlerts(status, roles)
     }));
     this.props.dispatch(getPermissionsAction((defaultPermissions) => {
       this.setState({defaultPermissions})
@@ -80,16 +83,20 @@ class RoleList extends Component {
           </CardBody>
           <CardFooter>
             <Button onClick={() => {
-              if(this.state.defaultPermissions.length > 0) {
+              if (this.state.defaultPermissions.length > 0) {
 
                 let permissions = []
-                this.state.defaultPermissions.forEach((permission)=>{
+                this.state.defaultPermissions.forEach((permission) => {
                   permissions.push(permission._id)
                 })
 
-                this.props.dispatch(addRoleAction(permissions,(result) => {
-                  this.props.dispatch(getRolesAction((roles) => {
-                    this.setState({roles})
+                this.props.dispatch(addRoleAction(permissions, (status, message) => {
+                  toastAlerts(status, message)
+                  this.props.dispatch(getRolesAction((status, roles) => {
+                    if (status)
+                      this.setState({roles})
+                    else
+                      toastAlerts(status, roles)
                   }));
                 }))
               }
@@ -132,7 +139,6 @@ class RoleList extends Component {
 
           return (<Select2
             style={{width: '100%'}}
-            value={this.devEUI}
             multiple
             data={this.state.defaultPermissions.map((permission) => {
               return {text: permission.name, id: permission._id}
@@ -142,13 +148,13 @@ class RoleList extends Component {
               row.permissions = []
               for (let i = 0; i < unselectedPermission.target.selectedOptions.length; i++)
                 row.permissions.push(unselectedPermission.target.selectedOptions[i].value)
-              console.log("new permission", row.permissions)
+              console.log('new permission', row.permissions)
             }}
             onUnselect={(unselectedPermission) => {
               row.permissions = []
               for (let i = 0; i < unselectedPermission.target.selectedOptions.length; i++)
                 row.permissions.push(unselectedPermission.target.selectedOptions[i].value)
-              console.log("new permission", row.permissions)
+              console.log('new permission', row.permissions)
             }}
             options={
               {
@@ -174,9 +180,13 @@ class RoleList extends Component {
             })
 
             console.log(row.permissions, permissions)
-            this.props.dispatch(updateRoleAction(row._id, JSON.stringify(permissions), row.name, (result) => {
-              this.props.dispatch(getRolesAction((roles) => {
-                this.setState({roles})
+            this.props.dispatch(updateRoleAction(row._id, JSON.stringify(permissions), row.name, (status, message) => {
+              toastAlerts(status, message)
+              this.props.dispatch(getRolesAction((status, roles) => {
+                if (status)
+                  this.setState({roles})
+                else
+                  toastAlerts(status, roles)
               }));
             }))
           }}
@@ -184,9 +194,13 @@ class RoleList extends Component {
                   size="sm">بروزرسانی</Button>
           <br/>
           <Button onClick={() =>
-            this.props.dispatch(deleteRoleAction(row._id,(result)=>{
-              this.props.dispatch(getRolesAction((roles) => {
-                this.setState({roles})
+            this.props.dispatch(deleteRoleAction(row._id, (status, message) => {
+              toastAlerts(status, message)
+              this.props.dispatch(getRolesAction((status, roles) => {
+                if (status)
+                  this.setState({roles})
+                else
+                  toastAlerts(status, roles)
               }));
             }))
           } className="ml-1" color="danger"
