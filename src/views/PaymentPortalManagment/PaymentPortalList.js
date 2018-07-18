@@ -24,9 +24,10 @@ class PaymentPortalList extends Component {
 
   constructor(props) {
     super(props);
+    this.activate = this.activate.bind(this);
     this.state = {
-      adminPortals: [];
-  }
+      adminPortals: [],
+    }
   }
 
   componentWillMount() {
@@ -34,7 +35,11 @@ class PaymentPortalList extends Component {
   }
 
   componentWillReceiveProps(props) {
-    this.setState({adminPortals: props.adminPortals})
+    this.setState({adminPortals: [...props.adminPortals]}, () => console.log(this.state))
+  }
+
+  activate(id) {
+
   }
 
 
@@ -62,7 +67,6 @@ class PaymentPortalList extends Component {
               </thead>
               <tbody>
               {
-                // console.log(this.state)
                 this.state.adminPortals.map((el, key) => this.renderItem(el, key))
               }
               </tbody>
@@ -77,7 +81,7 @@ class PaymentPortalList extends Component {
     );
   }
 
-  static renderItem(el, key = 0) {
+  renderItem(el, key = 0) {
     return (
       <tr>
         <th>{key + 1}</th>
@@ -85,11 +89,13 @@ class PaymentPortalList extends Component {
           <img className="portal-style" src={el.image}/>
         </td>
         <td>{el.name}</td>
-        <td>{'sss'}</td>
+        <td>{el.website}</td>
         <td>{el.active === true ? <Badge color="success"> فعال</Badge> : <Badge color="danger"> غیر فعال</Badge>}</td>
 
         <td>
-          <Button outline color="success"><i className="fa fa-edit"/>فعال‌سازی</Button>
+          {el.active === false ? <Button outline color="danger" onClick={() => this.activate(el._id)}><i
+              className="fa fa-edit"/>فعال‌سازی</Button> :
+            <Button outline color="danger"><i className="fa fa-edit"/>غیر فعال سازی</Button>}
         </td>
 
       </tr>
