@@ -127,9 +127,7 @@ class ProjectsList extends Component {
                            style={{resize: 'none'}}
                            onChange={event => this.setState({
                              projectDesc: event.target.value
-                           })}
-                           required/>
-                  <AvFeedback>الزامی است</AvFeedback>
+                           })}/>
                 </Col>
               </AvGroup>
             </AvForm>
