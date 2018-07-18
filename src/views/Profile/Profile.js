@@ -162,8 +162,11 @@ class Profile extends Component {
                     <AvInput
                       name="phoneNumber"
                       dir="ltr"
-                      type="number"
-                      onInput={event => this.setState({phone: event.target.value.replace(/\D/, '')})}
+                      type="text"
+                      onInput={event => {
+                        this.setState({phone: event.target.value.replace(/\D/, '')})
+                        event.target.value = event.target.value.replace(/\D/, '')
+                      }}
                       placeholder={'88888888'}
                       maxLength={13}
                       value={this.state.phone}/>

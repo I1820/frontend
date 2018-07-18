@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Row,
   Col,
@@ -17,11 +17,11 @@ import {
   Table, Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import ReactTable from 'react-table'
-import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import {AvForm, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
 
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import Select2 from 'react-select2-wrapper';
-import { toastAlerts } from '../Shared/toast_alert';
+import {toastAlerts} from '../Shared/toast_alert';
 
 import {
   deleteDashboardWidgetChartAction, getDashboardAction, getUserThingsAction,
@@ -29,8 +29,8 @@ import {
 } from '../../actions/AppActions';
 import moment from 'moment-jalaali';
 import _ from 'underscore';
-import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
-import { toPersianNumbers } from '../Shared/helpers';
+import {GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
+import {toPersianNumbers} from '../Shared/helpers';
 
 const ReactHighcharts = require('react-highcharts');
 
@@ -46,18 +46,20 @@ class Dashboard extends Component {
     this.renderCharts = this.renderCharts.bind(this)
     this.devEUI = ''
     this.state = {
+      get_key: true,
       charts: {},
       modalToggle: {
         setWidgetChart: false,
         deleteWidgetChart: false,
       },
       things: [],
+      aliases: [],
       selectedChart: 0,
       thing_num: 0,
       project_num: 0,
       modal: false,
       widget: {
-        type:'line',
+        type: 'line',
         window: 1
       }
     }
@@ -128,6 +130,32 @@ class Dashboard extends Component {
                 </Col>
               </FormGroup>
               <AvGroup style={{display: this.state.location ? 'none' : 'flex'}} row>
+                <Label sm={3}> alias : </Label>
+                <Col sm={9}>
+                  <Input type="select" onChange={(event) => {
+                    if (event.target.value !== "ENTER_KEY")
+                      this.setState({
+                        widget: {...this.state.widget, key: event.target.value},
+                        get_key: false
+                      })
+                    else {
+                      this.setState({
+                        widget: {...this.state.widget, key: ""},
+                        get_key: true
+                      })
+                    }
+                  }}>{
+                    <option value={"ENTER_KEY"}>ورود کلید</option>
+                  }
+                    {
+                      this.state.aliases.map((alias) => {
+                        return (<option value={Object.keys(alias)[0]}>{alias[Object.keys(alias)[0]]}</option>)
+                      })
+                    }
+                  </Input>
+                </Col>
+              </AvGroup>
+              <AvGroup style={{display: this.state.location || !this.state.get_key ? 'none' : 'flex'}} row>
                 <Label sm={3}> کلید : </Label>
                 <Col sm={9}>
                   <AvInput name={'key'}
@@ -414,6 +442,7 @@ class Dashboard extends Component {
   getThings() {
     this.props.dispatch(getUserThingsAction((data) => {
       this.setState({
+        aliases: data.aliases,
         things: data.things
       })
     }))
