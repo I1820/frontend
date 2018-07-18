@@ -53,7 +53,9 @@ import {
   GET_CODECS,
   FETCH_USER,
   SET_TOKEN,
-  SET_TRANSACTIONS
+  SET_TRANSACTIONS,
+  GET_ADMIN_PAYMENT_PORTALS,
+  GET_USER_PAYMENT_PORTALS
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -119,7 +121,7 @@ import {
   updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec,
   changeAdminPassword, resetPasswordAPI, testCodecAPI, getPermissions, getRoles, setRole,
   uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole,
-  decryptFramePayload
+  decryptFramePayload, getAdminPaymentPortals, getUserPaymentPortals
 } from '../api';
 import fileDownload from 'js-file-download'
 import { toastAlerts } from '../views/Shared/toast_alert';
@@ -1257,6 +1259,32 @@ export function deleteDiscountAction(discountId, cb) {
         dispatch(getDiscountsAction())
       } else {
         cb && cb(false, response.result);
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    })
+  }
+}
+
+export function getAdminPaymentPortalsAction() {
+  return (dispatch) => {
+    const promise = getAdminPaymentPortals(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        dispatch({type: GET_ADMIN_PAYMENT_PORTALS, newState: response.result.portals})
+      } else {
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    })
+  }
+}
+
+export function getUserPaymentPortalsAction() {
+  return (dispatch) => {
+    const promise = getUserPaymentPortals(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        dispatch({type: GET_USER_PAYMENT_PORTALS, newState: response.result.portals})
+      } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
     })

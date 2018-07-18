@@ -11,8 +11,6 @@ import Dashboard from '../../views/Dashboard/';
 
 import News from '../../views/News/';
 
-//Payment Portal Managment
-import PaymentPortalManagment from '../../views/PaymentPortalManagment/PamentPortalList.js'
 
 import globalCodec from '../../views/globalCodec/GlobalCodecList'
 import AddTemplate from '../../views/Editros/addGlobalTemplate'
@@ -95,6 +93,7 @@ import sendCodec from '../../views/Editros/sendCodec';
 import addTemplate from '../../views/Editros/addTemplate';
 import {ToastContainer} from 'react-toastify';
 import AllTransactions from '../../views/AdminPayments/AllTransactions';
+import PaymentPortalList from '../../views/PaymentPortalManagment/PaymentPortalList';
 
 class Full extends Component {
   render() {
@@ -144,6 +143,7 @@ class Full extends Component {
                 <Route path="/projects" name="ProjectsList" component={ProjectsList}/>
 
 
+                <Route path="/portals" name="portals" component={PaymentPortalList}/>
                 <Route path="/packages" name="packages" component={MyPackages}/>
                 <Route path="/selectedPackage/:id" name="selectedPackage" component={SelectedPackage}/>
 
@@ -153,10 +153,7 @@ class Full extends Component {
                 <Route path="/things/edit/:project_id/:thing_id" name="createThing" component={CreateThing}/>
                 <Route path="/things/new/:project_id" name="createThing" component={CreateThing}/>
                 <Route path="/things" name="ThingsList" component={ThingsList}/>
-
-
-                <Route path="/payment-portal/management" name="PaymentPortalManagment"
-                       component={PaymentPortalManagment}/>
+                /*
                 <Route path="/theme/colors" name="Colors" component={Colors}/>
                 <Route path="/theme/typography" name="Typography" component={Typography}/>
                 <Route path="/base/cards" name="Cards" component={Cards}/>
@@ -190,6 +187,7 @@ class Full extends Component {
                 <Route path="/notifications/modals" name="Modals" component={Modals}/>
                 <Route path="/widgets" name="Widgets" component={Widgets}/>
                 <Route path="/charts" name="Charts" component={Charts}/>
+                */
                 <Redirect from="/" to="/dashboard"/>
               </Switch>
             </Container>
