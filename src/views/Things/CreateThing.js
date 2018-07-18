@@ -98,13 +98,14 @@ class CreateThing extends Component {
               type: thing.type === 'lan' || thing.type === 'LAN' ? 'LAN' : 'lora'
             },
             thing_profile_slug: thing.profile !== undefined && thing.profile !== null ? thing.profile.thing_profile_slug : ''
-          })
+          }, () => console.log(this.state))
         }
       })
     }
   }
 
   render() {
+    console.log(this.state.thing.lat)
     return (
       <div>
         <Spinner display={this.props.loading}/>
@@ -200,16 +201,23 @@ class CreateThing extends Component {
               <FormGroup row>
                 <Label sm={3}>عرض جغرافیایی:</Label>
                 <Col sm={5}>
-                  <Input defaultValue={this.state.thing.lat ?
-                    this.state.thing.lat : 0} type="number" id="fld_lat"
-                         dir="ltr"/>
+                  <Input value={this.state.thing.lat ? this.state.thing.lat : 0}
+                         type="number"
+                         id="fld_lat"
+                         name="lat"
+                         dir="ltr"
+                         onChange={this.changeForm}
+                  />
                 </Col>
               </FormGroup>
               <FormGroup row>
                 <Label sm={3}>طول جغرافیایی:</Label>
                 <Col sm={5}>
-                  <Input defaultValue={this.state.thing.long ?
-                    this.state.thing.long : 0} dir="ltr" id="fld_lng"
+                  <Input value={this.state.thing.long ? this.state.thing.long : 0}
+                         dir="ltr"
+                         name="long"
+                         id="fld_lng"
+                         onChange={this.changeForm}
                          type="number"/>
                 </Col>
               </FormGroup>
@@ -259,8 +267,9 @@ class CreateThing extends Component {
     }
     if (this.state.thing._id === undefined)
       this.props.dispatch(createThingAction(data, this.state.project, toastAlerts))
-    else
+    else {
       this.props.dispatch(editThingAction(this.state.project, this.state.thing._id, data, toastAlerts))
+    }
   }
 
   callback(status, message) {
@@ -316,6 +325,7 @@ const MapWithASearchBox = compose(
           refs.searchBox = ref;
         },
         onClick: data => {
+          console.log("sajjad")
           document.getElementById('fld_lat').value = data.latLng.lat()
           document.getElementById('fld_lng').value = data.latLng.lng()
           this.setState({
