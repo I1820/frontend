@@ -118,7 +118,8 @@ import {
   activeUser, impersonateUser, getUserTransactionsAPI, activateProject, getGlobalCodecs, getGlobalCodecTemplate,
   updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec,
   changeAdminPassword, resetPasswordAPI, testCodecAPI, getPermissions, getRoles, setRole,
-  uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole
+  uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole,
+  decryptFramePayload
 } from '../api';
 import fileDownload from 'js-file-download'
 import { toastAlerts } from '../views/Shared/toast_alert';
@@ -883,6 +884,17 @@ export function updateGatewayAction(data, cb) {
         cb(false, response.result)
         // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
+    })
+  }
+}
+
+export function decryptFramePayloadAction(data, cb) {
+  return (dispatch) => {
+    const promise = decryptFramePayload(data, dispatch)
+    promise.then((response) => {
+      cb && cb(response.status === 'OK', response.result)
+    }).catch((e) => {
+      cb(false, 'خطای نامشخص')
     })
   }
 }

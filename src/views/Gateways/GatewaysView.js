@@ -28,7 +28,7 @@ import {
 import classnames from 'classnames';
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 import connect from 'react-redux/es/connect/connect';
-import { getSingleGatewayAction, updateGatewayAction } from '../../actions/AppActions';
+import { decryptFramePayloadAction, getSingleGatewayAction, updateGatewayAction } from '../../actions/AppActions';
 import Spinner from '../Spinner/Spinner';
 import GatewayLogger from '../../components/GatewayLogger';
 import { toastAlerts } from '../Shared/toast_alert';
@@ -162,6 +162,7 @@ class GatewaysView extends Component {
     this.toggleTab = this.toggleTab.bind(this)
     this.changeForm = this.changeForm.bind(this)
     this.submitForm = this.submitForm.bind(this)
+    this.decrypt = this.decrypt.bind(this)
 
     this.state = {
       gateway: {
@@ -169,6 +170,12 @@ class GatewaysView extends Component {
         description: '',
         mac: '',
         altitude: ''
+      },
+      keys: {
+        appSKey: '',
+        nwkSKey: '',
+        payload: ''
+
       },
       activeTab: 'info'
     }
@@ -214,6 +221,14 @@ class GatewaysView extends Component {
               onClick={() => {
                 this.toggleTab('liveFrame');
               }}>لایو فریم</NavLink>
+          </NavItem>
+
+          <NavItem>
+            <NavLink
+              className={classnames({active: this.state.activeTab === 'decrypt'})}
+              onClick={() => {
+                this.toggleTab('decrypt');
+              }}>رمزگشایی</NavLink>
           </NavItem>
 
         </Nav>
@@ -301,6 +316,78 @@ class GatewaysView extends Component {
             <GatewayLogger gateway={this.state.gateway._id}/>
           </TabPane>
 
+          <TabPane tabId={'decrypt'}>
+            <Card className="text-justify">
+              <CardBody>
+                <Form>
+                  <FormGroup row>
+                    <Label sm={3}>Payload:</Label>
+                    <Col sm={7}>
+                      <Input defaultValue={this.state.keys.payload} name="payload"
+                             onChange={(event) => {
+                               this.setState({
+                                 keys: {
+                                   ...this.state.keys,
+                                   [event.target.name]: event.target.value
+                                 }
+                               })
+                             }}
+                             required placeholder="A201FA422C7D3102FA411419D0"
+                             type="textarea"/>
+                    </Col>
+                    <Col sm={2}></Col>
+                  </FormGroup>
+
+                  <FormGroup row>
+                    <Label sm={3}>Application Session Key:</Label>
+                    <Col sm={7}>
+                      <Input defaultValue={this.state.keys.appSKey} name="appSKey"
+                             onChange={(event) => {
+                               this.setState({
+                                 keys: {
+                                   ...this.state.keys,
+                                   [event.target.name]: event.target.value
+                                 }
+                               })
+                             }}
+                             maxLength={32}
+                             pattern="^[0-9A-Za-z]{32}$"
+                             required
+                             placeholder="44FF55GG66hh77jj00AA11BB22CC33DD"
+                             type="text"/>
+                    </Col>
+                    <Col sm={2}></Col>
+                  </FormGroup>
+
+                  <FormGroup row>
+                    <Label sm={3}>Network Session Key:</Label>
+                    <Col sm={7}>
+                      <Input defaultValue={this.state.keys.nwkSKey} name="nwkSKey"
+                             onChange={(event) => {
+                               this.setState({
+                                 keys: {
+                                   ...this.state.keys,
+                                   [event.target.name]: event.target.value
+                                 }
+                               })
+                             }}
+                             maxLength={32}
+                             pattern="^[0-9A-Za-z]{32}$"
+                             required
+                             placeholder="00AA11bb22CC33dd44FF55GG66HH77JJ"
+                             type="text"/>
+                    </Col>
+                    <Col sm={2}></Col>
+                  </FormGroup>
+
+                </Form>
+              </CardBody>
+              <CardFooter>
+                <Button color="primary" onClick={this.decrypt}>رمزگشایی</Button>
+              </CardFooter>
+            </Card>
+          </TabPane>
+
         </TabContent>
 
 
@@ -341,6 +428,32 @@ class GatewaysView extends Component {
       latitude: document.getElementById('fld_lat').value,
       longitude: document.getElementById('fld_lng').value,
     }, toastAlerts))
+  }
+
+  decrypt() {
+    function hexToBase64(str) {
+      return btoa(String.fromCharCode.apply(null,
+        str.replace(/\r|\n/g, '').replace(/([\da-fA-F]{2}) ?/g, '0x$1 ').replace(/ +$/, '').split(' '))
+      );
+    }
+
+    if (!this.state.keys.appSKey.match(/^[0-9A-Fa-f]{32}$/g))
+      toastAlerts(false, 'کلید AppSKey را درست وارد کنید.');
+    else if (!this.state.keys.nwkSKey.match(/^[0-9A-Fa-f]{32}$/g))
+      toastAlerts(false, 'کلید nwkSKey را درست وارد کنید.');
+    else if (!this.state.keys.payload.match(/^([0-9A-Fa-f][0-9A-Fa-f])+$/g))
+      toastAlerts(false, 'payload  را درست وارد کنید( به صورت hex)');
+
+    this.props.dispatch(decryptFramePayloadAction({
+      phyPayload: hexToBase64(this.state.keys.payload),
+      netskey: this.state.keys.nwkSKey,
+      appskey: this.state.keys.appSKey
+    }, (status, result) => {
+      if (status) {
+        toastAlerts(status, 'وقتی نمونه واقعی اومد درست میکنم اقای علیزاده.');
+      }
+      else toastAlerts(status, result);
+    }))
   }
 }
 

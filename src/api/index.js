@@ -264,6 +264,12 @@ module.exports.updateGateway = function (data, dispatch) {
   return fetchData(`/gateway/${data._id}`, config, dispatch)
 };
 
+module.exports.decryptFramePayload = function (data, dispatch) {
+  const config = postConfig()
+  Object.assign(config, {body: getFormData(data)})
+  return fetchData(`/decrypt-phy-payload/`, config, dispatch)
+};
+
 module.exports.uploadExcel = function (data, projectId, dispatch) {
   const url = `${BASE_URL}/things/from-excel`
   const formData = new FormData();
