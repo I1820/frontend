@@ -16,12 +16,12 @@ import axios, { post, get } from 'axios';
 import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://dev.back.iot.felfel.ml/api/v1'
-const BASE_FILES_URL = 'http://dev.back.iot.felfel.ml'
-const BASE_ADMIN_URL = 'http://dev.back.iot.felfel.ml/api/admin'
-// const BASE_URL = 'http://localhost:8000/api/v1'
-// const BASE_FILES_URL = 'http://localhost:8000'
-// const BASE_ADMIN_URL = 'http://localhost:8000/api/admin'
+// const BASE_URL = 'http://dev.back.iot.felfel.ml/api/v1'
+// const BASE_FILES_URL = 'http://dev.back.iot.felfel.ml'
+// const BASE_ADMIN_URL = 'http://dev.back.iot.felfel.ml/api/admin'
+const BASE_URL = 'http://localhost:8000/api/v1'
+const BASE_FILES_URL = 'http://localhost:8000'
+const BASE_ADMIN_URL = 'http://localhost:8000/api/admin'
 
 const endpoints = {
   login: '/login',

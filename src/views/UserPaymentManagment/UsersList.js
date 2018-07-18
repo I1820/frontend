@@ -46,8 +46,9 @@ class UsersList extends Component {
     // let usersArray = Object.values(usersInfo);
     // this.setState({items: usersArray})
     this.props.dispatch(getUsersAction());
-    this.props.dispatch(getRolesAction(roles => {
-      this.setState({roles: roles})
+    this.props.dispatch(getRolesAction((status, roles) => {
+      if (status)
+        this.setState({roles: roles})
     }));
   }
 
