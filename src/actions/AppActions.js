@@ -121,7 +121,7 @@ import {
   updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec,
   changeAdminPassword, resetPasswordAPI, testCodecAPI, getPermissions, getRoles, setRole,
   uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole,
-  decryptFramePayload, getAdminPaymentPortals, getUserPaymentPortals
+  decryptFramePayload, getAdminPaymentPortals, getUserPaymentPortals, activatePaymentPortal
 } from '../api';
 import fileDownload from 'js-file-download'
 import { toastAlerts } from '../views/Shared/toast_alert';
@@ -1158,7 +1158,6 @@ export function updateGlobalCodecTemplateAction(codec_id, data, cb) {
   return (dispatch) => {
     const promise = updateGlobalCodecTemplate(codec_id, data, dispatch)
     promise.then((response) => {
-      console.log(response)
       if (response.status === 'OK') {
         forwardTo(`admin/globalCodec`)
       } else {
@@ -1276,6 +1275,22 @@ export function getAdminPaymentPortalsAction() {
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
+    })
+  }
+}
+
+export function activatePaymentPortalsAction(id, active, cb) {
+  return (dispatch) => {
+    const promise = activatePaymentPortal(id, active, dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb && cb(true, 'با موفقیت انجام شد.')
+      } else {
+        cb && cb(true, response.result)
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    }).catch((err) => {
+      cb && cb(false, 'خطای نامشخص');
     })
   }
 }
@@ -1426,7 +1441,6 @@ export function buyPackagesAction(packageId, code, cb) {
     const promise = buyPackage(packageId, code, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        console.log('invoice', response)
         if (response.result.invoice.price > 0)
           window.location = base_url() + `/payment/${response.result.invoice._id}/pay`
         else {
