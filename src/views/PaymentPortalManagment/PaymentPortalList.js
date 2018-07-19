@@ -18,7 +18,8 @@ import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 
 import Data from './portalData'
-import { getAdminPaymentPortalsAction } from '../../actions/AppActions';
+import { activatePaymentPortalsAction, getAdminPaymentPortalsAction } from '../../actions/AppActions';
+import { toastAlerts } from '../Shared/toast_alert';
 
 class PaymentPortalList extends Component {
 
@@ -38,8 +39,11 @@ class PaymentPortalList extends Component {
     this.setState({adminPortals: [...props.adminPortals]}, () => console.log(this.state))
   }
 
-  activate(id) {
-
+  activate(id, active) {
+    this.props.dispatch(activatePaymentPortalsAction(id, active, (status, message) => {
+      toastAlerts(status, message);
+      this.props.dispatch(getAdminPaymentPortalsAction());
+    }))
   }
 
 
@@ -93,9 +97,10 @@ class PaymentPortalList extends Component {
         <td>{el.active === true ? <Badge color="success"> فعال</Badge> : <Badge color="danger"> غیر فعال</Badge>}</td>
 
         <td>
-          {el.active === false ? <Button outline color="danger" onClick={() => this.activate(el._id)}><i
-              className="fa fa-edit"/>فعال‌سازی</Button> :
-            <Button outline color="danger"><i className="fa fa-edit"/>غیر فعال سازی</Button>}
+          {el.active === false ? <Button outline color="success" onClick={() => this.activate(el._id, 1)}>
+              <i className="fa fa-edit"/>فعال‌سازی</Button> :
+            <Button outline color="danger"
+                    onClick={() => this.activate(el._id, 0)}><i className="fa fa-edit"/>غیر فعال سازی</Button>}
         </td>
 
       </tr>

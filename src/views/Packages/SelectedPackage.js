@@ -43,6 +43,7 @@ class SelectedPackage extends Component {
   componentWillReceiveProps(props) {
     this.setState({
       package: props.package,
+      portals: props.portals,
     })
   }
 
@@ -54,6 +55,10 @@ class SelectedPackage extends Component {
   pay() {
     if (this.state.agree === false) {
       toastAlerts(false, 'لطفا قوانین را بپذیرید')
+      return
+    }
+    if (!this.state.portals.length) {
+      toastAlerts(false, 'درگاه فعالی وجود ندارد')
       return
     }
     this.props.dispatch(buyPackagesAction(this.props.match.params.id, this.state.discountCode, toastAlerts))
@@ -155,14 +160,14 @@ class SelectedPackage extends Component {
                   className="icon-basket-loaded icons"/>درگاه پرداخت</CardTitle>
               </CardHeader>
               <CardBody>
-                {this.props.portals.length &&
-                <Row>
-                  <Col md="5">
-                    <Input className="pay-input-style back3" type="radio" id="radio3" name="radios"
-                           defaultChecked={true}
-                           value="زرین پال"/>
-                  </Col>
-                </Row>
+                {this.props.portals.length ?
+                  <Row>
+                    <Col md="5">
+                      <Input className="pay-input-style back3" type="radio" id="radio3" name="radios"
+                             defaultChecked={true}
+                             value="زرین پال"/>
+                    </Col>
+                  </Row> : ''
                 }
 
               </CardBody>

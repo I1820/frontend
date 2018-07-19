@@ -485,6 +485,10 @@ module.exports.getAdminPaymentPortals = function (dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/payment/portals`, getConfig(), dispatch, true)
 };
 
+module.exports.activatePaymentPortal = function (portal_id, active, dispatch) {
+  return fetchData(`${BASE_ADMIN_URL}/payment/portals/${portal_id}/active?active=${active ? 1 : 0}`, getConfig(), dispatch, true)
+};
+
 module.exports.getUserPaymentPortals = function (dispatch) {
   return fetchData(`/payment/portals`, getConfig(), dispatch)
 };
