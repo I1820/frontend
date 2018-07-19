@@ -335,7 +335,7 @@ class GatewaysView extends Component {
                              required placeholder="A201FA422C7D3102FA411419D0"
                              type="textarea"/>
                     </Col>
-                    <Col sm={2}></Col>
+                    <Col sm={2}/>
                   </FormGroup>
 
                   <FormGroup row>
@@ -356,7 +356,7 @@ class GatewaysView extends Component {
                              placeholder="44FF55GG66hh77jj00AA11BB22CC33DD"
                              type="text"/>
                     </Col>
-                    <Col sm={2}></Col>
+                    <Col sm={2}/>
                   </FormGroup>
 
                   <FormGroup row>
@@ -378,6 +378,14 @@ class GatewaysView extends Component {
                              type="text"/>
                     </Col>
                     <Col sm={2}></Col>
+                  </FormGroup>
+
+                  <FormGroup row>
+                    <Label sm={3}>نتیجه:</Label>
+                    <Col sm={7}>
+                      <Input value={this.state.keys.result} type="text"/>
+                    </Col>
+                    <Col sm={2}/>
                   </FormGroup>
 
                 </Form>
@@ -444,16 +452,23 @@ class GatewaysView extends Component {
     else if (!this.state.keys.payload.match(/^([0-9A-Fa-f][0-9A-Fa-f])+$/g))
       toastAlerts(false, 'payload  را درست وارد کنید( به صورت hex)');
 
-    this.props.dispatch(decryptFramePayloadAction({
-      phyPayload: hexToBase64(this.state.keys.payload),
-      netskey: this.state.keys.nwkSKey,
-      appskey: this.state.keys.appSKey
-    }, (status, result) => {
-      if (status) {
-        toastAlerts(status, 'وقتی نمونه واقعی اومد درست میکنم اقای علیزاده.');
-      }
-      else toastAlerts(status, result);
-    }))
+    else
+      this.props.dispatch(decryptFramePayloadAction({
+        phyPayload: hexToBase64(this.state.keys.payload),
+        netskey: this.state.keys.nwkSKey,
+        appskey: this.state.keys.appSKey
+      }, (status, result) => {
+        if (status) {
+          this.setState({
+            keys: {
+              ...this.state.keys,
+              result: result,
+            }
+          });
+          toastAlerts(status, 'با موفقیت انجام شد.');
+        }
+        else toastAlerts(status, result);
+      }))
   }
 }
 
