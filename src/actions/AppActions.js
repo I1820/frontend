@@ -53,7 +53,9 @@ import {
   GET_CODECS,
   FETCH_USER,
   SET_TOKEN,
-  SET_TRANSACTIONS
+  SET_TRANSACTIONS,
+  GET_ADMIN_PAYMENT_PORTALS,
+  GET_USER_PAYMENT_PORTALS
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
@@ -118,7 +120,8 @@ import {
   activeUser, impersonateUser, getUserTransactionsAPI, activateProject, getGlobalCodecs, getGlobalCodecTemplate,
   updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec,
   changeAdminPassword, resetPasswordAPI, testCodecAPI, getPermissions, getRoles, setRole,
-  uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole
+  uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole,
+  decryptFramePayload, getAdminPaymentPortals, getUserPaymentPortals
 } from '../api';
 import fileDownload from 'js-file-download'
 import { toastAlerts } from '../views/Shared/toast_alert';
@@ -887,6 +890,17 @@ export function updateGatewayAction(data, cb) {
   }
 }
 
+export function decryptFramePayloadAction(data, cb) {
+  return (dispatch) => {
+    const promise = decryptFramePayload(data, dispatch)
+    promise.then((response) => {
+      cb && cb(response.status === 'OK', response.result)
+    }).catch((e) => {
+      cb(false, 'خطای نامشخص')
+    })
+  }
+}
+
 function setSingleGateway(newState) {
   return {type: SET_GATEWAY, newState}
 }
@@ -1245,6 +1259,32 @@ export function deleteDiscountAction(discountId, cb) {
         dispatch(getDiscountsAction())
       } else {
         cb && cb(false, response.result);
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    })
+  }
+}
+
+export function getAdminPaymentPortalsAction() {
+  return (dispatch) => {
+    const promise = getAdminPaymentPortals(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        dispatch({type: GET_ADMIN_PAYMENT_PORTALS, newState: response.result.portals})
+      } else {
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    })
+  }
+}
+
+export function getUserPaymentPortalsAction() {
+  return (dispatch) => {
+    const promise = getUserPaymentPortals(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        dispatch({type: GET_USER_PAYMENT_PORTALS, newState: response.result.portals})
+      } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
     })

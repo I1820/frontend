@@ -24,7 +24,7 @@ import {
   ListGroupItem,
   Alert
 } from 'reactstrap';
-import { buyPackagesAction, forwardTo, getPackageAction } from '../../actions/AppActions'
+import { buyPackagesAction, forwardTo, getPackageAction, getUserPaymentPortalsAction } from '../../actions/AppActions'
 import { toastAlerts } from '../Shared/toast_alert';
 
 
@@ -48,6 +48,7 @@ class SelectedPackage extends Component {
 
   componentWillMount() {
     this.props.dispatch(getPackageAction(this.props.match.params.id))
+    this.props.dispatch(getUserPaymentPortalsAction())
   }
 
   pay() {
@@ -154,6 +155,7 @@ class SelectedPackage extends Component {
                   className="icon-basket-loaded icons"/>درگاه پرداخت</CardTitle>
               </CardHeader>
               <CardBody>
+                {this.props.portals.length &&
                 <Row>
                   <Col md="5">
                     <Input className="pay-input-style back3" type="radio" id="radio3" name="radios"
@@ -161,6 +163,7 @@ class SelectedPackage extends Component {
                            value="زرین پال"/>
                   </Col>
                 </Row>
+                }
 
               </CardBody>
             </Card>
@@ -210,6 +213,7 @@ function select(state) {
   return {
     data: state.userReducer,
     package: state.packageReducer.package,
+    portals: state.packageReducer.userPortals,
     currentlySending: state.homeReducer.currentlySending === undefined ? false : state.homeReducer.currentlySending
   };
 }
