@@ -462,8 +462,9 @@ class ProjectsView extends Component {
       for (let i = 0; i < document.querySelectorAll(".recharts-cartesian-axis-tick-value").length; i++)
         if (document.querySelectorAll(".recharts-cartesian-axis-tick-value")[i].getAttribute("text-anchor") === "end")
           document.querySelectorAll(".recharts-cartesian-axis-tick-value")[i].querySelector("tspan").setAttribute("x", 10)
+
       return (
-        <BarChart width={1300} height={700} data={this.state.barchartData}
+        <BarChart width={document.querySelector(".card-body").offsetWidth-50} height={700} data={this.state.barchartData}
         >
           <CartesianGrid strokeDasharray="3 3"/>
           <XAxis dataKey="name"/>

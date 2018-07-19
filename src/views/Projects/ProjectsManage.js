@@ -712,7 +712,7 @@ class ProjectsManage extends Component {
                 <Button onClick={() => {
                   this.props.dispatch(editAliasesAction(this.state.project._id, {
                     aliases: JSON.stringify(this.state.project.aliases)
-                  }))
+                  },toastAlerts))
                 }} color="primary">ثبت</Button>
               </CardFooter>
             </Card>

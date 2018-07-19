@@ -31,6 +31,7 @@ import moment from 'moment-jalaali';
 import _ from 'underscore';
 import {GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
 import {toPersianNumbers} from '../Shared/helpers';
+import Spinner from "../Spinner/Spinner";
 
 const ReactHighcharts = require('react-highcharts');
 
@@ -46,6 +47,7 @@ class Dashboard extends Component {
     this.renderCharts = this.renderCharts.bind(this)
     this.devEUI = ''
     this.state = {
+      loading:false,
       get_key: true,
       charts: {},
       modalToggle: {
@@ -88,7 +90,7 @@ class Dashboard extends Component {
     return (
 
       <div>
-
+        <Spinner display={this.state.loading}/>
         <Modal isOpen={this.state.modalToggle.setWidgetChart} toggle={() => this.toggle('setWidgetChart')}
                className="text-right">
           <ModalHeader>افزونه جدید</ModalHeader>
@@ -210,11 +212,15 @@ class Dashboard extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color="primary" className="ml-1" onClick={() => {
+              this.setState({loading:true})
               this.toggle('setWidgetChart')
               this.props.dispatch(setDashboardWidgetChartAction({
                 ...this.state.widget,
                 devEUI: this.devEUI
-              }, null, toastAlerts))
+              }, null, (a,v)=>{
+                this.setState({loading:false})
+                toastAlerts(a,v)
+              }))
               this.refresh()
             }}>ارسال</Button>
             <Button color="danger" onClick={() => this.toggle('setWidgetChart')}>انصراف</Button>
@@ -317,13 +323,14 @@ class Dashboard extends Component {
           config.series[0].data = []
           config.series[0].name = this.state.charts[key].title
           config.series[0].label = this.state.charts[key].title
+          console.log("ddddddd",this.state.charts[key].data)
           this.state.charts[key].data.reverse().map((d) => {
             config.xAxis.categories.push(moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'))
             config.series[0].data.push(d.value)
             config.series[0].name = key
 
           })
-
+          this.state.charts[key].data.reverse()
 
           return (
             <div className="col-md-12 col-lg-6" key={key}>

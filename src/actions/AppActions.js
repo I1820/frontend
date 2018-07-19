@@ -815,14 +815,16 @@ export function editProjectAction(id, state, cb) {
   }
 }
 
-export function editAliasesAction(id, aliases) {
+export function editAliasesAction(id, aliases,cb) {
   return (dispatch) => {
     const promise = editAliasesAPI(id, aliases, dispatch);
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(getProject(id, null))
+        cb(true,"با موفقیت ثبت شد")
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+        cb(false,"با خطا روبرو شد")
       }
     }).catch((e) => {
       console.log(e)
