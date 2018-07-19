@@ -464,7 +464,8 @@ class ProjectsView extends Component {
           document.querySelectorAll(".recharts-cartesian-axis-tick-value")[i].querySelector("tspan").setAttribute("x", 10)
 
       return (
-        <BarChart width={document.querySelector(".card-body").offsetWidth-50} height={700} data={this.state.barchartData}
+        <BarChart width={document.querySelector(".card-body").offsetWidth - 50} height={700}
+                  data={this.state.barchartData}
         >
           <CartesianGrid strokeDasharray="3 3"/>
           <XAxis dataKey="name"/>
@@ -542,6 +543,13 @@ class ProjectsView extends Component {
         filterable: false,
         accessor: row => <div style={{textAlign: 'left', direction: 'ltr'}}><JSONPretty id="json-pretty"
                                                                                         json={row.data}/>
+        </div>
+      }, {
+        id: 'raw',
+        Header: 'داده خام',
+        filterable: false,
+        accessor: row => <div style={{ whiteSpace: 'pre-wrap',textAlign: 'left', direction: 'ltr'}}>
+          {row.raw}
         </div>
       },
     ];
