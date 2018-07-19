@@ -331,11 +331,11 @@ class Dashboard extends Component {
 
           config.series[0].data = []
           config.series[0].name = this.state.charts[key].alias
-          config.series[0].label = this.state.charts[key].title
+          config.series[0].label = this.state.charts[key].alias
           this.state.charts[key].data.reverse().map((d) => {
             config.xAxis.categories.push(moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'))
             config.series[0].data.push(d.value)
-            config.series[0].name = key
+            config.series[0].name = this.state.charts[key].alias
 
           })
           this.state.charts[key].data.reverse()
