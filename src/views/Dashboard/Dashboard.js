@@ -47,7 +47,7 @@ class Dashboard extends Component {
     this.renderCharts = this.renderCharts.bind(this)
     this.devEUI = ''
     this.state = {
-      loading:false,
+      loading: false,
       get_key: true,
       charts: {},
       modalToggle: {
@@ -135,15 +135,24 @@ class Dashboard extends Component {
                 <Label sm={3}> alias : </Label>
                 <Col sm={9}>
                   <Input type="select" onChange={(event) => {
-                    if (event.target.value !== "ENTER_KEY")
-                      this.setState({
-                        widget: {...this.state.widget, key: event.target.value},
-                        get_key: false
+                    if (event.target.value !== "ENTER_KEY") {
+                      let aliasSelect = ""
+                      this.state.aliases.forEach((alias) => {
+                        if (Object.keys(alias)[0] === event.target.value) {
+                          aliasSelect = alias[Object.keys(alias)[0]]
+                        }
                       })
+                      this.setState({
+                        widget: {...this.state.widget, key: event.target.value, alias: aliasSelect},
+                        get_key: false,
+
+                      })
+                    }
                     else {
                       this.setState({
-                        widget: {...this.state.widget, key: ""},
-                        get_key: true
+                        widget: {...this.state.widget, key: "", alias: ""},
+                        get_key: true,
+                        alias: event.target.name
                       })
                     }
                   }}>{
@@ -212,14 +221,14 @@ class Dashboard extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color="primary" className="ml-1" onClick={() => {
-              this.setState({loading:true})
+              this.setState({loading: true})
               this.toggle('setWidgetChart')
               this.props.dispatch(setDashboardWidgetChartAction({
                 ...this.state.widget,
                 devEUI: this.devEUI
-              }, null, (a,v)=>{
-                this.setState({loading:false})
-                toastAlerts(a,v)
+              }, null, (a, v) => {
+                this.setState({loading: false})
+                toastAlerts(a, v)
               }))
               this.refresh()
             }}>ارسال</Button>
@@ -321,9 +330,8 @@ class Dashboard extends Component {
           }
 
           config.series[0].data = []
-          config.series[0].name = this.state.charts[key].title
+          config.series[0].name = this.state.charts[key].alias
           config.series[0].label = this.state.charts[key].title
-          console.log("ddddddd",this.state.charts[key].data)
           this.state.charts[key].data.reverse().map((d) => {
             config.xAxis.categories.push(moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'))
             config.series[0].data.push(d.value)
