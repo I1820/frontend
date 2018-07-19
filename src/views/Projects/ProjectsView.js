@@ -35,6 +35,7 @@ import {toastAlerts} from '../Shared/toast_alert';
 import ReactTable from 'react-table'
 import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
 import {GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
+import {colorArray} from "./color";
 
 const {compose, withProps, lifecycle} = require('recompose');
 
@@ -89,7 +90,7 @@ class ProjectsView extends Component {
       data: [],
       tableData: [],
       keys: [],
-      visible:[]
+      visible: []
     }
   }
 
@@ -212,8 +213,9 @@ class ProjectsView extends Component {
       })
     })
 
+
     this.state.data.map((d) => {
-      config.xAxis.categories.push(moment(d.since, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss') + ' ' +
+      config.xAxis.categories.push(moment(d.since, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss') + '\n' +
         moment(d.until, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'))
       sensors.map((dataset, index) => {
         if (d.data[dataset.label] === undefined) {
@@ -232,6 +234,12 @@ class ProjectsView extends Component {
 
   }
 
+  getcolor(k) {
+    return ((((k.split('').reduce(function (a, b) {
+      a = ((a << 5) - a) + b.charCodeAt(0);
+      return a & a
+    }, 0)) % 10) + 10) % 10)
+  }
 
   getThings() {
     let things = []
@@ -378,7 +386,8 @@ class ProjectsView extends Component {
           </CardHeader>
           <CardBody>
             {/*<Line data={mainChart} options={mainChartOpts} height={300}/>*/}
-            {this.renderChart()}
+            {this.renderChart()
+            }
           </CardBody>
         </Card>
         <Card className="text-justify">
@@ -449,19 +458,26 @@ class ProjectsView extends Component {
   renderChart() {
     if (this.state.showLineChart)
       return (<ReactHighcharts config={this.state.config}/>)
-    else if (this.state.showBarChart)
+    else if (this.state.showBarChart) {
+      for (let i = 0; i < document.querySelectorAll(".recharts-cartesian-axis-tick-value").length; i++)
+        if (document.querySelectorAll(".recharts-cartesian-axis-tick-value")[i].getAttribute("text-anchor") === "end")
+          document.querySelectorAll(".recharts-cartesian-axis-tick-value")[i].querySelector("tspan").setAttribute("x", 10)
       return (
-        <BarChart width={1200} height={700} data={this.state.barchartData}
+        <BarChart width={1300} height={700} data={this.state.barchartData}
         >
           <CartesianGrid strokeDasharray="3 3"/>
           <XAxis dataKey="name"/>
           <YAxis/>
-          <Tooltip/>
           <Legend/>
-          <Bar dataKey={101} fill="#8884d8"/>
-          <Bar dataKey={100} fill="#ff0000"/>
+          {
+            this.state.keys.map((key) => {
+              console.log(key, this.getcolor(key))
+              return (<Bar dataKey={key} fill={colorArray[this.getcolor(key)]}/>)
+            })
+          }
         </BarChart>
       )
+    }
   }
 
   renderTimePicker() {
@@ -540,8 +556,7 @@ class ProjectsView extends Component {
           keys.push(key)
       })
       data.push({
-        name: (moment(row.since, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss') + ' ' +
-          moment(row.until, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')),
+        name: (moment(row.since, 'YYYY-MM-DD HH:mm:ss').format('HH:mm jYY/jM/jD')),
         ...row.data
       })
     })
@@ -550,7 +565,7 @@ class ProjectsView extends Component {
       barchartData: data,
       keys
     })
-    console.log(this.state)
+    console.log("Data", this.state)
     // this.setState({data:[
     //     {name: 'Page A', uv: 4000, pv: 0, amt: 2400},
     //     {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
