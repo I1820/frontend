@@ -122,7 +122,6 @@ class ProjectsView extends Component {
   }
 
   drawLineChart() {
-    console.log("name ", this.state.visible, this.state.visible[0].name)
     this.setState({showLineChart: true, draw: true})
     const config = {
       chart: {
