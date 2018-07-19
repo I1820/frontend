@@ -264,6 +264,12 @@ module.exports.updateGateway = function (data, dispatch) {
   return fetchData(`/gateway/${data._id}`, config, dispatch)
 };
 
+module.exports.decryptFramePayload = function (data, dispatch) {
+  const config = postConfig()
+  Object.assign(config, {body: getFormData(data)})
+  return fetchData(`/decrypt-phy-payload/`, config, dispatch)
+};
+
 module.exports.uploadExcel = function (data, projectId, dispatch) {
   const url = `${BASE_URL}/things/from-excel`
   const formData = new FormData();
@@ -472,21 +478,30 @@ module.exports.getScenario = function (projectId, scenarioId, dispatch) {
 };
 
 module.exports.getAdminPackage = function (dispatch) {
-  return fetchData(`/packages/all`, getConfig(), dispatch)
+  return fetchData(`${BASE_ADMIN_URL}/packages`, getConfig(), dispatch, true)
 };
 
+module.exports.getAdminPaymentPortals = function (dispatch) {
+  return fetchData(`${BASE_ADMIN_URL}/payment/portals`, getConfig(), dispatch, true)
+};
+
+module.exports.getUserPaymentPortals = function (dispatch) {
+  return fetchData(`/payment/portals`, getConfig(), dispatch)
+};
+
+
 module.exports.getDiscounts = function (dispatch) {
-  return fetchData(`/discount`, getConfig(), dispatch)
+  return fetchData(`${BASE_ADMIN_URL}/discount`, getConfig(), dispatch, true)
 };
 
 module.exports.deleteDiscount = function (id, dispatch) {
-  return fetchData(`/discount/${id}`, deleteConfig(), dispatch)
+  return fetchData(`${BASE_ADMIN_URL}/discount/${id}`, deleteConfig(), dispatch, true)
 };
 
 module.exports.createDiscount = function (value, dispatch) {
   const config = postConfig();
   Object.assign(config, {body: getFormData({value: value})})
-  return fetchData(`/discount`, config, dispatch)
+  return fetchData(`${BASE_ADMIN_URL}/discount`, config, dispatch, true)
 };
 
 module.exports.getPackage = function (packageId, dispatch) {
@@ -496,22 +511,22 @@ module.exports.getPackage = function (packageId, dispatch) {
 module.exports.createPackage = function (data, dispatch) {
   const config = postConfig();
   Object.assign(config, {body: getFormData(data)})
-  return fetchData(`/packages`, config, dispatch)
+  return fetchData(`${BASE_ADMIN_URL}/packages`, config, dispatch, true)
 };
 
 module.exports.updatePackage = function (packageId, data, dispatch) {
   const config = patchConfig();
   Object.assign(config, {body: getFormData(data)})
-  return fetchData(`/packages/${packageId}`, config, dispatch)
+  return fetchData(`${BASE_ADMIN_URL}/packages/${packageId}`, config, dispatch, true)
 };
 
 
 module.exports.deletePackage = function (packageId, dispatch) {
-  return fetchData(`/packages/${packageId}`, deleteConfig(), dispatch)
+  return fetchData(`${BASE_ADMIN_URL}/packages/${packageId}`, deleteConfig(), dispatch, true)
 };
 
 module.exports.activatePackage = function (packageId, active, dispatch) {
-  return fetchData(`/packages/${packageId}/activate?active=${active ? 1 : 0}`, getConfig(), dispatch)
+  return fetchData(`${BASE_ADMIN_URL}/packages/${packageId}/activate?active=${active ? 1 : 0}`, getConfig(), dispatch, true)
 };
 
 module.exports.getUserPackage = function (dispatch) {

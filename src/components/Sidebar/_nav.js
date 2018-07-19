@@ -62,7 +62,7 @@ export default {
     },
     {
       name: 'مدیریت پرتال پرداخت',
-      url: '/payment-portal/management',
+      url: '/portals',
       icon: 'icon-grid',
       type: 'admin'
     },
