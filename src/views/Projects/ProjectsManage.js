@@ -620,7 +620,7 @@ class ProjectsManage extends Component {
                   this.props.dispatch(editProjectAction(this.state.project._id, {
                     name: this.state.project.name,
                     description: this.state.project.description
-                  },this.callback))
+                  }, this.callback))
                 }} className="ml-1" color="primary">ثبت اطلاعات</Button>
 
                 <Button onClick={() => this.toggle('activeProject')} className="ml-1" color="warning">{
@@ -712,7 +712,7 @@ class ProjectsManage extends Component {
                 <Button onClick={() => {
                   this.props.dispatch(editAliasesAction(this.state.project._id, {
                     aliases: JSON.stringify(this.state.project.aliases)
-                  },toastAlerts))
+                  }, toastAlerts))
                 }} color="primary">ثبت</Button>
               </CardFooter>
             </Card>
@@ -931,16 +931,11 @@ class ProjectsManage extends Component {
             Header: 'وضعیت',
             filterable: false,
             accessor: row => {
-              let badgeColor = 'success'
-              switch (row.last_seen_at.status) {
-                case 'gray':
-                  badgeColor = 'secondary'
-              }
               return (<div>
                 {row.type === 'lora' ?
                   <Badge id={`tooltip-${row._id}`}
-                         color={!row.last_seen_at['time'] ? 'secondary' : 'success'}>{row.last_seen_at['time'] ?
-                    'اخرین تاریخ دریافت داده' : 'عدم دریافت داده'}</Badge> : ''}
+                         color={row.last_seen_at['status']}>
+                    {row.last_seen_at['time'] ? 'اخرین تاریخ دریافت داده' : 'عدم دریافت داده'}</Badge> : ''}
                 {row.last_seen_at['time'] &&
                 <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
                   {moment(row.last_seen_at.time, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
