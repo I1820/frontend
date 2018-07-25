@@ -22,7 +22,7 @@ import {
   Table,
   FormText
 } from 'reactstrap';
-import { getUsersAction, getRolesAction, setRoleAction } from '../../actions/AppActions';
+import { getUsersAction, getRolesAction, setRoleAction, DownloadUsersListExcelAction } from '../../actions/AppActions';
 import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import ReactTable from 'react-table'
@@ -32,6 +32,7 @@ class UsersList extends Component {
   constructor(props) {
     super(props);
     this.changeRole = this.changeRole.bind(this)
+    this.downloadExcel = this.downloadExcel.bind(this)
     this.state = {
       usersInfo: [],
       modal: false,
@@ -87,6 +88,9 @@ class UsersList extends Component {
               className="-striped -highlight"
             />
           </CardBody>
+          <CardFooter>
+            <Button onClick={this.downloadExcel} className="ml-1" color="success">خروجی اکسل</Button>
+          </CardFooter>
         </Card>
       </div>
     )
@@ -167,6 +171,10 @@ class UsersList extends Component {
   changeRole(status, message) {
     toastAlerts(status, message);
     this.props.dispatch(getUsersAction())
+  }
+
+  downloadExcel() {
+    this.props.dispatch(DownloadUsersListExcelAction())
   }
 }
 

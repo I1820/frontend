@@ -321,6 +321,30 @@ module.exports.DownloadThingsExcel = function (projectId, dispatch) {
   return get(url, config)
 };
 
+module.exports.DownloadUserTransactionsExcel = function () {
+  const url = `${BASE_URL}/payment/excel`
+  const config = {
+    headers: {
+      'Authorization': 'Bearer ' + store.getState().userReducer.token,
+      'Content-Type': 'multipart/form-data',
+    },
+    responseType: 'blob'
+  }
+  return get(url, config)
+};
+
+module.exports.DownloadUsersListExcel = function () {
+  const url = `${BASE_ADMIN_URL}/users/excel`
+  const config = {
+    headers: {
+      'Authorization': 'Bearer ' + store.getState().userReducer.token,
+      'Content-Type': 'multipart/form-data',
+    },
+    responseType: 'blob'
+  }
+  return get(url, config)
+};
+
 module.exports.DownloadThingProfileThingsExcel = function (profileId, dispatch) {
   const url = `${BASE_URL}/thing-profile/${profileId}/things-excel`
   const config = {

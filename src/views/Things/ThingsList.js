@@ -163,15 +163,10 @@ class ThingsList extends Component {
             Header: 'وضعیت',
             filterable: false,
             accessor: row => {
-              let badgeColor = 'success'
-              switch (row.last_seen_at.status) {
-                case 'gray':
-                  badgeColor = 'secondary'
-              }
               return (<div>
                 {row.type === 'lora' ?
                   <Badge id={`tooltip-${row._id}`}
-                         color={!row.last_seen_at['time'] ? 'secondary' : 'success'}>{row.last_seen_at['time'] ?
+                         color={row.last_seen_at['status']}>{row.last_seen_at['time'] ?
                     'اخرین تاریخ دریافت داده' : 'عدم دریافت داده'}</Badge> : ''}
                 {row.last_seen_at['time'] &&
                 <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>

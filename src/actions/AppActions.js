@@ -121,7 +121,8 @@ import {
   updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec,
   changeAdminPassword, resetPasswordAPI, testCodecAPI, getPermissions, getRoles, setRole,
   uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole,
-  decryptFramePayload, getAdminPaymentPortals, getUserPaymentPortals, activatePaymentPortal
+  decryptFramePayload, getAdminPaymentPortals, getUserPaymentPortals, activatePaymentPortal,
+  DownloadUsersListExcel, DownloadUserTransactionsExcel
 } from '../api';
 import fileDownload from 'js-file-download'
 import { toastAlerts } from '../views/Shared/toast_alert';
@@ -744,6 +745,34 @@ export function DownloadThingsExcelAction(projectId) {
     DownloadThingsExcelAPI(projectId).then((response) => {
       dispatch(sendingRequest(false))
       fileDownload(response.data, 'things.xls', 'application/vnd.ms-excel');
+      toastAlerts(true, 'باموفقیت انجام شد.');
+    }).catch((err) => {
+      toastAlerts(false, 'خطای نامشخص');
+      dispatch(sendingRequest(false))
+    })
+  }
+}
+
+export function DownloadUserTransactionsExcelAction() {
+  return (dispatch) => {
+    dispatch(sendingRequest(true))
+    DownloadUserTransactionsExcel().then((response) => {
+      dispatch(sendingRequest(false))
+      fileDownload(response.data, 'invoices.xls', 'application/vnd.ms-excel');
+      toastAlerts(true, 'باموفقیت انجام شد.');
+    }).catch((err) => {
+      toastAlerts(false, 'خطای نامشخص');
+      dispatch(sendingRequest(false))
+    })
+  }
+}
+
+export function DownloadUsersListExcelAction() {
+  return (dispatch) => {
+    dispatch(sendingRequest(true))
+    DownloadUsersListExcel().then((response) => {
+      dispatch(sendingRequest(false))
+      fileDownload(response.data, 'users.xls', 'application/vnd.ms-excel');
       toastAlerts(true, 'باموفقیت انجام شد.');
     }).catch((err) => {
       toastAlerts(false, 'خطای نامشخص');

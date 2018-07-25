@@ -22,7 +22,10 @@ import {
   Table,
   FormText
 } from 'reactstrap';
-import {getUsersAction, getUserTransactions, SelectUser} from "../../actions/AppActions";
+import {
+  DownloadUserTransactionsExcelAction, getUsersAction, getUserTransactions,
+  SelectUser
+} from '../../actions/AppActions';
 import {connect} from 'react-redux';
 import Spinner from "../Spinner/Spinner";
 import ReactTable from 'react-table'
@@ -32,6 +35,7 @@ import {toPersianNumbers} from "../Shared/helpers";
 class UserTransactions extends Component {
   constructor(props) {
     super(props);
+    this.downloadExcel = this.downloadExcel.bind(this)
     this.state = {
       transactions: [],
       total: 0
@@ -89,6 +93,9 @@ class UserTransactions extends Component {
               className="-striped -highlight"
             />
           </CardBody>
+          <CardFooter>
+            <Button onClick={this.downloadExcel} className="ml-1" color="success">خروجی اکسل</Button>
+          </CardFooter>
         </Card>
       </div>
     )
@@ -138,6 +145,10 @@ class UserTransactions extends Component {
         filterable: false,
       },
     ];
+  }
+
+  downloadExcel() {
+    this.props.dispatch(DownloadUserTransactionsExcelAction())
   }
 
 
