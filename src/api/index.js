@@ -332,6 +332,23 @@ module.exports.DownloadUserTransactionsExcel = function () {
   }
   return get(url, config)
 };
+module.exports.DownloadThingsDataExcel = function (things, projectId, offset, limit, since) {
+  const url = `${BASE_URL}/things/data/excel`
+  const config = {
+    headers: {
+      'Authorization': 'Bearer ' + store.getState().userReducer.token,
+      'Content-Type': 'multipart/form-data',
+    },
+    responseType: 'blob',
+  }
+  const fd = new FormData();
+  fd.append('thing_ids', things);
+  fd.append('project_id', projectId);
+  fd.append('offset', offset);
+  fd.append('limit', limit);
+  fd.append('since', since);
+  return post(url, fd, config)
+};
 
 module.exports.DownloadUsersListExcel = function () {
   const url = `${BASE_ADMIN_URL}/users/excel`

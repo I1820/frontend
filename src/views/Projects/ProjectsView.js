@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Row,
   Col,
@@ -24,18 +24,18 @@ import moment from 'moment-jalaali'
 import JSONPretty from 'react-json-pretty';
 import {
   getCodecTemplateListAction, getProject,
-  getThingsSampleDataAction, getThingsMainDataAction
+  getThingsSampleDataAction, getThingsMainDataAction, DownloadThingsDataExcelAction
 } from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
-import {DateTimeRangePicker, DateTimePicker} from 'react-advance-jalaali-datepicker';
+import { DateTimeRangePicker, DateTimePicker } from 'react-advance-jalaali-datepicker';
 import Select2 from 'react-select2-wrapper';
 import Spinner from '../Spinner/Spinner';
-import {css} from 'glamor';
-import {toastAlerts} from '../Shared/toast_alert';
+import { css } from 'glamor';
+import { toastAlerts } from '../Shared/toast_alert';
 import ReactTable from 'react-table'
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from 'recharts'
-import {GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
-import {colorArray} from "./color";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
+import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
+import { colorArray } from './color';
 
 const {compose, withProps, lifecycle} = require('recompose');
 
@@ -51,6 +51,7 @@ class ProjectsView extends Component {
     this.renderChart = this.renderChart.bind(this)
     this.drawBarChart = this.drawBarChart.bind(this)
     this.renderThingLocation = this.renderThingLocation.bind(this)
+    this.downloadExcel = this.downloadExcel.bind(this)
     this.state = {
       draw: false,
       pages: 1,
@@ -90,7 +91,14 @@ class ProjectsView extends Component {
       data: [],
       tableData: [],
       keys: [],
-      visible: []
+      visible: [],
+      excelParams: {
+        things: '',
+        projectId: '',
+        offset: '',
+        limit: '',
+        since: ''
+      }
     }
   }
 
@@ -353,7 +361,16 @@ class ProjectsView extends Component {
                     return new Date().getTime();
                   }
                 }
-                if (this.state.since || this.state.window)
+                if (this.state.since || this.state.window) {
+                  this.setState({
+                    excelParams: {
+                      things: JSON.stringify(this.state.selectedThing),
+                      projectId: this.state.project._id,
+                      offset: 0,
+                      limit: this.state.pageSize,
+                      since: this.state.since ? this.state.since : Math.floor(Date.now() / 1000) - this.state.window * 60
+                    }
+                  });
                   this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
                     this.state.project._id,
                     0,
@@ -365,7 +382,7 @@ class ProjectsView extends Component {
                         pages++;
                       this.setState({tableData: data.reverse(), pages})
                     }));
-
+                }
                 this.getData(() => {
                   if (this.state.auto)
                     this.setState({
@@ -414,7 +431,15 @@ class ProjectsView extends Component {
               className="-striped -highlight"
               manual
               onFetchData={(state, instance) => {
-                console.log(state, instance)
+                this.setState({
+                  excelParams: {
+                    things: JSON.stringify(this.state.selectedThing),
+                    projectId: this.state.project._id,
+                    offset: (state.page) * state.pageSize,
+                    limit: state.pageSize,
+                    since: this.state.since ? this.state.since : 0
+                  }
+                });
                 this.setState({loading: false, tableData: [], pageSize: state.pageSize})
                 if (this.state.since || this.state.window)
                   this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
@@ -449,6 +474,9 @@ class ProjectsView extends Component {
               }}
             />
           </CardBody>
+          <CardFooter>
+            <Button onClick={this.downloadExcel} className="ml-1" color="success">خروجی اکسل</Button>
+          </CardFooter>
         </Card>
         {this.renderThingLocation()}
       </div>
@@ -460,11 +488,11 @@ class ProjectsView extends Component {
       return (<ReactHighcharts config={this.state.config}/>)
     else if (this.state.showBarChart) {
       for (let i = 0; i < document.querySelectorAll(".recharts-cartesian-axis-tick-value").length; i++)
-        if (document.querySelectorAll(".recharts-cartesian-axis-tick-value")[i].getAttribute("text-anchor") === "end")
-          document.querySelectorAll(".recharts-cartesian-axis-tick-value")[i].querySelector("tspan").setAttribute("x", 10)
+        if (document.querySelectorAll('.recharts-cartesian-axis-tick-value')[i].getAttribute('text-anchor') === 'end')
+          document.querySelectorAll('.recharts-cartesian-axis-tick-value')[i].querySelector('tspan').setAttribute('x', 10)
 
       return (
-        <BarChart width={document.querySelector(".card-body").offsetWidth - 50} height={700}
+        <BarChart width={document.querySelector('.card-body').offsetWidth - 50} height={700}
                   data={this.state.barchartData}
         >
           <CartesianGrid strokeDasharray="3 3"/>
@@ -480,6 +508,14 @@ class ProjectsView extends Component {
         </BarChart>
       )
     }
+  }
+
+  downloadExcel() {
+    const params = this.state.excelParams;
+    if (params.things && params.projectId)
+      this.props.dispatch(DownloadThingsDataExcelAction(params.things, params.projectId, params.offset, params.limit, params.since))
+    else
+      toastAlerts(false, 'داده‌ای موجود نیست');
   }
 
   renderTimePicker() {
@@ -548,7 +584,7 @@ class ProjectsView extends Component {
         id: 'raw',
         Header: 'داده خام',
         filterable: false,
-        accessor: row => <div style={{ whiteSpace: 'pre-wrap',textAlign: 'left', direction: 'ltr'}}>
+        accessor: row => <div style={{whiteSpace: 'pre-wrap', textAlign: 'left', direction: 'ltr'}}>
           {row.raw}
         </div>
       },
@@ -574,7 +610,7 @@ class ProjectsView extends Component {
       barchartData: data,
       keys
     })
-    console.log("Data", this.state)
+    console.log('Data', this.state)
     // this.setState({data:[
     //     {name: 'Page A', uv: 4000, pv: 0, amt: 2400},
     //     {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},

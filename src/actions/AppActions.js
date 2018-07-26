@@ -122,7 +122,7 @@ import {
   changeAdminPassword, resetPasswordAPI, testCodecAPI, getPermissions, getRoles, setRole,
   uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole,
   decryptFramePayload, getAdminPaymentPortals, getUserPaymentPortals, activatePaymentPortal,
-  DownloadUsersListExcel, DownloadUserTransactionsExcel
+  DownloadUsersListExcel, DownloadUserTransactionsExcel, DownloadThingsDataExcel
 } from '../api';
 import fileDownload from 'js-file-download'
 import { toastAlerts } from '../views/Shared/toast_alert';
@@ -492,6 +492,20 @@ export function getThingsMainDataAction(things, projectId, offset, limit, since,
   }
 }
 
+export function DownloadThingsDataExcelAction(things, projectId, offset, limit, since) {
+  return (dispatch) => {
+    dispatch(sendingRequest(true))
+    DownloadThingsDataExcel(things, projectId, offset, limit, since, dispatch).then((response) => {
+      dispatch(sendingRequest(false))
+      fileDownload(response.data, 'data.xls', 'application/vnd.ms-excel');
+      toastAlerts(true, 'باموفقیت انجام شد.');
+    }).catch((err) => {
+      toastAlerts(false, 'خطای نامشخص');
+      dispatch(sendingRequest(false))
+    })
+  }
+}
+
 export function getThingsSampleDataAction(things, projectId, offset, limit, window, callback) {
   return (dispatch) => {
     const promise = getThingsSampleData(things, projectId, offset, limit, window, dispatch)
@@ -844,16 +858,16 @@ export function editProjectAction(id, state, cb) {
   }
 }
 
-export function editAliasesAction(id, aliases,cb) {
+export function editAliasesAction(id, aliases, cb) {
   return (dispatch) => {
     const promise = editAliasesAPI(id, aliases, dispatch);
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(getProject(id, null))
-        cb(true,"با موفقیت ثبت شد")
+        cb(true, 'با موفقیت ثبت شد')
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-        cb(false,"با خطا روبرو شد")
+        cb(false, 'با خطا روبرو شد')
       }
     }).catch((e) => {
       console.log(e)
