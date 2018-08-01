@@ -199,7 +199,7 @@ class SendCodec extends Component {
             </Form>
           </CardBody>
           <CardFooter>
-            <Button onClick={this.sendCodec} className="ml-1" color="primary" size="md">ارسال
+            <Button onClick={this.sendCodec} className="ml-1" color="primary" size="md">بارگذاری
               codec</Button>
             <Button
               onClick={() => {
