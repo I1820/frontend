@@ -444,8 +444,6 @@ class GatewaysView extends Component {
       toastAlerts(false, 'کلید AppSKey را درست وارد کنید.');
     else if (!this.state.keys.nwkSKey.match(/^[0-9A-Fa-f]{32}$/g))
       toastAlerts(false, 'کلید nwkSKey را درست وارد کنید.');
-    else if (!this.state.keys.payload.match(/^([0-9A-Fa-f][0-9A-Fa-f])+$/g))
-      toastAlerts(false, 'payload  را درست وارد کنید( به صورت hex)');
 
     else
       this.props.dispatch(decryptFramePayloadAction({
