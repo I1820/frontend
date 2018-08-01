@@ -332,7 +332,7 @@ class GatewaysView extends Component {
                                  }
                                })
                              }}
-                             required placeholder="A201FA422C7D3102FA411419D0"
+                             required placeholder="==slkuser"
                              type="textarea"/>
                     </Col>
                     <Col sm={2}/>
@@ -439,11 +439,6 @@ class GatewaysView extends Component {
   }
 
   decrypt() {
-    function hexToBase64(str) {
-      return btoa(String.fromCharCode.apply(null,
-        str.replace(/\r|\n/g, '').replace(/([\da-fA-F]{2}) ?/g, '0x$1 ').replace(/ +$/, '').split(' '))
-      );
-    }
 
     if (!this.state.keys.appSKey.match(/^[0-9A-Fa-f]{32}$/g))
       toastAlerts(false, 'کلید AppSKey را درست وارد کنید.');
@@ -454,7 +449,7 @@ class GatewaysView extends Component {
 
     else
       this.props.dispatch(decryptFramePayloadAction({
-        phyPayload: hexToBase64(this.state.keys.payload),
+        phyPayload: this.state.keys.payload,
         netskey: this.state.keys.nwkSKey,
         appskey: this.state.keys.appSKey
       }, (status, result) => {

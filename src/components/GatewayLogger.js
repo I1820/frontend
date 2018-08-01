@@ -18,6 +18,7 @@ import ReactTable from 'react-table'
 import ReactJson from 'react-json-view'
 import Loading from './Loading'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { toastAlerts } from '../views/Shared/toast_alert';
 
 export default class GatewayLogger extends Component {
 
@@ -141,6 +142,19 @@ export default class GatewayLogger extends Component {
         id: 'spreadFactor',
         accessor: row => row.uplinkframe ? row.uplinkframe.txinfo.datarate.spreadfactor : row.downlinkframe.txinfo.datarate.spreadfactor,
         maxWidth: 100,
+      }, {
+        Header: 'شمارنده بسته',
+        id: 'fcnt',
+        accessor: row => row.uplinkframe ? row.uplinkframe.phypayloadjson.macPayload.fhdr.fCnt :
+          row.downlinkframe.phypayloadjson.macPayload.fhdr.fCnt,
+        maxWidth: 100,
+      },
+      {
+        Header: 'RSSI',
+        id: 'rssi',
+        accessor: row => row.uplinkframe ? (row.uplinkframe.rxinfo.length ? row.uplinkframe.rxinfo[0].rssi : '') :
+          row.downlinkframe.rxinfo.length ? row.downlinkframe.rxinfo[0].rssi : '',
+        maxWidth: 100,
       },
       {
         id: 'payload',
@@ -155,7 +169,9 @@ export default class GatewayLogger extends Component {
                 row.uplinkframe ? row.uplinkframe.phypayloadjson.macPayload.frmPayload[0].bytes :
                   row.downlinkframe.phypayloadjson.macPayload.frmPayload[0].bytes
               }>
-                <i color="info" className={'icon-docs'}
+                <i color="info" className={'icon-docs'} onClick={() => {
+                  toastAlerts(true, 'کپی شد');
+                }}
                    style={{marginLeft: '10px', cursor: 'pointer'}}/>
               </CopyToClipboard>
             </div>

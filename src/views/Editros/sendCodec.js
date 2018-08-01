@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Card,
   CardHeader,
@@ -8,7 +8,7 @@ import {
   Button, FormGroup, Form, Label, Col, Input, ModalFooter, ModalHeader, ModalBody, Modal,
 } from 'reactstrap';
 
-import {toastAlerts} from '../Shared/toast_alert';
+import { toastAlerts } from '../Shared/toast_alert';
 
 
 import AceEditor from 'react-ace';
@@ -37,9 +37,9 @@ class SendCodec extends Component {
       codec: '',
       templates: [],
       testType: 0,
-      testValue: "",
+      testValue: '',
       lint: [],
-      testResult:""
+      testResult: ''
     }
   }
 
@@ -84,23 +84,23 @@ class SendCodec extends Component {
             <FormGroup style={{display: 'flex'}} row>
               <Label sm={5}>مقدار آزمایشی:</Label>
               <Col sm={7}>
-              <Input maxLength="150" type="textarea" name=""
-                     onChange={(e) => {
-                       this.setState({testValue: e.target.value})
-                     }}
-                     rows="2"/>
+                <Input maxLength="150" type="textarea" name=""
+                       onChange={(e) => {
+                         this.setState({testValue: e.target.value})
+                       }}
+                       rows="2"/>
               </Col>
             </FormGroup>
             <FormGroup style={{display: 'flex'}} row>
               <Label sm={5}>نوع آزمایش:</Label>
               <Col sm={7}>
-              <Input type="select" name="type"
-                     onChange={(e) => {
-                       this.setState({testType: e.target.value})
-                     }} id="select">
-                <option value="0">ارسال داده</option>
-                <option value="1">دریافت داده</option>
-              </Input>
+                <Input type="select" name="type"
+                       onChange={(e) => {
+                         this.setState({testType: e.target.value})
+                       }} id="select">
+                  <option value="0">ارسال داده</option>
+                  <option value="1">دریافت داده</option>
+                </Input>
               </Col>
             </FormGroup>
             <FormGroup style={{display: 'flex'}} row>
@@ -112,9 +112,9 @@ class SendCodec extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={() => {
-              this.setState({testResult:""})
+              this.setState({testResult: ''})
               this.props.dispatch(testCodec(this.state.thing, {data: this.state.testValue}, this.state.testType, (testResult) => {
-                  this.setState({testResult})
+                this.setState({testResult})
               }))
             }} className="ml-1">ارسال</Button>
             <Button color="danger" onClick={() => this.setState({modal: !this.state.modal})}>انصراف</Button>
@@ -130,7 +130,7 @@ class SendCodec extends Component {
             <Form>
               <FormGroup row>
                 <Label sm={2}>قالب Decoder: </Label>
-                <Col sm={4}>
+                <Col sm={6}>
                   {/*<Input type="select" name="supportsJoin" id="select" onChange={(event) => {*/}
                   {/*if (event.target.value !== '') {*/}
                   {/*}*/}
@@ -166,6 +166,12 @@ class SendCodec extends Component {
                       }
                     }
                   />
+                  <button style={{width: '20%',marginRight:'10px'}} class="btn btn-info" onClick={() => {
+                    this.setState({
+                      global: false,
+                      templateId: ''
+                    })
+                  }}>{'به صورت دستی'}</button>
                 </Col>
               </FormGroup>
               <FormGroup style={{display: this.state.global === false ? 'flex' : 'none'}} row>
@@ -204,12 +210,12 @@ class SendCodec extends Component {
               className="ml-1"
               style={{display: this.state.global === false ? 'inline-block' : 'none'}}
               color="secondary" size="md">بررسی کدک</Button>
-            <Button
+            {this.state.codec && <Button
               onClick={() => {
                 this.setState({modal: true})
               }}
               className="ml-1"
-              color="warning" size="md">آزمایش کدک</Button>
+              color="warning" size="md">آزمایش کدک</Button>}
           </CardFooter>
         </Card>
         <Card style={{display: this.state.global === false ? 'flex' : 'none'}} className="text-justify">
@@ -223,35 +229,35 @@ class SendCodec extends Component {
           </CardBody>
         </Card>
       </div>
-    );
+  );
   }
 
 
   renderLog() {
     return this.state.lint.map((lint, key) => {
-      let color = 'black'
-      if (lint.type === 'error')
-        color = 'red'
-      else if (lint.type === 'warning')
-        color = 'orange'
-      else if (lint.type === 'convention')
-        color = 'cadetblue'
-      return <p id={`log-${key}`}
-                style={{fontFamily: 'sans-serif', color}}>{key + 1}- {lint.type}: {lint.message}!
-        lint:{lint.line} column:{lint.column}</p>
-    })
+    let color = 'black'
+    if (lint.type === 'error')
+    color = 'red'
+    else if (lint.type === 'warning')
+    color = 'orange'
+    else if (lint.type === 'convention')
+    color = 'cadetblue'
+    return <p id={`log-${key}`}
+    style={{fontFamily: 'sans-serif', color}}>{key + 1}- {lint.type}: {lint.message}!
+    lint:{lint.line} column:{lint.column}</p>
+  })
   }
 
 
   renderTemplates() {
     let templates = [{children: [], text: 'قالب شخصی'}, {children: [], text: 'قالب عمومی'}]
     this.state.templates && this.state.templates.codecs && this.state.templates.codecs.forEach((template) => {
-        templates[0].children.push({text: template.name, id: template._id, global: false})
-      }
+    templates[0].children.push({text: template.name, id: template._id, global: false})
+  }
     )
     this.state.templates && this.state.templates.globals && this.state.templates.globals.forEach((template) => {
-        templates[1].children.push({text: template.name, id: template._id, global: true})
-      }
+    templates[1].children.push({text: template.name, id: template._id, global: true})
+  }
     )
     return templates
   }
@@ -259,17 +265,17 @@ class SendCodec extends Component {
 
   sendCodec() {
     if (this.state.global)
-      this.props.dispatch(sendCodecAction(this.state.thing, this.state.project, undefined, this.state.templateId, toastAlerts))
+    this.props.dispatch(sendCodecAction(this.state.thing, this.state.project, undefined, this.state.templateId, toastAlerts))
     else
-      this.props.dispatch(sendCodecAction(this.state.thing, this.state.project, this.state.codec, undefined, toastAlerts))
+    this.props.dispatch(sendCodecAction(this.state.thing, this.state.project, this.state.codec, undefined, toastAlerts))
   }
-}
+  }
 
-function mapStateToProps(state) {
-  return ({
+  function mapStateToProps(state) {
+    return ({
     loading: state.homeReducer.currentlySending,
 
   })
-}
+  }
 
-export default connect(mapStateToProps)(SendCodec);
+  export default connect(mapStateToProps)(SendCodec);

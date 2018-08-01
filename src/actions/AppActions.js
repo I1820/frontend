@@ -849,7 +849,7 @@ export function editProjectAction(id, state, cb) {
       if (response.status === 'OK') {
         dispatch(setProject(response.result))
       } else {
-        cb & cb(false, response.result)
+        cb && cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
     }).catch((e) => {
