@@ -152,8 +152,8 @@ export default class GatewayLogger extends Component {
       {
         Header: 'RSSI',
         id: 'rssi',
-        accessor: row => row.uplinkframe ? (row.uplinkframe.rxinfo.length ? row.uplinkframe.rxinfo[0].rssi : '') :
-          row.downlinkframe.rxinfo.length ? row.downlinkframe.rxinfo[0].rssi : '',
+        accessor: row => <div style={{direction:'ltr',textAlign:'right'}}>{row.uplinkframe ? (row.uplinkframe.rxinfo.length ? row.uplinkframe.rxinfo[0].rssi : '') :
+          row.downlinkframe.rxinfo.length ? row.downlinkframe.rxinfo[0].rssi : ''}</div>,
         maxWidth: 100,
       },
       {

@@ -176,6 +176,8 @@ class PackageList extends Component {
                       <Col md='3'><strong>وضعیت کاربر </strong></Col>
                       <Col md='3'><span>{this.state.userInfo.active ? 'فعال' : 'غیرفعال'}</span></Col>
                     </Row>
+                  </ListGroupItem>
+                  <ListGroupItem>
                     <Row>
                       <Col md='3'><strong>{'تعداد پروژه‌ها'}</strong></Col>
                       <Col md='3'><span>{toPersianNumbers(this.state.userInfo.overview.projects)}</span></Col>
