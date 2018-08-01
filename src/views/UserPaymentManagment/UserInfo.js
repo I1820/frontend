@@ -87,7 +87,6 @@ class PackageList extends Component {
         this.setState({
           userInfo: nextProps.user
         })
-    console.log("useeeeeeeer",nextProps.user)
   }
 
 
@@ -177,6 +176,12 @@ class PackageList extends Component {
                       <Col md='3'><strong>وضعیت کاربر </strong></Col>
                       <Col md='3'><span>{this.state.userInfo.active ? 'فعال' : 'غیرفعال'}</span></Col>
                     </Row>
+                    <Row>
+                      <Col md='3'><strong>{'تعداد پروژه‌ها'}</strong></Col>
+                      <Col md='3'><span>{toPersianNumbers(this.state.userInfo.overview.projects)}</span></Col>
+                      <Col md='3'><strong>{'تعداد نودها'}</strong></Col>
+                      <Col md='3'><span>{toPersianNumbers(this.state.userInfo.overview.things)}</span></Col>
+                    </Row>
                   </ListGroupItem>
                   {
                     this.state.userInfo.legal &&
@@ -214,24 +219,6 @@ class PackageList extends Component {
                         size="sm">{'تغییر گذرواژه'}</Button>
 
               </CardFooter>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-primary text-center" style={{cursor: 'pointer'}}>
-              <CardBody className="pb-0">
-                <h4 className="mb-0 h3 font-weight-bold">{toPersianNumbers(this.state.userInfo.overview.projects)}</h4>
-                <p>پروژه ثبت شده است</p>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-info text-center" style={{cursor: 'pointer'}}>
-              <CardBody className="pb-0">
-                <h4 className="mb-0 h3 font-weight-bold">{toPersianNumbers(this.state.userInfo.overview.things)}</h4>
-                <p>شی ثبت شده است</p>
-              </CardBody>
             </Card>
           </Col>
         </Row>
