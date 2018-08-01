@@ -98,8 +98,8 @@ class SendCodec extends Component {
                        onChange={(e) => {
                          this.setState({testType: e.target.value})
                        }} id="select">
-                  <option value="0">ارسال داده</option>
-                  <option value="1">دریافت داده</option>
+                  <option value="0">کدگذاری</option>
+                  <option value="1">کدگشایی</option>
                 </Input>
               </Col>
             </FormGroup>
