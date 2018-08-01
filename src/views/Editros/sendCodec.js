@@ -199,8 +199,8 @@ class SendCodec extends Component {
             </Form>
           </CardBody>
           <CardFooter>
-            <Button onClick={this.sendCodec} className="ml-1" color="primary" size="md">بارگذاری
-              codec</Button>
+            <Button onClick={this.sendCodec} className="ml-1" color="primary" size="md">بارگذاری کدک
+              </Button>
             <Button
               onClick={() => {
                 this.props.dispatch(lintCode(this.state.project, this.state.codec, (status, lint) => {
