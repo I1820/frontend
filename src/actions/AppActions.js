@@ -122,7 +122,7 @@ import {
   changeAdminPassword, resetPasswordAPI, testCodecAPI, getPermissions, getRoles, setRole,
   uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole,
   decryptFramePayload, getAdminPaymentPortals, getUserPaymentPortals, activatePaymentPortal,
-  DownloadUsersListExcel, DownloadUserTransactionsExcel, DownloadThingsDataExcel
+  DownloadUsersListExcel, DownloadUserTransactionsExcel, DownloadThingsDataExcel, getProjectThings, getThingsList
 } from '../api';
 import fileDownload from 'js-file-download'
 import { toastAlerts } from '../views/Shared/toast_alert';
@@ -195,9 +195,9 @@ function setProjects(newState) {
   return {type: GET_PROJECTS, newState}
 }
 
-export function getProject(id, cb) {
+export function getProject(id, cb, compress) {
   return (dispatch) => {
-    const promise = getProjectAPI(id, dispatch)
+    const promise = getProjectAPI(id, compress, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(setProject(response.result))
@@ -240,6 +240,40 @@ export function getThings() {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(setThings(response.result))
+      } else {
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    })
+  }
+}
+
+/**
+ * List Project things
+ *
+ */
+export function getProjectThingsListAction(projectId, limit, offset, data, cb) {
+  return (dispatch) => {
+    const promise = getProjectThings(projectId, limit, offset, data, dispatch, false)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(response.result)
+      } else {
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    })
+  }
+}
+
+/**
+ * List Users things
+ *
+ */
+export function getUsersThingsListAction(limit, offset, data, cb) {
+  return (dispatch) => {
+    const promise = getThingsList(limit, offset, data, dispatch, false)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(response.result)
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
@@ -1139,7 +1173,7 @@ export function sendCodecAction(thingId, projectId, codec, codec_id, cb) {
         forwardTo(`projects/manage/${projectId}`)
         cb(true, 'کدک با موفقیت ارسال شد.')
       } else {
-        cb(false, 'مشکلی به وجود امده لطفا بعدا تلاش کنید.')
+        cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
     }).catch((err) => {
@@ -1512,9 +1546,9 @@ export function getDashboardAction(callback) {
   }
 }
 
-export function getUserThingsAction(callback) {
+export function getUserThingsAction(compress, callback) {
   return (dispatch) => {
-    const promise = getUserThings(dispatch)
+    const promise = getUserThings(compress, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         callback(response.result)

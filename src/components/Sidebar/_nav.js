@@ -97,6 +97,11 @@ export default {
           url: '/admin/globalCodec',
           icon: 'icon-grid',
           type: 'admin'
+        },{
+          name: 'پنل‌های مدیریتی',
+          url: '/admin/links',
+          icon: 'icon-grid',
+          type: 'admin'
         },
       ]
     }

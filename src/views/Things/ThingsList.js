@@ -25,7 +25,7 @@ import moment from 'moment-jalaali';
 import ReactTable from 'react-table'
 import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
-import { deleteMultipleThingAction, getThings } from '../../actions/AppActions';
+import { deleteMultipleThingAction, getThings, getUsersThingsListAction } from '../../actions/AppActions';
 import { toastAlerts } from '../Shared/toast_alert';
 
 
@@ -33,18 +33,25 @@ class ThingsList extends Component {
 
   constructor(props) {
     super(props);
-    this.deleteThings = this.deleteThings.bind(this)
-    this.toggle = this.toggle.bind(this)
-    this.callback = this.callback.bind(this)
+    this.deleteThings = this.deleteThings.bind(this);
+    this.toggle = this.toggle.bind(this);
+    this.callback = this.callback.bind(this);
+    this.setThings = this.setThings.bind(this);
+    this.fetchThings = this.fetchThings.bind(this);
     this.state = {
       deleteThingsModal: false,
       deleteThingIds: [],
+      things: [],
+      table: {
+        offset: 0,
+        limit: 5,
+        pages: 1,
+      },
     }
   }
 
 
   componentDidMount() {
-    this.props.dispatch(getThings())
   }
 
   toggle(modal) {
@@ -56,12 +63,34 @@ class ThingsList extends Component {
     this.setState(state);
   }
 
+  fetchThings(state, instance) {
+    this.setState({table: {...this.state.table, loading: true}});
+    this.props.dispatch(getUsersThingsListAction(
+      state.pageSize,
+      state.page * state.pageSize,
+      {sorted: JSON.stringify(state.sorted), filtered: JSON.stringify(state.filtered)},
+      this.setThings
+    ))
+  }
+
+  setThings(res) {
+    this.setState({
+      things: res.things,
+      table: {
+        limit: this.state.table.limit,
+        offset: this.state.table.offset + this.state.table.limit,
+        pages: res.pages,
+        loading: false,
+      }
+    })
+  }
+
   deleteThings() {
     const data = {
       things_id: this.state.deleteThingIds,
     };
     this.toggle('deleteThings')
-    this.props.dispatch(deleteMultipleThingAction(data.things_id,this.callback))
+    this.props.dispatch(deleteMultipleThingAction(data.things_id, this.callback))
   }
 
   callback(status, message) {
@@ -95,19 +124,24 @@ class ThingsList extends Component {
           </CardHeader>
           <CardBody>
             <ReactTable
-              data={this.props.things}
+              data={this.state.things}
               columns={this.reactTableColumns('things')}
-              pageSizeOptions={[10, 15, 25]}
               nextText='بعدی'
               previousText='قبلی'
               filterable={true}
               rowsText='ردیف'
               pageText='صفحه'
               ofText='از'
-              minRows='1'
+              minRows='3'
               noDataText='شی‌ای وجود ندارد'
+              loadingText='در حال دریافت اطلاعات...'
               resizable={false}
-              defaultPageSize={10}
+              loading={this.state.table.loading}
+              onFetchData={this.fetchThings}
+              pages={this.state.table.pages}
+              showPageSizeOptions={false}
+              manual
+              defaultPageSize={this.state.table.limit}
               className="-striped -highlight"
             />
           </CardBody>
@@ -146,7 +180,7 @@ class ThingsList extends Component {
           },
           {
             Header: 'آدرس',
-            accessor: 'interface.devEUI',
+            accessor: 'dev_eui',
             filterMethod: (filter, row) =>
               row[filter.id].startsWith(filter.value) ||
               row[filter.id].endsWith(filter.value),

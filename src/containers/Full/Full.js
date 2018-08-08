@@ -94,6 +94,7 @@ import addTemplate from '../../views/Editros/addTemplate';
 import {ToastContainer} from 'react-toastify';
 import AllTransactions from '../../views/AdminPayments/AllTransactions';
 import PaymentPortalList from '../../views/PaymentPortalManagment/PaymentPortalList';
+import AdminLinks from '../../views/Admin/AdminLinks';
 
 class Full extends Component {
   render() {
@@ -137,6 +138,8 @@ class Full extends Component {
                 <Route path="/admin/globalCodec/edit/:id" name="AddTemplate" component={AddTemplate}/>
                 <Route path="/admin/globalCodec/create" name="AddTemplate" component={AddTemplate}/>
                 <Route path="/admin/globalCodec" name="globalCodec" component={globalCodec}/>
+
+                <Route path="/admin/links" name="Adminlinks" component={AdminLinks}/>
 
                 <Route path="/projects/manage/:id" name="ProjectsManage" component={ProjectsManage}/>
                 <Route path="/projects/view/:id" name="ProjectsView" component={ProjectsView}/>

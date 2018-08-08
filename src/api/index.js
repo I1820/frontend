@@ -16,12 +16,12 @@ import axios, { post, get } from 'axios';
 import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://185.116.162.237:7070/api/v1'
-const BASE_FILES_URL = 'http://185.116.162.237:7070'
-const BASE_ADMIN_URL = 'http://185.116.162.237:7070/api/admin'
-// const BASE_URL = 'http://localhost:8000/api/v1'
-// const BASE_FILES_URL = 'http://localhost:8000'
-// const BASE_ADMIN_URL = 'http://localhost:8000/api/admin'
+// const BASE_URL = 'http://185.116.162.237:7070/api/v1'
+// const BASE_FILES_URL = 'http://185.116.162.237:7070'
+// const BASE_ADMIN_URL = 'http://185.116.162.237:7070/api/admin'
+const BASE_URL = 'http://localhost:8000/api/v1'
+const BASE_FILES_URL = 'http://localhost:8000'
+const BASE_ADMIN_URL = 'http://localhost:8000/api/admin'
 
 const endpoints = {
   login: '/login',
@@ -70,15 +70,17 @@ const translate = (error) => {
   return Errors[error] !== undefined ? Errors[error] : error
 };
 
-function fetchData(endpoint = '/404', config = {}, dispatch, newUrl = false) {
+function fetchData(endpoint = '/404', config = {}, dispatch, newUrl = false, loading = true) {
 
   return new Promise((resolve, reject) => {
-    dispatch(sendingRequest(true))
+    if (loading)
+      dispatch(sendingRequest(true))
 
     fetch(newUrl ? endpoint : BASE_URL + endpoint, config)
       .then((response) => response.json())
       .then((json) => {
-        dispatch(sendingRequest(false))
+        if (loading)
+          dispatch(sendingRequest(false))
         const {status, message, code} = controler(json)
         if ((code === 701 || code === 401) && endpoint !== endpoints.login) {
           console.log(message === 'token expired' && store.getState().userReducer.keep)
@@ -156,7 +158,9 @@ module.exports.createProject = function (data, dispatch) {
 };
 //
 //
-module.exports.getProject = function (id, dispatch) {
+module.exports.getProject = function (id, compress, dispatch) {
+  if (compress)
+    return fetchData(endpoints.getProject + '/' + id + '?compress=1', getConfig(), dispatch)
   return fetchData(endpoints.getProject + '/' + id, getConfig(), dispatch)
 };
 //
@@ -200,6 +204,23 @@ module.exports.getThing = function (thingId, dispatch) {
 
 module.exports.getThings = function (dispatch) {
   return fetchData(`/things`, getConfig(), dispatch)
+};
+module.exports.getProjectThings = function (projectId, limit = 10, offset = 0, data, dispatch, loading = true) {
+  const config = postConfig()
+  const formData = {
+    limit, offset, ...data
+  }
+  Object.assign(config, {body: getFormData(formData)})
+  return fetchData(`/project/${projectId}/things`, config, dispatch, false, loading)
+};
+
+module.exports.getThingsList = function (limit = 10, offset = 0, data, dispatch, loading = true) {
+  const config = postConfig()
+  const formData = {
+    limit, offset, ...data
+  }
+  Object.assign(config, {body: getFormData(formData)})
+  return fetchData(`/things/list`, config, dispatch, false, loading)
 };
 
 
@@ -594,8 +615,8 @@ module.exports.getDashboard = function (dispatch) {
   return fetchData(`/user/dashboard`, getConfig(), dispatch)
 };
 
-module.exports.getUserThings = function (dispatch) {
-  return fetchData(`/things`, getConfig(), dispatch)
+module.exports.getUserThings = function (compress, dispatch) {
+  return fetchData(`/things?compress=${compress}`, getConfig(), dispatch)
 };
 
 

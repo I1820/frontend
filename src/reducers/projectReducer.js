@@ -15,7 +15,6 @@ export function projectReducer(state = [], action) {
             if (_.find(state, {_id: action.newState.project._id}) !== undefined) {
                 return state.map((currentItem, index) => {
                     if (action.newState.project._id === currentItem._id) {
-                        console.log('find', currentItem)
                         return {
                             ...action.newState.project,
                             currentItem
@@ -25,7 +24,6 @@ export function projectReducer(state = [], action) {
                     }
                 })
             } else {
-                console.log('insert')
                 return [
                     ...state,
                     action.newState.project

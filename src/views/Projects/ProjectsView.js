@@ -36,6 +36,7 @@ import ReactTable from 'react-table'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 import { colorArray } from './color';
+import Loading from '../../components/Loading';
 
 const {compose, withProps, lifecycle} = require('recompose');
 
@@ -52,6 +53,8 @@ class ProjectsView extends Component {
     this.drawBarChart = this.drawBarChart.bind(this)
     this.renderThingLocation = this.renderThingLocation.bind(this)
     this.downloadExcel = this.downloadExcel.bind(this)
+    this.start = this.start.bind(this)
+    this.stop = this.stop.bind(this)
     this.state = {
       draw: false,
       pages: 1,
@@ -126,7 +129,7 @@ class ProjectsView extends Component {
       this.props.dispatch(getProject(splitedUrl[splitedUrl.length - 1], (status) => {
         if (status)
           this.props.dispatch(getCodecTemplateListAction(splitedUrl[splitedUrl.length - 1]))
-      }))
+      }, 1))
     }
   }
 
@@ -267,7 +270,7 @@ class ProjectsView extends Component {
 
   componentWillUnmount() {
     // use intervalId from the state to clear the interval
-    this.clearInter()
+    this.stop()
   }
 
   render() {
@@ -275,7 +278,7 @@ class ProjectsView extends Component {
       <div>
         <Spinner display={(this.props.loading && !this.state.interval) || this.state.draw}/>
         <Card className="text-justify">
-          <CardHeader>
+          <CardHeader style={{display: 'flex', alignItems: 'center'}}>
             <CardTitle className="mb-0 font-weight-bold h6">دریافت داده</CardTitle>
           </CardHeader>
           <CardBody>
@@ -306,7 +309,7 @@ class ProjectsView extends Component {
                 <Col sm={5}>
                   <Input type="select" onChange={
                     (event) => {
-                      this.clearInter()
+                      this.stop()
                       this.setState({
                         auto: !(event.target.value === '0'),
                         window: event.target.value
@@ -354,7 +357,7 @@ class ProjectsView extends Component {
                   toastAlerts(false, 'ابتدا شی مورد نظر را انتخاب نمایید')
                   return
                 }
-                this.clearInter()
+                this.stop()
 
                 if (!Date.now) {
                   Date.now = function () {
@@ -385,11 +388,7 @@ class ProjectsView extends Component {
                 }
                 this.getData(() => {
                   if (this.state.auto)
-                    this.setState({
-                      interval: setInterval(() => {
-                        this.getData()
-                      }, this.state.period)
-                    })
+                    this.start();
                 })
 
               }
@@ -399,7 +398,9 @@ class ProjectsView extends Component {
         </Card>
         <Card className="text-justify">
           <CardHeader>
-            <CardTitle className="mb-0 font-weight-bold h6">نمودار داده ها</CardTitle>
+            <Button onClick={() => this.stop()} color="danger" style={{marginRight: '5px'}}>توقف</Button>
+            <Button onClick={() => this.start()} color="primary" style={{marginRight: '5px'}}>شروع</Button>
+            <Loading size={'30px'} isOpen={this.state.interval}/>
           </CardHeader>
           <CardBody>
             {/*<Line data={mainChart} options={mainChartOpts} height={300}/>*/}
@@ -624,6 +625,22 @@ class ProjectsView extends Component {
     // })
   }
 
+  start() {
+    if (this.state.selectedThing.ids.length)
+      this.setState({
+        interval: setInterval(() => {
+          this.getData()
+        }, this.state.period)
+      })
+  }
+
+  stop() {
+    clearInterval(this.state.interval);
+    this.setState({
+      interval: 0
+    })
+  }
+
 
   getData(cb) {
     this.props.dispatch(getThingsSampleDataAction(JSON.stringify(this.state.selectedThing),
@@ -640,13 +657,6 @@ class ProjectsView extends Component {
         if (cb)
           cb()
       }));
-  }
-
-  clearInter() {
-    clearInterval(this.state.interval);
-    this.setState({
-      interval: 0
-    })
   }
 
   renderThingLocation() {

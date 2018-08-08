@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Row,
   Col,
@@ -17,11 +17,11 @@ import {
   Table, Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import ReactTable from 'react-table'
-import {AvForm, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Select2 from 'react-select2-wrapper';
-import {toastAlerts} from '../Shared/toast_alert';
+import { toastAlerts } from '../Shared/toast_alert';
 
 import {
   deleteDashboardWidgetChartAction, getDashboardAction, getUserThingsAction,
@@ -29,9 +29,9 @@ import {
 } from '../../actions/AppActions';
 import moment from 'moment-jalaali';
 import _ from 'underscore';
-import {GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
-import {toPersianNumbers} from '../Shared/helpers';
-import Spinner from "../Spinner/Spinner";
+import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
+import { toPersianNumbers } from '../Shared/helpers';
+import Spinner from '../Spinner/Spinner';
 
 const ReactHighcharts = require('react-highcharts');
 
@@ -48,7 +48,9 @@ class Dashboard extends Component {
     this.devEUI = ''
     this.state = {
       loading: false,
+      first_loading: true,
       get_key: true,
+      fetching: false,
       charts: {},
       modalToggle: {
         setWidgetChart: false,
@@ -90,8 +92,17 @@ class Dashboard extends Component {
     return (
 
       <div>
-        <Spinner display={this.state.loading}/>
-        <Modal isOpen={this.state.modalToggle.setWidgetChart} toggle={() => this.toggle('setWidgetChart')}
+        <Spinner display={this.state.loading || this.state.first_loading}/>
+        <Modal isOpen={this.state.modalToggle.setWidgetChart}
+               toggle={() => {
+                 this.toggle('setWidgetChart');
+                 this.setSate({
+                   widget: {
+                     type: 'line',
+                     window: 1
+                   }
+                 })
+               }}
                className="text-right">
           <ModalHeader>افزونه جدید</ModalHeader>
           <ModalBody>
@@ -135,8 +146,8 @@ class Dashboard extends Component {
                 <Label sm={3}> alias : </Label>
                 <Col sm={9}>
                   <Input type="select" onChange={(event) => {
-                    if (event.target.value !== "ENTER_KEY") {
-                      let aliasSelect = ""
+                    if (event.target.value !== 'ENTER_KEY') {
+                      let aliasSelect = ''
                       this.state.aliases.forEach((alias) => {
                         if (Object.keys(alias)[0] === event.target.value) {
                           aliasSelect = alias[Object.keys(alias)[0]]
@@ -150,17 +161,18 @@ class Dashboard extends Component {
                     }
                     else {
                       this.setState({
-                        widget: {...this.state.widget, key: "", alias: ""},
+                        widget: {...this.state.widget, key: '', alias: ''},
                         get_key: true,
                         alias: event.target.name
                       })
                     }
                   }}>{
-                    <option value={"ENTER_KEY"}>ورود کلید</option>
+                    <option value={'ENTER_KEY'}>ورود کلید</option>
                   }
                     {
-                      this.state.aliases.map((alias) => {
-                        return (<option value={Object.keys(alias)[0]}>{alias[Object.keys(alias)[0]]}</option>)
+                      this.state.aliases.map((alias, index) => {
+                        return (
+                          <option key="index" value={Object.keys(alias)[0]}>{alias[Object.keys(alias)[0]]}</option>)
                       })
                     }
                   </Input>
@@ -230,6 +242,7 @@ class Dashboard extends Component {
                 this.setState({loading: false})
                 toastAlerts(a, v)
               }))
+              this.setState({widget: {type: 'line', window: 1}});
               this.refresh()
             }}>ارسال</Button>
             <Button color="danger" onClick={() => this.toggle('setWidgetChart')}>انصراف</Button>
@@ -445,17 +458,24 @@ class Dashboard extends Component {
   }
 
   refresh() {
+    if (this.state.fetching === true)
+      return;
+    this.setState({
+      fetching: true,
+    });
     this.props.dispatch(getDashboardAction((data) => {
       this.setState({
         charts: data.charts,
         project_num: data.project_num,
         thing_num: data.things_num,
-      })
-    }))
+        fetching: false,
+        first_loading: false
+      });
+    }));
   }
 
   getThings() {
-    this.props.dispatch(getUserThingsAction((data) => {
+    this.props.dispatch(getUserThingsAction(1, (data) => {
       this.setState({
         aliases: data.aliases,
         things: data.things

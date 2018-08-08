@@ -166,7 +166,7 @@ class SendCodec extends Component {
                       }
                     }
                   />
-                  <button style={{width: '20%',marginRight:'10px'}} class="btn btn-info" onClick={() => {
+                  <button style={{width: '20%', marginRight: '10px'}} class="btn btn-info" onClick={() => {
                     this.setState({
                       global: false,
                       templateId: ''
@@ -200,7 +200,7 @@ class SendCodec extends Component {
           </CardBody>
           <CardFooter>
             <Button onClick={this.sendCodec} className="ml-1" color="primary" size="md">بارگذاری کدک
-              </Button>
+            </Button>
             <Button
               onClick={() => {
                 this.props.dispatch(lintCode(this.state.project, this.state.codec, (status, lint) => {
@@ -229,35 +229,35 @@ class SendCodec extends Component {
           </CardBody>
         </Card>
       </div>
-  );
+    );
   }
 
 
   renderLog() {
     return this.state.lint.map((lint, key) => {
-    let color = 'black'
-    if (lint.type === 'error')
-    color = 'red'
-    else if (lint.type === 'warning')
-    color = 'orange'
-    else if (lint.type === 'convention')
-    color = 'cadetblue'
-    return <p id={`log-${key}`}
-    style={{fontFamily: 'sans-serif', color}}>{key + 1}- {lint.type}: {lint.message}!
-    lint:{lint.line} column:{lint.column}</p>
-  })
+      let color = 'black'
+      if (lint.type === 'error')
+        color = 'red'
+      else if (lint.type === 'warning')
+        color = 'orange'
+      else if (lint.type === 'convention')
+        color = 'cadetblue'
+      return <p id={`log-${key}`}
+                style={{fontFamily: 'sans-serif', color}}>{key + 1}- {lint.type}: {lint.message}!
+        lint:{lint.line} column:{lint.column}</p>
+    })
   }
 
 
   renderTemplates() {
     let templates = [{children: [], text: 'قالب شخصی'}, {children: [], text: 'قالب عمومی'}]
     this.state.templates && this.state.templates.codecs && this.state.templates.codecs.forEach((template) => {
-    templates[0].children.push({text: template.name, id: template._id, global: false})
-  }
+        templates[0].children.push({text: template.name, id: template._id, global: false})
+      }
     )
     this.state.templates && this.state.templates.globals && this.state.templates.globals.forEach((template) => {
-    templates[1].children.push({text: template.name, id: template._id, global: true})
-  }
+        templates[1].children.push({text: template.name, id: template._id, global: true})
+      }
     )
     return templates
   }
@@ -265,17 +265,17 @@ class SendCodec extends Component {
 
   sendCodec() {
     if (this.state.global)
-    this.props.dispatch(sendCodecAction(this.state.thing, this.state.project, undefined, this.state.templateId, toastAlerts))
+      this.props.dispatch(sendCodecAction(this.state.thing, this.state.project, undefined, this.state.templateId, toastAlerts))
     else
-    this.props.dispatch(sendCodecAction(this.state.thing, this.state.project, this.state.codec, undefined, toastAlerts))
+      this.props.dispatch(sendCodecAction(this.state.thing, this.state.project, this.state.codec, undefined, toastAlerts))
   }
-  }
+}
 
-  function mapStateToProps(state) {
-    return ({
+function mapStateToProps(state) {
+  return ({
     loading: state.homeReducer.currentlySending,
 
   })
-  }
+}
 
-  export default connect(mapStateToProps)(SendCodec);
+export default connect(mapStateToProps)(SendCodec);
