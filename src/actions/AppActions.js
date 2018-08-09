@@ -122,7 +122,8 @@ import {
   changeAdminPassword, resetPasswordAPI, testCodecAPI, getPermissions, getRoles, setRole,
   uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole,
   decryptFramePayload, getAdminPaymentPortals, getUserPaymentPortals, activatePaymentPortal,
-  DownloadUsersListExcel, DownloadUserTransactionsExcel, DownloadThingsDataExcel, getProjectThings, getThingsList
+  DownloadUsersListExcel, DownloadUserTransactionsExcel, DownloadThingsDataExcel, getProjectThings, getThingsList,
+  isOnlineAPI
 } from '../api';
 import fileDownload from 'js-file-download'
 import { toastAlerts } from '../views/Shared/toast_alert';
@@ -1052,6 +1053,21 @@ export function changePassword(data, cb) {
         cb && cb(false, response.result)
     }).catch((err) => {
       console.log(err)
+    })
+  }
+}
+
+export function isOnline(cb) {
+  return (dispatch) => {
+    const promise = isOnlineAPI(dispatch)
+    promise.then((response) => {
+      if (response.status === 'OK')
+        cb && cb(true)
+      else
+        cb && cb(false)
+    }).catch((err) => {
+      cb(false)
+      console.log("error",err)
     })
   }
 }

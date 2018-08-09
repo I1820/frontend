@@ -404,7 +404,7 @@ class GatewaysView extends Component {
   }
 
   renderMap() {
-    if (this.state.gateway.loc !== undefined)
+    if (this.state.gateway.loc !== undefined &&  !_.isUndefined(window.google))
       return (<MapWithASearchBox
         marker={{
           lat: parseFloat(this.state.gateway.loc.coordinates[0]),

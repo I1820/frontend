@@ -8,6 +8,8 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
+    "@types/googlemaps": "^3.30.11",
+    "@types/markerclustererplus": "^2.1.33",
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",
     "babel-plugin-transform-object-rest-spread": "6.26.0",

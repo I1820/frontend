@@ -19,6 +19,7 @@ import store from '../store'
 const BASE_URL = 'http://185.116.162.237:7070/api/v1'
 const BASE_FILES_URL = 'http://185.116.162.237:7070'
 const BASE_ADMIN_URL = 'http://185.116.162.237:7070/api/admin'
+const GOOGLE_URL = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places'
 // const BASE_URL = 'http://localhost:8000/api/v1'
 // const BASE_FILES_URL = 'http://localhost:8000'
 // const BASE_ADMIN_URL = 'http://localhost:8000/api/admin'
@@ -98,9 +99,9 @@ function fetchData(endpoint = '/404', config = {}, dispatch, newUrl = false, loa
           }
         }
         if (!status || (code && str(code).startsWith('7'))) {
-          return resolve({status: 'FAILED', result: message})
+          return resolve({status: 'FAILED', result: message,code})
         }
-        return resolve({result: json.result, status: 'OK'})
+        return resolve({result: json.result, status: 'OK',code})
       })
       .catch((err) => {
         dispatch(sendingRequest(false))
@@ -723,6 +724,10 @@ module.exports.addRole = function (permissions, dispatch) {
   const config = postConfig()
   Object.assign(config, {body: getFormData({name: 'نقش جدید', permissions_ids: JSON.stringify(permissions)})})
   return fetchData(`${BASE_ADMIN_URL}/permission/role`, config, dispatch, true)
+};
+
+module.exports.isOnlineAPI = function (dispatch) {
+  return fetchData(`${GOOGLE_URL}`, getConfig(), dispatch, true)
 };
 
 
