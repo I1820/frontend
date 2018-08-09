@@ -377,7 +377,7 @@ class Dashboard extends Component {
           return (
             <div className="col-md-12 col-lg-6" key={key}>
               <Card className="text-justify">
-                <CardHeader>mpdmpfd
+                <CardHeader>
                   <CardTitle
                     className="mb-0 font-weight-bold h6">{this.state.charts[key].title}</CardTitle>
                 </CardHeader>
