@@ -856,6 +856,48 @@ export function DownloadUsersListExcelAction() {
   }
 }
 
+export function DownloadUserThingsExcelAction(projectId) {
+  return (dispatch) => {
+    dispatch(sendingRequest(true))
+    DownloadUserThingsExcelAPI(projectId).then((response) => {
+      dispatch(sendingRequest(false))
+      fileDownload(response.data, 'things.xls', 'application/vnd.ms-excel');
+      toastAlerts(true, 'باموفقیت انجام شد.');
+    }).catch((err) => {
+      toastAlerts(false, 'خطای نامشخص');
+      dispatch(sendingRequest(false))
+    })
+  }
+}
+
+export function DownloadUserGatewaysExcelAction(projectId) {
+  return (dispatch) => {
+    dispatch(sendingRequest(true))
+    DownloadUserGatewaysExcelAPI().then((response) => {
+      dispatch(sendingRequest(false))
+      fileDownload(response.data, 'gateways.xls', 'application/vnd.ms-excel');
+      toastAlerts(true, 'باموفقیت انجام شد.');
+    }).catch((err) => {
+      toastAlerts(false, 'خطای نامشخص');
+      dispatch(sendingRequest(false))
+    })
+  }
+}
+
+export function DownloadAdminTransactionsExcelAction(limit, offset) {
+  return (dispatch) => {
+    dispatch(sendingRequest(true))
+    DownloadAdminTransactionsExcel(limit, offset).then((response) => {
+      dispatch(sendingRequest(false))
+      fileDownload(response.data, 'invoices.xls', 'application/vnd.ms-excel');
+      toastAlerts(true, 'باموفقیت انجام شد.');
+    }).catch((err) => {
+      toastAlerts(false, 'خطای نامشخص');
+      dispatch(sendingRequest(false))
+    })
+  }
+}
+
 export function DownloadThingProfileThingsExcelAction(profileId) {
   return (dispatch) => {
     DownloadThingProfileThingsExcelAPI(profileId).then((response) => {
@@ -1093,7 +1135,7 @@ export function isOnline(cb) {
         cb && cb(false)
     }).catch((err) => {
       cb(false)
-      console.log("error",err)
+      console.log('error', err)
     })
   }
 }
@@ -1716,7 +1758,7 @@ export function getUserTransactionsAction(userId, cb) {
 
 export function getAllTransactionsAction(limit, offset, cb) {
   return (dispatch) => {
-    const promise = getAllTransactions(limit, offset , dispatch)
+    const promise = getAllTransactions(limit, offset, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         cb && cb(response.result)
