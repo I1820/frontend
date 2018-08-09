@@ -1714,9 +1714,9 @@ export function getUserTransactionsAction(userId, cb) {
   }
 }
 
-export function getAllTransactionsAction(offset, cb) {
+export function getAllTransactionsAction(limit, offset, cb) {
   return (dispatch) => {
-    const promise = getAllTransactions(offset, 10, dispatch)
+    const promise = getAllTransactions(limit, offset , dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         cb && cb(response.result)

@@ -41,6 +41,7 @@ import { toPersianNumbers } from '../Shared/helpers';
 class PackageList extends Component {
   constructor(props) {
     super(props);
+    this.fetchInvoices = this.fetchInvoices.bind(this)
     this.state = {
       transactions: [],
       overview_num: {},
@@ -102,7 +103,7 @@ class PackageList extends Component {
               <CardBody>
                 <ReactTable
                   data={this.state.transactions}
-                  pages={Math.ceil(this.state.overview_sum.all_transactions_num / 10)}
+                  pages={Math.ceil(this.state.overview_sum.all_transactions_num / this.state.limit)}
                   columns={this.renderTransaction()}
                   pageSizeOptions={[10, 15, 20, 25]}
                   loading={this.state.loading}
@@ -120,17 +121,7 @@ class PackageList extends Component {
                   defaultPageSize={10}
                   className="-striped -highlight"
                   manual
-                  onFetchData={(state, instance) => {
-                    this.props.dispatch(getAllTransactionsAction(state.pageSize, state.page * state.pageSize,
-                      (result) => {
-                        this.setState({
-                          transactions: result.invoices,
-                          offset: state.page * state.pageSize,
-                          limit: state.pageSize,
-                        })
-                      }));
-
-                  }}
+                  onFetchData={this.fetchInvoices}
                 />
               </CardBody>
               <CardFooter>
@@ -146,6 +137,18 @@ class PackageList extends Component {
     )
   }
 
+  fetchInvoices(state, instance) {
+    this.props.dispatch(getAllTransactionsAction(state.pageSize, state.page * state.pageSize,
+      (result) => {
+        console.log(result);
+        this.setState({
+          transactions: result.invoices,
+          offset: state.page * state.pageSize,
+          limit: state.pageSize,
+        })
+      }));
+
+  }
 
   renderTransaction() {
     return [
@@ -166,7 +169,8 @@ class PackageList extends Component {
       }, {
         Header: 'کاربر',
         id: 'user',
-        accessor: row => <a class="btn btn-info" href={`/#/admin/user/info/${row.user_id}`}>{row.user.name}</a>
+        accessor: row => row.user &&
+          <a class="btn btn-info" href={`/#/admin/user/info/${row.user_id}`}>{row.user.name}</a>
       },
       {
         Header: 'وضعیت تراکنش',
