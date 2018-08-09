@@ -233,10 +233,12 @@ class CreateThing extends Component {
             <CardTitle className="mb-0 font-weight-bold h6">محل قرارگیری شی</CardTitle>
           </CardHeader>
           <CardBody>
-            <MapWithASearchBox marker={{
-              lat: parseFloat(this.state.thing.lat ? this.state.thing.lat : 0),
-              lng: parseFloat(this.state.thing.long ? this.state.thing.long : 0)
-            }}/>
+            {  !_.isUndefined(window.google) ?
+              <MapWithASearchBox marker={{
+                lat: parseFloat(this.state.thing.lat ? this.state.thing.lat : 0),
+                lng: parseFloat(this.state.thing.long ? this.state.thing.long : 0)
+              }}/> : <br/>
+            }
           </CardBody>
         </Card>
       </div>

@@ -17,7 +17,7 @@ import {
 import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
 
 import {GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
-import {createGatewayAction} from '../../actions/AppActions';
+import {createGatewayAction, isOnline} from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import Spinner from '../Spinner/Spinner';
 
@@ -32,7 +32,6 @@ style({
 const _ = require('lodash');
 const {compose, withProps, lifecycle} = require('recompose');
 const {SearchBox} = require('react-google-maps/lib/components/places/SearchBox');
-
 const MapWithASearchBox = compose(
   withProps({
     googleMapURL: 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places',
@@ -115,7 +114,7 @@ const MapWithASearchBox = compose(
     },
   }),
   withScriptjs,
-  withGoogleMap
+  withGoogleMap,
 )(props =>
   <GoogleMap
     ref={props.onMapMounted}
@@ -163,10 +162,14 @@ class GatewaysNew extends Component {
     this.submitForm = this.submitForm.bind(this)
 
     this.state = {
-      mac: ''
+      mac: '',
+      online:true
     }
   }
 
+
+  componentDidMount() {
+  }
 
   render() {
 
@@ -234,8 +237,10 @@ class GatewaysNew extends Component {
                          onChange={event => this.setState({altitude: event.target.value})}/>
                 </Col>
               </FormGroup>
+              {
+                !_.isUndefined(window.google) ? <MapWithASearchBox/> : <br/>
+              }
 
-              <MapWithASearchBox/>
 
             </AvForm>
           </CardBody>
