@@ -341,6 +341,29 @@ module.exports.DownloadThingsExcel = function (projectId, dispatch) {
   }
   return get(url, config)
 };
+module.exports.DownloadUserThingsExcel = function (dispatch) {
+  const url = `${BASE_URL}/things/to-excel`
+  const config = {
+    headers: {
+      'Authorization': 'Bearer ' + store.getState().userReducer.token,
+      'Content-Type': 'multipart/form-data',
+    },
+    responseType: 'blob'
+  }
+  return get(url, config)
+};
+
+module.exports.DownloadUserGatewaysExcel = function (dispatch) {
+  const url = `${BASE_URL}/gateway/to-excel`
+  const config = {
+    headers: {
+      'Authorization': 'Bearer ' + store.getState().userReducer.token,
+      'Content-Type': 'multipart/form-data',
+    },
+    responseType: 'blob'
+  }
+  return get(url, config)
+};
 
 module.exports.DownloadUserTransactionsExcel = function () {
   const url = `${BASE_URL}/payment/excel`
@@ -353,6 +376,19 @@ module.exports.DownloadUserTransactionsExcel = function () {
   }
   return get(url, config)
 };
+
+module.exports.DownloadAdminTransactionsExcel = function (limit, offset) {
+  const url = `${BASE_ADMIN_URL}/payment/to-excel?limit=${limit}&offset=${offset}`
+  const config = {
+    headers: {
+      'Authorization': 'Bearer ' + store.getState().userReducer.token,
+      'Content-Type': 'multipart/form-data',
+    },
+    responseType: 'blob'
+  }
+  return get(url, config)
+};
+
 module.exports.DownloadThingsDataExcel = function (things, projectId, offset, limit, since) {
   const url = `${BASE_URL}/things/data/excel`
   const config = {
@@ -645,7 +681,7 @@ module.exports.getGlobalCodecs = function (dispatch) {
 module.exports.getUserTransaction = function (userID, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/users/${userID}/transactions`, getConfig(), dispatch, true)
 };
-module.exports.getAllTransactions = function (offset = 0, limit = 10, dispatch) {
+module.exports.getAllTransactions = function (limit = 10,offset = 0, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/payment?offset=${offset}&limit=${limit}`, getConfig(), dispatch, true)
 };
 module.exports.getTransactionsOverview = function (dispatch) {

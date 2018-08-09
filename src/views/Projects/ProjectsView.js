@@ -147,20 +147,7 @@ class ProjectsView extends Component {
         },
         series: {
           events: {
-            legendItemClick: function (event) {
-              var series = this.yAxis.series,
-                seriesLen = series.length,
-                visible = this.visible ? 1 : -1;
-              this.setState({visible})
-              for (var i = 0; i < seriesLen; i++) {
-                if (!series[i].visible) {
-                  visible++;
-                }
-              }
-              if (visible >= 2) {
-                //do some action
-              }
-            }
+
           }
         }
       },
@@ -397,7 +384,8 @@ class ProjectsView extends Component {
           </CardBody>
         </Card>
         <Card className="text-justify">
-          <CardHeader>
+          <CardHeader style={{display: 'flex'}}>
+            <span>دریافت خودکار:</span>
             <Button onClick={() => this.stop()} color="danger" style={{marginRight: '5px'}}>توقف</Button>
             <Button onClick={() => this.start()} color="primary" style={{marginRight: '5px'}}>شروع</Button>
             <Loading size={'30px'} isOpen={this.state.interval}/>

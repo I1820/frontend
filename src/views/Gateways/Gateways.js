@@ -16,7 +16,7 @@ import {
 } from 'reactstrap';
 import ReactTable from 'react-table'
 import connect from 'react-redux/es/connect/connect';
-import { getGatewaysAction, deleteGatewaysAction } from '../../actions/AppActions';
+import { getGatewaysAction, deleteGatewaysAction, DownloadUserGatewaysExcelAction } from '../../actions/AppActions';
 import Spinner from '../Spinner/Spinner';
 import { toast } from 'react-toastify';
 import { css } from 'glamor';
@@ -122,6 +122,9 @@ class Gateways extends Component {
           </CardBody>
           <CardFooter>
             <Button onClick={this.newGateway} color="primary">ساخت جدید</Button>
+            <Button
+              onClick={()=>this.props.dispatch(DownloadUserGatewaysExcelAction())}
+              color="success">خروجی اکسل</Button>
           </CardFooter>
         </Card>
       </div>

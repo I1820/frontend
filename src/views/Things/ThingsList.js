@@ -25,7 +25,10 @@ import moment from 'moment-jalaali';
 import ReactTable from 'react-table'
 import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
-import { deleteMultipleThingAction, getThings, getUsersThingsListAction } from '../../actions/AppActions';
+import {
+  deleteMultipleThingAction, DownloadUserThingsExcelAction, getThings,
+  getUsersThingsListAction
+} from '../../actions/AppActions';
 import { toastAlerts } from '../Shared/toast_alert';
 
 
@@ -43,8 +46,6 @@ class ThingsList extends Component {
       deleteThingIds: [],
       things: [],
       table: {
-        offset: 0,
-        limit: 5,
         pages: 1,
       },
     }
@@ -77,8 +78,6 @@ class ThingsList extends Component {
     this.setState({
       things: res.things,
       table: {
-        limit: this.state.table.limit,
-        offset: this.state.table.offset + this.state.table.limit,
         pages: res.pages,
         loading: false,
       }
@@ -139,14 +138,18 @@ class ThingsList extends Component {
               loading={this.state.table.loading}
               onFetchData={this.fetchThings}
               pages={this.state.table.pages}
-              showPageSizeOptions={false}
+              pageSizeOptions={[5, 10, 15, 25]}
               manual
-              defaultPageSize={this.state.table.limit}
+              defaultPageSize={5}
               className="-striped -highlight"
             />
           </CardBody>
           <CardFooter>
             <Button onClick={() => this.toggle('deleteThings')} color="danger">حذف انتخاب شده‌ها</Button>
+            <Button
+              onClick={() => this.props.dispatch(DownloadUserThingsExcelAction())}
+              className="ml-1"
+              color="success">خروجی اکسل</Button>
           </CardFooter>
         </Card>
       </div>

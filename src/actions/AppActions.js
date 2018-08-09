@@ -68,6 +68,8 @@ import {
   getProjectData as getThingDataAPI, createCodec as createCodecAPI,
   createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
   DownloadThingsExcel as DownloadThingsExcelAPI,
+  DownloadUserThingsExcel as DownloadUserThingsExcelAPI,
+  DownloadUserGatewaysExcel as DownloadUserGatewaysExcelAPI,
   DownloadThingProfileThingsExcel as DownloadThingProfileThingsExcelAPI,
   createGateway as createGatewayAPI, updateGateway as updateGatewayAPI,
   deleteProject as deleteProjectAPI,
@@ -117,12 +119,36 @@ import {
   getThingsMainData,
   getThingsSampleData,
   activateThing,
-  activeUser, impersonateUser, getUserTransactionsAPI, activateProject, getGlobalCodecs, getGlobalCodecTemplate,
-  updateGlobalCodecTemplate, createGlobalCodecTemplate, deleteGlobalCodec,
-  changeAdminPassword, resetPasswordAPI, testCodecAPI, getPermissions, getRoles, setRole,
-  uploadLegalDoc, uploadPicture, updateRole, deleteRole, addRole,
-  decryptFramePayload, getAdminPaymentPortals, getUserPaymentPortals, activatePaymentPortal,
-  DownloadUsersListExcel, DownloadUserTransactionsExcel, DownloadThingsDataExcel, getProjectThings, getThingsList
+  activeUser,
+  impersonateUser,
+  getUserTransactionsAPI,
+  activateProject,
+  getGlobalCodecs,
+  getGlobalCodecTemplate,
+  updateGlobalCodecTemplate,
+  createGlobalCodecTemplate,
+  deleteGlobalCodec,
+  changeAdminPassword,
+  resetPasswordAPI,
+  testCodecAPI,
+  getPermissions,
+  getRoles,
+  setRole,
+  uploadLegalDoc,
+  uploadPicture,
+  updateRole,
+  deleteRole,
+  addRole,
+  decryptFramePayload,
+  getAdminPaymentPortals,
+  getUserPaymentPortals,
+  activatePaymentPortal,
+  DownloadUsersListExcel,
+  DownloadUserTransactionsExcel,
+  DownloadAdminTransactionsExcel,
+  DownloadThingsDataExcel,
+  getProjectThings,
+  getThingsList
 } from '../api';
 import fileDownload from 'js-file-download'
 import { toastAlerts } from '../views/Shared/toast_alert';
@@ -801,10 +827,52 @@ export function DownloadThingsExcelAction(projectId) {
   }
 }
 
+export function DownloadUserThingsExcelAction(projectId) {
+  return (dispatch) => {
+    dispatch(sendingRequest(true))
+    DownloadUserThingsExcelAPI(projectId).then((response) => {
+      dispatch(sendingRequest(false))
+      fileDownload(response.data, 'things.xls', 'application/vnd.ms-excel');
+      toastAlerts(true, 'باموفقیت انجام شد.');
+    }).catch((err) => {
+      toastAlerts(false, 'خطای نامشخص');
+      dispatch(sendingRequest(false))
+    })
+  }
+}
+
+export function DownloadUserGatewaysExcelAction(projectId) {
+  return (dispatch) => {
+    dispatch(sendingRequest(true))
+    DownloadUserGatewaysExcelAPI().then((response) => {
+      dispatch(sendingRequest(false))
+      fileDownload(response.data, 'gateways.xls', 'application/vnd.ms-excel');
+      toastAlerts(true, 'باموفقیت انجام شد.');
+    }).catch((err) => {
+      toastAlerts(false, 'خطای نامشخص');
+      dispatch(sendingRequest(false))
+    })
+  }
+}
+
 export function DownloadUserTransactionsExcelAction() {
   return (dispatch) => {
     dispatch(sendingRequest(true))
     DownloadUserTransactionsExcel().then((response) => {
+      dispatch(sendingRequest(false))
+      fileDownload(response.data, 'invoices.xls', 'application/vnd.ms-excel');
+      toastAlerts(true, 'باموفقیت انجام شد.');
+    }).catch((err) => {
+      toastAlerts(false, 'خطای نامشخص');
+      dispatch(sendingRequest(false))
+    })
+  }
+}
+
+export function DownloadAdminTransactionsExcelAction(limit, offset) {
+  return (dispatch) => {
+    dispatch(sendingRequest(true))
+    DownloadAdminTransactionsExcel(limit, offset).then((response) => {
       dispatch(sendingRequest(false))
       fileDownload(response.data, 'invoices.xls', 'application/vnd.ms-excel');
       toastAlerts(true, 'باموفقیت انجام شد.');
@@ -1672,9 +1740,9 @@ export function getUserTransactionsAction(userId, cb) {
   }
 }
 
-export function getAllTransactionsAction(offset, cb) {
+export function getAllTransactionsAction(limit, offset, cb) {
   return (dispatch) => {
-    const promise = getAllTransactions(offset, 10, dispatch)
+    const promise = getAllTransactions(limit, offset, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         cb && cb(response.result)

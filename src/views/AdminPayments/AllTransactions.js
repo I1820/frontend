@@ -27,7 +27,8 @@ import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import {
   activateProjectAction,
-  activeUserAction, changePasswordAction, createProject, editProjectAction, getAllTransactionsAction,
+  activeUserAction, changePasswordAction, createProject, DownloadAdminTransactionsExcelAction, editProjectAction,
+  getAllTransactionsAction,
   getTransactionsOverviewAction, getUserAction,
   getUserTransactionsAction,
   impersonateUserAction
@@ -44,19 +45,14 @@ class PackageList extends Component {
       transactions: [],
       overview_num: {},
       overview_sum: {},
-      transactions_offset: 0,
+      offset: 0,
+      limit: 10,
 
     };
   }
 
 
   componentDidMount() {
-    this.props.dispatch(getAllTransactionsAction(0, (result) => {
-      this.setState({
-        transactions: result.invoices,
-        overview_num: result.overview,
-      })
-    }))
     this.props.dispatch(getTransactionsOverviewAction((overview) => {
       this.setState({overview_sum: overview})
     }))
@@ -108,33 +104,40 @@ class PackageList extends Component {
                   data={this.state.transactions}
                   pages={Math.ceil(this.state.overview_sum.all_transactions_num / 10)}
                   columns={this.renderTransaction()}
-                  pageSizeOptions={[10]}
+                  pageSizeOptions={[10, 15, 20, 25]}
                   loading={this.state.loading}
                   nextText='بعدی'
                   previousText='قبلی'
-                  filterable={true}
+                  filterable={false}
+                  sortable={false}
                   rowsText='ردیف'
                   pageText='صفحه'
                   ofText='از'
-                  minRows='1'
+                  minRows='3'
+                  loadingText='در حال دریافت اطلاعات...'
                   noDataText='داده‌ای وجود ندارد'
                   resizable={false}
                   defaultPageSize={10}
                   className="-striped -highlight"
                   manual
                   onFetchData={(state, instance) => {
-                    if (!this.state.loading)
-                      this.props.dispatch(getAllTransactionsAction(this.state.transactions_offset,
-                        (result) => {
-                          this.setState({
-                            transactions: result.invoices,
-                            transactions_offset: this.state.transactions_offset + 10
-                          }, () => console.log(this.state))
-                        }));
+                    this.props.dispatch(getAllTransactionsAction(state.pageSize, state.page * state.pageSize,
+                      (result) => {
+                        this.setState({
+                          transactions: result.invoices,
+                          offset: state.page * state.pageSize,
+                          limit: state.pageSize,
+                        })
+                      }));
 
                   }}
                 />
               </CardBody>
+              <CardFooter>
+                <Button
+                  onClick={() => this.props.dispatch(DownloadAdminTransactionsExcelAction(this.state.limit, this.state.offset))}
+                  className="ml-1" color="success">خروجی اکسل</Button>
+              </CardFooter>
             </Card>
           </Col>
         </Row>
@@ -160,6 +163,10 @@ class PackageList extends Component {
         Header: 'مبلغ تراکنش',
         id: 'amount',
         accessor: row => row.package.price
+      }, {
+        Header: 'کاربر',
+        id: 'user',
+        accessor: row => <a class="btn btn-info" href={`/#/admin/user/info/${row.user_id}`}>{row.user.name}</a>
       },
       {
         Header: 'وضعیت تراکنش',
@@ -167,7 +174,6 @@ class PackageList extends Component {
         accessor: row => <Badge color={row.status === true ? 'success' : 'danger'}>
           {row.status === true ? 'موفق' : 'ناموفق'}
         </Badge>,
-        filterable: false
       }
     ];
   }

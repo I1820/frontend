@@ -83,8 +83,6 @@ class ProjectsManage extends Component {
       project: {},
       things: [],
       table: {
-        offset: 0,
-        limit: 5,
         pages: 1,
       },
       dataModal: false,
@@ -761,9 +759,9 @@ class ProjectsManage extends Component {
               loading={this.state.table.loading}
               onFetchData={this.fetchThings}
               pages={this.state.table.pages}
-              showPageSizeOptions={false}
+              pageSizeOptions={[5, 10, 15, 25]}
               manual
-              defaultPageSize={this.state.table.limit}
+              defaultPageSize={5}
               className="-striped -highlight"
             />
           </CardBody>
@@ -922,8 +920,6 @@ class ProjectsManage extends Component {
     this.setState({
       things: res.things,
       table: {
-        limit: this.state.table.limit,
-        offset: this.state.table.offset + this.state.table.limit,
         pages: res.pages,
         loading: false,
       }
