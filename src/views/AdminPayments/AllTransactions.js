@@ -140,7 +140,6 @@ class PackageList extends Component {
   fetchInvoices(state, instance) {
     this.props.dispatch(getAllTransactionsAction(state.pageSize, state.page * state.pageSize,
       (result) => {
-        console.log(result);
         this.setState({
           transactions: result.invoices,
           offset: state.page * state.pageSize,
