@@ -914,6 +914,12 @@ class ProjectsManage extends Component {
   callback(status, message) {
     toastAlerts(status, message);
     this.loadProject()
+    this.fetchThings({
+      page: 0,
+      pageSize: 10,
+      filtered: {},
+      sorted: {}
+    }, {})
   }
 
   setThings(res) {
