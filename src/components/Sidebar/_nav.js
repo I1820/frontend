@@ -98,7 +98,7 @@ export default {
           icon: 'icon-grid',
           type: 'admin'
         },{
-          name: 'پنل‌های مدیریتی',
+          name: 'پنل‌های مدیریتی ولاگ‌ها',
           url: '/admin/links',
           icon: 'icon-grid',
           type: 'admin'

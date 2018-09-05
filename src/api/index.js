@@ -669,6 +669,15 @@ module.exports.deleteDashboardWidgetChart = function (id, dispatch) {
   return fetchData(`/user/widget/charts?id=${id}`, config, dispatch)
 };
 
+module.exports.getLogs = function (limit = 10, offset = 0, data, dispatch, loading = true) {
+  const config = postConfig()
+  const formData = {
+    limit, offset, ...data
+  }
+  Object.assign(config, {body: getFormData(formData)})
+  return fetchData(`${BASE_ADMIN_URL}/logs`, config, dispatch, true, loading)
+};
+
 module.exports.getUsers = function (dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/users`, getConfig(), dispatch, true)
 };

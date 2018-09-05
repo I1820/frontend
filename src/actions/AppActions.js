@@ -149,7 +149,8 @@ import {
   DownloadThingsDataExcel,
   getProjectThings,
   getThingsList,
-  isOnlineAPI
+  isOnlineAPI,
+  getLogs
 } from '../api';
 import fileDownload from 'js-file-download'
 import { toastAlerts } from '../views/Shared/toast_alert';
@@ -281,6 +282,23 @@ export function getThings() {
 export function getProjectThingsListAction(projectId, limit, offset, data, cb) {
   return (dispatch) => {
     const promise = getProjectThings(projectId, limit, offset, data, dispatch, false)
+    promise.then((response) => {
+      if (response.status === 'OK') {
+        cb(response.result)
+      } else {
+        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+      }
+    })
+  }
+}
+
+/**
+ * Logs List
+ *
+ */
+export function getLogsAction(limit, offset, data, cb) {
+  return (dispatch) => {
+    const promise = getLogs(limit, offset, data, dispatch, false)
     promise.then((response) => {
       if (response.status === 'OK') {
         cb(response.result)
