@@ -112,14 +112,14 @@ class Full extends Component {
                 <Route path="/news" name="News" component={News}/>
                 <Route path="/profile" name="Profile" component={Profile}/>
 
-                <Route path="/admin/packages" name="PackageList" component={PackageList}/>
+                <Route path="/admin/packages/show" name="PackageList" component={PackageList}/>
                 <Route path="/admin/transactions" name="AllTransactions" component={AllTransactions}/>
-                <Route path="/admin/users" name="UsersList" component={UsersList}/>
+                <Route path="/admin/users/list" name="UsersList" component={UsersList}/>
                 <Route path="/admin/roles" name="RoleList" component={RoleList}/>
 
-                <Route path="/package/new" name="NewPackage" component={NewPackage}/>
-                <Route path="/package/:id" name="EditPackage" component={NewPackage}/>
-                <Route path="/admin/user/info/:user" name="UserInfo" component={UserInfo}/>
+                <Route path="/admin/packages/new" name="NewPackage" component={NewPackage}/>
+                <Route path="/admin/packages/edit/:id" name="EditPackage" component={NewPackage}/>
+                <Route path="/admin/users/info/:user" name="UserInfo" component={UserInfo}/>
 
                 <Route path="/transactions" name="UserTransactions" component={UserTransactions}/>
 
@@ -128,7 +128,7 @@ class Full extends Component {
                 <Route path="/gateways" name="Gateways" component={Gateways}/>
 
                 <Route path="/device-profile/new" name="DeviceProfileNew" component={DeviceProfileNew}/>
-                <Route path="/device-profile/view/:id" name="ViewDeviceProfile" component={DeviceProfileNew}/>
+                <Route path="/device-profile/list/view/:id" name="ViewDeviceProfile" component={DeviceProfileNew}/>
                 <Route path="/device-profile" name="DeviceProfile" component={DeviceProfile}/>
 
                 <Route path="/scenario" name="addScenario" component={addScenario}/>
@@ -141,7 +141,7 @@ class Full extends Component {
 
                 <Route path="/admin/links" name="Adminlinks" component={AdminLinks}/>
 
-                <Route path="/projects/manage/:id" name="ProjectsManage" component={ProjectsManage}/>
+                <Route path="/projects/manage/show/:id" name="ProjectsManage" component={ProjectsManage}/>
                 <Route path="/projects/view/:id" name="ProjectsView" component={ProjectsView}/>
                 <Route path="/projects" name="ProjectsList" component={ProjectsList}/>
 
@@ -153,8 +153,9 @@ class Full extends Component {
                 <Route path="/buyedPackages" name="BuyedPackages" component={BuyedPackages}/>
 
                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
-                <Route path="/things/edit/:project_id/:thing_id" name="createThing" component={CreateThing}/>
-                <Route path="/things/new/:project_id" name="createThing" component={CreateThing}/>
+                /*
+                <Route path="/things/edit/:project_id/:thing_id" name="createThing" component={CreateThing}/>*/
+                <Route path="/project/manage/createThing/:project_id" name="createThing" component={CreateThing}/>
                 <Route path="/things" name="ThingsList" component={ThingsList}/>
                 /*
                 <Route path="/theme/colors" name="Colors" component={Colors}/>

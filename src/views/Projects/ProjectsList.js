@@ -241,7 +241,7 @@ class ProjectsList extends Component {
   }
 
   manageProject(id) {
-    window.location = `#/projects/manage/${id}`
+    window.location = `#/projects/manage/show/${id}`
   }
 
 

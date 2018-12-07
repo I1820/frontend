@@ -37,8 +37,11 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'rec
 import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 import { colorArray } from './color';
 import Loading from '../../components/Loading';
+import './project.css';
+
 
 const {compose, withProps, lifecycle} = require('recompose');
+
 
 class ProjectsView extends Component {
 
@@ -55,6 +58,7 @@ class ProjectsView extends Component {
     this.downloadExcel = this.downloadExcel.bind(this)
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
+
     this.state = {
       draw: false,
       pages: 1,

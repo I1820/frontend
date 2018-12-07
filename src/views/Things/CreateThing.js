@@ -190,15 +190,22 @@ class CreateThing extends Component {
                   />
                 </Col>
               </FormGroup>
-              <FormGroup row style={{display: this.state.thing.type !== 'lora' ? 'flex' : 'none'}}>
+              <AvGroup row style={{display: this.state.thing.type !== 'lora' ? 'flex' : 'none'}}>
                 <Label sm={3}>آدرس IP:</Label>
                 <Col sm={5}>
 
-                  <Input value={this.state.thing.IP} name="IP"
-                         placeholder={'1.2.3.4'}
-                         onChange={this.changeForm}/>
+                  <AvInput
+                    value={this.state.thing.IP}
+                    name="IP" dir="ltr"
+                    pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
+                    required
+                    placeholder={'1.2.3.4'}
+                    onChange={this.changeForm}
+                    type="text"/>
+                  <AvFeedback>آدرس IP معتبر نیست</AvFeedback>
                 </Col>
-              </FormGroup>
+                </AvGroup>
+
               <FormGroup row>
                 <Label sm={3}>عرض جغرافیایی:</Label>
                 <Col sm={5}>
@@ -213,7 +220,7 @@ class CreateThing extends Component {
               </FormGroup>
               <FormGroup row>
                 <Label sm={3}>طول جغرافیایی:</Label>
-                <Col sm={6}>
+                <Col sm={5}>
                   <Input value={this.state.thing.long ? this.state.thing.long : 0}
                          dir="ltr"
                          name="long"

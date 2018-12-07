@@ -904,7 +904,7 @@ class ProjectsManage extends Component {
   }
 
   addThing() {
-    window.location = `#/things/new/${this.state.project._id}`
+    window.location = `#/project/manage/createThing/${this.state.project._id}`
   }
 
   addScenario() {

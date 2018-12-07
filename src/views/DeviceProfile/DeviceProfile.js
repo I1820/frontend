@@ -103,7 +103,7 @@ class DeviceProfile extends Component {
                             pageText='صفحه'
                             ofText='از'
                             minRows='1'
-                            noDataText='پروفالی‌ای یافت نشد'
+                            noDataText='پروفایلی یافت نشد'
                             resizable={false}
                             defaultPageSize={5}
                             className="-striped -highlight"
@@ -150,7 +150,7 @@ class DeviceProfile extends Component {
                 accessor: row => <div>
                     <Button onClick={() => this.toggle('delete', row._id)} className="ml-1" color="danger"
                             size="sm">حذف</Button>
-                  <Button onClick={()=>forwardTo(`device-profile/view/${row._id}`)} className="ml-1" color="primary"
+                  <Button onClick={()=>forwardTo(`device-profile/list/view/${row._id}`)} className="ml-1" color="primary"
                           size="sm">مشاهده</Button>
                 </div>
             }

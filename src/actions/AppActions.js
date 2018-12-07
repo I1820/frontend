@@ -347,7 +347,7 @@ export function editThingAction(projectId, thingId, data, cb) {
       if (response.status === 'OK') {
         dispatch(setThing(response.result))
         cb(true, 'با موفقیت انجام شد');
-        forwardTo(`projects/manage/${projectId}`)
+        forwardTo(`projects/manage/show/${projectId}`)
       } else {
         cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -464,12 +464,12 @@ export function selectThing(newState = NEW_OBJECT) {
 }
 
 export function NewPackage(newState = NEW_OBJECT) {
-  newState !== NEW_OBJECT ? forwardTo('package/edit' + newState) : forwardTo('package/new')
+  newState !== NEW_OBJECT ? forwardTo('admin/packages/edit' + newState) : forwardTo('admin/packages/new')
   return {type: NEW_PACKAGE, newState}
 }
 
 export function SelectUser(newState = NEW_OBJECT) {
-  forwardTo('user/info/' + newState)
+  forwardTo('admin/users/info/' + newState)
   return {type: SELECT_USER, newState}
 }
 
@@ -666,7 +666,7 @@ export function createThingAction(data, project, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(setThing(response.result))
-        forwardTo(`projects/manage/${project}`)
+        forwardTo(`projects/manage/show/${project}`)
         cb(true, 'با موفقیت انجام شد');
       } else {
         cb(false, response.result)
@@ -932,7 +932,7 @@ export function createScenario(projectId, data, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         cb(true, 'با موفقیت انجام شد')
-        forwardTo(`projects/manage/${projectId}`)
+        forwardTo(`projects/manage/show/${projectId}`)
       } else {
         cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -950,7 +950,7 @@ export function updateScenarioAction(projectId, scenarioId, data, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         cb(true, 'با موفقیت انجام شد')
-        forwardTo(`projects/manage/${projectId}`)
+        forwardTo(`projects/manage/show/${projectId}`)
       } else {
         cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -1272,7 +1272,7 @@ export function sendCodecAction(thingId, projectId, codec, codec_id, cb) {
       promise = createCodecAPI({codec_id}, thingId, projectId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        forwardTo(`projects/manage/${projectId}`)
+        forwardTo(`projects/manage/show/${projectId}`)
         cb(true, 'کدک با موفقیت ارسال شد.')
       } else {
         cb(false, response.result)
@@ -1290,7 +1290,7 @@ export function createCodecTemplateAction(projectId, data, cb) {
     const promise = createCodecTemplate(projectId, data, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        forwardTo(`projects/manage/${projectId}`)
+        forwardTo(`projects/manage/show/${projectId}`)
       } else {
         cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -1322,7 +1322,7 @@ export function updateCodecTemplateAction(codec_id, projectId, data, cb) {
     const promise = updateCodecTemplate(codec_id, projectId, data, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        forwardTo(`projects/manage/${projectId}`)
+        forwardTo(`projects/manage/show/${projectId}`)
       } else {
         cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -1527,7 +1527,7 @@ export function createPackagesAction(data, cb) {
     const promise = createPackage(data, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        forwardTo('admin/packages')
+        forwardTo('admin/packages/show')
       } else {
         cb && cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -1546,7 +1546,7 @@ export function updatePackagesAction(packageId, data, cb) {
     const promise = updatePackage(packageId, data, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        forwardTo('admin/packages')
+        forwardTo('admin/packages/show')
       } else {
         cb && cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))

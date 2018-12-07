@@ -40,14 +40,17 @@ const routes = {
   '/profile': 'حساب کاربری',
 
   '/projects': 'لیست پروژه‌ها',
+  '/project': 'لیست پروژه‌ها',
   '/projects/view': 'نمایش پروژه',
   '/projects/view/$$': 'نمایش پروژه',
   '/projects/manage': 'مدیریت پروژه',
+  '/project/manage/createThing': 'ایجاد شی',
+  '/project/manage/createThing/$$': 'ایجاد شی',
   '/projects/manage/$$': 'مدیریت پروژه',
 
   '/admin/globalCodec': 'مدیریت پروژه',
 
-  '/things': 'لیست اشیاء',
+  '/things': 'لیست اشیا',
   '/things/edit': 'ویرایش شی',
   '/things/edit/$$': 'ویرایش شی',
   '/things/new': 'ایجاد شی',
@@ -59,8 +62,8 @@ const routes = {
   '/codec/$$':'ارسال کدک',
   '/scenario':'ارسال سناریو',
   '/scenario/$$':'ارسال سناریو',
-  '/template/':'ارسال سناریو',
-  '/template/$$':'ارسال سناریو',
+  '/template':'ارسال قالب',
+  '/template/$$':'ارسال قالب',
 
   '/gateways': 'لیست گذرگاه ها',
   '/gateways/new': 'افزودن گذرگاه',
@@ -71,9 +74,25 @@ const routes = {
   '/device-profile/list': 'پروفایل اشیا',
   '/device-profile/new': 'افزودن پروفایل اشیا',
   '/device-profile/new/$$': 'افزودن پروفایل اشیا',
-  '/device-profile/view': 'مشاهده پروفایل اشیا',
-  '/device-profile/view/$$': 'مشاهده پروفایل اشیا',
+  '/device-profile/list/view': 'مشاهده پروفایل اشیا',
+  '/device-profile/list/view/$$': 'مشاهده پروفایل اشیا',
 
-  '/transactions': 'تراکنش های کاربر'
+  '/packages':'خرید بسته',
+  '/transactions': 'تراکنش های کاربر',
+  '/admin/packages/show': 'مدیریت بسته‌ها',
+  '/admin/packages': 'مدیریت بسته‌ها',
+  '/admin/packages/edit': 'ویرایش بسته',
+  '/admin/packages/new': 'افزودن بسته جدید',
+  '/admin/packages/edit/$$': 'ویرایش بسته',
+
+  '/admin/users/list':'مدیریت کاربران سیستم',
+  '/admin/users/info':'ویرایش کاربر',
+  '/admin/users/info/$$':',ویرایش کاربر',
+  '/admin/users': 'مدیریت کاربران سیستم',
+
+  '/admin/transactions': 'مدیریت تراکنش‌های سیستم',
+  '/admin/roles': 'مدیریت نقش‌ها',
+  '/admin/links': 'مدیریت پروژه',
+  '/portals': 'مدیریت پرتال پرداخت'
 };
 export default routes;

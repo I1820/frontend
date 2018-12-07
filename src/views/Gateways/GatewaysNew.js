@@ -220,13 +220,13 @@ class GatewaysNew extends Component {
               <FormGroup row>
                 <Label sm={2}> عرض جغرافیایی:</Label>
                 <Col sm={5}>
-                  <Input id="fld_lat" dir="ltr"/>
+                  <Input id="fld_lat" dir="ltr" type="number"/>
                 </Col>
               </FormGroup>
               <FormGroup row>
                 <Label sm={2}>طول جغرافیایی:</Label>
                 <Col sm={5}>
-                  <Input dir="ltr" id="fld_lng"/>
+                  <Input dir="ltr" id="fld_lng" type="number"/>
                 </Col>
               </FormGroup>
               <FormGroup row>
