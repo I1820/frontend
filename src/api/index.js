@@ -16,9 +16,9 @@ import axios, { post, get } from 'axios';
 import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://172.23.132.51:8080/api/v1'
-const BASE_FILES_URL = 'http://172.23.132.51:50008'
-const BASE_ADMIN_URL = 'http://172.23.132.51:50008/api/admin'
+const BASE_URL = 'http://platform.ceit.aut.ac.ir:50008/api/v1'
+const BASE_FILES_URL = 'http://platform.ceit.aut.ac.ir:50008'
+const BASE_ADMIN_URL = 'http://platform.ceit.aut.ac.ir:50008/api/admin'
 const GOOGLE_URL = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places'
 // const BASE_URL = 'http://localhost:8000/api/v1'
 // const BASE_FILES_URL = 'http://localhost:8000'
