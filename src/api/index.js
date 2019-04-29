@@ -16,13 +16,10 @@ import axios, { post, get } from 'axios';
 import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://platform.ceit.aut.ac.ir:50008/api/v1'
-const BASE_FILES_URL = 'http://platform.ceit.aut.ac.ir:50008'
-const BASE_ADMIN_URL = 'http://platform.ceit.aut.ac.ir:50008/api/admin'
+const BASE_URL = 'http://api.dev1.platform.ceit.aut.ac.ir/api/v1'
+const BASE_FILES_URL = 'http://api.dev1.platform.ceit.aut.ac.ir'
+const BASE_ADMIN_URL = 'http://api.dev1.platform.ceit.aut.ac.ir/api/admin'
 const GOOGLE_URL = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places'
-// const BASE_URL = 'http://localhost:8000/api/v1'
-// const BASE_FILES_URL = 'http://localhost:8000'
-// const BASE_ADMIN_URL = 'http://localhost:8000/api/admin'
 
 const endpoints = {
   login: '/login',
@@ -127,9 +124,9 @@ function getFormData(object) {
   return formData
 };
 
-module.exports.login = function (email, password, captcha, dispatch) {
+module.exports.login = function (email, password, dispatch) {
   const config = loginConfig
-  Object.assign(config, {body: getFormData({email, password, 'g-recaptcha-response': captcha})})
+  Object.assign(config, {body: getFormData({email, password})})
   return fetchData(endpoints.login, config, dispatch)
 };
 

@@ -175,7 +175,7 @@ export function login(username, password, captcha, keep, errorCallback) {
       errorCallback(errorMessages.FIELD_MISSING)
       return
     }
-    const promise = loginAPI(username, password, captcha, dispatch)
+    const promise = loginAPI(username, password, dispatch)
 
     promise.then((response) => {
       if (response.status === 'OK') {
