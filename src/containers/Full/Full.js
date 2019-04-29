@@ -15,21 +15,22 @@ import News from '../../views/News/';
 import globalCodec from '../../views/globalCodec/GlobalCodecList'
 import AddTemplate from '../../views/Editros/addGlobalTemplate'
 
-//PackageManagment
+// PackageManagment
 import PackageList from '../../views/PackageManagement/PackageList'
 import NewPackage from '../../views/PackageManagement/PackageManage'
-//usersManagement
+
+// usersManagement
 import UsersList from '../../views/UserPaymentManagment/UsersList'
 import RoleList from '../../views/UserPaymentManagment/RoleList'
 import UserInfo from '../../views/UserPaymentManagment/UserInfo'
 import UserTransactions from '../../views/UserPaymentManagment/UsersTrancations'
 
-import Gateways from '../../views/Gateways/Gateways.js';
-import GatewaysNew from '../../views/Gateways/GatewaysNew.js';
-import GatewaysView from '../../views/Gateways/GatewaysView.js';
+import Gateways from '../../views/Gateways/Gateways';
+import GatewaysNew from '../../views/Gateways/GatewaysNew';
+import GatewaysView from '../../views/Gateways/GatewaysView';
 
-import DeviceProfile from '../../views/DeviceProfile/DeviceProfile.js';
-import DeviceProfileNew from '../../views/DeviceProfile/DeviceProfileNew.js';
+import DeviceProfile from '../../views/DeviceProfile/DeviceProfile';
+import DeviceProfileNew from '../../views/DeviceProfile/DeviceProfileNew';
 
 import Profile from '../../views/Profile/';
 
@@ -37,7 +38,7 @@ import ProjectsList from '../../views/Projects/ProjectsList.js';
 import ProjectsManage from '../../views/Projects/ProjectsManage.js';
 import ProjectsView from '../../views/Projects/ProjectsView.js';
 
-//package
+// Package
 import MyPackages from '../../views/Packages/MyPckages'
 import SelectedPackage from '../../views/Packages/SelectedPackage'
 import Transactions from '../../views/Packages/Transactions'
