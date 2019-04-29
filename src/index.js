@@ -25,9 +25,7 @@ import Full from './containers/Full/'
 
 // Views
 import Login from './views/Pages/Login/Login'
-import Register from './views/Pages/Register/'
-import Page404 from './views/Pages/Page404/'
-import Page500 from './views/Pages/Page500/'
+import Register from './views/Pages/Register/Register'
 import SuccessPayment from './views/Packages/SuccessPayment'
 import FailurePayment from './views/Packages/FailurePayment'
 import AutoLogin from './views/Pages/Login/AutoLogin';
@@ -77,8 +75,6 @@ ReactDOM.render((
             <Switch>
                 <LoginRoute exact path="/login" name="Login Page" component={Login}/>
                 <RegisterRoute exact path="/register" name="Register Page" component={Register}/>
-                <Route exact path="/404" name="Page 404" component={Page404}/>
-                <Route exact path="/500" name="Page 500" component={Page500}/>
                 <Route path="/payment/success/" name="SuccessPayment" component={SuccessPayment}/>
                 <Route path="/payment/failure/" name="FailurePayment" component={FailurePayment}/>
                 <Route path="/auto-login/:token/" name="autoLogin" component={AutoLogin}/>
