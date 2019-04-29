@@ -11,9 +11,8 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
+  Form,
 } from 'reactstrap';
-
-import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
 
 import classnames from 'classnames';
 import {connect} from 'react-redux';
@@ -45,9 +44,7 @@ class Register extends Component {
       }, this.manageToastAlerts))
     } else
       toastAlerts(false, 'کلمه عبور و تکرار آن یکسان نیستند.')
-
   }
-
 
   manageToastAlerts(status) {
     if (status === true) {
@@ -66,89 +63,82 @@ class Register extends Component {
             <Col md="6">
               <Card className="mx-0 mx-sm-4">
                 <CardBody className="p-4 text-right">
-                  <AvForm>
                     <h1>ثبت نام</h1>
                     <p className="text-muted">پروفایل خود را بسازید</p>
 
-                    <br/>
-                    <div>
-                      {/* حقیقی */}
-                      <AvGroup className="mb-3">
+                    <Form>
+                      <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <AvInput
+                        <Input
                           name="fullName"
                           type="text" placeholder="نام و نام خانوادگی"
                           onChange={event => this.setState({name: event.target.value})}
                           required/>
-                        <br/>
-                        <AvFeedback>الزامی است</AvFeedback>
-                      </AvGroup>
+                      </InputGroup>
 
-                      <AvGroup className="mb-4">
+                      <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
                             @
                           </InputGroupText>
                         </InputGroupAddon>
-                        <AvInput
+                        <Input
                           name="email"
                           type="email" placeholder="پست الکترونیکی"
                           onChange={event => this.setState({email: event.target.value})}
                           required/>
-                        <br/>
-                        <AvFeedback>صحیح نیست</AvFeedback>
-                      </AvGroup>
+                      </InputGroup>
 
-                      <AvGroup className="mb-4">
+                      <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <AvInput
+                        <Input
                           name="password"
                           name="originalPassword" type="password" placeholder="کلمه عبور"
                           onChange={event => this.setState({password: event.target.value})}
                           required/>
-                        <br/>
-                        <AvFeedback>الزامی است</AvFeedback>
-                      </AvGroup>
+                      </InputGroup>
 
-                      <AvGroup className="mb-4">
+                      <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <AvInput
+                        <Input
                           name="passwordRepeat"
                           type="password" placeholder="تکرار کلمه عبور"
                           onChange={event => this.setState({passwordRepeat: event.target.value})}
                           validate={{match: {value: 'originalPassword'}}}/>
-                        <br/>
-                        <AvFeedback>مطابق با کلمه عبور نیست</AvFeedback>
-                      </AvGroup>
+                      </InputGroup>
+                  </Form>
+                    <img
+                      style={{display: this.props.currentlySending ? 'block' : 'none', margin: "auto"}}
+                      src={'img/loading.gif'}
+                    />
 
-                      <img
-                        style={{display: this.props.currentlySending ? 'block' : 'none', margin: "auto"}}
-                        src={'img/loading.gif'}/>
-
-                      <Button
-                        style={{display: !this.props.currentlySending ? 'block' : 'none'}}
-                        color="success" onClick={this.realRegister} block>ثبت نام</Button>
-                      <Button
-                        style={{display: !this.props.currentlySending ? 'block' : 'none'}}
-                        color="primary"
-                        onClick={() => window.location = '#/login'}
-                        block>بازگشت به لاگین</Button>
-
-                    </div>
-                  </AvForm>
+                    <Button
+                      style={{display: !this.props.currentlySending ? 'block' : 'none'}}
+                      color="success" onClick={this.realRegister} block>
+                      ثبت نام
+                    </Button>
                 </CardBody>
+                <CardFooter>
+                  <Button
+                    style={{display: !this.props.currentlySending ? 'block' : 'none'}}
+                    color="primary"
+                    onClick={() => window.location = '#/login'}
+                    block>
+                      بازگشت
+                    </Button>
+                </CardFooter>
               </Card>
             </Col>
           </Row>
