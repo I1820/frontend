@@ -13,8 +13,10 @@ import {
   ButtonGroup,
   Label,
   Input,
+  InputGroup,
+  InputGroupAddon,
   CardImg,
-  Table
+  Table,
 } from 'reactstrap';
 
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
@@ -126,20 +128,20 @@ class Profile extends Component {
 
   render() {
     return (
-      <div className={'row'}>
+      <Row>
         <Spinner display={this.props.loading}/>
-        <div className="col-md-12 col-lg-7">
+        <Col md="12" lg="7">
           <Card className="text-justify">
             <CardHeader>
               <CardTitle className="mb-0 font-weight-bold h6">ویرایش اطلاعات حساب کاربری</CardTitle>
             </CardHeader>
             <CardBody>
-              <AvForm>
-                <AvGroup row>
-                  <Label sm={4}>نام و نام خانوادگی:</Label>
-                  <Col sm={8}>
-                    <AvInput
+              <Form>
+                <FormGroup>
+                  <Label for="fullName">نام و نام خانوادگی:</Label>
+                    <Input
                       name="fullName"
+                      id="fullName"
                       type="text"
                       onChange={(event) => {
                         this.setState({
@@ -151,15 +153,12 @@ class Profile extends Component {
                       maxLength={100}
                       value={this.state.name}
                       required/>
-                    <br/>
-                    <AvFeedback>الزامی است</AvFeedback>
-                  </Col>
-                </AvGroup>
+                </FormGroup>
 
-                <AvGroup row>
-                  <Label sm={4}>تلفن ثابت:</Label>
-                  <Col sm={5}>
-                    <AvInput
+                <FormGroup>
+                  <Label>تلفن ثابت:</Label>
+                  <InputGroup>
+                    <Input
                       name="phoneNumber"
                       dir="ltr"
                       type="text"
@@ -170,30 +169,19 @@ class Profile extends Component {
                       placeholder={'88888888'}
                       maxLength={13}
                       value={this.state.phone}/>
-                    <br/>
-                    <AvFeedback>الزامی است</AvFeedback>
-                  </Col>
-                  <Col sm={3}>
-                    <Select2
-                      onSelect={(e) => this.setState({city: parseInt(e.target.value)})}
-                      data={this.getCodes()}
-                      value={this.state.city}
-                    />
-                  </Col>
-                </AvGroup>
+                    <InputGroupAddon addonType="prepend">
+                      <Select2
+                        onSelect={(e) => this.setState({city: parseInt(e.target.value)})}
+                        data={this.getCodes()}
+                        value={this.state.city}
+                      />
+                    </InputGroupAddon>
+                  </InputGroup>
+                </FormGroup>
 
-                <AvGroup row>
+                <FormGroup row>
                   <Label sm={4}>تلفن همراه:</Label>
                   <Col sm={8}>
-                    {/*<Input type="text" dir="ltr" onChange={(event) => {*/}
-                    {/*this.setState({*/}
-                    {/*...this.state,*/}
-                    {/*mobile: event.target.value*/}
-                    {/*})*/}
-                    {/*}}*/}
-                    {/*placeholder={'۰۹۱۲۰۰۰۰۰۰۰'}*/}
-                    {/*maxLength={12}*/}
-                    {/*defaultValue={this.state.mobile}/>*/}
                     <Phone
                       displayInitialValueAsLocalNumber
                       // country="IR"
@@ -203,7 +191,7 @@ class Profile extends Component {
                       value={this.state.mobile}
                       onChange={mobile => this.setState({mobile})}/>
                   </Col>
-                </AvGroup>
+                </FormGroup>
 
                 <FormGroup row>
                   <Label sm={4}>نشانی:</Label>
@@ -231,7 +219,7 @@ class Profile extends Component {
                     </Input>
                   </Col>
                 </FormGroup>
-              </AvForm>
+              </Form>
               <AvForm style={{display: this.state.legal === '1' ? 'block' : 'none'}}>
                 <AvGroup row>
                   <Label sm={4}>نام شرکت:‌ </Label>
@@ -322,7 +310,7 @@ class Profile extends Component {
               <Button color="primary" onClick={this.editUserProfile}>ذخیره تغییرات</Button>
             </CardFooter>
           </Card>
-        </div>
+        </Col>
         <div className="col-md-12 col-lg-5">
           <Card className="text-justify">
             <CardHeader>
@@ -405,7 +393,7 @@ class Profile extends Component {
             </CardBody>
           </Card>
         </div>
-      </div>
+      </Row>
     );
   }
 
