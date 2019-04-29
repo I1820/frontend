@@ -61,8 +61,8 @@ class Login extends Component {
                     <Form>
                       <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
-                            <InputGroupText>
-                            <i className="icon-user"></i>
+                          <InputGroupText>
+                            @
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input
