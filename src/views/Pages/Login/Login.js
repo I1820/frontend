@@ -11,19 +11,14 @@ import {
   Alert,
   InputGroup,
   InputGroupAddon,
-  InputGroupText
+  InputGroupText,
+  Form,
+  FormGroup,
+  Label,
 } from 'reactstrap';
-
-import {
-  re_captcha_site_key,
-} from '../../../api/config'
-
-import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
 import { connect } from 'react-redux';
 import { login, resetPasswordAction } from '../../../actions/AppActions';
-import ReCAPTCHA from 'react-google-recaptcha';
-
 
 class Login extends Component {
 
@@ -49,47 +44,42 @@ class Login extends Component {
 
   render() {
 
-    window.recaptchaOptions = {
-      lang: 'fa'
-    }
-
     return (
       <div className="app flex-row align-items-center">
         <Container>
           <Row className="justify-content-center">
-            <Col md="5" style={{display: this.state.reset ? 'none' : 'flex'}}>
-              <CardGroup style={{width: '100%'}}>
+            <Col md="8">
+              <CardGroup>
                 <Card className="p-0 p-sm-4">
                   <CardBody>
-                    <AvForm>
-                      <div className="text-right">
-                        <h1>ورود</h1>
-                        <p className="text-muted">وارد حساب کاربری خود شوید</p>
-                      </div>
-                      {this.renderAlert()}
-                      <AvGroup className="mb-3">
+                      <h1 className="text-right">
+                        ورود
+                      </h1>
+                      <p className="text-right text-muted">
+                        به پلتفرم اینترنت اشیا امیرکبیر خوش آمدید
+                      </p>
+                    <Form>
+                      <InputGroup className="mb-3">
                         <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
+                            <InputGroupText>
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <AvInput
+                        <Input
                           name="username"
                           onChange={event => {
                             this.mergeWithState({email: event.target.value})
                           }}
                           type="text" placeholder="نام کاربری"
                           required/>
-                        <br/>
-                        <AvFeedback>الزامی است</AvFeedback>
-                      </AvGroup>
-                      <AvGroup className="mb-4">
+                      </InputGroup>
+                      <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <AvInput
+                        <Input
                           name="password"
                           type="password"
                           onChange={event => {
@@ -97,96 +87,56 @@ class Login extends Component {
                           }}
                           placeholder="کلمه عبور"
                           required/>
-                        <br/>
-                        <AvFeedback>الزامی است</AvFeedback>
-                      </AvGroup>
+                      </InputGroup>
 
-                      <div className="form-group">
-                        <div className="form-check"
-                             style={{textAlign: 'right', direction: 'rtl'}}>
-                          <input className="form-check-input" type="checkbox"
+                      <FormGroup className="text-right">
+                        <Label check>
+                          <Input type="checkbox"
                                  onChange={event => {
                                    this.mergeWithState({keep: event.target.value})
                                  }}/>
-                          <label className="form-check-label" style={{marginRight: '20px'}}>
-                            {'مرا به خاطرت نگه دار'}
-                          </label>
-                        </div>
-                      </div>
+                               &emsp;
+                               مرا به خاطرت نگه دار
+                        </Label>
+                      </FormGroup>
 
-                      <InputGroup className="mb-4">
-                        <ReCAPTCHA
-                          className="g-recaptcha mb-4"
-                          size="normal"
-                          ref="recaptcha"
-                          sitekey={re_captcha_site_key}
-                          onChange={(response) => this.setState({recaptcha: response})}/>
-                      </InputGroup>
                       <Row>
                         <Col xs="12" className="text-right">
                           <img
                             style={{display: this.props.currentlySending ? 'block' : 'none', margin: 'auto'}}
                             src={'img/loading.gif'}/>
                         </Col>
-                        <Col xs="12">
+                      </Row>
+                      <Row style={{display: !this.props.currentlySending ? 'flex' : 'none', margin: 'auto'}}>
+                        <Col xs="6">
                           <Button
-                            style={{display: !this.props.currentlySending ? 'block' : 'none'}}
-                            onClick={this.goToResetPassword} color="warning"
-                            className="px-4 ml-1 float-left">فراموشی رمز عبور</Button>
-                          <Button
-                            style={{display: !this.props.currentlySending ? 'block' : 'none'}}
-                            onClick={() => this.goToRegisterPage()} color="success"
-                            className="px-4  ml-1 float-left">ثبت نام</Button>
-                          <Button
-                            style={{display: !this.props.currentlySending ? 'block' : 'none'}}
+                            block
                             onClick={this.submit} color="primary"
-                            className="px-4 ml-1 float-left">ورود</Button>
+                            className="px-4">ورود</Button>
+                        </Col>
+                        <Col xs="6">
+                          <Button
+                            block
+                            onClick={this.goToResetPassword} color="link"
+                            className="text-right px-0">فراموشی رمز عبور</Button>
                         </Col>
                       </Row>
-                    </AvForm>
+                    </Form>
                   </CardBody>
                 </Card>
-              </CardGroup>
-            </Col>
-            <Col md="5" style={{display: !this.state.reset ? 'none' : 'flex'}}>
-              <CardGroup>
-                <Card className="p-0 p-sm-4">
-                  <CardBody>
-                    <AvForm>
-                      <div className="text-right">
-                        <h1>بازیابی رمز عبور</h1>
-                        <p className="text-muted">ایمیل خود را وارد کنید</p>
-                      </div>
-                      {this.renderAlert()}
-                      <AvGroup className="mb-3">
-                        <InputGroupAddon addonType="prepend">
-                          <InputGroupText>
-                            <i className="icon-user"></i>
-                          </InputGroupText>
-                        </InputGroupAddon>
-                        <AvInput
-                          name="username"
-                          onChange={event => {
-                            this.mergeWithState({email: event.target.value})
-                          }}
-                          type="text" placeholder="ایمیل خود را وارد کنید"
-                          required/>
-                        <br/>
-                        <AvFeedback>الزامی است</AvFeedback>
-                      </AvGroup>
-                    </AvForm>
-                    <Row>
-                      <Col>
-                        <Button
-                          style={{display: !this.props.currentlySending ? 'block' : 'none'}}
-                          onClick={() => this.setState({reset: false})} color="success"
-                          className="px-4 float-left">بازگشت</Button>
-                        <Button
-                          style={{display: !this.props.currentlySending ? 'block' : 'none'}}
-                          onClick={this.reset} color="primary"
-                          className="px-4 ml-1 float-left">ارسال کلمه عبور</Button>
-                      </Col>
-                    </Row>
+                <Card className="text-white bg-primary py-5 d-md-down-none">
+                  <CardBody className="text-center">
+                    <div>
+                      <h2>ثبت نام</h2>
+                      <p>
+                        این پلتفرم برای اشیایی که مبنی بر پروتکل لورا عمل می‌کنند
+                        یک رابط مدیریتی ساده فراهم می‌آورد.
+                      </p>
+                      <Button
+                        onClick={() => this.goToRegisterPage()}
+                        color="primary" active className="mt-3"
+                      >همین حالا ثبت‌نام کنید</Button>
+                    </div>
                   </CardBody>
                 </Card>
               </CardGroup>
@@ -218,13 +168,7 @@ class Login extends Component {
   }
 
   submit() {
-    let recaptcha = this.state.recaptcha
-    this.setState({
-      showAlert: false,
-      recaptcha: undefined
-    })
-    this.refs.recaptcha.reset()
-    this.props.dispatch(login(this.state.email, this.state.password, recaptcha, this.state.keep, this.onRespond))
+   this.props.dispatch(login(this.state.email, this.state.password, this.state.keep, this.onRespond))
 
   }
 
