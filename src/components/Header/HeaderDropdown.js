@@ -39,15 +39,16 @@ class HeaderDropdown extends Component {
           <img src={this.props.userInfo.picture} className="img-avatar" alt=""/>
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem header tag="div"
-                        className="text-center"><strong>{this.state.activeUserInfo.username}</strong></DropdownItem>
-          <DropdownItem onClick={this.profileLink}><i className="fa fa-user-o text-primary"></i>{'حساب کاربری'}
+          <DropdownItem header className="text-center">
+            <strong>{this.state.activeUserInfo.username}</strong>
+          </DropdownItem>
+          <DropdownItem onClick={this.profileLink}><i className="fa fa-user"></i>{'حساب کاربری'}
           </DropdownItem>
           {this.state.activeUserInfo.impersonated ?
             <DropdownItem onClick={() => this.props.dispatch(impersonateUserAction(0, 0, toastAlerts))}>
-              <i className="fa fa-power-off text-danger"></i>{'خروج از حالت شخص سوم'}
+              <i className="fa fa-power-off"></i>{'خروج از حالت شخص سوم'}
             </DropdownItem> : ''}
-          <DropdownItem onClick={() => this.props.dispatch(logout())}><i className="fa fa-power-off text-danger"></i>خروج</DropdownItem>
+          <DropdownItem onClick={() => this.props.dispatch(logout())}><i className="fa fa-lock"></i>خروج</DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
     );
