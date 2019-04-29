@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import {
-  Badge,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Dropdown
-} from 'reactstrap';
+
+import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from 'reactstrap';
+
 import { base_files_url } from '../../api/index';
 import connect from 'react-redux/es/connect/connect';
 import { impersonateUserAction, logout } from '../../actions/AppActions';
@@ -36,10 +32,9 @@ class HeaderDropdown extends Component {
     });
   }
 
-  dropAccnt() {
-
+  render() {
     return (
-      <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+      <UncontrolledDropdown nav>
         <DropdownToggle nav>
           <img src={this.props.userInfo.picture} className="img-avatar" alt=""/>
         </DropdownToggle>
@@ -54,14 +49,7 @@ class HeaderDropdown extends Component {
             </DropdownItem> : ''}
           <DropdownItem onClick={() => this.props.dispatch(logout())}><i className="fa fa-power-off text-danger"></i>خروج</DropdownItem>
         </DropdownMenu>
-      </Dropdown>
-    );
-  }
-
-  render() {
-    const {...attributes} = this.props;
-    return (
-      this.dropAccnt()
+      </UncontrolledDropdown>
     );
   }
 }
