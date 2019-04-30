@@ -231,13 +231,13 @@ body {
   width: 120px;
 }
 
-// Captcha
-.g-recaptcha {
-  transform: scale(0.77);
-  transform-origin: 0 0;
+// Leaflet
+.leaflet-container {
+  height: 400px;
+  width: 100%;
 }
 
-//calender
+// Calender
 .JDatePicker .JDheader select {
   width: 90% !important;
 }
@@ -254,9 +254,7 @@ body {
   background: #CFD8DC !important;
 }
 
-// END
-
-//select2
+// select2
 
 .select2-container {
   box-sizing: border-box;
