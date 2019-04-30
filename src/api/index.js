@@ -19,7 +19,6 @@ import store from '../store'
 const BASE_URL = 'http://api.dev1.platform.ceit.aut.ac.ir/api/v1'
 const BASE_FILES_URL = 'http://api.dev1.platform.ceit.aut.ac.ir'
 const BASE_ADMIN_URL = 'http://api.dev1.platform.ceit.aut.ac.ir/api/admin'
-const GOOGLE_URL = 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places'
 
 const endpoints = {
   login: '/login',
@@ -767,11 +766,6 @@ module.exports.addRole = function (permissions, dispatch) {
   Object.assign(config, {body: getFormData({name: 'نقش جدید', permissions_ids: JSON.stringify(permissions)})})
   return fetchData(`${BASE_ADMIN_URL}/permission/role`, config, dispatch, true)
 };
-
-module.exports.isOnlineAPI = function (dispatch) {
-  return fetchData(`${GOOGLE_URL}`, getConfig(), dispatch, true)
-};
-
 
 module.exports.base_url = function () {
   return BASE_URL;

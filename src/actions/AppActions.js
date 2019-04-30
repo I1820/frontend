@@ -149,7 +149,6 @@ import {
   DownloadThingsDataExcel,
   getProjectThings,
   getThingsList,
-  isOnlineAPI,
   getLogs
 } from '../api';
 import fileDownload from 'js-file-download'
@@ -1142,22 +1141,6 @@ export function changePassword(data, cb) {
     })
   }
 }
-
-export function isOnline(cb) {
-  return (dispatch) => {
-    const promise = isOnlineAPI(dispatch)
-    promise.then((response) => {
-      if (response.status === 'OK')
-        cb && cb(true)
-      else
-        cb && cb(false)
-    }).catch((err) => {
-      cb(false)
-      console.log('error', err)
-    })
-  }
-}
-
 
 export function resetPasswordAction(data, cb) {
   return (dispatch) => {
