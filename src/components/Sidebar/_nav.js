@@ -1,13 +1,11 @@
 export default {
   items: [
-
     {
       name: 'داشبورد',
       url: '/dashboard',
       icon: 'icon-screen-desktop',
       type: 'global'
     },
-
     {
       name: 'پروژه ها',
       url: '/projects',
@@ -17,12 +15,12 @@ export default {
     {
       name: 'اشیا و گذرگاه ها',
       type: 'user',
-      icon: 'icon-puzzle',
+      icon: 'icon-feed',
       children: [
         {
           name: 'اشیا',
           url: '/things',
-          icon: 'icon-feed',
+          icon: 'icon-screen-smartphone',
           type: 'user'
         },
         {
@@ -42,7 +40,7 @@ export default {
     {
       name: 'بخش مالی',
       type: 'user',
-      icon: 'icon-puzzle',
+      icon: 'icon-diamond',
       children: [
         {
           name: 'تراکنش ها',
@@ -59,80 +57,50 @@ export default {
     },
     {
       name: 'مدیریت پلتفرم',
-      url: '/things',
       type: 'admin',
-      icon: 'icon-puzzle',
+      icon: 'icon-briefcase',
       children: [
         {
-          name: 'مدیریت پرتال پرداخت',
+          name: 'مدیریت درگاه پرداخت',
           url: '/portals',
-          icon: 'icon-grid',
+          icon: 'icon-paypal',
           type: 'admin'
         },
         {
           name: 'مدیریت بسته‌ها',
           url: '/admin/packages',
-          icon: 'icon-grid',
+          icon: 'icon-handbag',
           type: 'admin'
         },
         {
           name: 'مدیریت کاربران',
           url: '/admin/users',
-          icon: 'icon-grid',
+          icon: 'icon-people',
           type: 'admin'
         }, {
           name: 'تراکنش‌های سیستم',
           url: '/admin/transactions',
-          icon: 'icon-grid',
+          icon: 'icon-credit-card',
           type: 'admin'
         },
         {
-          name: 'مدیریت نقش ها',
+          name: 'مدیریت نقش‌ها',
           url: '/admin/roles',
-          icon: 'icon-grid',
+          icon: 'icon-mustache',
           type: 'admin'
         },
         {
           name: ' قالب های عمومی',
           url: '/admin/globalCodec',
-          icon: 'icon-grid',
+          icon: 'icon-docs',
           type: 'admin'
         },{
-          name: 'پنل‌های مدیریتی ولاگ‌ها',
+          name: 'سامانه‌های مدیریت',
           url: '/admin/links',
-          icon: 'icon-grid',
+          icon: 'icon-link',
           type: 'admin'
         },
       ]
     }
-    // {
-    //     name: 'اشیاء',
-    //     url: '/things',
-    //     icon: 'icon-puzzle',
-    //     children: [
-    //         {
-    //             name: 'لیست اشیاء',
-    //             url: '/things/list',
-    //             icon: 'icon-arrow-left'
-    //         },
-    //         {
-    //             name: 'افزودن شی',
-    //             url: '/things/new',
-    //             icon: 'icon-arrow-left'
-    //         },
-    //         {
-    //             name: 'آپلود فایل Excel',
-    //             url: '/things/excel',
-    //             icon: 'icon-arrow-left'
-    //         },
-    //     ]
-    // },
-    //
-    // {
-    //     name: 'Gateways',
-    //     url: '/gateways',
-    //     icon: 'icon-direction',
-    // },
-
   ]
 };
