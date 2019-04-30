@@ -29,13 +29,10 @@ import {
 } from '../../actions/AppActions';
 import moment from 'moment-jalaali';
 import _ from 'underscore';
-import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 import { toPersianNumbers } from '../Shared/helpers';
 import Spinner from '../Spinner/Spinner';
 
 const ReactHighcharts = require('react-highcharts');
-
-const {compose, withProps, lifecycle} = require('recompose');
 
 class Dashboard extends Component {
 
@@ -270,7 +267,7 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <Card className="text-right">
               <CardBody className="p-3 d-flex align-items-center">
-                <i class="icon-layers bg-info p-3 font-2xl ml-3"></i>
+                <i className="icon-layers bg-info p-3 font-2xl ml-3"></i>
                 <div>
                   <div className="text-value-sm text-info">{toPersianNumbers(this.state.project_num)}</div>
                   <div className="text-muted text-uppercase font-weight-bold small">پروژه ثبت شده است</div>
@@ -280,8 +277,8 @@ class Dashboard extends Component {
                 <Button color="link" block onClick={() => window.location = '/#/projects'}
                   className="text-muted d-flex justify-content-between align-items-center"
                 >
-                  <span class="small font-weight-bold">پروژه‌ها</span>
-                  <i class="fa fa-angle-left"></i>
+                  <span className="small font-weight-bold">پروژه‌ها</span>
+                  <i className="fa fa-angle-left"></i>
                 </Button>
               </CardFooter>
             </Card>
@@ -289,7 +286,7 @@ class Dashboard extends Component {
           <Col xs="12" sm="6" lg="3">
             <Card className="text-right">
               <CardBody className="p-3 d-flex align-items-center">
-                <i class="icon-screen-smartphone bg-danger p-3 font-2xl ml-3"></i>
+                <i className="icon-screen-smartphone bg-danger p-3 font-2xl ml-3"></i>
                 <div>
                   <div className="text-value-sm text-danger">{toPersianNumbers(this.state.thing_num)}</div>
                   <div className="text-muted text-uppercase font-weight-bold small">شی ثبت شده است</div>
@@ -299,8 +296,8 @@ class Dashboard extends Component {
                 <Button color="link" block onClick={() => window.location = '/#/things'}
                   className="text-muted d-flex justify-content-between align-items-center"
                 >
-                  <span class="small font-weight-bold">اشیا</span>
-                  <i class="fa fa-angle-left"></i>
+                  <span className="small font-weight-bold">اشیا</span>
+                  <i className="fa fa-angle-left"></i>
                 </Button>
               </CardFooter>
             </Card>
@@ -504,79 +501,5 @@ class Dashboard extends Component {
 function mapStateToProps(state) {
   return {};
 }
-
-
-const Map = compose(
-  withProps({
-    googleMapURL: 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places',
-    loadingElement: <div style={{height: `100%`}}/>,
-    containerElement: <div style={{height: `400px`}}/>,
-    mapElement: <div style={{height: `100%`}}/>,
-  }),
-  lifecycle({
-    componentWillReceiveProps(props) {
-      if (props.marker !== undefined) {
-        this.setState({
-          marker: props.marker
-        })
-      }
-
-    },
-    componentWillMount() {
-      const refs = {}
-      const marker = this.props.marker !== undefined ? this.props.marker : {
-        lat: 35.7024852, lng: 51.4023424
-      }
-      this.setState({
-        bounds: null,
-        center: marker,
-        marker,
-        onMapMounted: ref => {
-          refs.map = ref;
-        },
-        onBoundsChanged: () => {
-          this.setState({
-            bounds: refs.map.getBounds(),
-            center: refs.map.getCenter(),
-          })
-        },
-        onPlacesChanged: () => {
-          const places = refs.searchBox.getPlaces();
-          const bounds = new google.maps.LatLngBounds();
-
-          places.forEach(place => {
-            if (place.geometry.viewport) {
-              bounds.union(place.geometry.viewport)
-            } else {
-              bounds.extend(place.geometry.location)
-            }
-          });
-          const nextMarkers = places.map(place => ({
-            position: place.geometry.location,
-          }));
-          const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
-
-          this.setState({
-            center: nextCenter,
-            markers: nextMarkers,
-          });
-          // refs.map.fitBounds(bounds);
-        },
-      })
-    },
-  }),
-  withScriptjs,
-  withGoogleMap
-)(props =>
-  <GoogleMap
-    ref={props.onMapMounted}
-    defaultZoom={12}
-    center={props.marker}
-    onBoundsChanged={props.onBoundsChanged}
-  >
-    <Marker position={props.marker}/>
-  </GoogleMap>
-);
-
 
 export default connect(mapStateToProps)(Dashboard);

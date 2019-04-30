@@ -16,8 +16,7 @@ import {
 
 import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
 
-import {GoogleMap, Marker, withGoogleMap, withScriptjs} from 'react-google-maps'
-import {createGatewayAction, isOnline} from '../../actions/AppActions';
+import {createGatewayAction} from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import Spinner from '../Spinner/Spinner';
 
@@ -31,127 +30,6 @@ style({
 
 const _ = require('lodash');
 const {compose, withProps, lifecycle} = require('recompose');
-const {SearchBox} = require('react-google-maps/lib/components/places/SearchBox');
-const MapWithASearchBox = compose(
-  withProps({
-    googleMapURL: 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places',
-    loadingElement: <div style={{height: `100%`}}/>,
-    containerElement: <div style={{height: `400px`}}/>,
-    mapElement: <div style={{height: `100%`}}/>,
-  }),
-  lifecycle({
-    componentWillReceiveProps(props) {
-      if (props.marker !== undefined) {
-        this.setState({
-          marker: props.marker
-        })
-      }
-
-    },
-    componentWillMount() {
-      const refs = {}
-      const marker = this.props.marker !== undefined ? this.props.marker : {
-        lat: 35.7024852, lng: 51.4023424
-      }
-      this.setState({
-        bounds: null,
-        center: marker,
-        marker,
-        onMapMounted: ref => {
-          refs.map = ref;
-        },
-        onBoundsChanged: () => {
-          this.setState({
-            bounds: refs.map.getBounds(),
-            center: refs.map.getCenter(),
-          })
-        },
-        onSearchBoxMounted: ref => {
-          refs.searchBox = ref;
-        },
-        onClick: data => {
-          document.getElementById('fld_lat').value = data.latLng.lat()
-          document.getElementById('fld_lng').value = data.latLng.lng()
-          this.setState({
-            center: {
-              lat: data.latLng.lat(),
-              lng: data.latLng.lng()
-            },
-            marker: {
-              lat: data.latLng.lat(),
-              lng: data.latLng.lng()
-            },
-          })
-        },
-        onPlacesChanged: () => {
-          const places = refs.searchBox.getPlaces();
-          const bounds = new google.maps.LatLngBounds();
-
-          places.forEach(place => {
-            if (place.geometry.viewport) {
-              bounds.union(place.geometry.viewport)
-            } else {
-              bounds.extend(place.geometry.location)
-            }
-          });
-          const nextMarkers = places.map(place => ({
-            position: place.geometry.location,
-          }));
-          const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
-          this.setState({
-            center: {
-              lat: bounds.f.b,
-              lng: bounds.b.b
-            },
-            marker: {
-              lat: bounds.f.b,
-              lng: bounds.b.b
-            }
-          });
-          // refs.map.fitBounds(bounds);
-        },
-      })
-    },
-  }),
-  withScriptjs,
-  withGoogleMap,
-)(props =>
-  <GoogleMap
-    ref={props.onMapMounted}
-    defaultZoom={12}
-    center={props.marker}
-    onBoundsChanged={props.onBoundsChanged}
-    onClick={props.onClick}
-  >
-    <SearchBox
-      ref={props.onSearchBoxMounted}
-      bounds={props.bounds}
-      controlPosition={google.maps.ControlPosition.TOP_LEFT}
-      onPlacesChanged={props.onPlacesChanged}
-    >
-      <input
-        type="text"
-        placeholder="Customized your placeholder"
-        style={{
-          boxSizing: `border-box`,
-          border: `1px solid transparent`,
-          width: `240px`,
-          height: `32px`,
-          marginTop: `10px`,
-          textAlign: 'left',
-          padding: `0 12px`,
-          borderRadius: `3px`,
-          boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-          fontSize: `14px`,
-          outline: `none`,
-          textOverflow: `ellipses`,
-        }}
-      />
-    </SearchBox>
-    <Marker position={props.marker}/>
-  </GoogleMap>
-);
-
 
 class GatewaysNew extends Component {
 
@@ -237,11 +115,6 @@ class GatewaysNew extends Component {
                          onChange={event => this.setState({altitude: event.target.value})}/>
                 </Col>
               </FormGroup>
-              {
-                !_.isUndefined(window.google) ? <MapWithASearchBox/> : <br/>
-              }
-
-
             </AvForm>
           </CardBody>
           <CardFooter>

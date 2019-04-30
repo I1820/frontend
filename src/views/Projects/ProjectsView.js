@@ -34,14 +34,9 @@ import { css } from 'glamor';
 import { toastAlerts } from '../Shared/toast_alert';
 import ReactTable from 'react-table'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
-import { GoogleMap, Marker, withGoogleMap, withScriptjs } from 'react-google-maps'
 import { colorArray } from './color';
 import Loading from '../../components/Loading';
 import './project.css';
-
-
-const {compose, withProps, lifecycle} = require('recompose');
-
 
 class ProjectsView extends Component {
 
@@ -667,78 +662,6 @@ class ProjectsView extends Component {
         </Card>)
   }
 }
-
-const Map = compose(
-  withProps({
-    googleMapURL: 'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places',
-    loadingElement: <div style={{height: `100%`}}/>,
-    containerElement: <div style={{height: `400px`}}/>,
-    mapElement: <div style={{height: `100%`}}/>,
-  }),
-  lifecycle({
-    componentWillReceiveProps(props) {
-      if (props.marker !== undefined) {
-        this.setState({
-          marker: props.marker
-        })
-      }
-
-    },
-    componentWillMount() {
-      const refs = {}
-      const marker = this.props.marker !== undefined ? this.props.marker : {
-        lat: 35.7024852, lng: 51.4023424
-      }
-      this.setState({
-        bounds: null,
-        center: marker,
-        marker,
-        onMapMounted: ref => {
-          refs.map = ref;
-        },
-        onBoundsChanged: () => {
-          this.setState({
-            bounds: refs.map.getBounds(),
-            center: refs.map.getCenter(),
-          })
-        },
-        onPlacesChanged: () => {
-          const places = refs.searchBox.getPlaces();
-          const bounds = new google.maps.LatLngBounds();
-
-          places.forEach(place => {
-            if (place.geometry.viewport) {
-              bounds.union(place.geometry.viewport)
-            } else {
-              bounds.extend(place.geometry.location)
-            }
-          });
-          const nextMarkers = places.map(place => ({
-            position: place.geometry.location,
-          }));
-          const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
-
-          this.setState({
-            center: nextCenter,
-            markers: nextMarkers,
-          });
-          // refs.map.fitBounds(bounds);
-        },
-      })
-    },
-  }),
-  withScriptjs,
-  withGoogleMap
-)(props =>
-  <GoogleMap
-    ref={props.onMapMounted}
-    defaultZoom={12}
-    center={props.marker}
-    onBoundsChanged={props.onBoundsChanged}
-  >
-    <Marker position={props.marker}/>
-  </GoogleMap>
-);
 
 function mapStateToPropes(state) {
   return {
