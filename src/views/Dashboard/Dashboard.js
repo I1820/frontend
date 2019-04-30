@@ -90,7 +90,6 @@ class Dashboard extends Component {
 
   render() {
     return (
-
       <div>
         <Spinner display={this.state.loading || this.state.first_loading}/>
         <Modal isOpen={this.state.modalToggle.setWidgetChart}
@@ -267,23 +266,43 @@ class Dashboard extends Component {
         </Modal>
 
 
-        <div className="row">
+        <Row>
           <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-primary text-center" style={{cursor: 'pointer'}}
-                  onClick={() => window.location = '/#/projects'}>
-              <CardBody className="pb-0">
-                <h4 className="mb-0 h3 font-weight-bold">{toPersianNumbers(this.state.project_num)}</h4>
-                <p>پروژه ثبت شده است</p>
+            <Card className="text-right">
+              <CardBody className="p-3 d-flex align-items-center">
+                <i class="icon-layers bg-info p-3 font-2xl ml-3"></i>
+                <div>
+                  <div className="text-value-sm text-info">{toPersianNumbers(this.state.project_num)}</div>
+                  <div className="text-muted text-uppercase font-weight-bold small">پروژه ثبت شده است</div>
+                </div>
               </CardBody>
+              <CardFooter>
+                <Button color="link" block onClick={() => window.location = '/#/projects'}
+                  className="text-muted d-flex justify-content-between align-items-center"
+                >
+                  <span class="small font-weight-bold">پروژه‌ها</span>
+                  <i class="fa fa-angle-left"></i>
+                </Button>
+              </CardFooter>
             </Card>
           </Col>
           <Col xs="12" sm="6" lg="3">
-            <Card className="text-white bg-info text-center" style={{cursor: 'pointer'}}
-                  onClick={() => window.location = '/#/things'}>
-              <CardBody className="pb-0">
-                <h4 className="mb-0 h3 font-weight-bold">{toPersianNumbers(this.state.thing_num)}</h4>
-                <p>شی ثبت شده است</p>
+            <Card className="text-right">
+              <CardBody className="p-3 d-flex align-items-center">
+                <i class="icon-screen-smartphone bg-danger p-3 font-2xl ml-3"></i>
+                <div>
+                  <div className="text-value-sm text-danger">{toPersianNumbers(this.state.thing_num)}</div>
+                  <div className="text-muted text-uppercase font-weight-bold small">شی ثبت شده است</div>
+                </div>
               </CardBody>
+              <CardFooter>
+                <Button color="link" block onClick={() => window.location = '/#/things'}
+                  className="text-muted d-flex justify-content-between align-items-center"
+                >
+                  <span class="small font-weight-bold">اشیا</span>
+                  <i class="fa fa-angle-left"></i>
+                </Button>
+              </CardFooter>
             </Card>
           </Col>
           <Col>
@@ -291,12 +310,10 @@ class Dashboard extends Component {
               this.toggle('setWidgetChart')
             }}>افزونه جدید</Button>
           </Col>
-        </div>
-        <div className="row">
-          {
-            this.renderCharts()
-          }
-        </div>
+        </Row>
+        <Row>
+          { this.renderCharts() }
+        </Row>
       </div>
 
     );
