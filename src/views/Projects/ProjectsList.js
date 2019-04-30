@@ -191,24 +191,26 @@ class ProjectsList extends Component {
       {
         id: 'projectStatus',
         Header: 'وضعیت',
-        Cell: row => <Badge color={row.active === true ? 'success' : 'danger'}>
-          {row.active === true ? 'فعال' : 'غیرفعال'}
+        accessor: 'active',
+        Cell: row => <Badge color={row.value === true ? 'success' : 'danger'}>
+          {row.value === true ? 'فعال' : 'غیرفعال'}
         </Badge>
       },
       {
         id: 'rowTools',
         Header: 'گزینه‌ها',
+        accessor: '_id',
         Cell: row => <Row>
           <Col xs="4">
-          <Button block onClick={() => this.showProject(row._id)} className="ml-1" color="success"
+          <Button block onClick={() => this.showProject(row.value)} className="ml-1" color="success"
                   size="sm">نمایش</Button>
           </Col>
           <Col xs="4">
-          <Button block onClick={() => this.manageProject(row._id)} className="ml-1" color="warning"
+          <Button block onClick={() => this.manageProject(row.value)} className="ml-1" color="warning"
                   size="sm">مدیریت</Button>
           </Col>
           <Col xs="4">
-          <Button block onClick={() => this.toggle('delete', row._id)} className="ml-1" color="danger"
+          <Button block onClick={() => this.toggle('delete', row.value)} className="ml-1" color="danger"
                   size="sm">حذف</Button>
           </Col>
         </Row>
