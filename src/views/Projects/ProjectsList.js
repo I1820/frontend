@@ -20,10 +20,10 @@ import {
   Input,
   Table
 } from 'reactstrap';
+import ReactTable from 'react-table'
 
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
-import ReactTable from 'react-table'
 import { toastAlerts } from '../Shared/toast_alert';
 import 'react-table/react-table.css'
 
@@ -85,7 +85,6 @@ class ProjectsList extends Component {
   render() {
     return (
       <div>
-        <Spinner display={this.props.loading}/>
         <Modal isOpen={this.state.deleteModal} toggle={() => this.toggle('delete')} className="text-right">
           <ModalHeader>حذف پروژه</ModalHeader>
           <ModalBody>
@@ -153,15 +152,15 @@ class ProjectsList extends Component {
             <ReactTable
               data={this.state.projects}
               columns={this.reactTableColumns()}
+              loading={this.props.loading}
               pageSizeOptions={[5, 10, 25]}
               nextText='بعدی'
               previousText='قبلی'
-              filterable={true}
               rowsText='ردیف'
               pageText='صفحه'
               ofText='از'
               minRows='1'
-              noDataText='داده ای وجود ندارد'
+              noDataText='پروژه‌ای برای نمایش وجود ندارد'
               resizable={false}
               defaultPageSize={5}
               className="-striped -highlight"
@@ -183,7 +182,7 @@ class ProjectsList extends Component {
       },
       {
         Header: 'توضیحات',
-        accessor: 'description'
+        accessor: 'description',
       },
       {
         Header: 'صاحب پروژه',
@@ -192,23 +191,27 @@ class ProjectsList extends Component {
       {
         id: 'projectStatus',
         Header: 'وضعیت',
-        filterable: false,
-        accessor: row => <Badge color={row.active === true ? 'success' : 'danger'}>
+        Cell: row => <Badge color={row.active === true ? 'success' : 'danger'}>
           {row.active === true ? 'فعال' : 'غیرفعال'}
         </Badge>
       },
       {
         id: 'rowTools',
-        Header: 'امکانات',
-        filterable: false,
-        accessor: row => <div>
-          <Button onClick={() => this.showProject(row._id)} className="ml-1" color="success"
+        Header: 'گزینه‌ها',
+        Cell: row => <Row>
+          <Col xs="4">
+          <Button block onClick={() => this.showProject(row._id)} className="ml-1" color="success"
                   size="sm">نمایش</Button>
-          <Button onClick={() => this.manageProject(row._id)} className="ml-1" color="warning"
+          </Col>
+          <Col xs="4">
+          <Button block onClick={() => this.manageProject(row._id)} className="ml-1" color="warning"
                   size="sm">مدیریت</Button>
-          <Button onClick={() => this.toggle('delete', row._id)} className="ml-1" color="danger"
+          </Col>
+          <Col xs="4">
+          <Button block onClick={() => this.toggle('delete', row._id)} className="ml-1" color="danger"
                   size="sm">حذف</Button>
-        </div>
+          </Col>
+        </Row>
       }
     ];
   }
