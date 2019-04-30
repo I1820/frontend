@@ -19,8 +19,6 @@ import {
   Table,
 } from 'reactstrap';
 
-import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
-
 import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import classnames from 'classnames';
@@ -287,17 +285,16 @@ class Profile extends Component {
             </CardFooter>
           </Card>
         </Col>
-        <div className="col-md-12 col-lg-5">
+        <Col md="12" lg="5">
           <Card className="text-justify">
             <CardHeader>
-              <CardTitle className="mb-0 font-weight-bold h6">تغییر رمزعبور</CardTitle>
+              <CardTitle className="mb-0 font-weight-bold h6">تغییر رمز عبور</CardTitle>
             </CardHeader>
             <CardBody>
-              <AvForm>
-                <AvGroup row>
-                  <Label sm={4}>رمز عبور فعلی:</Label>
-                  <Col sm={8}>
-                    <AvInput
+              <Form>
+                <FormGroup>
+                  <Label>رمز عبور فعلی:</Label>
+                  <Input
                       name="oldPassword"
                       type="password" onChange={(event) => {
                       this.setState({
@@ -306,14 +303,10 @@ class Profile extends Component {
                       })
                     }} placeholder={'رمز عبور فعلی'}
                       required/>
-                    <br/>
-                    <AvFeedback>الزامی است</AvFeedback>
-                  </Col>
-                </AvGroup>
-                <AvGroup row>
-                  <Label sm={4}>رمز عبور جدید:</Label>
-                  <Col sm={8}>
-                    <AvInput
+                </FormGroup>
+                <FormGroup>
+                  <Label>رمز عبور جدید:</Label>
+                    <Input
                       name="newPassword" type="password" onChange={(event) => {
                       this.setState({
                         ...this.state,
@@ -321,14 +314,10 @@ class Profile extends Component {
                       })
                     }} placeholder={'رمز عبور جدید'}
                       required/>
-                    <br/>
-                    <AvFeedback>الزامی است</AvFeedback>
-                  </Col>
-                </AvGroup>
-                <AvGroup row>
-                  <Label sm={4}>تکرار رمز عبور جدید:</Label>
-                  <Col sm={8}>
-                    <AvInput
+                </FormGroup>
+                <FormGroup>
+                  <Label>تکرار رمز عبور جدید:</Label>
+                    <Input
                       name="renewPassword" type="password" onChange={(event) => {
                       this.setState({
                         ...this.state,
@@ -336,11 +325,8 @@ class Profile extends Component {
                       })
                     }} placeholder={'تکرار رمز عبور جدید'}
                       required/>
-                    <br/>
-                    <AvFeedback>الزامی است</AvFeedback>
-                  </Col>
-                </AvGroup>
-              </AvForm>
+                </FormGroup>
+              </Form>
             </CardBody>
             <CardFooter>
               <Button color="primary" onClick={this.changeUserPassword}>ذخیره تغییرات</Button>
@@ -352,23 +338,17 @@ class Profile extends Component {
               <CardTitle className="mb-0 font-weight-bold h6">تصویر پروفایل</CardTitle>
             </CardHeader>
             <CardBody>
-              <FormGroup row>
-                <Label sm={4}>  (حداکثر 8Mb) ارسال عکس</Label>
-                <Col sm={8}>
+              <FormGroup>
+                <Label>  (حداکثر 8Mb) ارسال عکس</Label>
                   <Input type="file"
                          onChange={(event) => {
                            this.uploadPicture(event.target.files[0])
                          }}/>
-                </Col>
-                <br/>
-                <Col sm={2}></Col>
-                <Col sm={8}>
-                  <CardImg width="100%" src={this.state.picture} alt="بدون عکس پروفایل"/>
-                </Col>
               </FormGroup>
+              <CardImg width="100%" src={this.state.picture} alt="بدون عکس پروفایل"/>
             </CardBody>
           </Card>
-        </div>
+        </Col>
       </Row>
     );
   }
