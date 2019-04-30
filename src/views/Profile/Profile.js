@@ -151,7 +151,7 @@ class Profile extends Component {
                       }}
                       placeholder={'نام و نام خانوادگی'}
                       maxLength={100}
-                      value={this.state.name}
+                      defaultValue={this.state.name}
                       required/>
                 </FormGroup>
 
@@ -168,7 +168,7 @@ class Profile extends Component {
                       }}
                       placeholder={'88888888'}
                       maxLength={13}
-                      value={this.state.phone}/>
+                      defaultValue={this.state.phone}/>
                     <InputGroupAddon addonType="prepend">
                       <Select2
                         onSelect={(e) => this.setState({city: parseInt(e.target.value)})}
@@ -179,9 +179,8 @@ class Profile extends Component {
                   </InputGroup>
                 </FormGroup>
 
-                <FormGroup row>
-                  <Label sm={4}>تلفن همراه:</Label>
-                  <Col sm={8}>
+                <FormGroup>
+                  <Label>تلفن همراه:</Label>
                     <Phone
                       displayInitialValueAsLocalNumber
                       // country="IR"
@@ -190,104 +189,83 @@ class Profile extends Component {
                       placeholder=""
                       value={this.state.mobile}
                       onChange={mobile => this.setState({mobile})}/>
-                  </Col>
                 </FormGroup>
 
-                <FormGroup row>
-                  <Label sm={4}>نشانی:</Label>
-                  <Col sm={8}>
-                    <Input type="textarea" rows="4" onChange={(event) => {
-                      this.setState({
-                        ...this.state,
-                        address: event.target.value
-                      })
-                    }}
-                           placeholder={'تهران - ...'}
-                           maxLength={500}
-                           value={this.state.address}/>
-                  </Col>
+                <FormGroup>
+                  <Label>نشانی:</Label>
+                  <Input type="textarea" rows="4" onChange={(event) =>
+                      this.setState({address: event.target.value})
+                    }
+                    placeholder={'تهران - ...'}
+                    maxLength={500}
+                    value={this.state.address}/>
                 </FormGroup>
-                <FormGroup row>
-                  <Label sm={4}> نوع کاربر:</Label>
-                  <Col sm={8}>
-                    <Input value={this.state.legal} onChange={(e) => {
+                <FormGroup>
+                  <Label> نوع کاربر:</Label>
+                  <Input value={this.state.legal} onChange={(e) => {
                       this.setState({legal: e.target.value})
                     }}
-                           type="select" name="type" id="select">
-                      <option value={1}>حقوقی</option>
-                      <option value={0}>حقیقی</option>
-                    </Input>
-                  </Col>
+                    type="select" name="type" id="select">
+                    <option value={1}>حقوقی</option>
+                    <option value={0}>حقیقی</option>
+                  </Input>
                 </FormGroup>
               </Form>
-              <AvForm style={{display: this.state.legal === '1' ? 'block' : 'none'}}>
-                <AvGroup row>
-                  <Label sm={4}>نام شرکت:‌ </Label>
-                  <Col sm={8}>
-                    <AvInput
-                      name="fullName"
-                      type="text" onChange={(event) => {
+              <Form style={{display: this.state.legal === '1' ? 'block' : 'none'}}>
+                <FormGroup>
+                  <Label for="orgName">نام شرکت: </Label>
+                    <Input
+                      name="orgName"
+                      id="orgName"
+                      type="text" onChange={(event) =>
                       this.setState({
-                        ...this.state,
                         legalInfo: {
                           ...this.state.legalInfo,
                           org_name: event.target.value
                         }
                       })
-                    }}
-                      placeholder={'نام شرکت'}
-                      maxLength={100}
-                      value={this.state.legalInfo.org_name}
+                    }
+                    placeholder={'نام شرکت'}
+                    maxLength={100}
+                    defaultValue={this.state.legalInfo.org_name}
                     />
-                    <br/>
-                    {/*<AvFeedback>الزامی است</AvFeedback>*/}
-                  </Col>
-                </AvGroup>
-                <AvGroup row>
-                  <Label sm={4}>نام و نام خانوادگی واسط شرکت:‌ </Label>
-                  <Col sm={8}>
-                    <AvInput
-                      name="fullName"
-                      type="text" onChange={(event) => {
+                </FormGroup>
+                <FormGroup>
+                  <Label for="interfaceName" sm={4}>نام و نام خانوادگی واسط شرکت: </Label>
+                    <Input
+                      name="interfaceName"
+                      type="text" onChange={(event) =>
                       this.setState({
-                        ...this.state,
                         legalInfo: {
                           ...this.state.legalInfo,
                           org_interface_name: event.target.value
                         }
                       })
-                    }}
-                      placeholder={'نام و نام خانوادگی'}
-                      maxLength={100}
-                      value={this.state.legalInfo.org_interface_name}
+                    }
+                    placeholder={'نام و نام خانوادگی'}
+                    maxLength={100}
+                    defaultValue={this.state.legalInfo.org_interface_name}
                     />
-                    <br/>
-                    {/*<AvFeedback>الزامی است</AvFeedback>*/}
-                  </Col>
-                </AvGroup>
+                </FormGroup>
 
-                <AvGroup row>
-                  <Label sm={4}>مستندات حقوقی:</Label>
-                  <Col sm={2}>
-                    {this.state.legal_doc &&
-                    <a target="_blank" href={base_files_url() + this.state.legal_doc}>دانلود</a>}
-                  </Col>
-                  <Col sm={6}>
-                    <AvInput name="fullName"
-                             type="file"
-                             onChange={(event) => {
-                               this.uploadLegalDoc(event.target.files[0])
-                             }}
-                    />
+                <FormGroup>
+                  <Label>مستندات حقوقی:</Label>
+                  {
+                    this.state.legal_doc ?
+                      <a target="_blank" href={base_files_url() + this.state.legal_doc}>دانلود</a>
+                      : <p>سندی بارگذاری نشده است</p>
 
-                    <br/>
-                    {/*<AvFeedback>الزامی است</AvFeedback>*/}
-                  </Col>
-                </AvGroup>
+                  }
+                  <Input name="docs"
+                          type="file"
+                          onChange={(event) => {
+                            this.uploadLegalDoc(event.target.files[0])
+                          }}
+                  />
+                </FormGroup>
 
-                <AvGroup row>
-                  <Label sm={4}>تلفن همراه واسط شرکت:</Label>
-                  <Col sm={8}>
+                <FormGroup>
+                  <Label>تلفن همراه واسط شرکت:</Label>
                     <Phone
                       displayInitialValueAsLocalNumber
                       // country="IR"
@@ -296,15 +274,13 @@ class Profile extends Component {
                       placeholder=""
                       value={this.state.legalInfo.org_interface_mobile}
                       onChange={mobile => this.setState({
-                        ...this.state,
                         legalInfo: {
                           ...this.state.legalInfo,
                           org_interface_mobile: mobile
                         }
                       })}/>
-                  </Col>
-                </AvGroup>
-              </AvForm>
+                </FormGroup>
+              </Form>
             </CardBody>
             <CardFooter>
               <Button color="primary" onClick={this.editUserProfile}>ذخیره تغییرات</Button>
