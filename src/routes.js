@@ -58,12 +58,12 @@ const routes = {
   '/things/excel': 'آپلود فایل Excel',
   '/things/excel/$$': 'آپلود فایل Excel',
 
-  '/codec':'ارسال کدک',
-  '/codec/$$':'ارسال کدک',
-  '/scenario':'ارسال سناریو',
-  '/scenario/$$':'ارسال سناریو',
-  '/template':'ارسال قالب',
-  '/template/$$':'ارسال قالب',
+  '/codec': 'ارسال کدک',
+  '/codec/$$': 'ارسال کدک',
+  '/scenario': 'ارسال سناریو',
+  '/scenario/$$': 'ارسال سناریو',
+  '/template': 'ارسال قالب',
+  '/template/$$': 'ارسال قالب',
 
   '/gateways': 'لیست گذرگاه ها',
   '/gateways/new': 'افزودن گذرگاه',
@@ -77,7 +77,7 @@ const routes = {
   '/device-profile/list/view': 'مشاهده پروفایل اشیا',
   '/device-profile/list/view/$$': 'مشاهده پروفایل اشیا',
 
-  '/packages':'خرید بسته',
+  '/packages': 'خرید بسته',
   '/transactions': 'تراکنش های کاربر',
   '/admin/packages/show': 'مدیریت بسته‌ها',
   '/admin/packages': 'مدیریت بسته‌ها',
@@ -85,14 +85,14 @@ const routes = {
   '/admin/packages/new': 'افزودن بسته جدید',
   '/admin/packages/edit/$$': 'ویرایش بسته',
 
-  '/admin/users/list':'مدیریت کاربران سیستم',
-  '/admin/users/info':'ویرایش کاربر',
-  '/admin/users/info/$$':',ویرایش کاربر',
+  '/admin/users/list': 'مدیریت کاربران سیستم',
+  '/admin/users/info': 'ویرایش کاربر',
+  '/admin/users/info/$$': ',ویرایش کاربر',
   '/admin/users': 'مدیریت کاربران سیستم',
 
   '/admin/transactions': 'مدیریت تراکنش‌های سیستم',
   '/admin/roles': 'مدیریت نقش‌ها',
   '/admin/links': 'مدیریت پروژه',
   '/portals': 'مدیریت پرتال پرداخت'
-};
-export default routes;
+}
+export default routes

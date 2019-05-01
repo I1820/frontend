@@ -8,7 +8,7 @@ import {
   FREE
 } from '../constants/AppConstants'
 
-export function packageReducer(state = {
+export function packageReducer (state = {
   adminPackages: [],
   userPackages: [],
   discounts: [],
@@ -20,7 +20,7 @@ export function packageReducer(state = {
     case GET_ADMIN_PACKAGES:
       return {
         ...state,
-        adminPackages: [...action.newState],
+        adminPackages: [...action.newState]
       }
     case GET_USER_PACKAGES:
       return {
@@ -30,7 +30,7 @@ export function packageReducer(state = {
     case GET_PACKAGE:
       return {
         ...state,
-        package: {...action.newState}
+        package: { ...action.newState }
       }
     case GET_DISCOUNTS:
       return {
@@ -48,7 +48,7 @@ export function packageReducer(state = {
         userPortals: [...action.newState]
       }
     case FREE:
-      return {adminPackages: [], userPackages: [], package: {}, userPortals: [], adminPortals: []}
+      return { adminPackages: [], userPackages: [], package: {}, userPortals: [], adminPortals: [] }
     default:
       return state
   }

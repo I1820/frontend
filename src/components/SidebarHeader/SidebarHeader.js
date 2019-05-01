@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react'
 
 class SidebarHeader extends Component {
-
-  render() {
+  render () {
     return null
     // Uncomment following code lines to add Sidebar Header
     // return (
@@ -11,4 +10,4 @@ class SidebarHeader extends Component {
   }
 }
 
-export default SidebarHeader;
+export default SidebarHeader

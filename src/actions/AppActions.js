@@ -83,8 +83,7 @@ import {
   getUserTransaction, getUser, getAllTransactions, getTransactionsOverview,
   lint,
   base_url
-} from '../api/index'
-import {
+  ,
   activateScenario,
   sendThingKeys,
   createCodecTemplate,
@@ -150,9 +149,10 @@ import {
   getProjectThings,
   getThingsList,
   getLogs
-} from '../api';
+} from '../api/index'
+
 import fileDownload from 'js-file-download'
-import { toastAlerts } from '../views/Shared/toast_alert';
+import { toastAlerts } from '../views/Shared/toast_alert'
 
 /**
  * Logs an user in
@@ -161,7 +161,7 @@ import { toastAlerts } from '../views/Shared/toast_alert';
  * @param (string) captcha
  * @param {function} errorCallback
  */
-export function login(username, password, captcha, keep, errorCallback) {
+export function login (username, password, captcha, keep, errorCallback) {
   return (dispatch) => {
     // if (captcha === undefined) {
     //   errorCallback('لطفا برروی گزینه من ربات نیستم کلیک کنید')
@@ -170,7 +170,7 @@ export function login(username, password, captcha, keep, errorCallback) {
 
     // Show the loading indicator, hide the last error
     // If no username or password was specified, throw a field-missing error
-    if (anyElementsEmpty({username, password})) {
+    if (anyElementsEmpty({ username, password })) {
       errorCallback(errorMessages.FIELD_MISSING)
       return
     }
@@ -179,7 +179,7 @@ export function login(username, password, captcha, keep, errorCallback) {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(setAuthState(true))
-        dispatch(initUser({...response.result, keep: !!keep}))
+        dispatch(initUser({ ...response.result, keep: !!keep }))
         forwardTo('/dashboard')
       } else {
         errorCallback(translateErrorMessage(response.result))
@@ -191,7 +191,7 @@ export function login(username, password, captcha, keep, errorCallback) {
 /**
  * Logs the current user out
  */
-export function logout() {
+export function logout () {
   return (dispatch) => {
     forwardTo('/')
     dispatch(setAuthState(false))
@@ -200,12 +200,11 @@ export function logout() {
   }
 }
 
-
 /**
  * List All projects
  *
  */
-export function getProjects() {
+export function getProjects () {
   return (dispatch) => {
     const promise = listProjectsAPI(dispatch)
     promise.then((response) => {
@@ -218,27 +217,26 @@ export function getProjects() {
   }
 }
 
-function setProjects(newState) {
-  return {type: GET_PROJECTS, newState}
+function setProjects (newState) {
+  return { type: GET_PROJECTS, newState }
 }
 
-export function getProject(id, cb, compress) {
+export function getProject (id, cb, compress) {
   return (dispatch) => {
     const promise = getProjectAPI(id, compress, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(setProject(response.result))
-        cb && cb(true);
+        cb && cb(true)
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-        cb && cb(false);
+        cb && cb(false)
       }
     })
   }
 }
 
-
-export function createProject(state, cb) {
+export function createProject (state, cb) {
   return (dispatch) => {
     const promise = createProjectAPI(state, dispatch)
     promise.then((response) => {
@@ -253,15 +251,15 @@ export function createProject(state, cb) {
   }
 }
 
-function setProject(newState) {
-  return {type: FETCH_PROJECT, newState}
+function setProject (newState) {
+  return { type: FETCH_PROJECT, newState }
 }
 
 /**
  * List All things
  *
  */
-export function getThings() {
+export function getThings () {
   return (dispatch) => {
     const promise = listThingsAPI(dispatch)
     promise.then((response) => {
@@ -278,7 +276,7 @@ export function getThings() {
  * List Project things
  *
  */
-export function getProjectThingsListAction(projectId, limit, offset, data, cb) {
+export function getProjectThingsListAction (projectId, limit, offset, data, cb) {
   return (dispatch) => {
     const promise = getProjectThings(projectId, limit, offset, data, dispatch, false)
     promise.then((response) => {
@@ -295,7 +293,7 @@ export function getProjectThingsListAction(projectId, limit, offset, data, cb) {
  * Logs List
  *
  */
-export function getLogsAction(limit, offset, data, cb) {
+export function getLogsAction (limit, offset, data, cb) {
   return (dispatch) => {
     const promise = getLogs(limit, offset, data, dispatch, false)
     promise.then((response) => {
@@ -312,7 +310,7 @@ export function getLogsAction(limit, offset, data, cb) {
  * List Users things
  *
  */
-export function getUsersThingsListAction(limit, offset, data, cb) {
+export function getUsersThingsListAction (limit, offset, data, cb) {
   return (dispatch) => {
     const promise = getThingsList(limit, offset, data, dispatch, false)
     promise.then((response) => {
@@ -325,7 +323,7 @@ export function getUsersThingsListAction(limit, offset, data, cb) {
   }
 }
 
-export function getThingAction(thingId) {
+export function getThingAction (thingId) {
   return (dispatch) => {
     const promise = getThingAPI(thingId, dispatch)
     promise.then((response) => {
@@ -338,14 +336,13 @@ export function getThingAction(thingId) {
   }
 }
 
-
-export function editThingAction(projectId, thingId, data, cb) {
+export function editThingAction (projectId, thingId, data, cb) {
   return (dispatch) => {
     const promise = editThingAPI(thingId, data, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(setThing(response.result))
-        cb(true, 'با موفقیت انجام شد');
+        cb(true, 'با موفقیت انجام شد')
         forwardTo(`projects/manage/show/${projectId}`)
       } else {
         cb(false, response.result)
@@ -355,25 +352,23 @@ export function editThingAction(projectId, thingId, data, cb) {
   }
 }
 
-
-function setThings(newState) {
-  return {type: GET_THINGS, newState}
+function setThings (newState) {
+  return { type: GET_THINGS, newState }
 }
 
-
-function setGateway(newState) {
-  return {type: 'FETCH_GATE', newState}
+function setGateway (newState) {
+  return { type: 'FETCH_GATE', newState }
 }
 
-function setThing(newState) {
-  return {type: FETCH_THING, newState}
+function setThing (newState) {
+  return { type: FETCH_THING, newState }
 }
 
 /**
  * Registers a user
  * @param  {object} data The username of the new user
  */
-export function register(data, cb) {
+export function register (data, cb) {
   return (dispatch) => {
     const promise = registerAPI(data, dispatch)
     promise.then((response) => {
@@ -389,7 +384,7 @@ export function register(data, cb) {
   }
 }
 
-export function connectThing(thingId, projectId) {
+export function connectThing (thingId, projectId) {
   return (dispatch) => {
     const promise = connectThingAPI(thingId, projectId, dispatch)
     promise.then((response) => {
@@ -404,17 +399,16 @@ export function connectThing(thingId, projectId) {
   }
 }
 
-
 /**
  * Sets the authentication state of the application
  * @param {boolean} newState True means a user is logged in, false means no user is logged in
  */
-export function setAuthState(newState) {
-  return {type: SET_AUTH, newState}
+export function setAuthState (newState) {
+  return { type: SET_AUTH, newState }
 }
 
-function freeState() {
-  return {type: FREE}
+function freeState () {
+  return { type: FREE }
 }
 
 /**
@@ -424,8 +418,8 @@ function freeState() {
  * @param  {string} newState.password The new text of the password input field of the form
  * @return {object}                   Formatted action for the reducer to handle
  */
-export function changeForm(newState) {
-  return {type: CHANGE_FORM, newState}
+export function changeForm (newState) {
+  return { type: CHANGE_FORM, newState }
 }
 
 /**
@@ -436,12 +430,12 @@ export function changeForm(newState) {
  * @param  {string} newState.type
  * @return {object}                   Formatted action for the reducer to handle
  */
-export function initUser(newState) {
-  return {type: INIT_USER, newState}
+export function initUser (newState) {
+  return { type: INIT_USER, newState }
 }
 
-export function updateUser(newState) {
-  return {type: UPDATE_USER, newState}
+export function updateUser (newState) {
+  return { type: UPDATE_USER, newState }
 }
 
 /**
@@ -452,34 +446,32 @@ export function updateUser(newState) {
  */
 const NEW_OBJECT = -1
 
-export function selectProject(newState = NEW_OBJECT) {
+export function selectProject (newState = NEW_OBJECT) {
   newState !== NEW_OBJECT ? forwardTo('project/' + newState) : forwardTo('project/new')
-  return {type: SELECT_PROJECT, newState}
+  return { type: SELECT_PROJECT, newState }
 }
 
-export function selectThing(newState = NEW_OBJECT) {
+export function selectThing (newState = NEW_OBJECT) {
   newState !== NEW_OBJECT ? forwardTo('thing/' + newState) : forwardTo('thing/new')
-  return {type: SELECT_PROJECT, newState}
+  return { type: SELECT_PROJECT, newState }
 }
 
-export function NewPackage(newState = NEW_OBJECT) {
+export function NewPackage (newState = NEW_OBJECT) {
   newState !== NEW_OBJECT ? forwardTo('admin/packages/edit' + newState) : forwardTo('admin/packages/new')
-  return {type: NEW_PACKAGE, newState}
+  return { type: NEW_PACKAGE, newState }
 }
 
-export function SelectUser(newState = NEW_OBJECT) {
+export function SelectUser (newState = NEW_OBJECT) {
   forwardTo('admin/users/info/' + newState)
-  return {type: SELECT_USER, newState}
+  return { type: SELECT_USER, newState }
 }
 
-
-export function resultOfPay(newState) {
+export function resultOfPay (newState) {
   newState == 'success' ? forwardTo('paymentResult/S/' + newState) : forwardTo('paymentResult/F/' + newState)
   //   console.log('status pay : '+ newState)
   // forwardTo('paymentResultS/'+newState)
   // console.log('status pay : '+ newState)
-  return {type: PAYMENT_RESULT, newState}
-
+  return { type: PAYMENT_RESULT, newState }
 }
 
 /**
@@ -487,17 +479,17 @@ export function resultOfPay(newState) {
  * @param  {boolean} sending The new state the app should have
  * @return {object}          Formatted action for the reducer to handle
  */
-export function sendingRequest(sending) {
-  return {type: SENDING_REQUEST, sending}
+export function sendingRequest (sending) {
+  return { type: SENDING_REQUEST, sending }
 }
 
 /**
  * Sets the errorMessage state, which displays the ErrorMessage component when it is not empty
  * @param message
  */
-export function setErrorMessage(message) {
+export function setErrorMessage (message) {
   return (dispatch) => {
-    dispatch({type: SET_ERROR_MESSAGE, message})
+    dispatch({ type: SET_ERROR_MESSAGE, message })
 
     const form = document.querySelector('.form-page__form-wrapper')
     if (form) {
@@ -511,13 +503,13 @@ export function setErrorMessage(message) {
 
       // Remove the error message after 3 seconds
       setTimeout(() => {
-        dispatch({type: SET_ERROR_MESSAGE, message: ''})
+        dispatch({ type: SET_ERROR_MESSAGE, message: '' })
       }, 3000)
     }
   }
 }
 
-function translateErrorMessage(message) {
+function translateErrorMessage (message) {
   switch (message) {
     case 'The email must be a valid email address.':
       return 'ایمیل وارد شده صحیح نیست'
@@ -530,7 +522,7 @@ function translateErrorMessage(message) {
  * Forwards the user
  * @param {string} location The route the user should be forwarded to
  */
-export function forwardTo(location) {
+export function forwardTo (location) {
   console.log('forwardTo(' + location + ')')
 
   // browserHistory.push(location);
@@ -544,7 +536,7 @@ export function forwardTo(location) {
  * @param  {object} elements The object that should be checked
  * @return {boolean}         True if there are empty elements, false if there aren't
  */
-function anyElementsEmpty(elements) {
+function anyElementsEmpty (elements) {
   for (let element in elements) {
     if (!elements[element]) {
       return true
@@ -553,11 +545,11 @@ function anyElementsEmpty(elements) {
   return false
 }
 
-export function cleanErrorMessage() {
+export function cleanErrorMessage () {
   setErrorMessage('')
 }
 
-export function getThingsMainDataAction(things, projectId, offset, limit, since, callback) {
+export function getThingsMainDataAction (things, projectId, offset, limit, since, callback) {
   return (dispatch) => {
     const promise = getThingsMainData(things, projectId, offset, limit, since, dispatch)
     promise.then((response) => {
@@ -570,21 +562,21 @@ export function getThingsMainDataAction(things, projectId, offset, limit, since,
   }
 }
 
-export function DownloadThingsDataExcelAction(things, projectId, offset, limit, since) {
+export function DownloadThingsDataExcelAction (things, projectId, offset, limit, since) {
   return (dispatch) => {
     dispatch(sendingRequest(true))
     DownloadThingsDataExcel(things, projectId, offset, limit, since, dispatch).then((response) => {
       dispatch(sendingRequest(false))
-      fileDownload(response.data, 'data.xls', 'application/vnd.ms-excel');
-      toastAlerts(true, 'باموفقیت انجام شد.');
+      fileDownload(response.data, 'data.xls', 'application/vnd.ms-excel')
+      toastAlerts(true, 'باموفقیت انجام شد.')
     }).catch((err) => {
-      toastAlerts(false, 'خطای نامشخص');
+      toastAlerts(false, 'خطای نامشخص')
       dispatch(sendingRequest(false))
     })
   }
 }
 
-export function getThingsSampleDataAction(things, projectId, offset, limit, window, callback) {
+export function getThingsSampleDataAction (things, projectId, offset, limit, window, callback) {
   return (dispatch) => {
     const promise = getThingsSampleData(things, projectId, offset, limit, window, dispatch)
     promise.then((response) => {
@@ -599,12 +591,12 @@ export function getThingsSampleDataAction(things, projectId, offset, limit, wind
 
 /* thing profile actions */
 
-export function getThingProfileListAction() {
+export function getThingProfileListAction () {
   return (dispatch) => {
-    const promise = getThingProfileList(dispatch);
+    const promise = getThingProfileList(dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: GET_THINGS_PROFILE, newState: response.result})
+        dispatch({ type: GET_THINGS_PROFILE, newState: response.result })
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
@@ -612,7 +604,7 @@ export function getThingProfileListAction() {
   }
 }
 
-export function deleteDeviceProfileAction(profileId, cb) {
+export function deleteDeviceProfileAction (profileId, cb) {
   return (dispatch) => {
     const promise = deleteDeviceProfileAPI(profileId, dispatch)
     promise.then((response) => {
@@ -626,7 +618,7 @@ export function deleteDeviceProfileAction(profileId, cb) {
   }
 }
 
-export function getDeviceProfile(profileId, cb) {
+export function getDeviceProfile (profileId, cb) {
   return (dispatch) => {
     const promise = getDeviceProfileAPI(profileId, dispatch)
     promise.then((response) => {
@@ -640,13 +632,12 @@ export function getDeviceProfile(profileId, cb) {
   }
 }
 
-
-export function createThingProfileAction(data, cb) {
+export function createThingProfileAction (data, cb) {
   return (dispatch) => {
-    const promise = createThingProfile(data, dispatch);
+    const promise = createThingProfile(data, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: FETCH_THING_PROFILE, newState: response.result})
+        dispatch({ type: FETCH_THING_PROFILE, newState: response.result })
         cb(true, 'با موفقیت انجام شد.')
         forwardTo('device-profile/list')
       } else {
@@ -659,14 +650,14 @@ export function createThingProfileAction(data, cb) {
 
 /* things actions */
 
-export function createThingAction(data, project, cb) {
+export function createThingAction (data, project, cb) {
   return (dispatch) => {
     const promise = createThingAPI(data, project, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(setThing(response.result))
         forwardTo(`projects/manage/show/${project}`)
-        cb(true, 'با موفقیت انجام شد');
+        cb(true, 'با موفقیت انجام شد')
       } else {
         cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -675,7 +666,7 @@ export function createThingAction(data, project, cb) {
   }
 }
 
-export function sendThingKeysAction(data, thingId, cb) {
+export function sendThingKeysAction (data, thingId, cb) {
   return (dispatch) => {
     const promise = sendThingKeys(data, thingId, dispatch)
     promise.then((response) => {
@@ -689,21 +680,21 @@ export function sendThingKeysAction(data, thingId, cb) {
   }
 }
 
-export function refreshJWTAction(thingId, cb) {
+export function refreshJWTAction (thingId, cb) {
   return (dispatch) => {
     const promise = sendThingKeys({}, thingId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        cb(true, {message: 'با موفقیت فعال شد', token: response.result.keys.JWT});
+        cb(true, { message: 'با موفقیت فعال شد', token: response.result.keys.JWT })
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-        cb(false, {message: response.result})
+        cb(false, { message: response.result })
       }
     })
   }
 }
 
-export function deleteThingAction(projectId, thingId, cb) {
+export function deleteThingAction (projectId, thingId, cb) {
   return (dispatch) => {
     const promise = deleteThingAPI(projectId, thingId, dispatch)
     promise.then((response) => {
@@ -716,7 +707,7 @@ export function deleteThingAction(projectId, thingId, cb) {
   }
 }
 
-export function deleteMultipleThingAction(thingIds, cb) {
+export function deleteMultipleThingAction (thingIds, cb) {
   return (dispatch) => {
     const promise = deleteThingMultipleAPI(thingIds, dispatch)
     promise.then((response) => {
@@ -729,7 +720,7 @@ export function deleteMultipleThingAction(thingIds, cb) {
   }
 }
 
-export function activateThingAction(thingId, active, cb) {
+export function activateThingAction (thingId, active, cb) {
   return (dispatch) => {
     const promise = activateThing(thingId, active, dispatch)
     promise.then((response) => {
@@ -742,7 +733,7 @@ export function activateThingAction(thingId, active, cb) {
   }
 }
 
-export function deleteCodecTemplateAction(projectId, codecId, cb) {
+export function deleteCodecTemplateAction (projectId, codecId, cb) {
   return (dispatch) => {
     const promise = deleteCodecTemplate(projectId, codecId, dispatch)
     promise.then((response) => {
@@ -755,7 +746,7 @@ export function deleteCodecTemplateAction(projectId, codecId, cb) {
   }
 }
 
-export function deleteScenarioAction(projectId, scenarioId, cb) {
+export function deleteScenarioAction (projectId, scenarioId, cb) {
   return (dispatch) => {
     const promise = deleteScenario(projectId, scenarioId, dispatch)
     promise.then((response) => {
@@ -768,8 +759,7 @@ export function deleteScenarioAction(projectId, scenarioId, cb) {
   }
 }
 
-
-export function uploadExcelAction(file, projectId, cb) {
+export function uploadExcelAction (file, projectId, cb) {
   return (dispatch) => {
     dispatch(sendingRequest(true))
     const promise = uploadExcelAPI(file, projectId, dispatch)
@@ -788,16 +778,16 @@ export function uploadExcelAction(file, projectId, cb) {
   }
 }
 
-export function uploadLegalDocAction(file, cb) {
+export function uploadLegalDocAction (file, cb) {
   return (dispatch) => {
     dispatch(sendingRequest(true))
     const promise = uploadLegalDoc(file, dispatch)
     promise.then((response) => {
       dispatch(sendingRequest(false))
       if (response.status === 200 && response.data.code == 200) {
-        cb(true, {message: 'با موفقیت انجام شد', path: response.data.result.path})
+        cb(true, { message: 'با موفقیت انجام شد', path: response.data.result.path })
       } else {
-        cb(false, {message: response.data.result})
+        cb(false, { message: response.data.result })
         // dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
     }).catch((e) => {
@@ -807,18 +797,18 @@ export function uploadLegalDocAction(file, cb) {
   }
 }
 
-export function uploadPictureAction(file, cb) {
+export function uploadPictureAction (file, cb) {
   return (dispatch) => {
     dispatch(sendingRequest(true))
     const promise = uploadPicture(file, dispatch)
     promise.then((response) => {
       dispatch(sendingRequest(false))
       if (response.status === 200 && response.data.code == 200) {
-        cb(true, {message: 'با موفقیت انجام شد', user: response.data.result.user})
+        cb(true, { message: 'با موفقیت انجام شد', user: response.data.result.user })
       } else
       // if (response.status === 413)
       {
-        cb(false, {message: 'حجم آپلود شده بیشتر از حجم مجاز است', user: response.data.result.user})
+        cb(false, { message: 'حجم آپلود شده بیشتر از حجم مجاز است', user: response.data.result.user })
       }
       // else {
       //   cb(false, {message: response.data.result})
@@ -831,101 +821,101 @@ export function uploadPictureAction(file, cb) {
   }
 }
 
-export function DownloadThingsExcelAction(projectId) {
+export function DownloadThingsExcelAction (projectId) {
   return (dispatch) => {
     dispatch(sendingRequest(true))
     DownloadThingsExcelAPI(projectId).then((response) => {
       dispatch(sendingRequest(false))
-      fileDownload(response.data, 'things.xls', 'application/vnd.ms-excel');
-      toastAlerts(true, 'باموفقیت انجام شد.');
+      fileDownload(response.data, 'things.xls', 'application/vnd.ms-excel')
+      toastAlerts(true, 'باموفقیت انجام شد.')
     }).catch((err) => {
-      toastAlerts(false, 'خطای نامشخص');
+      toastAlerts(false, 'خطای نامشخص')
       dispatch(sendingRequest(false))
     })
   }
 }
 
-export function DownloadUserTransactionsExcelAction() {
+export function DownloadUserTransactionsExcelAction () {
   return (dispatch) => {
     dispatch(sendingRequest(true))
     DownloadUserTransactionsExcel().then((response) => {
       dispatch(sendingRequest(false))
-      fileDownload(response.data, 'invoices.xls', 'application/vnd.ms-excel');
-      toastAlerts(true, 'باموفقیت انجام شد.');
+      fileDownload(response.data, 'invoices.xls', 'application/vnd.ms-excel')
+      toastAlerts(true, 'باموفقیت انجام شد.')
     }).catch((err) => {
-      toastAlerts(false, 'خطای نامشخص');
+      toastAlerts(false, 'خطای نامشخص')
       dispatch(sendingRequest(false))
     })
   }
 }
 
-export function DownloadUsersListExcelAction() {
+export function DownloadUsersListExcelAction () {
   return (dispatch) => {
     dispatch(sendingRequest(true))
     DownloadUsersListExcel().then((response) => {
       dispatch(sendingRequest(false))
-      fileDownload(response.data, 'users.xls', 'application/vnd.ms-excel');
-      toastAlerts(true, 'باموفقیت انجام شد.');
+      fileDownload(response.data, 'users.xls', 'application/vnd.ms-excel')
+      toastAlerts(true, 'باموفقیت انجام شد.')
     }).catch((err) => {
-      toastAlerts(false, 'خطای نامشخص');
+      toastAlerts(false, 'خطای نامشخص')
       dispatch(sendingRequest(false))
     })
   }
 }
 
-export function DownloadUserThingsExcelAction(projectId) {
+export function DownloadUserThingsExcelAction (projectId) {
   return (dispatch) => {
     dispatch(sendingRequest(true))
     DownloadUserThingsExcelAPI(projectId).then((response) => {
       dispatch(sendingRequest(false))
-      fileDownload(response.data, 'things.xls', 'application/vnd.ms-excel');
-      toastAlerts(true, 'باموفقیت انجام شد.');
+      fileDownload(response.data, 'things.xls', 'application/vnd.ms-excel')
+      toastAlerts(true, 'باموفقیت انجام شد.')
     }).catch((err) => {
-      toastAlerts(false, 'خطای نامشخص');
+      toastAlerts(false, 'خطای نامشخص')
       dispatch(sendingRequest(false))
     })
   }
 }
 
-export function DownloadUserGatewaysExcelAction(projectId) {
+export function DownloadUserGatewaysExcelAction (projectId) {
   return (dispatch) => {
     dispatch(sendingRequest(true))
     DownloadUserGatewaysExcelAPI().then((response) => {
       dispatch(sendingRequest(false))
-      fileDownload(response.data, 'gateways.xls', 'application/vnd.ms-excel');
-      toastAlerts(true, 'باموفقیت انجام شد.');
+      fileDownload(response.data, 'gateways.xls', 'application/vnd.ms-excel')
+      toastAlerts(true, 'باموفقیت انجام شد.')
     }).catch((err) => {
-      toastAlerts(false, 'خطای نامشخص');
+      toastAlerts(false, 'خطای نامشخص')
       dispatch(sendingRequest(false))
     })
   }
 }
 
-export function DownloadAdminTransactionsExcelAction(limit, offset) {
+export function DownloadAdminTransactionsExcelAction (limit, offset) {
   return (dispatch) => {
     dispatch(sendingRequest(true))
     DownloadAdminTransactionsExcel(limit, offset).then((response) => {
       dispatch(sendingRequest(false))
-      fileDownload(response.data, 'invoices.xls', 'application/vnd.ms-excel');
-      toastAlerts(true, 'باموفقیت انجام شد.');
+      fileDownload(response.data, 'invoices.xls', 'application/vnd.ms-excel')
+      toastAlerts(true, 'باموفقیت انجام شد.')
     }).catch((err) => {
-      toastAlerts(false, 'خطای نامشخص');
+      toastAlerts(false, 'خطای نامشخص')
       dispatch(sendingRequest(false))
     })
   }
 }
 
-export function DownloadThingProfileThingsExcelAction(profileId) {
+export function DownloadThingProfileThingsExcelAction (profileId) {
   return (dispatch) => {
     DownloadThingProfileThingsExcelAPI(profileId).then((response) => {
-      fileDownload(response.data, 'things.xls', 'application/vnd.ms-excel');
+      fileDownload(response.data, 'things.xls', 'application/vnd.ms-excel')
     })
   }
 }
 
 /*  project actions */
 
-export function createScenario(projectId, data, cb) {
+export function createScenario (projectId, data, cb) {
   return (dispatch) => {
     const promise = createScenarioAPI(data, projectId, dispatch)
     promise.then((response) => {
@@ -943,7 +933,7 @@ export function createScenario(projectId, data, cb) {
   }
 }
 
-export function updateScenarioAction(projectId, scenarioId, data, cb) {
+export function updateScenarioAction (projectId, scenarioId, data, cb) {
   return (dispatch) => {
     const promise = updateScenarioAPI(data, projectId, scenarioId, dispatch)
     promise.then((response) => {
@@ -961,8 +951,7 @@ export function updateScenarioAction(projectId, scenarioId, data, cb) {
   }
 }
 
-
-export function editProjectAction(id, state, cb) {
+export function editProjectAction (id, state, cb) {
   return (dispatch) => {
     const promise = editProjectAPI(id, state, dispatch)
     promise.then((response) => {
@@ -973,14 +962,14 @@ export function editProjectAction(id, state, cb) {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
     }).catch((e) => {
-      console.log(e);
+      console.log(e)
     })
   }
 }
 
-export function editAliasesAction(id, aliases, cb) {
+export function editAliasesAction (id, aliases, cb) {
   return (dispatch) => {
-    const promise = editAliasesAPI(id, aliases, dispatch);
+    const promise = editAliasesAPI(id, aliases, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch(getProject(id, null))
@@ -995,7 +984,7 @@ export function editAliasesAction(id, aliases, cb) {
   }
 }
 
-export function deleteProjectAction(projectId, cb) {
+export function deleteProjectAction (projectId, cb) {
   return (dispatch) => {
     const promise = deleteProjectAPI(projectId, dispatch)
     promise.then((response) => {
@@ -1011,12 +1000,12 @@ export function deleteProjectAction(projectId, cb) {
 
 /*  gateway actions */
 
-export function getGatewaysAction() {
+export function getGatewaysAction () {
   return (dispatch) => {
     const promise = getGateways(dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: GET_GATEWAYS, newState: response.result.gateways})
+        dispatch({ type: GET_GATEWAYS, newState: response.result.gateways })
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
@@ -1024,11 +1013,10 @@ export function getGatewaysAction() {
   }
 }
 
-export function createGatewayAction(data, cb) {
+export function createGatewayAction (data, cb) {
   return (dispatch) => {
     const promise = createGatewayAPI(data, dispatch)
     promise.then((response) => {
-
       if (response.status === 'OK') {
         cb(true, 'با موفقیت ساخته شد')
       } else {
@@ -1039,11 +1027,10 @@ export function createGatewayAction(data, cb) {
   }
 }
 
-export function updateGatewayAction(data, cb) {
+export function updateGatewayAction (data, cb) {
   return (dispatch) => {
     const promise = updateGatewayAPI(data, dispatch)
     promise.then((response) => {
-
       if (response.status === 'OK') {
         cb(true, 'با موفقیت انجام شد')
         dispatch(setSingleGateway(response.result.gateway))
@@ -1055,7 +1042,7 @@ export function updateGatewayAction(data, cb) {
   }
 }
 
-export function decryptFramePayloadAction(data, cb) {
+export function decryptFramePayloadAction (data, cb) {
   return (dispatch) => {
     const promise = decryptFramePayload(data, dispatch)
     promise.then((response) => {
@@ -1066,11 +1053,11 @@ export function decryptFramePayloadAction(data, cb) {
   }
 }
 
-function setSingleGateway(newState) {
-  return {type: SET_GATEWAY, newState}
+function setSingleGateway (newState) {
+  return { type: SET_GATEWAY, newState }
 }
 
-export function getSingleGatewayAction(id) {
+export function getSingleGatewayAction (id) {
   return (dispatch) => {
     const promise = getSingleGatewayAPI(id, dispatch)
     promise.then((response) => {
@@ -1083,7 +1070,7 @@ export function getSingleGatewayAction(id) {
   }
 }
 
-export function deleteGatewaysAction(profileId, cb) {
+export function deleteGatewaysAction (profileId, cb) {
   return (dispatch) => {
     const promise = deleteGatewaysAPI(profileId, dispatch)
     promise.then((response) => {
@@ -1097,9 +1084,9 @@ export function deleteGatewaysAction(profileId, cb) {
   }
 }
 
-//user action
+// user action
 
-export function getProfileAction(cb) {
+export function getProfileAction (cb) {
   return (dispatch) => {
     const promise = viewProfile(dispatch)
     promise.then((response) => {
@@ -1112,7 +1099,7 @@ export function getProfileAction(cb) {
   }
 }
 
-export function editProfile(data, cb) {
+export function editProfile (data, cb) {
   return (dispatch) => {
     const promise = editProfileAPI(data, dispatch)
     promise.then((response) => {
@@ -1128,35 +1115,29 @@ export function editProfile(data, cb) {
   }
 }
 
-export function changePassword(data, cb) {
+export function changePassword (data, cb) {
   return (dispatch) => {
     const promise = changePasswordAPI(data, dispatch)
     promise.then((response) => {
-      if (response.status === 'OK')
-        cb && cb(true, 'با موفقیت ویرایش یافت')
-      else
-        cb && cb(false, response.result)
+      if (response.status === 'OK') { cb && cb(true, 'با موفقیت ویرایش یافت') } else { cb && cb(false, response.result) }
     }).catch((err) => {
       console.log(err)
     })
   }
 }
 
-export function resetPasswordAction(data, cb) {
+export function resetPasswordAction (data, cb) {
   return (dispatch) => {
     const promise = resetPasswordAPI(data, dispatch)
     promise.then((response) => {
-      if (response.status === 'OK' && response.result.success === true)
-        cb && cb('رمز عبور جدید به ایمیل شما ارسال شد')
-      else
-        cb && cb(response.result)
+      if (response.status === 'OK' && response.result.success === true) { cb && cb('رمز عبور جدید به ایمیل شما ارسال شد') } else { cb && cb(response.result) }
     }).catch((err) => {
       console.log(err)
     })
   }
 }
 
-export function testCodec(thing_id, data, decode, cb) {
+export function testCodec (thing_id, data, decode, cb) {
   return (dispatch) => {
     const promise = testCodecAPI(thing_id, data, decode, dispatch)
     promise.then((response) => {
@@ -1167,10 +1148,9 @@ export function testCodec(thing_id, data, decode, cb) {
   }
 }
 
-
 /* downlink actions */
 
-export function sendDownlinkAction(thingId, data, cb) {
+export function sendDownlinkAction (thingId, data, cb) {
   return (dispatch) => {
     const promise = newDownlinkAPI(thingId, data, dispatch)
     promise.then((response) => {
@@ -1183,17 +1163,14 @@ export function sendDownlinkAction(thingId, data, cb) {
   }
 }
 
-
 /*  codec actions */
 
-
-export function getThingCodecAction(thingId, cb) {
+export function getThingCodecAction (thingId, cb) {
   return (dispatch) => {
     const promise = getThingCodec(thingId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        if (cb)
-          cb(true, response.result)
+        if (cb) { cb(true, response.result) }
       } else {
         cb(false)
       }
@@ -1201,14 +1178,12 @@ export function getThingCodecAction(thingId, cb) {
   }
 }
 
-
-export function getCodecTemplateAction(projectId, codecId, cb) {
+export function getCodecTemplateAction (projectId, codecId, cb) {
   return (dispatch) => {
     const promise = getCodecTemplate(projectId, codecId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        if (cb)
-          cb(true, response.result.codec)
+        if (cb) { cb(true, response.result.codec) }
       } else {
         cb(false)
       }
@@ -1216,14 +1191,12 @@ export function getCodecTemplateAction(projectId, codecId, cb) {
   }
 }
 
-
-export function getGlobalCodecTemplateAction(codecId, cb) {
+export function getGlobalCodecTemplateAction (codecId, cb) {
   return (dispatch) => {
     const promise = getGlobalCodecTemplate(codecId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        if (cb)
-          cb(true, response.result.codec)
+        if (cb) { cb(true, response.result.codec) }
       } else {
         cb(false)
       }
@@ -1231,28 +1204,23 @@ export function getGlobalCodecTemplateAction(codecId, cb) {
   }
 }
 
-
-export function getCodecTemplateListAction(projectId, cb) {
+export function getCodecTemplateListAction (projectId, cb) {
   return (dispatch) => {
     const promise = getCodecTemplateList(projectId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: FETCH_CODEC_LIST, newState: response.result, id: projectId})
-        if (cb)
-          cb(true, response.result)
+        dispatch({ type: FETCH_CODEC_LIST, newState: response.result, id: projectId })
+        if (cb) { cb(true, response.result) }
       } else {
       }
     })
   }
 }
 
-export function sendCodecAction(thingId, projectId, codec, codec_id, cb) {
+export function sendCodecAction (thingId, projectId, codec, codec_id, cb) {
   return (dispatch) => {
     let promise
-    if (codec)
-      promise = createCodecAPI({codec}, thingId, projectId, dispatch)
-    else
-      promise = createCodecAPI({codec_id}, thingId, projectId, dispatch)
+    if (codec) { promise = createCodecAPI({ codec }, thingId, projectId, dispatch) } else { promise = createCodecAPI({ codec_id }, thingId, projectId, dispatch) }
     promise.then((response) => {
       if (response.status === 'OK') {
         forwardTo(`projects/manage/show/${projectId}`)
@@ -1268,7 +1236,7 @@ export function sendCodecAction(thingId, projectId, codec, codec_id, cb) {
   }
 }
 
-export function createCodecTemplateAction(projectId, data, cb) {
+export function createCodecTemplateAction (projectId, data, cb) {
   return (dispatch) => {
     const promise = createCodecTemplate(projectId, data, dispatch)
     promise.then((response) => {
@@ -1284,7 +1252,7 @@ export function createCodecTemplateAction(projectId, data, cb) {
   }
 }
 
-export function createGlobalCodecTemplateAction(data, cb) {
+export function createGlobalCodecTemplateAction (data, cb) {
   return (dispatch) => {
     const promise = createGlobalCodecTemplate(data, dispatch)
     promise.then((response) => {
@@ -1300,7 +1268,7 @@ export function createGlobalCodecTemplateAction(data, cb) {
   }
 }
 
-export function updateCodecTemplateAction(codec_id, projectId, data, cb) {
+export function updateCodecTemplateAction (codec_id, projectId, data, cb) {
   return (dispatch) => {
     const promise = updateCodecTemplate(codec_id, projectId, data, dispatch)
     promise.then((response) => {
@@ -1316,7 +1284,7 @@ export function updateCodecTemplateAction(codec_id, projectId, data, cb) {
   }
 }
 
-export function updateGlobalCodecTemplateAction(codec_id, data, cb) {
+export function updateGlobalCodecTemplateAction (codec_id, data, cb) {
   return (dispatch) => {
     const promise = updateGlobalCodecTemplate(codec_id, data, dispatch)
     promise.then((response) => {
@@ -1332,7 +1300,7 @@ export function updateGlobalCodecTemplateAction(codec_id, data, cb) {
   }
 }
 
-export function activateScenarioAction(projectId, scenarioId) {
+export function activateScenarioAction (projectId, scenarioId) {
   return (dispatch) => {
     const promise = activateScenario(projectId, scenarioId, dispatch)
     promise.then((response) => {
@@ -1347,7 +1315,7 @@ export function activateScenarioAction(projectId, scenarioId) {
   }
 }
 
-export function getScenarioAction(projectId, scenarioId, cb) {
+export function getScenarioAction (projectId, scenarioId, cb) {
   return (dispatch) => {
     const promise = getScenario(projectId, scenarioId, dispatch)
     promise.then((response) => {
@@ -1363,8 +1331,7 @@ export function getScenarioAction(projectId, scenarioId, cb) {
   }
 }
 
-
-export function lintCode(projectId, code, cb) {
+export function lintCode (projectId, code, cb) {
   return (dispatch) => {
     const promise = lint(projectId, code, dispatch)
     promise.then((response) => {
@@ -1380,15 +1347,14 @@ export function lintCode(projectId, code, cb) {
   }
 }
 
-
 /* packages action */
 
-export function getAdminPackagesAction() {
+export function getAdminPackagesAction () {
   return (dispatch) => {
     const promise = getAdminPackage(dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: GET_ADMIN_PACKAGES, newState: response.result.packages})
+        dispatch({ type: GET_ADMIN_PACKAGES, newState: response.result.packages })
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
@@ -1398,12 +1364,12 @@ export function getAdminPackagesAction() {
 
 /* packages action */
 
-export function getDiscountsAction() {
+export function getDiscountsAction () {
   return (dispatch) => {
     const promise = getDiscounts(dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: GET_DISCOUNTS, newState: response.result.discounts})
+        dispatch({ type: GET_DISCOUNTS, newState: response.result.discounts })
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
@@ -1413,27 +1379,27 @@ export function getDiscountsAction() {
 
 /* packages action */
 
-export function deleteDiscountAction(discountId, cb) {
+export function deleteDiscountAction (discountId, cb) {
   return (dispatch) => {
     const promise = deleteDiscount(discountId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        cb && cb(true, 'با موفقیت حدف شد.');
+        cb && cb(true, 'با موفقیت حدف شد.')
         dispatch(getDiscountsAction())
       } else {
-        cb && cb(false, response.result);
+        cb && cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
     })
   }
 }
 
-export function getAdminPaymentPortalsAction() {
+export function getAdminPaymentPortalsAction () {
   return (dispatch) => {
     const promise = getAdminPaymentPortals(dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: GET_ADMIN_PAYMENT_PORTALS, newState: response.result.portals})
+        dispatch({ type: GET_ADMIN_PAYMENT_PORTALS, newState: response.result.portals })
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
@@ -1441,7 +1407,7 @@ export function getAdminPaymentPortalsAction() {
   }
 }
 
-export function activatePaymentPortalsAction(id, active, cb) {
+export function activatePaymentPortalsAction (id, active, cb) {
   return (dispatch) => {
     const promise = activatePaymentPortal(id, active, dispatch)
     promise.then((response) => {
@@ -1452,17 +1418,17 @@ export function activatePaymentPortalsAction(id, active, cb) {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
     }).catch((err) => {
-      cb && cb(false, 'خطای نامشخص');
+      cb && cb(false, 'خطای نامشخص')
     })
   }
 }
 
-export function getUserPaymentPortalsAction() {
+export function getUserPaymentPortalsAction () {
   return (dispatch) => {
     const promise = getUserPaymentPortals(dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: GET_USER_PAYMENT_PORTALS, newState: response.result.portals})
+        dispatch({ type: GET_USER_PAYMENT_PORTALS, newState: response.result.portals })
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
@@ -1472,30 +1438,29 @@ export function getUserPaymentPortalsAction() {
 
 /* packages action */
 
-export function createDiscountAction(value, cb) {
+export function createDiscountAction (value, cb) {
   return (dispatch) => {
     const promise = createDiscount(value, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        cb && cb(true, 'با موفقیت اضافه شد.');
+        cb && cb(true, 'با موفقیت اضافه شد.')
         dispatch(getDiscountsAction())
       } else {
-        cb && cb(false, response.result);
+        cb && cb(false, response.result)
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
     })
   }
 }
 
-
 /* packages action */
 
-export function getPackageAction(packageId) {
+export function getPackageAction (packageId) {
   return (dispatch) => {
     const promise = getPackage(packageId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: GET_PACKAGE, newState: response.result.package})
+        dispatch({ type: GET_PACKAGE, newState: response.result.package })
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
@@ -1505,7 +1470,7 @@ export function getPackageAction(packageId) {
 
 /* packages action */
 
-export function createPackagesAction(data, cb) {
+export function createPackagesAction (data, cb) {
   return (dispatch) => {
     const promise = createPackage(data, dispatch)
     promise.then((response) => {
@@ -1524,7 +1489,7 @@ export function createPackagesAction(data, cb) {
 
 /* packages action */
 
-export function updatePackagesAction(packageId, data, cb) {
+export function updatePackagesAction (packageId, data, cb) {
   return (dispatch) => {
     const promise = updatePackage(packageId, data, dispatch)
     promise.then((response) => {
@@ -1543,7 +1508,7 @@ export function updatePackagesAction(packageId, data, cb) {
 
 /* packages action */
 
-export function deletePackagesAction(packageId, cb) {
+export function deletePackagesAction (packageId, cb) {
   return (dispatch) => {
     const promise = deletePackage(packageId, dispatch)
     promise.then((response) => {
@@ -1563,7 +1528,7 @@ export function deletePackagesAction(packageId, cb) {
 
 /* packages action */
 
-export function activatePackagesAction(packageId, active, cb) {
+export function activatePackagesAction (packageId, active, cb) {
   return (dispatch) => {
     const promise = activatePackage(packageId, active, dispatch)
     promise.then((response) => {
@@ -1583,12 +1548,12 @@ export function activatePackagesAction(packageId, active, cb) {
 
 /* packages action */
 
-export function getUserPackagesAction() {
+export function getUserPackagesAction () {
   return (dispatch) => {
     const promise = getUserPackage(dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: GET_USER_PACKAGES, newState: response.result.packages})
+        dispatch({ type: GET_USER_PACKAGES, newState: response.result.packages })
       } else {
         dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
       }
@@ -1598,17 +1563,14 @@ export function getUserPackagesAction() {
 
 /* packages action */
 
-export function buyPackagesAction(packageId, code, cb) {
+export function buyPackagesAction (packageId, code, cb) {
   return (dispatch) => {
     const promise = buyPackage(packageId, code, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        if (response.result.invoice.price > 0)
-          window.location = base_url() + `/payment/${response.result.invoice._id}/pay`
-        else {
+        if (response.result.invoice.price > 0) { window.location = base_url() + `/payment/${response.result.invoice._id}/pay` } else {
           dispatch(getProfileAction(() => forwardTo('packages')))
           toastAlerts(true, 'بسته به صورت رایگان اضافه شد')
-
         }
       } else {
         cb && cb(false, response.result)
@@ -1618,8 +1580,7 @@ export function buyPackagesAction(packageId, code, cb) {
   }
 }
 
-
-export function getDashboardAction(callback) {
+export function getDashboardAction (callback) {
   return (dispatch) => {
     const promise = getDashboard(dispatch)
     promise.then((response) => {
@@ -1631,7 +1592,7 @@ export function getDashboardAction(callback) {
   }
 }
 
-export function getUserThingsAction(compress, callback) {
+export function getUserThingsAction (compress, callback) {
   return (dispatch) => {
     const promise = getUserThings(compress, dispatch)
     promise.then((response) => {
@@ -1643,7 +1604,7 @@ export function getUserThingsAction(compress, callback) {
   }
 }
 
-export function setDashboardWidgetChartAction(widget, id, cb) {
+export function setDashboardWidgetChartAction (widget, id, cb) {
   return (dispatch) => {
     const promise = setDashboardWidgetChart(widget, id, dispatch)
     promise.then((response) => {
@@ -1656,7 +1617,7 @@ export function setDashboardWidgetChartAction(widget, id, cb) {
   }
 }
 
-export function deleteDashboardWidgetChartAction(id, cb) {
+export function deleteDashboardWidgetChartAction (id, cb) {
   return (dispatch) => {
     const promise = deleteDashboardWidgetChart(id, dispatch)
     promise.then((response) => {
@@ -1669,15 +1630,14 @@ export function deleteDashboardWidgetChartAction(id, cb) {
   }
 }
 
-
-export function getUsersAction(cb = () => {
+export function getUsersAction (cb = () => {
 }) {
   return (dispatch) => {
     const promise = getUsers(dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
         cb(true, response.result.scenario)
-        dispatch({type: GET_USERS, newState: response.result.users})
+        dispatch({ type: GET_USERS, newState: response.result.users })
       } else {
         cb(false)
       }
@@ -1688,14 +1648,13 @@ export function getUsersAction(cb = () => {
   }
 }
 
-
-export function getGlobalCodecsAction(cb = () => {
+export function getGlobalCodecsAction (cb = () => {
 }) {
   return (dispatch) => {
     const promise = getGlobalCodecs(dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: GET_CODECS, newState: response.result.codecs})
+        dispatch({ type: GET_CODECS, newState: response.result.codecs })
       } else {
         cb(false)
       }
@@ -1705,7 +1664,7 @@ export function getGlobalCodecsAction(cb = () => {
   }
 }
 
-export function deleteGlobalCodecAction(codecId, cb = () => {
+export function deleteGlobalCodecAction (codecId, cb = () => {
 }) {
   return (dispatch) => {
     const promise = deleteGlobalCodec(codecId, dispatch)
@@ -1721,8 +1680,7 @@ export function deleteGlobalCodecAction(codecId, cb = () => {
   }
 }
 
-
-export function getUserAction(userId, cb = () => {
+export function getUserAction (userId, cb = () => {
 }) {
   return (dispatch) => {
     const promise = getUser(userId, dispatch)
@@ -1730,7 +1688,7 @@ export function getUserAction(userId, cb = () => {
       if (response.status === 'OK') {
         // cb(true, response.result.scenario)
         response.result.user.overview = response.result.overview
-        dispatch({type: FETCH_USER, newState: response.result})
+        dispatch({ type: FETCH_USER, newState: response.result })
       } else {
         cb(false)
       }
@@ -1741,7 +1699,7 @@ export function getUserAction(userId, cb = () => {
   }
 }
 
-export function getUserTransactionsAction(userId, cb) {
+export function getUserTransactionsAction (userId, cb) {
   return (dispatch) => {
     const promise = getUserTransaction(userId, dispatch)
     promise.then((response) => {
@@ -1757,7 +1715,7 @@ export function getUserTransactionsAction(userId, cb) {
   }
 }
 
-export function getAllTransactionsAction(limit, offset, cb) {
+export function getAllTransactionsAction (limit, offset, cb) {
   return (dispatch) => {
     const promise = getAllTransactions(limit, offset, dispatch)
     promise.then((response) => {
@@ -1773,7 +1731,7 @@ export function getAllTransactionsAction(limit, offset, cb) {
   }
 }
 
-export function getTransactionsOverviewAction(cb) {
+export function getTransactionsOverviewAction (cb) {
   return (dispatch) => {
     const promise = getTransactionsOverview(dispatch)
     promise.then((response) => {
@@ -1789,7 +1747,7 @@ export function getTransactionsOverviewAction(cb) {
   }
 }
 
-export function getPermissionsAction(cb) {
+export function getPermissionsAction (cb) {
   return (dispatch) => {
     const promise = getPermissions(dispatch)
     promise.then((response) => {
@@ -1805,7 +1763,7 @@ export function getPermissionsAction(cb) {
   }
 }
 
-export function getRolesAction(cb) {
+export function getRolesAction (cb) {
   return (dispatch) => {
     const promise = getRoles(dispatch)
     promise.then((response) => {
@@ -1821,7 +1779,7 @@ export function getRolesAction(cb) {
   }
 }
 
-export function setRoleAction(userId, roleId, cb) {
+export function setRoleAction (userId, roleId, cb) {
   return (dispatch) => {
     const promise = setRole(userId, roleId, dispatch)
     promise.then((response) => {
@@ -1837,13 +1795,13 @@ export function setRoleAction(userId, roleId, cb) {
   }
 }
 
-export function activeUserAction(userId, action, cb = () => {
+export function activeUserAction (userId, action, cb = () => {
 }) {
   return (dispatch) => {
     const promise = activeUser(userId, action, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: FETCH_USER, newState: response.result})
+        dispatch({ type: FETCH_USER, newState: response.result })
         cb(true, 'با موفقیت انجام شد')
       } else {
         cb(false, response.result)
@@ -1855,12 +1813,12 @@ export function activeUserAction(userId, action, cb = () => {
   }
 }
 
-export function impersonateUserAction(userId, active = 1, cb) {
+export function impersonateUserAction (userId, active = 1, cb) {
   return (dispatch) => {
     const promise = impersonateUser(userId, active, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: INIT_USER, newState: response.result})
+        dispatch({ type: INIT_USER, newState: response.result })
         forwardTo('')
         window.location.reload()
         cb && cb(true, 'با موفقیت انجام شد')
@@ -1874,12 +1832,12 @@ export function impersonateUserAction(userId, active = 1, cb) {
   }
 }
 
-export function getUserTransactions() {
+export function getUserTransactions () {
   return (dispatch) => {
     const promise = getUserTransactionsAPI(dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch({type: SET_TRANSACTIONS, newState: response.result})
+        dispatch({ type: SET_TRANSACTIONS, newState: response.result })
       }
     }).catch((err) => {
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -1887,8 +1845,7 @@ export function getUserTransactions() {
   }
 }
 
-
-export function changePasswordAction(userId, password, cb) {
+export function changePasswordAction (userId, password, cb) {
   return (dispatch) => {
     const promise = changeAdminPassword(userId, password, dispatch)
     promise.then((response) => {
@@ -1904,8 +1861,7 @@ export function changePasswordAction(userId, password, cb) {
   }
 }
 
-
-export function activateProjectAction(projectId, active, cb) {
+export function activateProjectAction (projectId, active, cb) {
   return (dispatch) => {
     const promise = activateProject(projectId, active, dispatch)
     promise.then((response) => {
@@ -1918,56 +1874,44 @@ export function activateProjectAction(projectId, active, cb) {
   }
 }
 
-
-export function updateRoleAction(roleId, permissions, name, cb) {
+export function updateRoleAction (roleId, permissions, name, cb) {
   return (dispatch) => {
     const promise = updateRole(roleId, permissions, name, dispatch)
     promise.then((response) => {
-      if (response.status === 'OK')
-        cb && cb(true, 'با موفقیت انجام شد');
-      else
-        cb && cb(false, response.result);
+      if (response.status === 'OK') { cb && cb(true, 'با موفقیت انجام شد') } else { cb && cb(false, response.result) }
     }).catch((err) => {
-      cb && cb(false, 'خطای نامشخص');
+      cb && cb(false, 'خطای نامشخص')
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
     })
   }
 }
 
-export function deleteRoleAction(roleId, cb) {
+export function deleteRoleAction (roleId, cb) {
   return (dispatch) => {
     const promise = deleteRole(roleId, dispatch)
     promise.then((response) => {
-      if (response.status === 'OK')
-        cb && cb(true, 'با موفقیت انجام شد');
-      else
-        cb && cb(false, response.result)
+      if (response.status === 'OK') { cb && cb(true, 'با موفقیت انجام شد') } else { cb && cb(false, response.result) }
     }).catch((err) => {
-      cb && cb(false, 'خطای نامشخص');
+      cb && cb(false, 'خطای نامشخص')
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
     })
   }
 }
 
-export function addRoleAction(permissions, cb) {
+export function addRoleAction (permissions, cb) {
   return (dispatch) => {
     const promise = addRole(permissions, dispatch)
     promise.then((response) => {
-      if (response.status === 'OK')
-        cb && cb(true, 'با موفقیت انجام شد');
-      else
-        cb && cb(false, response.result)
-
+      if (response.status === 'OK') { cb && cb(true, 'با موفقیت انجام شد') } else { cb && cb(false, response.result) }
     }).catch((err) => {
-      cb && cb(false, 'خطای نامشخص');
+      cb && cb(false, 'خطای نامشخص')
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
     })
   }
 }
 
-export function setTokenAction(token) {
+export function setTokenAction (token) {
   return (dispatch) => {
-    dispatch({type: SET_TOKEN, newState: {token: token}});
+    dispatch({ type: SET_TOKEN, newState: { token: token } })
   }
 }
-

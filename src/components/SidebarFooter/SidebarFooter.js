@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react'
 
 class SidebarFooter extends Component {
-
-  render() {
+  render () {
     return null
     // Uncomment following code lines to add Sidebar Footer
     // return (
@@ -11,4 +10,4 @@ class SidebarFooter extends Component {
   }
 }
 
-export default SidebarFooter;
+export default SidebarFooter

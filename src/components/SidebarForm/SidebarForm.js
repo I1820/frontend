@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react'
 
 class SidebarForm extends Component {
-
-  render() {
+  render () {
     return null
     // Uncomment following code lines to add Sidebar Form
     // return (
@@ -11,4 +10,4 @@ class SidebarForm extends Component {
   }
 }
 
-export default SidebarForm;
+export default SidebarForm

@@ -94,13 +94,13 @@ export default {
           url: '/admin/globalCodec',
           icon: 'icon-docs',
           type: 'admin'
-        },{
+        }, {
           name: 'سامانه‌های مدیریت',
           url: '/admin/links',
           icon: 'icon-link',
           type: 'admin'
-        },
+        }
       ]
     }
   ]
-};
+}
