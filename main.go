@@ -25,7 +25,7 @@ func main() {
 	e.GET("/ping", func(c echo.Context) error {
 		return c.NoContent(http.StatusOK)
 	})
-	e.Static("/static", "build")
+	e.Static("/", "build")
 	e.File("/", "build/index.html")
 
 	e.Logger.Fatal(e.Start(":1323"))
