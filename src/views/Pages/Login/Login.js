@@ -111,13 +111,13 @@ class Login extends Component {
                         <Col xs="6">
                           <Button
                             block
-                            onClick={this.submit} color="primary"
+                            onClick={() => this.submit()} color="primary"
                             className="px-4">ورود</Button>
                         </Col>
                         <Col xs="6">
                           <Button
                             block
-                            onClick={this.goToResetPassword} color="link"
+                            onClick={() => this.goToResetPassword()} color="link"
                             className="text-right px-0">فراموشی رمز عبور</Button>
                         </Col>
                       </Row>
@@ -168,8 +168,7 @@ class Login extends Component {
   }
 
   submit() {
-   this.props.dispatch(login(this.state.email, this.state.password, this.state.keep, this.onRespond))
-
+    this.props.dispatch(login(this.state.email, this.state.password, this.state.keep, this.onRespond))
   }
 
   onRespond(errorMessage) {
