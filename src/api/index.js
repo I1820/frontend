@@ -4,14 +4,13 @@ import {
   getConfig,
   patchConfig,
   putConfig,
-  uploadConfig,
   deleteConfig
 } from './config'
-import { setAuthState, initUser, changePassword, sendingRequest, logout } from '../actions/AppActions'
+import { setAuthState, initUser, sendingRequest, logout } from '../actions/AppActions'
 
 import _ from 'underscore'
 
-import axios, { post, get } from 'axios'
+import { post, get } from 'axios'
 import store from '../store'
 /* global fetch */
 
@@ -73,7 +72,9 @@ function fetchData (endpoint = '/404', config = {}, dispatch, newUrl = false, lo
       .then((response) => response.json())
       .then((json) => {
         if (loading) { dispatch(sendingRequest(false)) }
+
         const { status, message, code } = controler(json)
+
         if ((code === 701 || code === 401) && endpoint !== endpoints.login) {
           console.log(message === 'token expired' && store.getState().userReducer.keep)
           if (message === 'token expired' && store.getState().userReducer.keep) {
@@ -88,7 +89,7 @@ function fetchData (endpoint = '/404', config = {}, dispatch, newUrl = false, lo
             dispatch(logout())
           }
         }
-        if (!status || (code && str(code).startsWith('7'))) {
+        if (!status || (code && code.toString(10).startsWith('7'))) {
           return resolve({ status: 'FAILED', result: message, code })
         }
         return resolve({ result: json.result, status: 'OK', code })
@@ -489,7 +490,6 @@ module.exports.getDeviceProfileAPI = function (profileId, dispatch) {
 }
 
 module.exports.getSingleGateway = function (id, dispatch) {
-  const config = getConfig()
   return fetchData('/gateway/' + id, getConfig(), dispatch)
 }
 
