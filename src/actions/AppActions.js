@@ -22,7 +22,6 @@
  *    If you add an async function, remove the export from the function
  *    created in the second step
  */
-/* global fetch */
 
 import {
   SET_AUTH,
@@ -65,7 +64,7 @@ import {
   editProfile as editProfileAPI, changePassword as changePasswordAPI, getThings as listThingsAPI,
   getThing as getThingAPI, connectThing as connectThingAPI,
   createThing as createThingAPI, editThing as editThingAPI, editAliases as editAliasesAPI,
-  getProjectData as getThingDataAPI, createCodec as createCodecAPI,
+  createCodec as createCodecAPI,
   createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
   DownloadThingsExcel as DownloadThingsExcelAPI,
   DownloadUserThingsExcel as DownloadUserThingsExcelAPI,
@@ -82,8 +81,7 @@ import {
   newDownlink as newDownlinkAPI,
   getUserTransaction, getUser, getAllTransactions, getTransactionsOverview,
   lint,
-  base_url
-  ,
+  baseURL,
   activateScenario,
   sendThingKeys,
   createCodecTemplate,
@@ -158,16 +156,10 @@ import { toastAlerts } from '../views/Shared/toast_alert'
  * Logs an user in
  * @param  {string} username The username of the user to be logged in
  * @param  {string} password The password of the user to be logged in
- * @param (string) captcha
  * @param {function} errorCallback
  */
-export function login (username, password, captcha, keep, errorCallback) {
+export function login (username, password, keep, errorCallback) {
   return (dispatch) => {
-    // if (captcha === undefined) {
-    //   errorCallback('لطفا برروی گزینه من ربات نیستم کلیک کنید')
-    //   return
-    // }
-
     // Show the loading indicator, hide the last error
     // If no username or password was specified, throw a field-missing error
     if (anyElementsEmpty({ username, password })) {
@@ -1568,7 +1560,7 @@ export function buyPackagesAction (packageId, code, cb) {
     const promise = buyPackage(packageId, code, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        if (response.result.invoice.price > 0) { window.location = base_url() + `/payment/${response.result.invoice._id}/pay` } else {
+        if (response.result.invoice.price > 0) { window.location = baseURL() + `/payment/${response.result.invoice._id}/pay` } else {
           dispatch(getProfileAction(() => forwardTo('packages')))
           toastAlerts(true, 'بسته به صورت رایگان اضافه شد')
         }
