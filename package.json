@@ -29,7 +29,9 @@
     "uglify-js": "3.3.9",
     "url-loader": "0.6.2",
     "webpack": "3.10.0",
-    "webpack-dev-server": "2.11.1"
+    "webpack-dev-server": "2.11.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.12.4"
   },
   "dependencies": {
     "ansi-html": "^0.0.7",
@@ -89,7 +91,8 @@
     "dev": "webpack -d --progress --watch --profile --json > compilation-stats.json --env.dev",
     "start": "webpack-dev-server --progress --color --inline --env.dev --host=0.0.0.0 --port=8080",
     "build": "webpack -p --progress --env.prod",
-    "clean": "rimraf ./build"
+    "clean": "rimraf ./build",
+    "lint": "eslint src/**/*.js"
   },
   "engines": {
     "node": ">= 8.9.4",
