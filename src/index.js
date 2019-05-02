@@ -20,6 +20,9 @@ import '../scss/style.scss'
 // Temp fix for reactstrap
 import '../scss/core/_dropdown-menu-right.scss'
 
+// Toasts
+import { toast } from 'react-toastify';
+
 // Containers
 import Full from './containers/Full/'
 
@@ -29,7 +32,6 @@ import Register from './views/Pages/Register/Register'
 import SuccessPayment from './views/Packages/SuccessPayment'
 import FailurePayment from './views/Packages/FailurePayment'
 import AutoLogin from './views/Pages/Login/AutoLogin';
-
 
 function PrivateRoute({component: Component, ...rest}) {
     let {loggedIn} = store.getState().homeReducer;
@@ -68,6 +70,14 @@ function RegisterRoute({component: Component, authed, ...rest}) {
     )
 }
 
+toast.configure({
+  position: 'bottom-right',
+  rtl: true,
+  style: {
+    fontFamily: 'Vazir',
+    textAlign: 'right',
+  }
+})
 
 ReactDOM.render((
     <Provider store={store}>
