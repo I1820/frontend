@@ -19,13 +19,6 @@ import {connect} from 'react-redux';
 import {register} from '../../../actions/AppActions';
 import {toastAlerts} from '../../Shared/toast_alert';
 import {css} from 'glamor';
-import {ToastContainer} from 'react-toastify';
-import {style} from 'react-toastify';
-
-style({
-  colorProgressDefault: 'white',
-  fontFamily: 'Vazir',
-});
 
 class Register extends Component {
 
@@ -143,7 +136,6 @@ class Register extends Component {
             </Col>
           </Row>
         </Container>
-        <ToastContainer className="text-right"/>
       </div>
     );
   }
