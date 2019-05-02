@@ -8,7 +8,6 @@ import {
   CardBody,
   Button,
   Input,
-  Alert,
   InputGroup,
   InputGroupAddon,
   InputGroupText,
@@ -19,6 +18,7 @@ import {
 
 import { connect } from 'react-redux';
 import { login, resetPasswordAction } from '../../../actions/AppActions';
+import { toast } from 'react-toastify';
 
 class Login extends Component {
 
@@ -27,7 +27,6 @@ class Login extends Component {
 
     this.submit = this.submit.bind(this)
     this.onRespond = this.onRespond.bind(this)
-    this.renderAlert = this.renderAlert.bind(this)
     this.goToRegisterPage = this.goToRegisterPage.bind(this)
     this.goToResetPassword = this.goToResetPassword.bind(this)
     this.reset = this.reset.bind(this)
@@ -35,8 +34,6 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      showAlert: false,
-      alert: '',
       reset: false
     }
   }
@@ -172,22 +169,8 @@ class Login extends Component {
   }
 
   onRespond(errorMessage) {
-    this.setState({
-      alert: errorMessage,
-      showAlert: true
-    })
+    toast(errorMessage, { autoClose: 15000, type: toast.TYPE.ERROR})
   }
-
-  renderAlert() {
-    if (this.state.showAlert) {
-      return (
-        <Alert color="danger" className="text-right">
-          {this.state.alert}
-        </Alert>
-      )
-    }
-  }
-
 }
 
 function mapStateToProps(state) {
