@@ -20,13 +20,7 @@ import {createGatewayAction} from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import Spinner from '../Spinner/Spinner';
 
-import {style} from 'react-toastify';
 import {toastAlerts} from '../Shared/toast_alert';
-
-
-style({
-  colorProgressDefault: 'white'
-});
 
 const _ = require('lodash');
 const {compose, withProps, lifecycle} = require('recompose');

@@ -25,16 +25,11 @@ import ReactTable from 'react-table'
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
 import { toastAlerts } from '../Shared/toast_alert';
-import 'react-table/react-table.css'
 
 import { connect } from 'react-redux';
 import { createProject, getProjects, deleteProjectAction } from '../../actions/AppActions';
 import Spinner from '../Spinner/Spinner';
-import { style } from 'react-toastify';
 
-style({
-  colorProgressDefault: 'white'
-});
 
 class ProjectsList extends Component {
 

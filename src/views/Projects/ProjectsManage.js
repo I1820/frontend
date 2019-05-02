@@ -37,17 +37,11 @@ import {
 } from '../../actions/AppActions';
 import Spinner from '../Spinner/Spinner';
 
-import { toast } from 'react-toastify';
 import { css } from 'glamor';
-import { style } from 'react-toastify';
 import ReactTable from 'react-table'
 import Logger from '../../components/Logger';
 import { toastAlerts } from '../Shared/toast_alert';
 import moment from 'moment-jalaali';
-
-style({
-  colorProgressDefault: 'white'
-});
 
 class ProjectsManage extends Component {
   constructor(props) {

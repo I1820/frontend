@@ -23,7 +23,6 @@ import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import classnames from 'classnames';
 import { css } from 'glamor';
-import { style } from 'react-toastify';
 import {
   editProfile, getProfileAction, changePassword, impersonateUserAction,
   uploadLegalDocAction, uploadPictureAction, updateUser
@@ -32,11 +31,6 @@ import Phone from 'react-phone-number-input'
 import Select2 from 'react-select2-wrapper';
 import { toastAlerts } from '../Shared/toast_alert';
 import { base_files_url } from '../../api/index'
-
-style({
-  colorProgressDefault: 'white'
-});
-
 
 class Profile extends Component {
 

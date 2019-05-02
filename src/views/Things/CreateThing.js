@@ -31,7 +31,6 @@ import Spinner from '../Spinner/Spinner';
 
 import { toast } from 'react-toastify';
 import { css } from 'glamor';
-import { style } from 'react-toastify';
 import Select2 from 'react-select2-wrapper';
 import { toastAlerts } from '../Shared/toast_alert';
 

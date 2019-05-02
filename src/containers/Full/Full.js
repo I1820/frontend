@@ -48,7 +48,6 @@ import addScenario from '../../views/Editros/addScenario'
 
 import sendCodec from '../../views/Editros/sendCodec';
 import addTemplate from '../../views/Editros/addTemplate';
-import {ToastContainer} from 'react-toastify';
 import AllTransactions from '../../views/AdminPayments/AllTransactions';
 import PaymentPortalList from '../../views/PaymentPortalManagment/PaymentPortalList';
 import AdminLinks from '../../views/Admin/AdminLinks';
@@ -57,7 +56,6 @@ class Full extends Component {
   render() {
     return (
       <div className="app">
-        <ToastContainer className="text-right"/>
         <Header/>
         <div className="app-body">
           <Sidebar {...this.props}/>
