@@ -18,6 +18,7 @@ import {
 } from 'reactstrap';
 import ReactTable from 'react-table'
 import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import { Link } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import Select2 from 'react-select2-wrapper';
@@ -274,12 +275,12 @@ class Dashboard extends Component {
                 </div>
               </CardBody>
               <CardFooter>
-                <Button color="link" block onClick={() => window.location = '/#/projects'}
+                <Link to="/projects"><Button color="link" block
                   className="text-muted d-flex justify-content-between align-items-center"
                 >
                   <span className="small font-weight-bold">پروژه‌ها</span>
                   <i className="fa fa-angle-left"></i>
-                </Button>
+                </Button></Link>
               </CardFooter>
             </Card>
           </Col>
@@ -293,12 +294,12 @@ class Dashboard extends Component {
                 </div>
               </CardBody>
               <CardFooter>
-                <Button color="link" block onClick={() => window.location = '/#/things'}
+                <Link to="/things"><Button color="link" block
                   className="text-muted d-flex justify-content-between align-items-center"
                 >
                   <span className="small font-weight-bold">اشیا</span>
                   <i className="fa fa-angle-left"></i>
-                </Button>
+                </Button></Link>
               </CardFooter>
             </Card>
           </Col>
