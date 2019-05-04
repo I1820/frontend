@@ -19,6 +19,7 @@ import {
 import { connect } from 'react-redux';
 import { login, resetPasswordAction } from '../../../actions/AppActions';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
 
@@ -27,7 +28,6 @@ class Login extends Component {
 
     this.submit = this.submit.bind(this)
     this.onRespond = this.onRespond.bind(this)
-    this.goToRegisterPage = this.goToRegisterPage.bind(this)
     this.goToResetPassword = this.goToResetPassword.bind(this)
     this.reset = this.reset.bind(this)
 
@@ -114,7 +114,7 @@ class Login extends Component {
                         <Col xs="6">
                           <Button
                             block
-                            onClick={() => this.goToResetPassword()} color="link"
+                            onClick={() => this.reset()} color="link"
                             className="text-right px-0">فراموشی رمز عبور</Button>
                         </Col>
                       </Row>
@@ -129,10 +129,13 @@ class Login extends Component {
                         این پلتفرم برای اشیایی که مبنی بر پروتکل لورا عمل می‌کنند
                         یک رابط مدیریتی ساده فراهم می‌آورد.
                       </p>
-                      <Button
-                        onClick={() => this.goToRegisterPage()}
-                        color="primary" active className="mt-3"
-                      >همین حالا ثبت‌نام کنید</Button>
+                      <Link to="/register">
+                        <Button
+                          color="primary" active className="mt-3"
+                        >
+                          همین حالا ثبت‌نام کنید
+                        </Button>
+                      </Link>
                     </div>
                   </CardBody>
                 </Card>
@@ -142,10 +145,6 @@ class Login extends Component {
         </Container>
       </div>
     );
-  }
-
-  goToRegisterPage() {
-    window.location = '#/register'
   }
 
   goToResetPassword() {
