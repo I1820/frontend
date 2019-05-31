@@ -49,7 +49,6 @@ class ProjectsView extends Component {
     this.drawLineChart = this.drawLineChart.bind(this)
     this.renderChart = this.renderChart.bind(this)
     this.drawBarChart = this.drawBarChart.bind(this)
-    this.renderThingLocation = this.renderThingLocation.bind(this)
     this.downloadExcel = this.downloadExcel.bind(this)
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
@@ -136,6 +135,7 @@ class ProjectsView extends Component {
     this.setState({showLineChart: true, draw: true})
     const config = {
       chart: {
+        zoomType: 'x',
         style: {
           fontFamily: 'Tahoma'
         }
@@ -146,7 +146,6 @@ class ProjectsView extends Component {
         },
         series: {
           events: {
-
           }
         }
       },
@@ -165,7 +164,7 @@ class ProjectsView extends Component {
         data: []
       }],
       credits: {
-        enabled: false
+        enabled: true
       },
       tooltip: {
         backgroundColor: 'lightgray',
@@ -190,45 +189,37 @@ class ProjectsView extends Component {
       things[thing.interface.devEUI] = thing.name
     })
 
-    let location = {}
+    // creates sensors array
     let sensors = []
     this.state.data.map((d, i) => {
       _.allKeys(d.data).map((k, i2) => {
-        if (k === '_location')
-          location = d.data[k]
-        else if (_.find(sensors, {name: `${things[d._id.thingid]}: ${k}`}) === undefined) {
+        if (_.find(sensors, {name: `${things[d.thingid]}: ${k}`}) === undefined) {
           sensors.push({
             label: k,
-            name: `${things[d._id.thingid]}: ${k}`,
+            name: `${things[d.thingid]}: ${k}`,
             data: [],
-            colorIndex: ((((k.split('').reduce(function (a, b) {
-              a = ((a << 5) - a) + b.charCodeAt(0);
-              return a & a
-            }, 0)) % 10) + 10) % 10)
+            colorIndex: this.getcolor(k)
           })
         }
       })
     })
 
-
     this.state.data.map((d) => {
-      config.xAxis.categories.push(moment(d.since, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss') + '\n' +
-        moment(d.until, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'))
       sensors.map((dataset, index) => {
-        if (d.data[dataset.label] === undefined) {
-          dataset.data.push(dataset.data.length > 0 ? dataset.data[dataset.data.length - 1] : 0)
-        } else {
-          dataset.data.push(d.data[dataset.label])
+        n = Number(d.data[dataset.label])
+        if (n != NaN) {
+          dataset.data.push({
+            y: n,
+            x: moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')
+          })
         }
       })
     })
     config.series = sensors
     this.setState({
-      config
-      , location,
+      config,
       draw: false
     })
-
   }
 
   getcolor(k) {
@@ -466,7 +457,6 @@ class ProjectsView extends Component {
             <Button onClick={this.downloadExcel} className="ml-1" color="success">خروجی اکسل</Button>
           </CardFooter>
         </Card>
-        {this.renderThingLocation()}
       </div>
     );
   }
@@ -599,17 +589,6 @@ class ProjectsView extends Component {
       keys
     })
     console.log('Data', this.state)
-    // this.setState({data:[
-    //     {name: 'Page A', uv: 4000, pv: 0, amt: 2400},
-    //     {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-    //     {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-    //     {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-    //     {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-    //     {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-    //     {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
-    //   ],
-    // showBarChart:true
-    // })
   }
 
   start() {
@@ -630,7 +609,7 @@ class ProjectsView extends Component {
 
 
   getData(cb) {
-    this.props.dispatch(getThingsSampleDataAction(JSON.stringify(this.state.selectedThing),
+    this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
       this.state.project._id,
       this.state.since,
       this.state.until,
@@ -644,22 +623,6 @@ class ProjectsView extends Component {
         if (cb)
           cb()
       }));
-  }
-
-  renderThingLocation() {
-    if (this.state.location)
-      return (
-        <Card className="text-justify">
-          <CardHeader>
-            <CardTitle className="mb-0 font-weight-bold h6">محل قرارگیری شی</CardTitle>
-          </CardHeader>
-          <CardBody>
-            <Map marker={{
-              lat: this.state.location.coordinates ? parseFloat(this.state.location.coordinates[1]) : '',
-              lng: this.state.location.coordinates ? parseFloat(this.state.location.coordinates[0]) : '',
-            }}/>
-          </CardBody>
-        </Card>)
   }
 }
 
