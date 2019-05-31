@@ -13,6 +13,10 @@ import {
   Input
 } from 'reactstrap';
 
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import L from 'leaflet';
+import iconUrl from 'leaflet/dist/images/marker-icon.png';
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
 
 import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
 
@@ -32,8 +36,11 @@ class GatewaysNew extends Component {
 
     this.changeForm = this.changeForm.bind(this)
     this.submitForm = this.submitForm.bind(this)
+    this.onDragend = this.onDragend.bind(this)
 
     this.state = {
+      lat: 35.7024852,
+      long: 51.4023424,
       mac: '',
       online:true
     }
@@ -73,7 +80,7 @@ class GatewaysNew extends Component {
                   <AvInput type="text" dir="ltr"
                            placeholder="AA00CC11DD22EE33"
                            maxLength="16"
-                           name={'macAddress'}
+                           name='macAddress'
                            onChange={event => this.setState({mac: event.target.value})}
                            required/>
                   <AvFeedback>الزامی است</AvFeedback>
@@ -92,13 +99,19 @@ class GatewaysNew extends Component {
               <FormGroup row>
                 <Label sm={2}> عرض جغرافیایی:</Label>
                 <Col sm={5}>
-                  <Input id="fld_lat" dir="ltr" type="number"/>
+                  <Input dir="ltr" type="number"
+                    value={this.state.lat ? this.state.lat : 0}
+                    onChange={event => this.setState({lat: event.target.value})}
+                  />
                 </Col>
               </FormGroup>
               <FormGroup row>
                 <Label sm={2}>طول جغرافیایی:</Label>
                 <Col sm={5}>
-                  <Input dir="ltr" id="fld_lng" type="number"/>
+                  <Input dir="ltr" type="number"
+                    value={this.state.long ? this.state.long : 0}
+                    onChange={event => this.setState({long: event.target.value})}
+                  />
                 </Col>
               </FormGroup>
               <FormGroup row>
@@ -115,10 +128,37 @@ class GatewaysNew extends Component {
             <Button color="primary" onClick={this.submitForm}>ثبت اطلاعات</Button>
           </CardFooter>
         </Card>
+        <Card className="text-justify">
+          <CardHeader>
+            <CardTitle className="mb-0 font-weight-bold h6">محل قرارگیری گذرگاه</CardTitle>
+          </CardHeader>
+          <CardBody>
+            <Map center={[this.state.lat, this.state.long]} zoom={15}>
+              <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker draggable={true} onDragend={this.onDragend} position={[this.state.lat, this.state.long]} icon={L.icon({
+                        iconSize: [ 25, 41 ],
+                        iconAnchor: [ 13, 41 ],
+                        iconUrl: iconUrl,
+                        shadowUrl: shadowUrl
+                })}>
+                <Popup>Your Gateway</Popup>
+              </Marker>
+            </Map>
+          </CardBody>
+        </Card>
       </div>
     );
   }
 
+  onDragend(event) {
+    this.setState({
+      lat: event.target._latlng.lat,
+      long: event.target._latlng.lng
+    })
+  }
 
   changeForm(event) {
     let state = {}
@@ -136,8 +176,8 @@ class GatewaysNew extends Component {
         name: this.state.name,
         mac: this.state.mac,
         description: this.state.description,
-        latitude: document.getElementById('fld_lat').value,
-        longitude: document.getElementById('fld_lng').value,
+        latitude: this.state.lat,
+        longitude: this.state.long,
         altitude: this.state.altitude
       },
       (status, result) => {
