@@ -16,7 +16,11 @@ import {
   Input,
   Table
 } from 'reactstrap';
+
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import L from 'leaflet';
+import iconUrl from 'leaflet/dist/images/marker-icon.png';
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
 
 import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
 
@@ -41,6 +45,7 @@ class CreateThing extends Component {
 
     this.changeForm = this.changeForm.bind(this)
     this.submitForm = this.submitForm.bind(this)
+    this.onDragend = this.onDragend.bind(this)
     this.thing_profile_slug = ''
     this.state = {
       zoom: 13,
@@ -202,7 +207,6 @@ class CreateThing extends Component {
                 <Col sm={5}>
                   <Input value={this.state.thing.lat ? this.state.thing.lat : 0}
                          type="number"
-                         id="fld_lat"
                          name="lat"
                          dir="ltr"
                          onChange={this.changeForm}
@@ -215,7 +219,6 @@ class CreateThing extends Component {
                   <Input value={this.state.thing.long ? this.state.thing.long : 0}
                          dir="ltr"
                          name="long"
-                         id="fld_lng"
                          onChange={this.changeForm}
                          type="number"/>
                 </Col>
@@ -237,6 +240,14 @@ class CreateThing extends Component {
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
+                <Marker draggable={true} onDragend={this.onDragend} position={[this.state.thing.lat, this.state.thing.long]} icon={L.icon({
+                        iconSize: [ 25, 41 ],
+                        iconAnchor: [ 13, 41 ],
+                        iconUrl: iconUrl,
+                        shadowUrl: shadowUrl
+                })}>
+                <Popup>Your Thing</Popup>
+              </Marker>
             </Map>
           </CardBody>
         </Card>
@@ -244,6 +255,14 @@ class CreateThing extends Component {
     );
   }
 
+  onDragend(event) {
+    this.setState({
+      thing: {
+        lat: event.target._latlng.lat,
+        long: event.target._latlng.lng
+      }
+    })
+  }
 
   changeForm(event) {
     this.setState({
@@ -259,8 +278,8 @@ class CreateThing extends Component {
       name: this.state.thing.name,
       description: this.state.thing.description,
       period: this.state.thing.period,
-      lat: document.getElementById('fld_lat').value,
-      long: document.getElementById('fld_lng').value,
+      lat: this.state.thing.lat,
+      long: this.state.thing.long,
       devEUI: this.state.thing.devEUI,
       thing_profile_slug: this.thing_profile_slug,
       type: this.state.thing.type,
