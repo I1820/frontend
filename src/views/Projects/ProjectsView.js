@@ -19,12 +19,12 @@ import {
 
 import _ from 'underscore'
 
-const ReactHighcharts = require('react-highcharts');
+import ReactHighcharts from 'react-highcharts';
 import moment from 'moment-jalaali'
 import JSONPretty from 'react-json-pretty';
 import {
   getCodecTemplateListAction, getProject,
-  getThingsSampleDataAction, getThingsMainDataAction, DownloadThingsDataExcelAction
+  getThingsMainDataAction, DownloadThingsDataExcelAction
 } from '../../actions/AppActions';
 import connect from 'react-redux/es/connect/connect';
 import { DateTimeRangePicker, DateTimePicker } from 'react-advance-jalaali-datepicker';
@@ -46,9 +46,7 @@ class ProjectsView extends Component {
     this.renderPeriodPicker = this.renderPeriodPicker.bind(this)
     this.renderTimePicker = this.renderTimePicker.bind(this)
     this.getData = this.getData.bind(this)
-    this.drawLineChart = this.drawLineChart.bind(this)
-    this.renderChart = this.renderChart.bind(this)
-    this.drawBarChart = this.drawBarChart.bind(this)
+    this.draw = this.draw.bind(this)
     this.downloadExcel = this.downloadExcel.bind(this)
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
@@ -58,37 +56,14 @@ class ProjectsView extends Component {
       pages: 1,
       pageSize: 10,
       loading: false,
-      showLineChart: true,
-      showBarChart: false,
+      type: 'area',
       selectedThing: {ids: []},
       period: 5000,
-      barchartData: [],
       project: {
         things: []
       },
       auto: false,
-      config: {
-        chart: {
-          type: 'column',
-          style: {
-            fontFamily: 'Tahoma'
-          }
-        },
-        title: {
-          text: 'داده‌های دریافتی'
-        },
-        xAxis: {
-          categories: [],
-        },
-        yAxis: {
-          title: {
-            text: 'تعداد'
-          }
-        },
-        credits: {
-          enabled: false
-        },
-      },
+      config: {},
       data: [],
       tableData: [],
       keys: [],
@@ -131,10 +106,12 @@ class ProjectsView extends Component {
     }
   }
 
-  drawLineChart() {
-    this.setState({showLineChart: true, draw: true})
+  draw() {
+    this.setState({draw: true})
     const config = {
       chart: {
+        type: this.state.type,
+        connectNulls: true,
         zoomType: 'x',
         style: {
           fontFamily: 'Tahoma'
@@ -151,9 +128,6 @@ class ProjectsView extends Component {
       },
       title: {
         text: 'داده‌های دریافتی'
-      },
-      xAxis: {
-        categories: []
       },
       yAxis: {
         title: {
@@ -189,7 +163,7 @@ class ProjectsView extends Component {
       things[thing.interface.devEUI] = thing.name
     })
 
-    // creates sensors array
+    // creates sensors series by their identification
     let sensors = []
     this.state.data.map((d, i) => {
       _.allKeys(d.data).map((k, i2) => {
@@ -204,18 +178,20 @@ class ProjectsView extends Component {
       })
     })
 
+    // maps the sensors data into their series
     this.state.data.map((d) => {
       sensors.map((dataset, index) => {
-        n = Number(d.data[dataset.label])
-        if (n != NaN) {
-          dataset.data.push({
-            y: n,
-            x: moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')
-          })
+        const n = Number(d.data[dataset.label])
+        if (n !== NaN) {
+          dataset.data.push([
+            moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'),
+            n
+          ])
         }
       })
     })
     config.series = sensors
+    console.log(config.series)
     this.setState({
       config,
       draw: false
@@ -313,19 +289,12 @@ class ProjectsView extends Component {
                 <Col sm={5}>
                   <Input type="select" name="type"
                          onChange={(event) => {
-                           if (event.target.value === 'line')
-                             this.setState({
-                               showBarChart: false,
-                               showLineChart: true
-                             })
-                           else this.setState({
-                             showBarChart: true,
-                             showLineChart: false
-                           })
-
+                            this.setState({
+                              type: event.target.value,
+                            })
                          }} id="select">
-                    <option value="line">خطی</option>
-                    <option value="bar">میله ای</option>
+                    <option value="area">خطی</option>
+                    <option value="column">میله ای</option>
                   </Input>
                 </Col>
               </FormGroup>
@@ -367,7 +336,6 @@ class ProjectsView extends Component {
                   if (this.state.auto)
                     this.start();
                 })
-
               }
               }>دریافت اطلاعات</Button>
             </Form>
@@ -381,9 +349,7 @@ class ProjectsView extends Component {
             <Loading size={'30px'} isOpen={this.state.interval}/>
           </CardHeader>
           <CardBody>
-            {/*<Line data={mainChart} options={mainChartOpts} height={300}/>*/}
-            {this.renderChart()
-            }
+            <ReactHighcharts config={this.state.config}/>
           </CardBody>
         </Card>
         <Card className="text-justify">
@@ -433,23 +399,6 @@ class ProjectsView extends Component {
                         pages++;
                       this.setState({tableData: data.reverse(), loading: false, pages})
                     }));
-
-                // // show the loading overlay
-                // // fetch your data
-                // Axios.post('mysite.com/data', {
-                //   page: state.page,
-                //   pageSize: state.pageSize,
-                //   sorted: state.sorted,
-                //   filtered: state.filtered
-                // })
-                //   .then((res) => {
-                //     // Update react-table
-                //     this.setState({
-                //       data: res.data.rows,
-                //       pages: res.data.pages,
-                //       loading: false
-                //     })
-                //   })
               }}
             />
           </CardBody>
@@ -459,33 +408,6 @@ class ProjectsView extends Component {
         </Card>
       </div>
     );
-  }
-
-  renderChart() {
-    if (this.state.showLineChart)
-      return (<ReactHighcharts config={this.state.config}/>)
-    else if (this.state.showBarChart) {
-      for (let i = 0; i < document.querySelectorAll(".recharts-cartesian-axis-tick-value").length; i++)
-        if (document.querySelectorAll('.recharts-cartesian-axis-tick-value')[i].getAttribute('text-anchor') === 'end')
-          document.querySelectorAll('.recharts-cartesian-axis-tick-value')[i].querySelector('tspan').setAttribute('x', 10)
-
-      return (
-        <BarChart width={document.querySelector('.card-body').offsetWidth - 50} height={700}
-                  data={this.state.barchartData}
-        >
-          <CartesianGrid strokeDasharray="3 3"/>
-          <XAxis dataKey="name"/>
-          <YAxis/>
-          <Legend/>
-          {
-            this.state.keys.map((key) => {
-              console.log(key, this.getcolor(key))
-              return (<Bar dataKey={key} fill={colorArray[this.getcolor(key)]}/>)
-            })
-          }
-        </BarChart>
-      )
-    }
   }
 
   downloadExcel() {
@@ -569,28 +491,6 @@ class ProjectsView extends Component {
     ];
   }
 
-
-  drawBarChart() {
-    const keys = []
-    const data = []
-    this.state.data.map((row) => {
-      Object.keys(row.data).map(key => {
-        if (keys.indexOf(key) < 0)
-          keys.push(key)
-      })
-      data.push({
-        name: (moment(row.since, 'YYYY-MM-DD HH:mm:ss').format('HH:mm jYY/jM/jD')),
-        ...row.data
-      })
-    })
-
-    this.setState({
-      barchartData: data,
-      keys
-    })
-    console.log('Data', this.state)
-  }
-
   start() {
     if (this.state.selectedThing.ids.length)
       this.setState({
@@ -616,10 +516,7 @@ class ProjectsView extends Component {
       this.state.auto ? this.state.window : undefined,
       (status, data) => {
         this.setState({data: data.reverse()})
-        if (this.state.showLineChart)
-          this.drawLineChart()
-        else if (this.state.showBarChart)
-          this.drawBarChart()
+        this.draw()
         if (cb)
           cb()
       }));
