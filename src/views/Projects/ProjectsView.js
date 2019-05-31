@@ -126,8 +126,14 @@ class ProjectsView extends Component {
           }
         }
       },
+      time: {
+        useUTC: false,
+      },
       title: {
         text: 'داده‌های دریافتی'
+      },
+      xAxis: {
+        type: 'datetime'
       },
       yAxis: {
         title: {
@@ -149,7 +155,7 @@ class ProjectsView extends Component {
         formatter: function () {
           const res =
             '<div>' +
-            '<div style="text-align: center;direction: rtl">' + this.x + '</div>' +
+            '<div style="text-align: center;direction: rtl">' + this.name + '</div>' +
             '<div style="text-align: center">' + this.series.name +
             ': <span style="font-weight: bold; ">' + this.y + '</span></div>' +
             '</div>';
@@ -183,10 +189,11 @@ class ProjectsView extends Component {
       sensors.map((dataset, index) => {
         const n = Number(d.data[dataset.label])
         if (n !== NaN) {
-          dataset.data.push([
-            moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'),
-            n
-          ])
+          dataset.data.push({
+            name: moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'),
+            x: new Date(d.timestamp).getTime(),
+            y: n
+          })
         }
       })
     })
