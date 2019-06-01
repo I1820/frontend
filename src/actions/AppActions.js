@@ -1083,7 +1083,7 @@ export function getProfileAction (cb) {
     const promise = viewProfile(dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        dispatch(initUser(response.result))
+        dispatch(updateUser(response.result))
         cb && cb(true)
       } else {
       }
