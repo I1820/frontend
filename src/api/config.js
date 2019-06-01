@@ -1,12 +1,21 @@
 import store from '../store'
 
-const getAuth = () => {
-  return 'Bearer ' + store.getState().userReducer.token
+function getAuth () {
+  return 'Bearer ' + store.getState().userReducer.access_token
 }
 
-module.exports.re_captcha_site_key = '6LdrEGQUAAAAAM8AyheGDWIyNU63bf2kiHiJmsaF'
+export const refreshConfig = () => ({
+  method: 'PUT',
+  body: '',
+  headers: {
+    'Authorization': 'Bearer ' + store.getState().userReducer.refresh_token,
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json'
+  }
 
-module.exports.loginConfig = {
+})
+
+export const loginConfig = {
   method: 'POST',
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
@@ -14,7 +23,7 @@ module.exports.loginConfig = {
   }
 }
 
-module.exports.postConfig = () => ({
+export const postConfig = () => ({
   method: 'POST',
   body: '',
   headers: {
@@ -24,7 +33,7 @@ module.exports.postConfig = () => ({
   }
 })
 
-module.exports.putConfig = () => ({
+export const putConfig = () => ({
   method: 'PUT',
   body: '',
   headers: {
@@ -34,7 +43,7 @@ module.exports.putConfig = () => ({
   }
 })
 
-module.exports.uploadConfig = () => ({
+export const uploadConfig = () => ({
   method: 'POST',
   body: '',
   headers: {
@@ -44,7 +53,7 @@ module.exports.uploadConfig = () => ({
   }
 })
 
-module.exports.getConfig = () => ({
+export const getConfig = () => ({
   method: 'GET',
   headers: {
     'Authorization': getAuth(),
@@ -52,7 +61,7 @@ module.exports.getConfig = () => ({
   }
 })
 
-module.exports.patchConfig = () => ({
+export const patchConfig = () => ({
   method: 'PATCH',
   headers: {
     'Authorization': getAuth(),
@@ -61,7 +70,7 @@ module.exports.patchConfig = () => ({
   }
 })
 
-module.exports.deleteConfig = () => ({
+export const deleteConfig = () => ({
   method: 'DELETE',
   headers: {
     'Authorization': getAuth(),

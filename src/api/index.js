@@ -4,7 +4,8 @@ import {
   getConfig,
   patchConfig,
   putConfig,
-  deleteConfig
+  deleteConfig,
+  refreshConfig
 } from './config'
 import { setAuthState, initUser, sendingRequest, logout } from '../actions/AppActions'
 
@@ -78,7 +79,7 @@ function fetchData (endpoint = '/404', config = {}, dispatch, newUrl = false, lo
         if ((code === 701 || code === 401) && endpoint !== endpoints.login) {
           console.log(message === 'token expired' && store.getState().userReducer.keep)
           if (message === 'token expired' && store.getState().userReducer.keep) {
-            const promise = fetchData(endpoints.refresh, putConfig(), dispatch)
+            const promise = fetchData(endpoints.refresh, refreshConfig(), dispatch)
             promise.then((response) => {
               if (response.status === 'OK') {
                 dispatch(setAuthState(true))
