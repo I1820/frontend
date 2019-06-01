@@ -1,5 +1,4 @@
 import { INIT_USER, UPDATE_USER, SET_TOKEN, FREE, SET_TRANSACTIONS } from '../constants/AppConstants'
-import _ from 'underscore'
 import { base_files_url } from '../api/index'
 const md5 = require('js-md5')
 
@@ -32,10 +31,10 @@ export function userReducer (state = initialState, action) {
 
     case SET_TOKEN:
       return assign({}, state, {
-        token: action.newState.token ? action.newState.token : state.token
+        access_token: action.newState.access_token ? action.newState.access_token : state.access_token
       })
-    case UPDATE_USER:
 
+    case UPDATE_USER:
       return assign({}, state, {
         legal: action.newState.user.legal,
         username: action.newState.user.name,
