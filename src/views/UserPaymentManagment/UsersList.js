@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import {selectUser} from '../../actions/AppActions'
 import {
   Row,
   Col,
@@ -22,6 +21,7 @@ import {
   Table,
   FormText
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import { getUsersAction, getRolesAction, setRoleAction, DownloadUsersListExcelAction } from '../../actions/AppActions';
 import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
@@ -43,9 +43,6 @@ class UsersList extends Component {
   }
 
   componentWillMount() {
-    // let usersInfo = this.state.usersInfo;
-    // let usersArray = Object.values(usersInfo);
-    // this.setState({items: usersArray})
     this.props.dispatch(getUsersAction());
     this.props.dispatch(getRolesAction((status, roles) => {
       if (status)
@@ -161,8 +158,10 @@ class UsersList extends Component {
         maxWidth: 80,
         filterable: false,
         accessor: row => <div>
-          <Button onClick={() => window.location = `#/admin/user/info/${row._id}`} className="ml-1" color="warning"
-                  size="sm">مدیریت</Button>
+          <Link to={`/admin/users/info/${row._id}`}>
+            <Button className="ml-1" color="warning"
+              size="sm">مدیریت</Button>
+          </Link>
         </div>
       }
     ];
