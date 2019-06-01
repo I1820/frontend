@@ -34,7 +34,6 @@ import { css } from 'glamor';
 import { toastAlerts } from '../Shared/toast_alert';
 import ReactTable from 'react-table'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
-import { colorArray } from './color';
 import Loading from '../../components/Loading';
 import './project.css';
 
@@ -111,19 +110,14 @@ class ProjectsView extends Component {
     const config = {
       chart: {
         type: this.state.type,
-        connectNulls: true,
         zoomType: 'x',
         style: {
           fontFamily: 'Tahoma'
         }
       },
       plotOptions: {
-        line: {
-          animation: false
-        },
         series: {
-          events: {
-          }
+          connectNulls: true
         }
       },
       time: {
@@ -155,7 +149,7 @@ class ProjectsView extends Component {
         formatter: function () {
           const res =
             '<div>' +
-            '<div style="text-align: center;direction: rtl">' + this.name + '</div>' +
+            '<div style="text-align: center;direction: rtl">' + this.point.name + '</div>' +
             '<div style="text-align: center">' + this.series.name +
             ': <span style="font-weight: bold; ">' + this.y + '</span></div>' +
             '</div>';
@@ -518,9 +512,9 @@ class ProjectsView extends Component {
   getData(cb) {
     this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
       this.state.project._id,
-      this.state.since,
-      this.state.until,
-      this.state.auto ? this.state.window : undefined,
+      0,
+      0,
+      this.state.since ? this.state.since : Math.floor(Date.now() / 1000) - this.state.window * 60,
       (status, data) => {
         this.setState({data: data.reverse()})
         this.draw()
