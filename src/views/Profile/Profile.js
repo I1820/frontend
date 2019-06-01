@@ -55,7 +55,6 @@ class Profile extends Component {
       picture: this.props.userInfo.picture ? this.props.userInfo.picture : '',
       impersonated: !!this.props.userInfo.impersonated
     }
-    console.log(this.props.userInfo)
   }
 
 
