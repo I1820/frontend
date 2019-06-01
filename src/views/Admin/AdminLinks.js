@@ -20,10 +20,6 @@ class AdminLinks extends Component {
     this.state = {
       portainerUrl: '',
       prometheusUrl: '',
-      logs: [],
-      table: {
-        pages: 1,
-      },
     }
   }
 
@@ -37,7 +33,6 @@ class AdminLinks extends Component {
   }
 
   render() {
-
     return (
       <div>
         <Card className="text-justify">
@@ -47,10 +42,10 @@ class AdminLinks extends Component {
           <CardBody>
             <Row>
               <Col>
-                <Button color="link" disabled={this.state.portainerUrl == '' ? true : false} onClick={()=> window.open(this.state.portainerUrl, "_blank")}>Portainer</Button>
+                <Button color="link" disabled={this.state.portainerUrl == '' || this.state.portainerUrl == null ? true : false} onClick={()=> window.open(this.state.portainerUrl, "_blank")}>Portainer</Button>
               </Col>
               <Col>
-                <Button color="link" disabled={this.state.prometheusUrl == '' ? true : false} onClick={()=> window.open(this.state.prometheusUrl, "_blank")}>Prometheus</Button>
+                <Button color="link" disabled={this.state.prometheusUrl == '' || this.state.prometheusUrl == null ? true : false} onClick={()=> window.open(this.state.prometheusUrl, "_blank")}>Prometheus</Button>
               </Col>
             </Row>
           </CardBody>
