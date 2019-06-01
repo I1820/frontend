@@ -28,5 +28,5 @@ func main() {
 	e.Static("/", "build")
 	e.File("/", "build/index.html")
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":7080"))
 }
