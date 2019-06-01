@@ -68,13 +68,13 @@ export default {
         },
         {
           name: 'مدیریت بسته‌ها',
-          url: '/admin/packages',
+          url: '/admin/packages/show',
           icon: 'icon-handbag',
           type: 'admin'
         },
         {
           name: 'مدیریت کاربران',
-          url: '/admin/users',
+          url: '/admin/users/list',
           icon: 'icon-people',
           type: 'admin'
         }, {
