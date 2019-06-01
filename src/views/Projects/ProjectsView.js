@@ -23,22 +23,20 @@ import ReactHighcharts from 'react-highcharts';
 import moment from 'moment-jalaali'
 import JSONPretty from 'react-json-pretty';
 import {
-  getCodecTemplateListAction, getProject,
+  getProject,
   getThingsMainDataAction, DownloadThingsDataExcelAction
 } from '../../actions/AppActions';
-import connect from 'react-redux/es/connect/connect';
+import { toast } from 'react-toastify';
+import { connect } from 'react-redux';
 import { DateTimeRangePicker, DateTimePicker } from 'react-advance-jalaali-datepicker';
 import Select2 from 'react-select2-wrapper';
 import Spinner from '../Spinner/Spinner';
 import { css } from 'glamor';
-import { toastAlerts } from '../Shared/toast_alert';
 import ReactTable from 'react-table'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
 import Loading from '../../components/Loading';
 import './project.css';
 
 class ProjectsView extends Component {
-
   constructor(props) {
     super(props);
     this.setThing = this.setThing.bind(this)
@@ -59,7 +57,8 @@ class ProjectsView extends Component {
       selectedThing: {ids: []},
       period: 5000,
       project: {
-        things: []
+        things: [],
+        _id:  this.props.match.params['id']
       },
       auto: false,
       config: {},
@@ -83,10 +82,9 @@ class ProjectsView extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const splitedUrl = window.location.href.split('/');
-    if (splitedUrl[splitedUrl.length - 1]) {
+    if (this.state.project._id) {
       props.projects.forEach((project) => {
-        if (project._id === splitedUrl[splitedUrl.length - 1]) {
+        if (project._id === this.state.project._id) {
           this.setState({
             project
           })
@@ -96,12 +94,8 @@ class ProjectsView extends Component {
   }
 
   loadProject() {
-    const splitedUrl = window.location.href.split('/');
-    if (splitedUrl[splitedUrl.length - 1]) {
-      this.props.dispatch(getProject(splitedUrl[splitedUrl.length - 1], (status) => {
-        if (status)
-          this.props.dispatch(getCodecTemplateListAction(splitedUrl[splitedUrl.length - 1]))
-      }, 1))
+    if (this.state.project._id) {
+      this.props.dispatch(getProject(this.state.project._id, undefined, 1))
     }
   }
 
@@ -192,7 +186,6 @@ class ProjectsView extends Component {
       })
     })
     config.series = sensors
-    console.log(config.series)
     this.setState({
       config,
       draw: false
@@ -301,16 +294,11 @@ class ProjectsView extends Component {
               </FormGroup>
               <Button outline color="success" size="sm" onClick={() => {
                 if (this.state.selectedThing.ids.length <= 0) {
-                  toastAlerts(false, 'ابتدا شی مورد نظر را انتخاب نمایید')
+                  toast('ابتدا شی مورد نظر را انتخاب نمایید', { autoClose: 15000, type: toast.TYPE.ERROR })
                   return
                 }
                 this.stop()
 
-                if (!Date.now) {
-                  Date.now = function () {
-                    return new Date().getTime();
-                  }
-                }
                 if (this.state.since || this.state.window) {
                   this.setState({
                     excelParams: {
