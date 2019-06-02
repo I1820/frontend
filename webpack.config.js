@@ -1,22 +1,22 @@
-const webpack = require('webpack');
-const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack')
+const path = require('path')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-const extractCSS = new ExtractTextPlugin('[name].fonts.css');
-const extractSCSS = new ExtractTextPlugin('[name].styles.css');
+const extractCSS = new ExtractTextPlugin('[name].fonts.css')
+const extractSCSS = new ExtractTextPlugin('[name].styles.css')
 
-const BUILD_DIR = path.resolve(__dirname, 'build');
-const SRC_DIR = path.resolve(__dirname, 'src');
+const BUILD_DIR = path.resolve(__dirname, 'build')
+const SRC_DIR = path.resolve(__dirname, 'src')
 
-console.log('BUILD_DIR', BUILD_DIR);
-console.log('SRC_DIR', SRC_DIR);
+console.log('BUILD_DIR', BUILD_DIR)
+console.log('SRC_DIR', SRC_DIR)
 
 module.exports = (env = {}) => {
   return {
     entry: {
-      index: [SRC_DIR + '/index.js']
+      index: [SRC_DIR + '/index.jsx']
     },
     output: {
       path: BUILD_DIR,
@@ -60,7 +60,7 @@ module.exports = (env = {}) => {
             use: [
               {
                 loader: 'css-loader',
-                options: {alias: {'../img': '../public/img'}}
+                options: { alias: { '../img': '../public/img' } }
               },
               {
                 loader: 'sass-loader'
@@ -109,7 +109,7 @@ module.exports = (env = {}) => {
     },
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.optimize.UglifyJsPlugin({sourceMap: true}),
+      new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
       new webpack.NamedModulesPlugin(),
       extractCSS,
       extractSCSS,
@@ -120,15 +120,15 @@ module.exports = (env = {}) => {
         }
       ),
       new CopyWebpackPlugin([
-          {from: './public/img', to: 'img'}
-        ],
-        {copyUnmodified: false}
+        { from: './public/img', to: 'img' }
+      ],
+      { copyUnmodified: false }
       ),
       new CopyWebpackPlugin([
-          {from: './public/files', to: 'files'}
-        ],
-        {copyUnmodified: false}
+        { from: './public/files', to: 'files' }
+      ],
+      { copyUnmodified: false }
       )
     ]
   }
-};
+}
