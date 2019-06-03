@@ -42,7 +42,7 @@ class Dashboard extends Component {
     this.toggle = this.toggle.bind(this)
     this.refresh = this.refresh.bind(this)
     this.getThings = this.getThings.bind(this)
-    this.renderCharts = this.renderCharts.bind(this)
+    this.renderWidgets = this.renderWidgets.bind(this)
     this.devEUI = ''
     this.state = {
       loading: false,
@@ -80,11 +80,9 @@ class Dashboard extends Component {
     })
   }
 
-
   componentWillUnmount() {
     clearInterval(this.state.interval)
   }
-
 
   render() {
     return (
@@ -208,21 +206,12 @@ class Dashboard extends Component {
                 <Label sm={3}> نوع افزونه:</Label>
                 <Col sm={9}>
                   <Input type="select" onChange={(event) => {
-                    console.log(event.target.value, event.target.value === 'map')
-                    if (event.target.value === 'map')
-                      this.setState({
-                        location: true,
-                        widget: {...this.state.widget, key: '_location', type: event.target.value}
-                      })
-                    else
-                      this.setState({
-                        location: false,
+                     this.setState({
                         widget: {...this.state.widget, type: event.target.value}
                       })
                   }}>
                     <option value={'line'}>نمودار خطی</option>
                     <option value={'table'}>جدول</option>
-                    <option value={'map'}>نقشه</option>
                   </Input>
                 </Col>
               </FormGroup>
@@ -262,7 +251,6 @@ class Dashboard extends Component {
             <Button color="danger" onClick={() => this.toggle('deleteWidgetChart')}>انصراف</Button>
           </ModalFooter>
         </Modal>
-
 
         <Row>
           <Col xs="12" sm="6" lg="3">
@@ -310,21 +298,17 @@ class Dashboard extends Component {
           </Col>
         </Row>
         <Row>
-          { this.renderCharts() }
+          { this.renderWidgets() }
         </Row>
       </div>
-
     );
-
   }
 
-
-  renderCharts() {
-
+  renderWidgets() {
     return (
       Object.keys(this.state.charts).map((key) => {
         if (this.state.charts[key].data === undefined)
-          return;
+          return; // return where there is no data for the widget
 
         if (this.state.charts[key].type === 'line') {
           let config = {
@@ -353,7 +337,7 @@ class Dashboard extends Component {
               data: []
             }],
             credits: {
-              enabled: false
+              enabled: true
             },
           }
 
@@ -364,19 +348,17 @@ class Dashboard extends Component {
             config.xAxis.categories.push(moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'))
             config.series[0].data.push(d.value)
             config.series[0].name = this.state.charts[key].alias
-
           })
-          this.state.charts[key].data.reverse()
+          this.state.charts[key].data.reverse() // switch back to default order!
 
           return (
-            <div className="col-md-12 col-lg-6" key={key}>
+            <Col sm="6" key={key}>
               <Card className="text-justify">
                 <CardHeader>
                   <CardTitle
                     className="mb-0 font-weight-bold h6">{this.state.charts[key].title}</CardTitle>
                 </CardHeader>
                 <CardBody>
-                  {/*<Line data={mainChart} options={mainChartOpts} height={300}/>*/}
                   <ReactHighcharts config={config}/>
                 </CardBody>
                 <CardFooter>
@@ -385,12 +367,12 @@ class Dashboard extends Component {
                   }} color="danger">حذف</Button>
                 </CardFooter>
               </Card>
-            </div>
+            </Col>
           )
         }
         else if (this.state.charts[key].type === 'table') {
           return (
-            <div className="col-md-12 col-lg-6" key={key}>
+            <Col sm="6" key={key}>
               <Card className="text-justify">
                 <CardHeader>
                   <CardTitle
@@ -420,35 +402,10 @@ class Dashboard extends Component {
                   }} color="danger">حذف</Button>
                 </CardFooter>
               </Card>
-            </div>
+            </Col>
           )
         }
-        else {
-          if (this.state.charts[key].data[0] && this.state.charts[key].data[0].value &&
-            this.state.charts[key].data[0].value.coordinates)
-            return (
-              <div className="col-md-12 col-lg-6" key={key}>
-                <Card className="text-justify">
-                  <CardHeader>
-                    <CardTitle
-                      className="mb-0 font-weight-bold h6">{this.state.charts[key].title}</CardTitle>
-                  </CardHeader>
-                  <CardBody>
-                    <Map marker={{
-                      lat: this.state.charts[key].data[0].value.coordinates[1],
-                      lng: this.state.charts[key].data[0].value.coordinates[0]
-                    }}/>
-                  </CardBody>
-                  <CardFooter>
-                    <Button onClick={() => {
-                      this.setState({selectedChart: key}, () => this.toggle('deleteWidgetChart'))
-                    }} color="danger">حذف</Button>
-                  </CardFooter>
-                </Card>
-              </div>)
-        }
       })
-
     )
   }
 
