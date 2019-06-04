@@ -74,14 +74,9 @@ class Dashboard extends Component {
   componentDidMount() {
     this.getThings()
     this.refresh()
-    let interval = setInterval(this.refresh, 5000)
-    this.setState({
-      interval
-    })
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.interval)
   }
 
   render() {
