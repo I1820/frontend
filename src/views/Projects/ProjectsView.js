@@ -460,7 +460,7 @@ class ProjectsView extends Component {
       {
         Header: 'شی فرستنده',
         filterable: false,
-        accessor: 'thingid'
+        accessor: 'thing_id'
       },
       {
         id: 'projectStatus',
