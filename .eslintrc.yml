@@ -2,3 +2,8 @@
   extends:
     - standard
     - standard-react
+  parserOptions:
+    ecmaVersion: 2018
+    ecmaFeatures:
+      jsx: true
+      spread: true
