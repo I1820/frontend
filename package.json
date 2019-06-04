@@ -42,7 +42,7 @@
   "dependencies": {
     "ansi-html": "^0.0.7",
     "availity-reactstrap-validation": "^2.5.2",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "babel-runtime": "^6.26.0",
     "blessed": "^0.1.81",
     "bootstrap": "^4.3.1",
