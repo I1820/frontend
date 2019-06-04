@@ -1,11 +1,10 @@
 {
-  "name": "@coreui/react",
-  "version": "1.0.10",
-  "description": "Open Source Bootstrap Admin Template",
-  "author": "Łukasz Holeczek",
-  "homepage": "http://coreui.io",
-  "copyright": "Copyright 2018 creativeLabs Łukasz Holeczek",
-  "license": "MIT",
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "This is what you see",
+  "author": "Parham Alvani",
+  "homepage": "https://github.com/I1820/frontend",
+  "license": "GPLv3",
   "private": true,
   "devDependencies": {
     "@types/markerclustererplus": "^2.1.33",
