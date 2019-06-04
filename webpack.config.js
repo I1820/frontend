@@ -22,11 +22,9 @@ module.exports = (env = {}) => {
       path: BUILD_DIR,
       filename: '[name].bundle.js'
     },
-    // watch: true,
     devtool: env.prod ? 'source-map' : 'cheap-module-eval-source-map',
     devServer: {
       contentBase: BUILD_DIR,
-      //   port: 9001,
       compress: true,
       hot: true,
       open: true,
