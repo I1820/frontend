@@ -14,8 +14,8 @@ import {
   Row,
 } from 'reactstrap'
 import { connect } from 'react-redux'
-import { register } from '../../../actions/AppActions'
-import { toastAlerts } from '../../Shared/toast_alert'
+import { register } from '../../actions/AppActions'
+import { toastAlerts } from '../Shared/toast_alert'
 
 class Register extends Component {
 

@@ -17,7 +17,7 @@ import {
 } from 'reactstrap'
 
 import { connect } from 'react-redux'
-import { login, resetPasswordAction } from '../../../actions/AppActions'
+import { login, resetPasswordAction } from '../../actions/AppActions'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 
