@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 // import {selectUser} from '../../actions/AppActions'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Input } from 'reactstrap'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Input, Row, Col } from 'reactstrap'
 import {
   addRoleAction,
   deleteRoleAction,
@@ -44,7 +44,7 @@ class RoleList extends Component {
         <Spinner display={this.props.loading}/>
         <Card className="text-justify">
           <CardHeader>
-            <CardTitle className="mb-0 font-weight-bold h6">لیست نقش ها</CardTitle>
+            <CardTitle className="mb-0 font-weight-bold h6">لیست نقش‌ها</CardTitle>
           </CardHeader>
           <CardBody>
             <ReactTable
@@ -112,9 +112,6 @@ class RoleList extends Component {
         Header: 'دسترسی ها',
         id: 'permissions',
         accessor: row => {
-          // return(<div>{row.permissions.map((permission)=>{
-          //   return(permission.name + ", ")
-          // })}</div>)
           let permissionsList = []
           row.permissions.forEach((permission) => {
             permissionsList.push(permission._id)
@@ -132,29 +129,28 @@ class RoleList extends Component {
               for (let i = 0; i < unselectedPermission.target.selectedOptions.length; i++) {
                 row.permissions.push(unselectedPermission.target.selectedOptions[i].value)
               }
-              console.log('new permission', row.permissions)
             }}
             onUnselect={(unselectedPermission) => {
               row.permissions = []
               for (let i = 0; i < unselectedPermission.target.selectedOptions.length; i++) {
                 row.permissions.push(unselectedPermission.target.selectedOptions[i].value)
               }
-              console.log('new permission', row.permissions)
             }}
             options={
               {
-                placeholder: 'شی مورد نظر را انتخاب کنید',
+                placeholder: 'دسترسی‌های مورد نظر خود را انتخاب کنید',
               }
             }
           />)
         }
       },
       {
-        id: 'rowTools',
+        id: 'tools',
         Header: 'امکانات',
         maxWidth: 80,
         filterable: false,
-        accessor: row => <div>
+        accessor: row => <Row>
+          <Col xs={6}>
           <Button onClick={() => {
             let permissions = []
             row.permissions.forEach((permission) => {
@@ -178,8 +174,10 @@ class RoleList extends Component {
             }))
           }}
                   className="ml-1" color="warning"
-                  size="sm">بروزرسانی</Button>
-          <br/>
+                  size="sm">بروزرسانی
+          </Button>
+          </Col>
+          <Col xs={6}>
           <Button onClick={() =>
             this.props.dispatch(deleteRoleAction(row._id, (status, message) => {
               toastAlerts(status, message)
@@ -192,8 +190,10 @@ class RoleList extends Component {
               }));
             }))
           } className="ml-1" color="danger"
-                  size="sm">حذف</Button>
-        </div>
+                  size="sm">حذف
+          </Button>
+          </Col>
+        </Row>
       }
     ];
   }

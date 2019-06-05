@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import {selectUser} from '../../actions/AppActions'
 import { Badge, Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Col } from 'reactstrap'
 import { DownloadUserTransactionsExcelAction, getUserTransactions } from '../../actions/AppActions'
 import { connect } from 'react-redux'
@@ -111,7 +110,6 @@ class UserTransactions extends Component {
         Header: 'درگاه پرداخت',
         accessor: 'gate',
       },
-
       {
         Header: 'وضعیت تراکنش',
         id: 'status',

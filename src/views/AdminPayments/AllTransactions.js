@@ -21,6 +21,7 @@ import {
   getTransactionsOverviewAction
 } from '../../actions/AppActions'
 import ReactTable from 'react-table'
+import { Link } from 'react-router-dom'
 
 class PackageList extends Component {
   constructor (props) {
@@ -51,8 +52,6 @@ class PackageList extends Component {
 
       <div className="animated fadeIn text-justify">
         <Spinner display={this.props.loading}/>
-
-
         <Row>
           <Col xs="36" sm="18" md="12">
             <Card className="border-success">
@@ -85,7 +84,7 @@ class PackageList extends Component {
                 <ReactTable
                   data={this.state.transactions}
                   pages={Math.ceil(this.state.overview_sum.all_transactions_num / this.state.limit)}
-                  columns={this.renderTransaction()}
+                  columns={PackageList.renderTransaction()}
                   pageSizeOptions={[10, 15, 20, 25]}
                   loading={this.state.loading}
                   nextText='بعدی'
@@ -127,10 +126,9 @@ class PackageList extends Component {
           limit: state.pageSize,
         })
       }))
-
   }
 
-  renderTransaction () {
+  static renderTransaction () {
     return [
       {
         Header: 'نام بسته',
@@ -150,7 +148,9 @@ class PackageList extends Component {
         Header: 'کاربر',
         id: 'user',
         accessor: row => row.user &&
-          <a class="btn btn-info" href={`/#/admin/user/info/${row.user_id}`}>{row.user.name}</a>
+          <Link to={`/admin/users/info/${row.user_id}`}>
+          <Button color={'info'}>{row.user.name}</Button>
+          </Link>
       },
       {
         Header: 'وضعیت تراکنش',

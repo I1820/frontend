@@ -41,7 +41,7 @@ class PackageList extends Component {
     this.getPermissions = this.getPermissions.bind(this)
     this.renderPackage = this.renderPackage.bind(this)
     this.renderThing = this.renderThing.bind(this)
-    this.renderTransaction = this.renderTransaction.bind(this)
+    PackageList.renderTransaction = this.renderTransaction.bind(this)
     this.toggle = this.toggle.bind(this)
     this.state = {
       activateUser: false,
