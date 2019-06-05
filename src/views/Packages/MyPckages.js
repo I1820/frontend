@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { forwardTo, getUserPackagesAction } from '../../actions/AppActions'
+import { getUserPackagesAction } from '../../actions/AppActions'
 import {
   Badge,
   Button,
@@ -24,8 +24,6 @@ import {
 import moment from 'moment'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import classnames from 'classnames'
-import Line from 'react-lazylog/src/components/Line'
 import { Link } from 'react-router-dom'
 
 class MyPackages extends Component {
@@ -37,7 +35,6 @@ class MyPackages extends Component {
       packages: [],
       my_package: {},
       activeTab: 'my_package',
-
     }
   }
 
@@ -117,14 +114,14 @@ class MyPackages extends Component {
         <Nav tabs>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === 'my_package' })}
+              className={{ active: this.state.activeTab === 'my_package' }}
               onClick={() => {
                 this.toggleTab('my_package')
               }}>بسته فعلی من</NavLink>
           </NavItem>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === 'buy_package' })}
+              className={{ active: this.state.activeTab === 'buy_package' }}
               onClick={() => {
                 this.toggleTab('buy_package')
               }}>خرید بسته</NavLink>
