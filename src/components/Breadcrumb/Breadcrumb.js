@@ -90,7 +90,7 @@ const Breadcrumbs = ({ ...rest, location: { pathname }, match }) => {
   const items = paths.map((path, i) => <Route key={i++} path={path} component={BreadcrumbsItem}/>)
   return (
     <div>
-      <Breadcrumb>
+      <Breadcrumb dir={"rtl"}>
         {items}
       </Breadcrumb>
     </div>
