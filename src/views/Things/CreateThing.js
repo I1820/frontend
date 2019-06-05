@@ -12,8 +12,6 @@ import connect from 'react-redux/es/connect/connect'
 import { createThingAction, editThingAction, getThingAction, getThingProfileListAction } from '../../actions/AppActions'
 import Spinner from '../Spinner/Spinner'
 
-import { toast } from 'react-toastify'
-import { css } from 'glamor'
 import Select2 from 'react-select2-wrapper'
 import { toastAlerts } from '../Shared/toast_alert'
 
@@ -270,21 +268,6 @@ class CreateThing extends Component {
       this.props.dispatch(createThingAction(data, this.state.project, toastAlerts))
     } else {
       this.props.dispatch(editThingAction(this.state.project, this.state.thing._id, data, toastAlerts))
-    }
-  }
-
-  callback (status, message) {
-    if (!status) {
-      toast(message, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        className: css({
-          background: '#fee2e1',
-          color: '#813838',
-        }),
-        progressClassName: css({
-          background: '#813838'
-        })
-      })
     }
   }
 }
