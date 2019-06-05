@@ -17,12 +17,16 @@ import {
   TabContent,
   TabPane
 } from 'reactstrap'
-import classnames from 'classnames'
 import connect from 'react-redux/es/connect/connect'
 import { decryptFramePayloadAction, getSingleGatewayAction, updateGatewayAction } from '../../actions/AppActions'
 import Spinner from '../Spinner/Spinner'
 import GatewayLogger from '../../components/GatewayLogger'
 import { toastAlerts } from '../Shared/toast_alert'
+
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import L from 'leaflet'
+import iconUrl from 'leaflet/dist/images/marker-icon.png'
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
 class GatewaysView extends Component {
 
@@ -51,10 +55,11 @@ class GatewaysView extends Component {
   }
 
   componentWillReceiveProps (props) {
-    const splitedUrl = window.location.href.split('/')
-    if (splitedUrl[splitedUrl.length - 1]) {
+    const gatewayID = this.props.match.params.id
+
+    if (gatewayID) {
       props.gateway.forEach((gateway) => {
-        if (gateway._id === splitedUrl[splitedUrl.length - 1]) {
+        if (gateway._id === gatewayID) {
           this.setState({
             gateway
           })
@@ -66,9 +71,9 @@ class GatewaysView extends Component {
   }
 
   componentWillMount () {
-    const splitedUrl = window.location.href.split('/')
-    if (splitedUrl[splitedUrl.length - 1]) {
-      this.props.dispatch(getSingleGatewayAction(splitedUrl[splitedUrl.length - 1]))
+    const gatewayID = this.props.match.params.id
+    if (gatewayID) {
+      this.props.dispatch(getSingleGatewayAction(gatewayID))
     }
   }
 
@@ -79,14 +84,14 @@ class GatewaysView extends Component {
         <Nav tabs>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === 'info' })}
+              className={{ active: this.state.activeTab === 'info' }}
               onClick={() => {
                 this.toggleTab('info')
               }}>اطلاعات</NavLink>
           </NavItem>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === 'liveFrame' })}
+              className={{ active: this.state.activeTab === 'liveFrame' }}
               onClick={() => {
                 this.toggleTab('liveFrame')
               }}>لایو فریم</NavLink>
@@ -94,7 +99,7 @@ class GatewaysView extends Component {
 
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === 'decrypt' })}
+              className={{ active: this.state.activeTab === 'decrypt' }}
               onClick={() => {
                 this.toggleTab('decrypt')
               }}>رمزگشایی</NavLink>
@@ -152,13 +157,19 @@ class GatewaysView extends Component {
                   <FormGroup row>
                     <Label sm={2}>عرض جغرافیایی:</Label>
                     <Col sm={5}>
-                      <Input id="fld_lat" dir="ltr" type="number"/>
+                      <Input dir="ltr" type="number"
+                             value={this.state.gateway.latitude ? this.state.gateway.latitude : 0}
+                             onChange={event => this.setState({ gateway: { latitude: event.target.value }})}
+                      />
                     </Col>
                   </FormGroup>
                   <FormGroup row>
                     <Label sm={2}>طول جغرافیایی:</Label>
                     <Col sm={5}>
-                      <Input dir="ltr" id="fld_lng" type="number"/>
+                      <Input dir="ltr" type="number"
+                             value={this.state.gateway.longitude ? this.state.gateway.longitude : 0}
+                             onChange={event => this.setState({ gateway: { longitude: event.target.value }})}
+                      />
                     </Col>
                   </FormGroup>
                   <FormGroup row>
@@ -176,6 +187,28 @@ class GatewaysView extends Component {
               <CardFooter>
                 <Button color="primary" onClick={this.submitForm}>ویرایش اطلاعات</Button>
               </CardFooter>
+            </Card>
+            <Card className="text-justify">
+              <CardHeader>
+                <CardTitle className="mb-0 font-weight-bold h6">محل قرارگیری گذرگاه</CardTitle>
+              </CardHeader>
+              <CardBody>
+                <Map center={[this.state.lat, this.state.long]} zoom={15}>
+                  <TileLayer
+                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Marker draggable={true} onDragend={this.onDragend} position={[this.state.lat, this.state.long]}
+                      icon={L.icon({
+                        iconSize: [25, 41],
+                        iconAnchor: [13, 41],
+                        iconUrl: iconUrl,
+                        shadowUrl: shadowUrl
+                      })}>
+                    <Popup>Your Gateway</Popup>
+                  </Marker>
+                </Map>
+              </CardBody>
             </Card>
           </TabPane>
           <TabPane tabId={'liveFrame'}>
@@ -243,7 +276,7 @@ class GatewaysView extends Component {
                              placeholder="00AA11bb22CC33dd44FF55GG66HH77JJ"
                              type="text"/>
                     </Col>
-                    <Col sm={2}></Col>
+                    <Col sm={2}/>
                   </FormGroup>
 
                   <FormGroup row>
@@ -261,15 +294,9 @@ class GatewaysView extends Component {
               </CardFooter>
             </Card>
           </TabPane>
-
         </TabContent>
-
-
       </div>
     )
-  }
-
-  renderMap () {
   }
 
   toggleTab (tab) {
@@ -292,13 +319,10 @@ class GatewaysView extends Component {
   submitForm () {
     this.props.dispatch(updateGatewayAction({
       ...this.state.gateway,
-      latitude: document.getElementById('fld_lat').value,
-      longitude: document.getElementById('fld_lng').value,
     }, toastAlerts))
   }
 
   decrypt () {
-
     if (!this.state.keys.appSKey.match(/^[0-9A-Fa-f]{32}$/g)) {
       toastAlerts(false, 'کلید AppSKey را درست وارد کنید.')
     } else if (!this.state.keys.nwkSKey.match(/^[0-9A-Fa-f]{32}$/g)) {
