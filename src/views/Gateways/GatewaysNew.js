@@ -8,7 +8,7 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
 import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation'
 
-import { createGatewayAction } from '../../actions/AppActions'
+import { createGatewayAction, forwardTo } from '../../actions/AppActions'
 import connect from 'react-redux/es/connect/connect'
 import Spinner from '../Spinner/Spinner'
 
@@ -167,7 +167,7 @@ class GatewaysNew extends Component {
       },
       (status, result) => {
         if (status) {
-          window.location = '#/gateways/list'
+          forwardTo('#/gateways/list')
         } else {
           toastAlerts(status, result)
         }
