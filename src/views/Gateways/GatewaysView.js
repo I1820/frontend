@@ -61,10 +61,15 @@ class GatewaysView extends Component {
       props.gateway.forEach((gateway) => {
         if (gateway._id === gatewayID) {
           this.setState({
-            gateway
+            gateway: {
+              altitude: gateway.altitude,
+              description: gateway.description,
+              name: gateway.name,
+              mac: gateway.mac,
+              latitude: gateway.loc.coordinates[1],
+              longitude: gateway.loc.coordinates[0],
+            }
           })
-          document.getElementById('fld_lat').value = gateway.loc.coordinates[0]
-          document.getElementById('fld_lng').value = gateway.loc.coordinates[1]
         }
       })
     }
