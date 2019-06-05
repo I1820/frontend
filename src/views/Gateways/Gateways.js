@@ -18,15 +18,13 @@ import connect from 'react-redux/es/connect/connect'
 import { deleteGatewaysAction, DownloadUserGatewaysExcelAction, getGatewaysAction } from '../../actions/AppActions'
 import Spinner from '../Spinner/Spinner'
 import { toast } from 'react-toastify'
-import { css } from 'glamor'
+import { Link } from 'react-router-dom'
 
 class Gateways extends Component {
 
   constructor (props) {
     super(props)
 
-    this.newGateway = this.newGateway.bind(this)
-    this.viewGateway = this.viewGateway.bind(this)
     this.deleteModalToggle = this.deleteModalToggle.bind(this)
     this.deleteGateway = this.deleteGateway.bind(this)
     this.manageToastAlerts = this.manageToastAlerts.bind(this)
@@ -52,25 +50,11 @@ class Gateways extends Component {
       this.loadGateways()
 
       toast('Gateway مورد نظر حذف شد', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        className: css({
-          background: '#dbf2e3',
-          color: '#28623c'
-        }),
-        progressClassName: css({
-          background: '#28623c'
-        })
+         autoClose: 15000, type: toast.TYPE.SUCCESS
       })
     } else {
       toast(status, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        className: css({
-          background: '#fee2e1',
-          color: '#813838',
-        }),
-        progressClassName: css({
-          background: '#813838'
-        })
+        autoClose: 15000, type: toast.TYPE.ERROR
       })
     }
   }
@@ -119,7 +103,9 @@ class Gateways extends Component {
             />
           </CardBody>
           <CardFooter>
-            <Button onClick={this.newGateway} color="primary">ساخت جدید</Button>
+            <Link to={'#/gateways/new'}>
+              <Button color="primary">ساخت جدید</Button>
+            </Link>
             <Button
               onClick={() => this.props.dispatch(DownloadUserGatewaysExcelAction())}
               color="success">خروجی اکسل</Button>
@@ -133,35 +119,11 @@ class Gateways extends Component {
     this.props.dispatch(getGatewaysAction())
   }
 
-  renderItem (gateway, key) {
-    return (
-      <tr id={key}>
-        <th>{key + 1}</th>
-        <td>{gateway.name}</td>
-        <td className="english">{gateway.mac}</td>
-        <td>
-          <Button onClick={() => this.viewGateway(gateway._id)} className="ml-1" color="success"
-                  size="sm">نمایش</Button>
-          <Button onClick={() => this.deleteModalToggle(gateway._id)} className="ml-1" color="danger"
-                  size="sm">حذف</Button>
-        </td>
-      </tr>
-    )
-  }
-
   deleteModalToggle (id) {
     this.setState({
       deleteModal: !this.state.deleteModal,
       deleteRowId: id
     })
-  }
-
-  newGateway () {
-    window.location = '#/gateways/new'
-  }
-
-  viewGateway (id) {
-    window.location = `#/gateways/view/${id}`
   }
 
   reactTableColumns () {
@@ -199,8 +161,10 @@ class Gateways extends Component {
         Header: 'عملیات',
         filterable: false,
         accessor: row => <div>
-          <Button onClick={() => this.viewGateway(row._id)} className="ml-1" color="success"
-                  size="sm">نمایش</Button>
+          <Link to={`#/gateways/view/${row._id}`}>
+            <Button className="ml-1" color="success"
+                    size="sm">نمایش</Button>
+          </Link>
           <Button onClick={() => this.deleteModalToggle(row._id)} className="ml-1" color="danger"
                   size="sm">حذف</Button>
         </div>
