@@ -41,11 +41,11 @@ import {
 } from '../../actions/AppActions'
 import Spinner from '../Spinner/Spinner'
 
-import { css } from 'glamor'
 import ReactTable from 'react-table'
 import Logger from '../../components/Logger'
 import { toastAlerts } from '../Shared/toast_alert'
 import moment from 'moment-jalaali'
+import { toast } from 'react-toastify'
 
 class ProjectsManage extends Component {
   constructor (props) {
@@ -695,15 +695,11 @@ class ProjectsManage extends Component {
                                placeholder={'نام مستعار'}/>
                     </td>
                     <td>
-                      <button onClick={() => {
+                      <Button onClick={() => {
                         const newAlias = this.state.newAlias
                         if (!newAlias.key || !newAlias.alias) {
                           toast('اطلاعات را کامل وارد کنید', {
-                            position: toast.POSITION.BOTTOM_LEFT,
-                            className: css({
-                              background: '#fee2e1',
-                              color: '#813838',
-                            }),
+                            autoClose: 15000, type: toast.TYPE.ERROR
                           })
                           return
                         }
@@ -720,7 +716,7 @@ class ProjectsManage extends Component {
                         this.el_refs.alias.value.value = ''
 
                       }} type="button" className="btn btn-primary">اضافه کردن
-                      </button>
+                      </Button>
                     </td>
                   </tr>
                   </tbody>
