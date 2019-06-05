@@ -1,12 +1,22 @@
 import React, { Component } from 'react'
-import { Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Col, FormGroup, Input, Label } from 'reactstrap'
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  Label
+} from 'reactstrap'
 
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 import L from 'leaflet'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
-
-import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation'
 
 import connect from 'react-redux/es/connect/connect'
 import { createThingAction, editThingAction, getThingAction, getThingProfileListAction } from '../../actions/AppActions'
@@ -66,9 +76,8 @@ class CreateThing extends Component {
             thing: {
               ...thing,
               devEUI: thing.dev_eui,
-              IP: thing.interface.ip,
-              lat: thing.loc.coordinates[0],
-              long: thing.loc.coordinates[1],
+              lat: thing.loc.coordinates[1],
+              long: thing.loc.coordinates[0],
               type: thing.type === 'lan' || thing.type === 'LAN' ? 'LAN' : 'lora'
             },
             thing_profile_slug: thing.profile !== undefined && thing.profile !== null ? thing.profile.thing_profile_slug : ''
@@ -79,7 +88,6 @@ class CreateThing extends Component {
   }
 
   render () {
-    console.log(this.state.thing.lat)
     return (
       <div>
         <Spinner display={this.props.loading}/>
@@ -88,18 +96,17 @@ class CreateThing extends Component {
             <CardTitle className="mb-0 font-weight-bold h6">اطلاعات شی</CardTitle>
           </CardHeader>
           <CardBody>
-            <AvForm>
-              <AvGroup row>
+            <Form>
+              <FormGroup row>
                 <Label sm={3}>نام شی:</Label>
                 <Col sm={5}>
-                  <AvInput name="name" value={this.state.thing.name}
+                  <Input name="name" value={this.state.thing.name}
                            placeholder={'شی خودکار'}
                            maxLength={50}
                            onChange={this.changeForm} type="text"
                            required/>
-                  <AvFeedback>الزامی است</AvFeedback>
                 </Col>
-              </AvGroup>
+              </FormGroup>
               <FormGroup row>
                 <Label sm={3}>توضیحات:</Label>
                 <Col sm={5}>
@@ -130,10 +137,10 @@ class CreateThing extends Component {
                          onChange={this.changeForm} type="number"/>
                 </Col>
               </FormGroup>
-              <AvGroup row>
+              <FormGroup row>
                 <Label sm={3}>شناسه یکتا(devEUI):</Label>
                 <Col sm={5}>
-                  <AvInput readOnly={this.state.thing._id !== undefined}
+                  <Input readOnly={this.state.thing._id !== undefined}
                            value={this.state.thing.devEUI}
                            name="devEUI" dir="ltr"
                            maxLength={16}
@@ -141,9 +148,8 @@ class CreateThing extends Component {
                            required
                            placeholder={'0011aa222B99FFaa'}
                            onChange={this.changeForm} type="text"/>
-                  <AvFeedback>شناسه معتبر نیست</AvFeedback>
                 </Col>
-              </AvGroup>
+              </FormGroup>
               <FormGroup row style={{ display: this.state.thing.type === 'lora' ? 'flex' : 'none' }}>
                 <Label sm={3} htmlFor="select">پروفایل شی:</Label>
                 <Col md="5">
@@ -164,22 +170,6 @@ class CreateThing extends Component {
                   />
                 </Col>
               </FormGroup>
-              <AvGroup row style={{ display: this.state.thing.type !== 'lora' ? 'flex' : 'none' }}>
-                <Label sm={3}>آدرس IP:</Label>
-                <Col sm={5}>
-
-                  <AvInput
-                    value={this.state.thing.IP}
-                    name="IP" dir="ltr"
-                    pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"
-                    required
-                    placeholder={'1.2.3.4'}
-                    onChange={this.changeForm}
-                    type="text"/>
-                  <AvFeedback>آدرس IP معتبر نیست</AvFeedback>
-                </Col>
-              </AvGroup>
-
               <FormGroup row>
                 <Label sm={3}>عرض جغرافیایی:</Label>
                 <Col sm={5}>
@@ -201,7 +191,7 @@ class CreateThing extends Component {
                          type="number"/>
                 </Col>
               </FormGroup>
-            </AvForm>
+            </Form>
           </CardBody>
           <CardFooter>
             <Button onClick={this.submitForm} color="primary">ثبت</Button>
@@ -262,7 +252,6 @@ class CreateThing extends Component {
       devEUI: this.state.thing.devEUI,
       thing_profile_slug: this.thing_profile_slug,
       type: this.state.thing.type,
-      ip: this.state.thing.IP
     }
     if (this.state.thing._id === undefined) {
       this.props.dispatch(createThingAction(data, this.state.project, toastAlerts))

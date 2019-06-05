@@ -171,7 +171,7 @@ class ThingsList extends Component {
         maxWidth: 50
       },
       {
-        Header: 'نام شی',
+        Header: 'نام',
         accessor: 'name',
         maxWidth: 200
       },
