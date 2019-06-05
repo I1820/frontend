@@ -1,46 +1,40 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
-  Row,
-  Col,
-  Card,
-  Form,
   Badge,
-  FormGroup,
-  CardHeader,
+  Button,
+  Card,
   CardBody,
   CardFooter,
+  CardHeader,
   CardTitle,
-  Button,
-  ButtonGroup,
-  Label,
   Input,
-  Table,
-  UncontrolledTooltip,
+  Modal,
   ModalBody,
-  ModalHeader,
   ModalFooter,
-  Modal
-} from 'reactstrap';
-import moment from 'moment-jalaali';
+  ModalHeader,
+  UncontrolledTooltip
+} from 'reactstrap'
+import moment from 'moment-jalaali'
 import ReactTable from 'react-table'
-import { connect } from 'react-redux';
-import Spinner from '../Spinner/Spinner';
+import { connect } from 'react-redux'
+import Spinner from '../Spinner/Spinner'
 import {
-  deleteMultipleThingAction, DownloadUserThingsExcelAction, getThings,
+  deleteMultipleThingAction,
+  DownloadUserThingsExcelAction,
+  getThings,
   getUsersThingsListAction
-} from '../../actions/AppActions';
-import { toastAlerts } from '../Shared/toast_alert';
-
+} from '../../actions/AppActions'
+import { toastAlerts } from '../Shared/toast_alert'
 
 class ThingsList extends Component {
 
-  constructor(props) {
-    super(props);
-    this.deleteThings = this.deleteThings.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.callback = this.callback.bind(this);
-    this.setThings = this.setThings.bind(this);
-    this.fetchThings = this.fetchThings.bind(this);
+  constructor (props) {
+    super(props)
+    this.deleteThings = this.deleteThings.bind(this)
+    this.toggle = this.toggle.bind(this)
+    this.callback = this.callback.bind(this)
+    this.setThings = this.setThings.bind(this)
+    this.fetchThings = this.fetchThings.bind(this)
     this.state = {
       deleteThingsModal: false,
       deleteThingIds: [],
@@ -51,30 +45,30 @@ class ThingsList extends Component {
     }
   }
 
-
-  componentDidMount() {
+  componentDidMount () {
   }
 
-  toggle(modal) {
-    let state = {};
-    if (modal === 'deleteThings')
+  toggle (modal) {
+    let state = {}
+    if (modal === 'deleteThings') {
       state = {
         deleteThingsModal: !this.state.deleteThingsModal,
       }
-    this.setState(state);
+    }
+    this.setState(state)
   }
 
-  fetchThings(state, instance) {
-    this.setState({table: {...this.state.table, loading: true}});
+  fetchThings (state, instance) {
+    this.setState({ table: { ...this.state.table, loading: true } })
     this.props.dispatch(getUsersThingsListAction(
       state.pageSize,
       state.page * state.pageSize,
-      {sorted: JSON.stringify(state.sorted), filtered: JSON.stringify(state.filtered)},
+      { sorted: JSON.stringify(state.sorted), filtered: JSON.stringify(state.filtered) },
       this.setThings
     ))
   }
 
-  setThings(res) {
+  setThings (res) {
     this.setState({
       things: res.things,
       table: {
@@ -84,20 +78,20 @@ class ThingsList extends Component {
     })
   }
 
-  deleteThings() {
+  deleteThings () {
     const data = {
       things_id: this.state.deleteThingIds,
-    };
+    }
     this.toggle('deleteThings')
     this.props.dispatch(deleteMultipleThingAction(data.things_id, this.callback))
   }
 
-  callback(status, message) {
-    toastAlerts(status, message);
+  callback (status, message) {
+    toastAlerts(status, message)
     this.props.dispatch(getThings())
   }
 
-  render() {
+  render () {
     return (
       <div>
         <Modal isOpen={this.state.deleteThingsModal} toggle={() => this.toggle('deleteThings')}
@@ -153,20 +147,21 @@ class ThingsList extends Component {
           </CardFooter>
         </Card>
       </div>
-    );
+    )
   }
 
-  toggleCheckbox(id) {
-    let ids = [...this.state.deleteThingIds];
+  toggleCheckbox (id) {
+    let ids = [...this.state.deleteThingIds]
     let index = ids.indexOf(id)
-    if (index !== -1)
-      ids.splice(index, 1);
-    else
-      ids.push(id);
-    this.setState({deleteThingIds: ids}, () => console.log(this.state));
+    if (index !== -1) {
+      ids.splice(index, 1)
+    } else {
+      ids.push(id)
+    }
+    this.setState({ deleteThingIds: ids }, () => console.log(this.state))
   }
 
-  reactTableColumns(type) {
+  reactTableColumns (type) {
     switch (type) {
       case 'things':
         return [
@@ -221,7 +216,7 @@ class ThingsList extends Component {
                   <UncontrolledTooltip placement="top" target={`tooltip2-${row._id}`}>
                     {moment(row.last_parsed_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
                   </UncontrolledTooltip> : ''}
-              </div>);
+              </div>)
             }
           },
           {
@@ -237,8 +232,7 @@ class ThingsList extends Component {
                          e.target.value = ''
                          if (action === 'edit') {
                            window.location = `#/things/edit/${row.project._id}/${row._id}`
-                         }
-                         else if (action === 'send_codec') {
+                         } else if (action === 'send_codec') {
                            window.location = `#/codec/${row.project._id}/${row._id}`
                          }
 
@@ -247,7 +241,7 @@ class ThingsList extends Component {
                   <option value="edit">ویرایش</option>
                   <option value="send_codec">ارسال codec</option>
                 </Input>
-              </div>);
+              </div>)
             }
           },
           {
@@ -265,12 +259,11 @@ class ThingsList extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     things: state.thingReducer,
     loading: state.homeReducer.currentlySending
-  };
+  }
 }
-
 
 export default connect(mapStateToProps)(ThingsList);

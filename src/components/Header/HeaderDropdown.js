@@ -1,38 +1,35 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from 'reactstrap';
-
-import { base_files_url } from '../../api/index';
-import connect from 'react-redux/es/connect/connect';
-import { impersonateUserAction, logout } from '../../actions/AppActions';
-import { toastAlerts } from '../../views/Shared/toast_alert';
-
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
+import connect from 'react-redux/es/connect/connect'
+import { impersonateUserAction, logout } from '../../actions/AppActions'
+import { toastAlerts } from '../../views/Shared/toast_alert'
 
 class HeaderDropdown extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
-    this.toggle = this.toggle.bind(this);
-    this.profileLink = this.profileLink.bind(this);
+    this.toggle = this.toggle.bind(this)
+    this.profileLink = this.profileLink.bind(this)
 
     this.state = {
       dropdownOpen: false,
       activeUserInfo: this.props.userInfo
-    };
+    }
   }
 
-  profileLink() {
-    window.location = '#/profile';
+  profileLink () {
+    window.location = '#/profile'
   }
 
-  toggle() {
+  toggle () {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
-    });
+    })
   }
 
-  render() {
+  render () {
     return (
       <UncontrolledDropdown nav>
         <DropdownToggle nav>
@@ -51,15 +48,14 @@ class HeaderDropdown extends Component {
           <DropdownItem onClick={() => this.props.dispatch(logout())}><i className="fa fa-lock"></i>خروج</DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
-    );
+    )
   }
 }
 
-
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     userInfo: state.userReducer,
-  };
+  }
 }
 
-export default connect(mapStateToProps)(HeaderDropdown);
+export default connect(mapStateToProps)(HeaderDropdown)

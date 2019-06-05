@@ -1,33 +1,27 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Col, FormGroup, Label, } from 'reactstrap'
+
+import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation'
+
+import AceEditor from 'react-ace'
+
+import 'brace/theme/monokai'
+import 'brace/mode/python'
+import 'brace/snippets/python'
+import 'brace/ext/language_tools'
 import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  CardTitle,
-  Button, FormGroup, Form, Label, Col, Input,
-} from 'reactstrap';
-
-import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
-
-import AceEditor from 'react-ace';
-
-import 'brace/theme/monokai';
-import 'brace/mode/python';
-import 'brace/snippets/python';
-import 'brace/ext/language_tools';
-import {
-  createCodecTemplateAction, getCodecTemplateAction, updateCodecTemplateAction,
-  lintCode, getGlobalCodecTemplateAction, updateGlobalCodecTemplateAction, createGlobalCodecTemplateAction
-} from '../../actions/AppActions';
-import connect from 'react-redux/es/connect/connect';
-import Spinner from '../Spinner/Spinner';
-import {toastAlerts} from '../Shared/toast_alert';
+  createGlobalCodecTemplateAction,
+  getGlobalCodecTemplateAction,
+  updateGlobalCodecTemplateAction
+} from '../../actions/AppActions'
+import connect from 'react-redux/es/connect/connect'
+import Spinner from '../Spinner/Spinner'
+import { toastAlerts } from '../Shared/toast_alert'
 
 class AddTemplate extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.sendTemplate = this.sendTemplate.bind(this)
 
@@ -38,8 +32,7 @@ class AddTemplate extends Component {
     }
   }
 
-
-  componentWillMount() {
+  componentWillMount () {
     this.setState({
       id: this.props.match.params.id
     })
@@ -47,17 +40,17 @@ class AddTemplate extends Component {
     if (this.props.match.params.id) {
 
       this.props.dispatch(getGlobalCodecTemplateAction(this.props.match.params.id, (status, codec) => {
-        if (status)
+        if (status) {
           this.setState({
             code: codec.code,
             name: codec.name
           })
+        }
       }))
     }
   }
 
-
-  render() {
+  render () {
     return (
       <div>
         <Spinner display={this.props.loading}/>
@@ -74,7 +67,7 @@ class AddTemplate extends Component {
                     name="name"
                     value={this.state.name}
                     onChange={(event) => {
-                      this.setState({name: event.target.value})
+                      this.setState({ name: event.target.value })
                     }} type="text"
                     required/>
                   <br/>
@@ -93,7 +86,7 @@ class AddTemplate extends Component {
                   showPrintMargin={true}
                   showGutter={true}
                   highlightActiveLine={true}
-                  editorProps={{$blockScrolling: true}}
+                  editorProps={{ $blockScrolling: true }}
                   setOptions={{
                     enableBasicAutocompletion: true,
                     enableLiveAutocompletion: true,
@@ -111,28 +104,28 @@ class AddTemplate extends Component {
           </CardFooter>
         </Card>
       </div>
-    );
+    )
   }
 
-  renderLog() {
+  renderLog () {
     return this.state.lint.map((lint, key) => {
       let color = 'black'
-      if (lint.type === 'error')
+      if (lint.type === 'error') {
         color = 'red'
-      else if (lint.type === 'warning')
+      } else if (lint.type === 'warning') {
         color = 'orange'
-      else if (lint.type === 'convention')
+      } else if (lint.type === 'convention') {
         color = 'cadetblue'
-      return <p key={`log-${key}`} style={{fontFamily: 'sans-serif', color}}>
+      }
+      return <p key={`log-${key}`} style={{ fontFamily: 'sans-serif', color }}>
         line {lint.line}:{lint.column} - {lint.type}: {lint.message}!
       </p>
     })
   }
 
-  sendTemplate() {
+  sendTemplate () {
 
-
-    if (this.state.id === undefined)
+    if (this.state.id === undefined) {
       this.props.dispatch(createGlobalCodecTemplateAction(
         {
           name: this.state.name,
@@ -140,7 +133,7 @@ class AddTemplate extends Component {
         },
         toastAlerts
       ))
-    else
+    } else {
       this.props.dispatch(updateGlobalCodecTemplateAction(
         this.state.id,
         {
@@ -148,10 +141,11 @@ class AddTemplate extends Component {
           code: this.state.code
         }, toastAlerts
       ))
+    }
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return ({
     loading: state.homeReducer.currentlySending,
   })

@@ -1,4 +1,4 @@
-import { GET_THINGS_PROFILE, FREE, FETCH_THING_PROFILE } from '../constants/AppConstants'
+import { FETCH_THING_PROFILE, FREE, GET_THINGS_PROFILE } from '../constants/AppConstants'
 import _ from 'underscore'
 
 export function thingProfileReducer (state = [], action) {

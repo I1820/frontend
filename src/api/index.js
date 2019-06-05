@@ -1,17 +1,9 @@
-import {
-  loginConfig,
-  postConfig,
-  getConfig,
-  patchConfig,
-  putConfig,
-  deleteConfig,
-  refreshConfig
-} from './config'
-import { setAuthState, initUser, sendingRequest, logout } from '../actions/AppActions'
+import { deleteConfig, getConfig, loginConfig, patchConfig, postConfig, putConfig, refreshConfig } from './config'
+import { initUser, logout, sendingRequest, setAuthState } from '../actions/AppActions'
 
 import _ from 'underscore'
 
-import { post, get } from 'axios'
+import { get, post } from 'axios'
 import store from '../store'
 /* global fetch */
 
@@ -47,7 +39,7 @@ const Errors = {
   'invalid credentials': 'ایمیل و یا رمز عبور صحیح نمی باشد'
 }
 
-function controler (json = {}) {
+function controller (json = {}) {
   if (json === {}) {
     return { status: false, message: Errors.EMPTY_JSON_RESPONSE }
   }
@@ -59,7 +51,7 @@ function controler (json = {}) {
     }
   }
   return { status: true }
-};
+}
 
 const translate = (error) => {
   return Errors[error] !== undefined ? Errors[error] : error
@@ -67,14 +59,18 @@ const translate = (error) => {
 
 function fetchData (endpoint = '/404', config = {}, dispatch, newUrl = false, loading = true) {
   return new Promise((resolve, reject) => {
-    if (loading) { dispatch(sendingRequest(true)) }
+    if (loading) {
+      dispatch(sendingRequest(true))
+    }
 
     fetch(newUrl ? endpoint : BASE_URL + endpoint, config)
       .then((response) => response.json())
       .then((json) => {
-        if (loading) { dispatch(sendingRequest(false)) }
+        if (loading) {
+          dispatch(sendingRequest(false))
+        }
 
-        const { status, message, code } = controler(json)
+        const { status, message, code } = controller(json)
 
         if ((code === 701 || code === 401) && endpoint !== endpoints.login) {
           console.log(message === 'token expired' && store.getState().userReducer.keep)
@@ -100,7 +96,7 @@ function fetchData (endpoint = '/404', config = {}, dispatch, newUrl = false, lo
         return resolve({ status: 'FAILED', result: err })
       })
   })
-};
+}
 
 export function streamFetch (endpoint = '/404', cb) {
   fetch(BASE_URL + endpoint, getConfig())
@@ -108,7 +104,7 @@ export function streamFetch (endpoint = '/404', cb) {
     .then((json) => {
       cb(json)
     })
-};
+}
 
 function getFormData (object) {
   let formData = ''
@@ -117,7 +113,7 @@ function getFormData (object) {
       : key + '=' + encodeURIComponent(object[key]) + '&'
   })
   return formData
-};
+}
 
 module.exports.login = function (email, password, dispatch) {
   const config = loginConfig
@@ -151,7 +147,9 @@ module.exports.createProject = function (data, dispatch) {
 //
 //
 module.exports.getProject = function (id, compress, dispatch) {
-  if (compress) { return fetchData(endpoints.getProject + '/' + id + '?compress=1', getConfig(), dispatch) }
+  if (compress) {
+    return fetchData(endpoints.getProject + '/' + id + '?compress=1', getConfig(), dispatch)
+  }
   return fetchData(endpoints.getProject + '/' + id, getConfig(), dispatch)
 }
 //
@@ -229,29 +227,29 @@ module.exports.createThing = function (data, projectId, dispatch) {
 //     return fetchData('/project/' + projectId + '/things/' + thingId, projectControler.find, getConfig(), dispatch)
 // }
 //
-module.exports.getThingsMainData = function (thing_ids, projectId, offset, limit, since, dispatch) {
+module.exports.getThingsMainData = function (thingIDs, projectID, offset, limit, since, dispatch) {
   const config = postConfig()
   Object.assign(config, {
     body: getFormData({
-      'project_id': projectId,
+      'project_id': projectID,
       since,
       offset,
       limit,
-      thing_ids
+      'thing_ids': thingIDs
     })
   })
   return fetchData(`/things/data`, config, dispatch)
 }
 
-module.exports.getThingsSampleData = function (thing_ids, projectId, since, until, window, dispatch) {
+module.exports.getThingsSampleData = function (thingIDs, projectID, since, until, window, dispatch) {
   const config = postConfig()
   Object.assign(config, {
     body: getFormData({
-      'project_id': projectId,
+      'project_id': projectID,
       since,
       window,
       until,
-      thing_ids
+      'thing_ids': thingIDs
     })
   })
   return fetchData(`/things/data/sample`, config, dispatch)
@@ -641,7 +639,9 @@ module.exports.getUserThings = function (compress, dispatch) {
 
 module.exports.setDashboardWidgetChart = function (widget, id, dispatch) {
   const config = postConfig()
-  if (id) { widget.id = id }
+  if (id) {
+    widget.id = id
+  }
   Object.assign(config, { body: getFormData(widget) })
   return fetchData(`/user/widget/charts`, config, dispatch)
 }
@@ -686,7 +686,9 @@ module.exports.getRoles = function (dispatch) {
 }
 
 module.exports.setRole = function (userId, roleId, dispatch) {
-  if (roleId) { return fetchData(`${BASE_ADMIN_URL}/permission/${userId}/${roleId}`, postConfig(), dispatch, true) }
+  if (roleId) {
+    return fetchData(`${BASE_ADMIN_URL}/permission/${userId}/${roleId}`, postConfig(), dispatch, true)
+  }
   return fetchData(`${BASE_ADMIN_URL}/permission/${userId}`, postConfig(), dispatch, true)
 }
 
@@ -748,9 +750,9 @@ module.exports.addRole = function (permissions, dispatch) {
   return fetchData(`${BASE_ADMIN_URL}/permission/role`, config, dispatch, true)
 }
 
-module.exports.base_url = function () {
+module.exports.baseURL = function () {
   return BASE_URL
 }
-module.exports.base_files_url = function () {
+module.exports.baseFilesURL = function () {
   return BASE_FILES_URL
 }

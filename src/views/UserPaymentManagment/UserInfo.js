@@ -1,44 +1,42 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react'
 import {
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardBlock,
+  Badge,
   Button,
-  CardTitle,
+  Card,
   CardBody,
-  Table,
   CardFooter,
+  CardHeader,
+  CardTitle,
+  Col,
+  Input,
+  Label,
   ListGroup,
   ListGroupItem,
   Modal,
-  ModalHeader,
   ModalBody,
   ModalFooter,
-  Badge,
-  Label,
-  Input,
+  ModalHeader,
+  Row,
 } from 'reactstrap'
 
-import {AvForm, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation'
 
-import {connect} from 'react-redux';
-import Spinner from '../Spinner/Spinner';
+import { connect } from 'react-redux'
+import Spinner from '../Spinner/Spinner'
 import {
-  activateProjectAction,
-  activeUserAction, changePasswordAction, createProject, editProjectAction, getUserAction,
+  activeUserAction,
+  changePasswordAction,
+  getUserAction,
   getUserTransactionsAction,
   impersonateUserAction
-} from '../../actions/AppActions';
+} from '../../actions/AppActions'
 import ReactTable from 'react-table'
-import {toastAlerts} from '../Shared/toast_alert';
-import Select2 from "react-select2-wrapper";
-import {toPersianNumbers} from "../Shared/helpers";
+import { toastAlerts } from '../Shared/toast_alert'
+import { toPersianNumbers } from '../Shared/helpers'
 
 class PackageList extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.renderProject = this.renderProject.bind(this)
     this.getPermissions = this.getPermissions.bind(this)
     this.renderPackage = this.renderPackage.bind(this)
@@ -49,7 +47,7 @@ class PackageList extends Component {
       activateUser: false,
       modal: false,
       userInfo: {
-        overview:{},
+        overview: {},
         name: '',
         email: '',
         other_info: {
@@ -65,34 +63,33 @@ class PackageList extends Component {
         active: true
       },
       transactions: [],
-      permissions:[]
-    };
+      permissions: []
+    }
   }
 
-
-  componentDidMount() {
+  componentDidMount () {
     this.setState({
       userId: this.props.match.params.user
     })
     this.props.dispatch(getUserAction(this.props.match.params.user))
     this.props.dispatch(getUserTransactionsAction(this.props.match.params.user, (transactions) => {
-      this.setState({transactions})
+      this.setState({ transactions })
     }))
   }
 
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.user !== undefined && nextProps.user._id !== undefined)
-      if (nextProps.user._id === this.state.userId)
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.user !== undefined && nextProps.user._id !== undefined) {
+      if (nextProps.user._id === this.state.userId) {
         this.setState({
           userInfo: nextProps.user
         })
+      }
+    }
   }
 
-
-  render() {
-    let userInfo = this.state.userInfo;
-    const userInfoArray = Object.values(userInfo);
+  render () {
+    let userInfo = this.state.userInfo
+    const userInfoArray = Object.values(userInfo)
     return (
 
       <div className="animated fadeIn text-justify">
@@ -209,7 +206,7 @@ class PackageList extends Component {
               </CardBody>
               <CardFooter>
                 <Button
-                  onClick={() => this.toggle("activate_user")}
+                  onClick={() => this.toggle('activate_user')}
                   className="ml-1" color="warning"
                   size="sm">{this.state.userInfo.active ? 'غیر فعال سازی کاربر' : 'فعال سازی کاربر'}</Button>
 
@@ -255,7 +252,7 @@ class PackageList extends Component {
     )
   }
 
-  renderProject(el, key = 0) {
+  renderProject (el, key = 0) {
 
     return (
       <tr>
@@ -267,7 +264,7 @@ class PackageList extends Component {
     )
   }
 
-  renderPackage(el, key = 0) {
+  renderPackage (el, key = 0) {
     return (
       <tr>
         <th>{key + 1}</th>
@@ -288,7 +285,7 @@ class PackageList extends Component {
     )
   }
 
-  renderThing(el, key = 0) {
+  renderThing (el, key = 0) {
     return (
       <tr>
         <th>{key + 1}</th>
@@ -299,28 +296,29 @@ class PackageList extends Component {
     )
   }
 
-  getPermissions(){
+  getPermissions () {
     let permissions = []
     this.state.permissions && this.state.permissions.forEach((permission) => {
-      permissions.push({text: permission.name, _id: permission._id})
+        permissions.push({ text: permission.name, _id: permission._id })
       }
     )
     return permissions
   }
 
-  toggle(key) {
+  toggle (key) {
 
-    if (key === undefined)
+    if (key === undefined) {
       this.setState({
         modal: !this.state.modal
       })
-    else
+    } else {
       this.setState({
         activateUser: !this.state.activateUser
       })
+    }
   }
 
-  renderTransaction() {
+  renderTransaction () {
     return [
       {
         Header: 'نام بسته',
@@ -345,17 +343,16 @@ class PackageList extends Component {
         </Badge>,
         filterable: false
       }
-    ];
+    ]
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     loading: state.homeReducer.currentlySending,
     user: state.adminReducer.users
-  };
+  }
 }
-
 
 export default connect(mapStateToProps)(PackageList);
 

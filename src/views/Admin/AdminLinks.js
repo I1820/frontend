@@ -1,29 +1,18 @@
-import React, { Component } from 'react';
-import {
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  ListGroup,
-  ListGroupItem,
-  CardFooter,
-  Button,
-} from 'reactstrap';
-import { connect } from 'react-redux';
+import React, { Component } from 'react'
+import { Button, Card, CardBody, CardHeader, CardTitle, Col, Row, } from 'reactstrap'
+import { connect } from 'react-redux'
 
 class AdminLinks extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       portainerUrl: '',
       prometheusUrl: '',
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (this.props.config) {
       this.setState({
         prometheusUrl: this.props.config.prometheus_url,
@@ -32,7 +21,7 @@ class AdminLinks extends Component {
     }
   }
 
-  render() {
+  render () {
     return (
       <div>
         <Card className="text-justify">
@@ -42,10 +31,14 @@ class AdminLinks extends Component {
           <CardBody>
             <Row>
               <Col>
-                <Button color="link" disabled={this.state.portainerUrl == '' || this.state.portainerUrl == null ? true : false} onClick={()=> window.open(this.state.portainerUrl, "_blank")}>Portainer</Button>
+                <Button color="link"
+                        disabled={this.state.portainerUrl == '' || this.state.portainerUrl == null ? true : false}
+                        onClick={() => window.open(this.state.portainerUrl, '_blank')}>Portainer</Button>
               </Col>
               <Col>
-                <Button color="link" disabled={this.state.prometheusUrl == '' || this.state.prometheusUrl == null ? true : false} onClick={()=> window.open(this.state.prometheusUrl, "_blank")}>Prometheus</Button>
+                <Button color="link"
+                        disabled={this.state.prometheusUrl == '' || this.state.prometheusUrl == null ? true : false}
+                        onClick={() => window.open(this.state.prometheusUrl, '_blank')}>Prometheus</Button>
               </Col>
             </Row>
           </CardBody>
@@ -55,12 +48,11 @@ class AdminLinks extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     config: state.userReducer.config,
-  };
+  }
 }
 
-
-export default connect(mapStateToProps)(AdminLinks);
+export default connect(mapStateToProps)(AdminLinks)
 

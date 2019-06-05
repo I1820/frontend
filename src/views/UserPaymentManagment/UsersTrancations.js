@@ -1,40 +1,16 @@
-import React, {Component} from "react";
+import React, { Component } from 'react'
 // import {selectUser} from '../../actions/AppActions'
-import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Badge,
-  Modal,
-  FormGroup,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  CardTitle,
-  Button,
-  ButtonGroup,
-  Label,
-  Input,
-  Table,
-  FormText
-} from 'reactstrap';
-import {
-  DownloadUserTransactionsExcelAction, getUsersAction, getUserTransactions,
-  SelectUser
-} from '../../actions/AppActions';
-import {connect} from 'react-redux';
-import Spinner from "../Spinner/Spinner";
+import { Badge, Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Col } from 'reactstrap'
+import { DownloadUserTransactionsExcelAction, getUserTransactions } from '../../actions/AppActions'
+import { connect } from 'react-redux'
+import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
-import moment from "moment-jalaali";
-import {toPersianNumbers} from "../Shared/helpers";
+import moment from 'moment-jalaali'
+import { toPersianNumbers } from '../Shared/helpers'
 
 class UserTransactions extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.downloadExcel = this.downloadExcel.bind(this)
     this.state = {
       transactions: [],
@@ -42,28 +18,29 @@ class UserTransactions extends Component {
     }
   }
 
-  componentWillMount() {
-    this.props.dispatch(getUserTransactions());
+  componentWillMount () {
+    this.props.dispatch(getUserTransactions())
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps (props) {
     let total = 0
     props.transactions.forEach((transaction) => {
-      if (transaction.status )
+      if (transaction.status) {
         total += transaction.price
+      }
     })
 
-    this.setState({transactions: props.transactions, total})
+    this.setState({ transactions: props.transactions, total })
     console.log(this.state)
   }
 
-  render() {
+  render () {
 
     return (
 
       <div>
         <Col xs="12" sm="6" lg="3">
-          <Card className="text-white bg-primary text-center" style={{cursor: 'pointer'}}>
+          <Card className="text-white bg-primary text-center" style={{ cursor: 'pointer' }}>
             <CardBody className="pb-0">
               <h4 className="mb-0 h3 font-weight-bold">{toPersianNumbers(this.state.total)}</h4>
               <p>مجموع تراکنش های موفق</p>
@@ -101,8 +78,7 @@ class UserTransactions extends Component {
     )
   }
 
-
-  reactTableColumns() {
+  reactTableColumns () {
     return [
       {
         Header: 'تاریخ تراکنش',
@@ -144,23 +120,21 @@ class UserTransactions extends Component {
         </Badge>,
         filterable: false,
       },
-    ];
+    ]
   }
 
-  downloadExcel() {
+  downloadExcel () {
     this.props.dispatch(DownloadUserTransactionsExcelAction())
   }
 
-
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     loading: state.homeReducer.currentlySending,
     transactions: state.userReducer.transactions
-  };
+  }
 }
-
 
 export default connect(mapStateToProps)(UserTransactions);
 

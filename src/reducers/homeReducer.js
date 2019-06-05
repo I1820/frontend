@@ -10,7 +10,7 @@
  *   });
  */
 
-import { SET_AUTH, SENDING_REQUEST, SET_ERROR_MESSAGE, FREE } from '../constants/AppConstants'
+import { FREE, SENDING_REQUEST, SET_AUTH, SET_ERROR_MESSAGE } from '../constants/AppConstants'
 // Object.assign is not yet fully supported in all browsers, so we fallback to
 // a polyfill
 const assign = Object.assign || require('object.assign')

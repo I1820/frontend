@@ -1,34 +1,32 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
+  Badge,
+  Button,
   Card,
-  Modal,
-  CardHeader,
   CardBody,
   CardFooter,
-  ModalHeader,
+  CardHeader,
+  CardTitle,
+  Modal,
   ModalBody,
   ModalFooter,
-  CardTitle,
-  Button,
-  Badge,
-  UncontrolledTooltip,
-  Table
-} from 'reactstrap';
+  ModalHeader,
+  UncontrolledTooltip
+} from 'reactstrap'
 import ReactTable from 'react-table'
-import connect from 'react-redux/es/connect/connect';
-import { getGatewaysAction, deleteGatewaysAction, DownloadUserGatewaysExcelAction } from '../../actions/AppActions';
-import Spinner from '../Spinner/Spinner';
-import { toast } from 'react-toastify';
-import { css } from 'glamor';
-
+import connect from 'react-redux/es/connect/connect'
+import { deleteGatewaysAction, DownloadUserGatewaysExcelAction, getGatewaysAction } from '../../actions/AppActions'
+import Spinner from '../Spinner/Spinner'
+import { toast } from 'react-toastify'
+import { css } from 'glamor'
 
 class Gateways extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
-    this.newGateway = this.newGateway.bind(this);
-    this.viewGateway = this.viewGateway.bind(this);
+    this.newGateway = this.newGateway.bind(this)
+    this.viewGateway = this.viewGateway.bind(this)
     this.deleteModalToggle = this.deleteModalToggle.bind(this)
     this.deleteGateway = this.deleteGateway.bind(this)
     this.manageToastAlerts = this.manageToastAlerts.bind(this)
@@ -41,7 +39,7 @@ class Gateways extends Component {
     }
   }
 
-  deleteGateway() {
+  deleteGateway () {
     this.deleteModalToggle()
     this.props.dispatch(deleteGatewaysAction(
       this.state.deleteRowId,
@@ -49,7 +47,7 @@ class Gateways extends Component {
     ))
   }
 
-  manageToastAlerts(status) {
+  manageToastAlerts (status) {
     if (status === true) {
       this.loadGateways()
 
@@ -62,7 +60,7 @@ class Gateways extends Component {
         progressClassName: css({
           background: '#28623c'
         })
-      });
+      })
     } else {
       toast(status, {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -73,15 +71,15 @@ class Gateways extends Component {
         progressClassName: css({
           background: '#813838'
         })
-      });
+      })
     }
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.loadGateways()
   }
 
-  render() {
+  render () {
     return (
       <div>
         <Spinner display={this.props.loading}/>
@@ -123,19 +121,19 @@ class Gateways extends Component {
           <CardFooter>
             <Button onClick={this.newGateway} color="primary">ساخت جدید</Button>
             <Button
-              onClick={()=>this.props.dispatch(DownloadUserGatewaysExcelAction())}
+              onClick={() => this.props.dispatch(DownloadUserGatewaysExcelAction())}
               color="success">خروجی اکسل</Button>
           </CardFooter>
         </Card>
       </div>
-    );
+    )
   }
 
-  loadGateways() {
+  loadGateways () {
     this.props.dispatch(getGatewaysAction())
   }
 
-  renderItem(gateway, key) {
+  renderItem (gateway, key) {
     return (
       <tr id={key}>
         <th>{key + 1}</th>
@@ -151,22 +149,22 @@ class Gateways extends Component {
     )
   }
 
-  deleteModalToggle(id) {
+  deleteModalToggle (id) {
     this.setState({
       deleteModal: !this.state.deleteModal,
       deleteRowId: id
-    });
+    })
   }
 
-  newGateway() {
+  newGateway () {
     window.location = '#/gateways/new'
   }
 
-  viewGateway(id) {
+  viewGateway (id) {
     window.location = `#/gateways/view/${id}`
   }
 
-  reactTableColumns() {
+  reactTableColumns () {
     return [
       {
         Header: 'نام گذرگاه(gateway)',
@@ -179,7 +177,7 @@ class Gateways extends Component {
         id: 'mac',
         Header: 'شناسه گذرگاه',
         accessor: row =>
-          <div style={{letterSpacing: '1px'}}>
+          <div style={{ letterSpacing: '1px' }}>
             {row.mac.match(/.{1,2}/g).reduce((ac, item) => ac + `${item}:`, '').slice(0, -1)}
           </div>,
         filterMethod: (filter, row) =>
@@ -208,17 +206,16 @@ class Gateways extends Component {
         </div>
       },
 
-    ];
+    ]
   }
 
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return ({
     gateways: state.gatewayReducer,
     loading: state.homeReducer.currentlySending
   })
 }
 
-
-export default connect(mapStateToProps)(Gateways);
+export default connect(mapStateToProps)(Gateways)

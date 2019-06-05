@@ -1,41 +1,33 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Badge,
-  Modal,
-  FormGroup,
-  CardHeader,
-  CardBody,
-  TabContent,
-  TabPane,
-  Nav,
-  NavLink,
-  NavItem,
-  CardFooter,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  CardTitle,
   Button,
-  ButtonGroup,
-  Label,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Col,
+  Form,
+  FormGroup,
   Input,
-  Table
-} from 'reactstrap';
-import classnames from 'classnames';
-import connect from 'react-redux/es/connect/connect';
-import { decryptFramePayloadAction, getSingleGatewayAction, updateGatewayAction } from '../../actions/AppActions';
-import Spinner from '../Spinner/Spinner';
-import GatewayLogger from '../../components/GatewayLogger';
-import { toastAlerts } from '../Shared/toast_alert';
+  Label,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane
+} from 'reactstrap'
+import classnames from 'classnames'
+import connect from 'react-redux/es/connect/connect'
+import { decryptFramePayloadAction, getSingleGatewayAction, updateGatewayAction } from '../../actions/AppActions'
+import Spinner from '../Spinner/Spinner'
+import GatewayLogger from '../../components/GatewayLogger'
+import { toastAlerts } from '../Shared/toast_alert'
 
 class GatewaysView extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.toggleTab = this.toggleTab.bind(this)
     this.changeForm = this.changeForm.bind(this)
     this.submitForm = this.submitForm.bind(this)
@@ -58,53 +50,53 @@ class GatewaysView extends Component {
     }
   }
 
-  componentWillReceiveProps(props) {
-    const splitedUrl = window.location.href.split('/');
+  componentWillReceiveProps (props) {
+    const splitedUrl = window.location.href.split('/')
     if (splitedUrl[splitedUrl.length - 1]) {
       props.gateway.forEach((gateway) => {
         if (gateway._id === splitedUrl[splitedUrl.length - 1]) {
           this.setState({
             gateway
-          });
-          document.getElementById('fld_lat').value = gateway.loc.coordinates[0];
-          document.getElementById('fld_lng').value = gateway.loc.coordinates[1];
+          })
+          document.getElementById('fld_lat').value = gateway.loc.coordinates[0]
+          document.getElementById('fld_lng').value = gateway.loc.coordinates[1]
         }
       })
     }
   }
 
-  componentWillMount() {
-    const splitedUrl = window.location.href.split('/');
+  componentWillMount () {
+    const splitedUrl = window.location.href.split('/')
     if (splitedUrl[splitedUrl.length - 1]) {
       this.props.dispatch(getSingleGatewayAction(splitedUrl[splitedUrl.length - 1]))
     }
   }
 
-  render() {
+  render () {
     return (
       <div>
         <Spinner display={this.props.loading}/>
         <Nav tabs>
           <NavItem>
             <NavLink
-              className={classnames({active: this.state.activeTab === 'info'})}
+              className={classnames({ active: this.state.activeTab === 'info' })}
               onClick={() => {
-                this.toggleTab('info');
+                this.toggleTab('info')
               }}>اطلاعات</NavLink>
           </NavItem>
           <NavItem>
             <NavLink
-              className={classnames({active: this.state.activeTab === 'liveFrame'})}
+              className={classnames({ active: this.state.activeTab === 'liveFrame' })}
               onClick={() => {
-                this.toggleTab('liveFrame');
+                this.toggleTab('liveFrame')
               }}>لایو فریم</NavLink>
           </NavItem>
 
           <NavItem>
             <NavLink
-              className={classnames({active: this.state.activeTab === 'decrypt'})}
+              className={classnames({ active: this.state.activeTab === 'decrypt' })}
               onClick={() => {
-                this.toggleTab('decrypt');
+                this.toggleTab('decrypt')
               }}>رمزگشایی</NavLink>
           </NavItem>
 
@@ -137,7 +129,7 @@ class GatewaysView extends Component {
                       <Input type="text" dir="ltr"
                              placeholder="AA00CC11DD22EE33"
                              maxLength="16"
-                             style={{letterSpacing: '1px'}}
+                             style={{ letterSpacing: '1px' }}
                              value={
                                this.state.gateway.mac ?
                                  this.state.gateway.mac.match(/.{1,2}/g).reduce((ac, item) => ac + `${item}:`, '').slice(0, -1) : ''
@@ -149,7 +141,7 @@ class GatewaysView extends Component {
                     <Label sm={2}>توضیحات:</Label>
                     <Col sm={5}>
                       <Input type="textarea"
-                             style={{resize: 'none'}}
+                             style={{ resize: 'none' }}
                              name="description"
                              placeholder="گذرگاه سقف"
                              value={this.state.gateway.description}
@@ -274,21 +266,21 @@ class GatewaysView extends Component {
 
 
       </div>
-    );
+    )
   }
 
-  renderMap() {
+  renderMap () {
   }
 
-  toggleTab(tab) {
+  toggleTab (tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
-      });
+      })
     }
   }
 
-  changeForm(event) {
+  changeForm (event) {
     this.setState({
       gateway: {
         ...this.state.gateway,
@@ -297,7 +289,7 @@ class GatewaysView extends Component {
     })
   }
 
-  submitForm() {
+  submitForm () {
     this.props.dispatch(updateGatewayAction({
       ...this.state.gateway,
       latitude: document.getElementById('fld_lat').value,
@@ -305,14 +297,13 @@ class GatewaysView extends Component {
     }, toastAlerts))
   }
 
-  decrypt() {
+  decrypt () {
 
-    if (!this.state.keys.appSKey.match(/^[0-9A-Fa-f]{32}$/g))
-      toastAlerts(false, 'کلید AppSKey را درست وارد کنید.');
-    else if (!this.state.keys.nwkSKey.match(/^[0-9A-Fa-f]{32}$/g))
-      toastAlerts(false, 'کلید nwkSKey را درست وارد کنید.');
-
-    else
+    if (!this.state.keys.appSKey.match(/^[0-9A-Fa-f]{32}$/g)) {
+      toastAlerts(false, 'کلید AppSKey را درست وارد کنید.')
+    } else if (!this.state.keys.nwkSKey.match(/^[0-9A-Fa-f]{32}$/g)) {
+      toastAlerts(false, 'کلید nwkSKey را درست وارد کنید.')
+    } else {
       this.props.dispatch(decryptFramePayloadAction({
         phyPayload: this.state.keys.payload,
         netskey: this.state.keys.nwkSKey,
@@ -324,15 +315,17 @@ class GatewaysView extends Component {
               ...this.state.keys,
               result: result,
             }
-          });
-          toastAlerts(status, 'با موفقیت انجام شد.');
+          })
+          toastAlerts(status, 'با موفقیت انجام شد.')
+        } else {
+          toastAlerts(status, result)
         }
-        else toastAlerts(status, result);
       }))
+    }
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return ({
     gateway: state.gatewayReducer,
     loading: state.homeReducer.currentlySending

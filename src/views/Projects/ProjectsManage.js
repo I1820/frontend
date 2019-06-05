@@ -1,51 +1,55 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
-  Col,
+  Badge,
+  Button,
   Card,
-  Form,
-  FormGroup,
-  CardHeader,
   CardBody,
   CardFooter,
+  CardHeader,
   CardTitle,
-  ListGroup,
-  ListGroupItem,
-  Button,
-  ModalFooter,
-  Label,
-  Tooltip,
+  Col,
+  Form,
+  FormGroup,
   Input,
-  UncontrolledTooltip,
-  Table, Modal, ModalHeader, ModalBody, Badge
-} from 'reactstrap';
+  Label,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  UncontrolledTooltip
+} from 'reactstrap'
 
-import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation'
 
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import {
-  sendThingKeysAction,
-  editProjectAction,
-  getProject,
-  deleteThingAction,
-  getCodecTemplateListAction,
+  activateProjectAction,
   activateScenarioAction,
+  activateThingAction,
   deleteCodecTemplateAction,
   deleteScenarioAction,
+  deleteThingAction,
+  DownloadThingsExcelAction,
   editAliasesAction,
+  editProjectAction,
+  getCodecTemplateListAction,
+  getProject,
+  getProjectThingsListAction,
   refreshJWTAction,
-  sendDownlinkAction, DownloadThingsExcelAction, activateThingAction, activateProjectAction, getProjectThingsListAction,
-} from '../../actions/AppActions';
-import Spinner from '../Spinner/Spinner';
+  sendDownlinkAction,
+  sendThingKeysAction,
+} from '../../actions/AppActions'
+import Spinner from '../Spinner/Spinner'
 
-import { css } from 'glamor';
+import { css } from 'glamor'
 import ReactTable from 'react-table'
-import Logger from '../../components/Logger';
-import { toastAlerts } from '../Shared/toast_alert';
-import moment from 'moment-jalaali';
+import Logger from '../../components/Logger'
+import { toastAlerts } from '../Shared/toast_alert'
+import moment from 'moment-jalaali'
 
 class ProjectsManage extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.addThing = this.addThing.bind(this)
     this.addScenario = this.addScenario.bind(this)
@@ -62,11 +66,11 @@ class ProjectsManage extends Component {
     this.renderCodecs = this.renderCodecs.bind(this)
     this.deleteAlias = this.deleteAlias.bind(this)
     this.refreshToken = this.refreshToken.bind(this)
-    this.reactTableColumns = this.reactTableColumns.bind(this);
-    this.getAliases = this.getAliases.bind(this);
-    this.callback = this.callback.bind(this);
-    this.setThings = this.setThings.bind(this);
-    this.fetchThings = this.fetchThings.bind(this);
+    this.reactTableColumns = this.reactTableColumns.bind(this)
+    this.getAliases = this.getAliases.bind(this)
+    this.callback = this.callback.bind(this)
+    this.setThings = this.setThings.bind(this)
+    this.fetchThings = this.fetchThings.bind(this)
 
     this.state = {
       OTAAModal: false,
@@ -82,7 +86,7 @@ class ProjectsManage extends Component {
       dataModal: false,
       modalDownlinkRows: [],
       OTAA: {},
-      ABP: {skipFCntCheck: true},
+      ABP: { skipFCntCheck: true },
       keys: {},
       deleteThingModal: false,
       deleteThingRowId: 0,
@@ -96,38 +100,39 @@ class ProjectsManage extends Component {
         rowId: 0,
         active: 0
       },
-      newAlias: {key: '', alias: ''}
-    };
+      newAlias: { key: '', alias: '' }
+    }
     this.el_refs = {
       alias: {
         key: '',
         value: '',
       }
-    };
-    this.nextId = 1;
+    }
+    this.nextId = 1
   }
 
-  downLinksAdd() {
-    const data = {}, selected = this.state.DownlinkThingRowId;
-    let json;
+  downLinksAdd () {
+    const data = {}, selected = this.state.DownlinkThingRowId
+    let json
     this.state.modalDownlinkRows.forEach((item) => {
-      if (item.key && item.value)
-        data[item.key] = item.value;
-    });
-    json = JSON.stringify(data);
-    this.toggle('downlink');
+      if (item.key && item.value) {
+        data[item.key] = item.value
+      }
+    })
+    json = JSON.stringify(data)
+    this.toggle('downlink')
     this.props.dispatch(sendDownlinkAction(
       selected,
-      {data: json, fport: this.state.downlinkFport, confirmed: this.state.downlinkConfirmed},
+      { data: json, fport: this.state.downlinkFport, confirmed: this.state.downlinkConfirmed },
       this.callback
     ))
   }
 
-  deleteThing() {
+  deleteThing () {
     const data = {
       project_id: this.state.project._id,
       thing_id: this.state.deleteThingRowId,
-    };
+    }
     this.toggle('deleteThing')
     this.props.dispatch(deleteThingAction(
       data.project_id,
@@ -136,11 +141,11 @@ class ProjectsManage extends Component {
     ))
   }
 
-  activateThing() {
+  activateThing () {
     const data = {
       active: this.state.activateThing.active,
       thing_id: this.state.activateThing.rowId,
-    };
+    }
     this.toggle('activateThing')
     this.props.dispatch(activateThingAction(
       data.thing_id,
@@ -149,11 +154,11 @@ class ProjectsManage extends Component {
     ))
   }
 
-  deleteCodec() {
+  deleteCodec () {
     const data = {
       project_id: this.state.project._id,
       codec_id: this.state.deleteCodecRowId,
-    };
+    }
     this.toggle('deleteCodec')
     this.props.dispatch(deleteCodecTemplateAction(
       data.project_id,
@@ -162,29 +167,29 @@ class ProjectsManage extends Component {
     ))
   }
 
-  refreshToken() {
+  refreshToken () {
     const data = {
       thing_id: this.state.selectedThing,
-    };
+    }
     let tokenCallback = (status, data) => {
-      toastAlerts(status, data.message);
+      toastAlerts(status, data.message)
       if (status) {
-        this.setState({keys: {JWT: data.token}})
-        this.loadProject();
+        this.setState({ keys: { JWT: data.token } })
+        this.loadProject()
       }
     }
-    tokenCallback = tokenCallback.bind(this);
+    tokenCallback = tokenCallback.bind(this)
     this.props.dispatch(refreshJWTAction(
       data.thing_id,
       tokenCallback
     ))
   }
 
-  deleteScenario() {
+  deleteScenario () {
     const data = {
       project_id: this.state.project._id,
       scenario_id: this.state.deleteScenarioRowId,
-    };
+    }
     this.toggle('deleteScenario')
     this.props.dispatch(deleteScenarioAction(
       data.project_id,
@@ -193,12 +198,12 @@ class ProjectsManage extends Component {
     ))
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.loadProject()
   }
 
-  componentWillReceiveProps(props) {
-    const splitedUrl = window.location.href.split('/');
+  componentWillReceiveProps (props) {
+    const splitedUrl = window.location.href.split('/')
     if (splitedUrl[splitedUrl.length - 1]) {
       props.projects.forEach((project) => {
         if (project._id === splitedUrl[splitedUrl.length - 1]) {
@@ -210,29 +215,30 @@ class ProjectsManage extends Component {
     }
   }
 
-  fetchThings(state, instance) {
-    const splitedUrl = window.location.href.split('/');
-    this.setState({table: {...this.state.table, loading: true}});
+  fetchThings (state, instance) {
+    const splitedUrl = window.location.href.split('/')
+    this.setState({ table: { ...this.state.table, loading: true } })
     this.props.dispatch(getProjectThingsListAction(
       splitedUrl[splitedUrl.length - 1],
       state.pageSize,
       state.page * state.pageSize,
-      {sorted: JSON.stringify(state.sorted), filtered: JSON.stringify(state.filtered)},
+      { sorted: JSON.stringify(state.sorted), filtered: JSON.stringify(state.filtered) },
       this.setThings
     ))
   }
 
-  loadProject() {
-    const splitedUrl = window.location.href.split('/');
+  loadProject () {
+    const splitedUrl = window.location.href.split('/')
     if (splitedUrl[splitedUrl.length - 1]) {
       this.props.dispatch(getProject(splitedUrl[splitedUrl.length - 1], (status) => {
-        if (status)
+        if (status) {
           this.props.dispatch(getCodecTemplateListAction(splitedUrl[splitedUrl.length - 1]))
+        }
       }, 1))
     }
   }
 
-  render() {
+  render () {
     return (
       <div>
         <Spinner display={this.props.loading}/>
@@ -258,7 +264,7 @@ class ProjectsManage extends Component {
                className="text-right">
           <ModalHeader>دریافت کلید</ModalHeader>
           <ModalBody>
-            <FormGroup style={{display: 'flex'}} row>
+            <FormGroup style={{ display: 'flex' }} row>
               <Label sm={3}>کلید:</Label>
               <Col sm={9}>
                 <Input value={this.state.keys.JWT} type="textarea" readOnly name="" rows="6"/>
@@ -304,10 +310,9 @@ class ProjectsManage extends Component {
                 this.state.project.active ? 0 : 1,
                 (result) => {
                   if (result.success === true) {
-                    this.loadProject();
+                    this.loadProject()
                     toastAlerts(true, 'با موفیت انجام شد.')
-                  }
-                  else {
+                  } else {
                     toastAlerts(false, result)
                   }
                 }
@@ -429,7 +434,7 @@ class ProjectsManage extends Component {
                 OTAA: this.state.OTAA,
                 project_id: this.state.project,
                 thing_id: this.state.selectedThing,
-              };
+              }
               this.toggle('OTAA')
               this.props.dispatch(sendThingKeysAction(
                 data.OTAA,
@@ -585,11 +590,11 @@ class ProjectsManage extends Component {
               </CardHeader>
               <CardBody>
                 <Form>
-                  <FormGroup style={{display: 'flex'}}>
-                    <div style={{minWidth: '65px', width: '20%'}}>
+                  <FormGroup style={{ display: 'flex' }}>
+                    <div style={{ minWidth: '65px', width: '20%' }}>
                       <Label>نام پروژه:</Label>
                     </div>
-                    <div style={{width: '80%'}}>
+                    <div style={{ width: '80%' }}>
                       <Input type="text" onChange={(event) => {
                         this.setState({
                           project: {
@@ -600,11 +605,11 @@ class ProjectsManage extends Component {
                       }} maxLength="50" value={this.state.project.name || ''}/>
                     </div>
                   </FormGroup>
-                  <FormGroup style={{display: 'flex'}}>
-                    <div style={{minWidth: '65px', width: '20%'}}>
+                  <FormGroup style={{ display: 'flex' }}>
+                    <div style={{ minWidth: '65px', width: '20%' }}>
                       <Label>توضیحات:</Label>
                     </div>
-                    <div style={{width: '80%'}}>
+                    <div style={{ width: '80%' }}>
                       <Input value={this.state.project.description || ''} onChange={(event) => {
                         this.setState({
                           project: {
@@ -612,15 +617,15 @@ class ProjectsManage extends Component {
                             description: event.target.value
                           }
                         })
-                      }} maxLength="150" type="textarea" style={{resize: 'none'}} name=""
+                      }} maxLength="150" type="textarea" style={{ resize: 'none' }} name=""
                              rows="2"/>
                     </div>
                   </FormGroup>
-                  <FormGroup style={{display: 'flex'}}>
-                    <div style={{minWidth: '65px', width: '20%'}}>
+                  <FormGroup style={{ display: 'flex' }}>
+                    <div style={{ minWidth: '65px', width: '20%' }}>
                       <Label>وضعیت:</Label>
                     </div>
-                    <div style={{width: '80%'}}>
+                    <div style={{ width: '80%' }}>
                       <Badge color={this.state.project.active === true ? 'success' : 'danger'}>
                         {this.state.project.active === true ? 'فعال' : 'غیرفعال'}
                       </Badge>
@@ -691,7 +696,7 @@ class ProjectsManage extends Component {
                     </td>
                     <td>
                       <button onClick={() => {
-                        const newAlias = this.state.newAlias;
+                        const newAlias = this.state.newAlias
                         if (!newAlias.key || !newAlias.alias) {
                           toast('اطلاعات را کامل وارد کنید', {
                             position: toast.POSITION.BOTTOM_LEFT,
@@ -699,8 +704,8 @@ class ProjectsManage extends Component {
                               background: '#fee2e1',
                               color: '#813838',
                             }),
-                          });
-                          return;
+                          })
+                          return
                         }
                         this.setState({
                           project: {
@@ -711,8 +716,8 @@ class ProjectsManage extends Component {
                             }
                           }
                         })
-                        this.el_refs.alias.key.value = '';
-                        this.el_refs.alias.value.value = '';
+                        this.el_refs.alias.key.value = ''
+                        this.el_refs.alias.value.value = ''
 
                       }} type="button" className="btn btn-primary">اضافه کردن
                       </button>
@@ -787,15 +792,16 @@ class ProjectsManage extends Component {
               defaultPageSize={10}
               className="-striped -highlight"
               getTrProps={(state, rowInfo) => {
-                if (rowInfo && rowInfo.original.is_active)
+                if (rowInfo && rowInfo.original.is_active) {
                   return {
                     style: {
                       background: '#20a8d8',
                       color: '#fff'
                     }
-                  };
-                else
+                  }
+                } else {
                   return {}
+                }
               }}
             />
           </CardBody>
@@ -834,53 +840,53 @@ class ProjectsManage extends Component {
 
         <Logger project={this.state.project._id}/>
       </div>
-    );
+    )
   }
 
-  getAliases() {
-    let aliases = this.state.project.aliases ? this.state.project.aliases : [];
+  getAliases () {
+    let aliases = this.state.project.aliases ? this.state.project.aliases : []
     return Object.keys(aliases).map((key) => {
-      return {value: aliases[key], key: key}
+      return { value: aliases[key], key: key }
     })
   }
 
-  renderDownlinkRow(id, key, value) {
+  renderDownlinkRow (id, key, value) {
     return (
       <FormGroup row key={id}>
         <Col sm={5}>
           <Input type="text" value={key} onChange={(e) => {
-            const newRows = [...this.state.modalDownlinkRows];
+            const newRows = [...this.state.modalDownlinkRows]
             const item = newRows.findIndex(item => item.id == id)
-            newRows[item].key = e.target.value;
-            this.setState({modalDownlinkRows: newRows})
+            newRows[item].key = e.target.value
+            this.setState({ modalDownlinkRows: newRows })
           }} placeholder="کلید"/>
         </Col>
         <Col sm={5}>
           <Input type="text" value={value} onChange={(e) => {
-            const newRows = [...this.state.modalDownlinkRows];
+            const newRows = [...this.state.modalDownlinkRows]
             const item = newRows.findIndex(item => item.id == id)
-            newRows[item].value = e.target.value;
-            this.setState({modalDownlinkRows: newRows})
+            newRows[item].value = e.target.value
+            this.setState({ modalDownlinkRows: newRows })
           }} placeholder="مقدار"/>
         </Col>
-        <Col sm={2} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <Col sm={2} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Button color="danger" onClick={() => {
             this.setState({
               modalDownlinkRows: this.state.modalDownlinkRows.filter((value) => value.id != id)
             })
-          }} className="btn-sm" style={{float: 'left'}}>&times;</Button>
+          }} className="btn-sm" style={{ float: 'left' }}>&times;</Button>
         </Col>
       </FormGroup>
     )
 
   }
 
-  uploadExcel() {
+  uploadExcel () {
     window.location = `#/things/excel/${this.state.project._id}`
   }
 
-  deleteAlias(event) {
-    const key = event.target.value;
+  deleteAlias (event) {
+    const key = event.target.value
     const newState = {
       project: {
         ...this.state.project,
@@ -888,25 +894,25 @@ class ProjectsManage extends Component {
           ...this.state.project.aliases,
         }
       }
-    };
-    delete newState.project.aliases[key];
+    }
+    delete newState.project.aliases[key]
     this.setState(newState)
   }
 
-  downloadExcel() {
+  downloadExcel () {
     this.props.dispatch(DownloadThingsExcelAction(this.state.project._id))
   }
 
-  addThing() {
+  addThing () {
     window.location = `#/project/manage/createThing/${this.state.project._id}`
   }
 
-  addScenario() {
+  addScenario () {
     window.location = `#/scenario/${this.state.project._id}/new`
   }
 
-  callback(status, message) {
-    toastAlerts(status, message);
+  callback (status, message) {
+    toastAlerts(status, message)
     this.loadProject()
     this.fetchThings({
       page: 0,
@@ -916,7 +922,7 @@ class ProjectsManage extends Component {
     }, {})
   }
 
-  setThings(res) {
+  setThings (res) {
     this.setState({
       things: res.things,
       table: {
@@ -926,18 +932,19 @@ class ProjectsManage extends Component {
     })
   }
 
-  renderCodecs() {
-    if (this.state.project.templates)
+  renderCodecs () {
+    if (this.state.project.templates) {
       return (this.state.project.templates.map((template, key) => {
         return (this.renderTemplateItem(template, key))
       }))
+    }
   }
 
-  addTemplate() {
+  addTemplate () {
     window.location = `#/template/${this.state.project._id}/new`
   }
 
-  reactTableColumns(type) {
+  reactTableColumns (type) {
     switch (type) {
       case 'things':
         return [
@@ -986,7 +993,7 @@ class ProjectsManage extends Component {
                   <UncontrolledTooltip placement="top" target={`tooltip2-${row._id}`}>
                     {moment(row.last_parsed_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
                   </UncontrolledTooltip> : ''}
-              </div>);
+              </div>)
             }
           },
           {
@@ -1003,25 +1010,21 @@ class ProjectsManage extends Component {
                          if (action === 'send_key') {
                            this.toggle(row.activation === 'ABP' ? 'ABP' : (row.activation === 'OTAA' ? 'OTAA' : 'JWT'), {
                              id: row._id,
-                             keys: row.keys.length !== 0 ? row.keys : {skipFCntCheck: true}
+                             keys: row.keys.length !== 0 ? row.keys : { skipFCntCheck: true }
                            })
                          } else if (action === 'edit') {
                            window.location = `#/things/edit/${this.state.project._id}/${row._id}`
-                         }
-                         else if (action === 'send_codec') {
+                         } else if (action === 'send_codec') {
                            window.location = `#/codec/${this.state.project._id}/${row._id}`
-                         }
-                         else if (action === 'send_data') {
+                         } else if (action === 'send_data') {
                            this.toggle('downlink', row._id)
-                         }
-                         else if (action === 'delete') {
+                         } else if (action === 'delete') {
                            this.toggle('deleteThing', row._id)
                            this.setState({
                              downlinkFport: '',
                              downlinkConfirmed: ''
                            })
-                         }
-                         else if (action === 'deactive') {
+                         } else if (action === 'deactive') {
                            this.toggle('activateThing', {
                              rowId: row._id,
                              active: row.active ? 0 : 1
@@ -1037,7 +1040,7 @@ class ProjectsManage extends Component {
                   <option value="delete">حذف شئ</option>
                   <option value="deactive">{row.active ? 'غیر فعال سازی' : 'فعال سازی'}</option>
                 </Input>
-              </div>);
+              </div>)
             }
           },
         ]
@@ -1069,7 +1072,7 @@ class ProjectsManage extends Component {
                       size="sm">فعالسازی</Button>
             </div>
           },
-        ];
+        ]
       case 'codecs':
         return [
           {
@@ -1109,7 +1112,7 @@ class ProjectsManage extends Component {
             id: 'operations',
             Header: 'حذف',
             accessor: (row) => <Button color="danger" onClick={this.deleteAlias} value={row.key}
-                                       className="btn-sm" style={{float: 'left'}}>&times;</Button>,
+                                       className="btn-sm" style={{ float: 'left' }}>&times;</Button>,
             style: {
               display: 'flex',
               justifyContent: 'center'
@@ -1120,44 +1123,50 @@ class ProjectsManage extends Component {
 
   }
 
-  toggle(modal, id) {
-    let state = {};
-    if (modal === 'deleteThing')
+  toggle (modal, id) {
+    let state = {}
+    if (modal === 'deleteThing') {
       state = {
         deleteThingModal: !this.state.deleteThingModal,
         deleteThingRowId: id ? id : ''
       }
-    if (modal === 'deleteCodec')
+    }
+    if (modal === 'deleteCodec') {
       state = {
         deleteCodecModal: !this.state.deleteCodecModal,
         deleteCodecRowId: id ? id : ''
       }
-    if (modal === 'deleteScenario')
+    }
+    if (modal === 'deleteScenario') {
       state = {
         deleteScenarioModal: !this.state.deleteScenarioModal,
         deleteScenarioRowId: id ? id : ''
       }
-    if (modal === 'downlink')
+    }
+    if (modal === 'downlink') {
       state = {
         dataModal: !this.state.dataModal,
         modalDownlinkRows: [],
         DownlinkThingRowId: id ? id : ''
       }
-    if (modal === 'ABP')
+    }
+    if (modal === 'ABP') {
       state = {
         selectedThing: id ? id.id : '',
         keys: id ? id.keys : '',
         ABPModal: !this.state.ABPModal,
-        ABP: id ? {...id.keys} : {skipFCntCheck: true}
+        ABP: id ? { ...id.keys } : { skipFCntCheck: true }
       }
-    if (modal === 'OTAA')
+    }
+    if (modal === 'OTAA') {
       state = {
         selectedThing: id ? id.id : '',
         keys: id ? id.keys : '',
         OTAAModal: !this.state.OTAAModal,
-        OTAA: id ? {...id.keys} : {}
+        OTAA: id ? { ...id.keys } : {}
       }
-    if (modal === 'activateThing')
+    }
+    if (modal === 'activateThing') {
       state = {
         activateThing: {
           modal: !this.state.activateThing.modal,
@@ -1166,28 +1175,29 @@ class ProjectsManage extends Component {
         }
 
       }
-    if (modal === 'activeProject')
+    }
+    if (modal === 'activeProject') {
       state = {
         activeProject: !this.state.activeProject
       }
-    if (modal === 'JWT')
+    }
+    if (modal === 'JWT') {
       state = {
         JWTModal: !this.state.JWTModal,
         keys: id ? id.keys : {},
         selectedThing: id ? id.id : ''
       }
+    }
     this.setState(state);
   }
 
-
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     projects: state.projectReducer,
     loading: state.homeReducer.currentlySending
   };
 }
-
 
 export default connect(mapStateToProps)(ProjectsManage);

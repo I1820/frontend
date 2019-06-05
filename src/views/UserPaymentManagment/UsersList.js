@@ -1,36 +1,15 @@
-import React, { Component } from 'react';
-import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Badge,
-  Modal,
-  FormGroup,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  CardTitle,
-  Button,
-  ButtonGroup,
-  Label,
-  Input,
-  Table,
-  FormText
-} from 'reactstrap';
-import { Link } from 'react-router-dom';
-import { getUsersAction, getRolesAction, setRoleAction, DownloadUsersListExcelAction } from '../../actions/AppActions';
-import { connect } from 'react-redux';
-import Spinner from '../Spinner/Spinner';
+import React, { Component } from 'react'
+import { Badge, Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Input } from 'reactstrap'
+import { Link } from 'react-router-dom'
+import { DownloadUsersListExcelAction, getRolesAction, getUsersAction, setRoleAction } from '../../actions/AppActions'
+import { connect } from 'react-redux'
+import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
-import { toastAlerts } from '../Shared/toast_alert';
+import { toastAlerts } from '../Shared/toast_alert'
 
 class UsersList extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.changeRole = this.changeRole.bind(this)
     this.downloadExcel = this.downloadExcel.bind(this)
     this.state = {
@@ -42,22 +21,23 @@ class UsersList extends Component {
     }
   }
 
-  componentWillMount() {
-    this.props.dispatch(getUsersAction());
+  componentWillMount () {
+    this.props.dispatch(getUsersAction())
     this.props.dispatch(getRolesAction((status, roles) => {
-      if (status)
-        this.setState({roles: roles})
-    }));
+      if (status) {
+        this.setState({ roles: roles })
+      }
+    }))
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({items: props.usersList, usersInfo: props.usersList})
+  componentWillReceiveProps (props) {
+    this.setState({ items: props.usersList, usersInfo: props.usersList })
   }
 
-  render() {
+  render () {
 
-    let usersInfo = this.state.items;
-    const usersArray = Object.values(usersInfo);
+    let usersInfo = this.state.items
+    const usersArray = Object.values(usersInfo)
 
     return (
 
@@ -93,8 +73,7 @@ class UsersList extends Component {
     )
   }
 
-
-  reactTableColumns() {
+  reactTableColumns () {
     return [
       {
         Header: 'نام کاربر',
@@ -125,7 +104,7 @@ class UsersList extends Component {
       }, {
         Header: 'تاریخ ثبت نام',
         id: 'created_at',
-        accessor: row => <div style={{textAlign: 'right', direction: 'ltr'}}>{row.created_at}</div>,
+        accessor: row => <div style={{ textAlign: 'right', direction: 'ltr' }}>{row.created_at}</div>,
         filterable: false,
       },
       {
@@ -138,10 +117,11 @@ class UsersList extends Component {
             <Input type="select" name="type" value={row.role ? row.role._id : ''}
                    onChange={(e) => {
                      let action = e.target.value
-                     if (action === '')
+                     if (action === '') {
                        this.props.dispatch(setRoleAction(row._id, '', this.changeRole))
-                     else
+                     } else {
                        this.props.dispatch(setRoleAction(row._id, action, this.changeRole))
+                     }
 
                    }} id="select">
               <option value={''}>{'ادمین'}</option>
@@ -149,7 +129,7 @@ class UsersList extends Component {
                 <option key={item._id} value={item._id}>{item.name}</option>
               )}
             </Input>
-          </div>);
+          </div>)
         }
       },
       {
@@ -160,30 +140,29 @@ class UsersList extends Component {
         accessor: row => <div>
           <Link to={`/admin/users/info/${row._id}`}>
             <Button className="ml-1" color="warning"
-              size="sm">مدیریت</Button>
+                    size="sm">مدیریت</Button>
           </Link>
         </div>
       }
-    ];
+    ]
   }
 
-  changeRole(status, message) {
-    toastAlerts(status, message);
+  changeRole (status, message) {
+    toastAlerts(status, message)
     this.props.dispatch(getUsersAction())
   }
 
-  downloadExcel() {
+  downloadExcel () {
     this.props.dispatch(DownloadUsersListExcelAction())
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     loading: state.homeReducer.currentlySending,
     usersList: state.adminReducer.usersList
   };
 }
-
 
 export default connect(mapStateToProps)(UsersList);
 

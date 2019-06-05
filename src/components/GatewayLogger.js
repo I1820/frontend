@@ -1,34 +1,16 @@
-import React, { Component } from 'react';
-import { streamFetch } from '../api';
+import React, { Component } from 'react'
+import { streamFetch } from '../api'
 
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  CardTitle,
-  Button,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  UncontrolledTooltip
-} from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, CardTitle, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import ReactTable from 'react-table'
 import ReactJson from 'react-json-view'
 import Loading from './Loading'
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { toastAlerts } from '../views/Shared/toast_alert';
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { toastAlerts } from '../views/Shared/toast_alert'
 
 export default class GatewayLogger extends Component {
 
-
-  componentWillUnmount() {
-    this.stop()
-  }
-
-
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
@@ -45,7 +27,11 @@ export default class GatewayLogger extends Component {
     }
   }
 
-  render() {
+  componentWillUnmount () {
+    this.stop()
+  }
+
+  render () {
 
     return (
       <div>
@@ -55,7 +41,7 @@ export default class GatewayLogger extends Component {
           <ModalBody>
             <ReactJson
               name={'Frame'}
-              style={{backgroundColor: 'none', fontSize: '12px', textAlign: 'left', direction: 'ltr'}}
+              style={{ backgroundColor: 'none', fontSize: '12px', textAlign: 'left', direction: 'ltr' }}
               enableClipboard={false}
               // theme={'shapeshifter:inverted'}
               displayObjectSize={false}
@@ -72,10 +58,10 @@ export default class GatewayLogger extends Component {
           <CardHeader>
             <CardTitle className="mb-0 font-weight-bold h6">لایو فریم</CardTitle>
           </CardHeader>
-          <CardHeader style={{display: 'flex', alignItems: 'center'}}>
-            <Button onClick={() => this.stop()} color="danger" style={{marginRight: '5px'}}>توقف</Button>
-            <Button onClick={() => this.start()} color="primary" style={{marginRight: '5px'}}>شروع</Button>
-            <Button onClick={() => this.clear()} style={{marginRight: '5px'}}>پاک کردن</Button>
+          <CardHeader style={{ display: 'flex', alignItems: 'center' }}>
+            <Button onClick={() => this.stop()} color="danger" style={{ marginRight: '5px' }}>توقف</Button>
+            <Button onClick={() => this.start()} color="primary" style={{ marginRight: '5px' }}>شروع</Button>
+            <Button onClick={() => this.clear()} style={{ marginRight: '5px' }}>پاک کردن</Button>
             <Loading size={'30px'} isOpen={this.state.interval}/>
           </CardHeader>
           <CardBody>
@@ -101,7 +87,7 @@ export default class GatewayLogger extends Component {
     )
   }
 
-  reactTableColumns() {
+  reactTableColumns () {
     return [
       {
         Header: 'زمان',
@@ -152,7 +138,10 @@ export default class GatewayLogger extends Component {
       {
         Header: 'RSSI',
         id: 'rssi',
-        accessor: row => <div style={{direction:'ltr',textAlign:'right'}}>{row.uplinkframe ? (row.uplinkframe.rxinfo.length ? row.uplinkframe.rxinfo[0].rssi : '') :
+        accessor: row => <div style={{
+          direction: 'ltr',
+          textAlign: 'right'
+        }}>{row.uplinkframe ? (row.uplinkframe.rxinfo.length ? row.uplinkframe.rxinfo[0].rssi : '') :
           row.downlinkframe.rxinfo.length ? row.downlinkframe.rxinfo[0].rssi : ''}</div>,
         maxWidth: 100,
       },
@@ -161,8 +150,8 @@ export default class GatewayLogger extends Component {
         Header: 'Payload',
         filterable: false,
         accessor: row =>
-          <div style={{textAlign: 'left', direction: 'ltr'}}>
-            <div style={{textAlign: 'center'}}>
+          <div style={{ textAlign: 'left', direction: 'ltr' }}>
+            <div style={{ textAlign: 'center' }}>
               <Button onClick={() => this.toggle('json', row.uplinkframe ? row.uplinkframe : row.downlinkframe)}
                       color="info">نمایش</Button>
               <CopyToClipboard text={
@@ -170,44 +159,44 @@ export default class GatewayLogger extends Component {
                   row.downlinkframe.phypayloadjson.macPayload.frmPayload[0].bytes
               }>
                 <i color="info" className={'icon-docs'} onClick={() => {
-                  toastAlerts(true, 'کپی شد');
+                  toastAlerts(true, 'کپی شد')
                 }}
-                   style={{marginLeft: '10px', cursor: 'pointer'}}/>
+                   style={{ marginLeft: '10px', cursor: 'pointer' }}/>
               </CopyToClipboard>
             </div>
           </div>
 
-
       }
-    ];
+    ]
   }
 
-  start() {
+  start () {
     let interval = setInterval(() => {
       streamFetch(`/gateway/${this.props.gateway}/frames?since=${this.state.refreshPeriod / 1000}`,
         (response) => {
-          if (response && response.result && response.result.frames)
-            this.setState({data: [...response.result.frames, ...this.state.data]})
+          if (response && response.result && response.result.frames) {
+            this.setState({ data: [...response.result.frames, ...this.state.data] })
+          }
         })
     }, this.state.refreshPeriod)
-    this.setState({interval})
+    this.setState({ interval })
   }
 
-  stop() {
+  stop () {
     // use intervalId from the state to clear the interval
-    clearInterval(this.state.interval);
+    clearInterval(this.state.interval)
     this.setState({
       interval: 0
     })
   }
 
-  clear() {
+  clear () {
     this.setState({
       data: []
     })
   }
 
-  toggleCollapse(id) {
+  toggleCollapse (id) {
     this.setState({
       collapses: {
         ...this.state.collapses,
@@ -216,13 +205,14 @@ export default class GatewayLogger extends Component {
     })
   }
 
-  toggle(modal, data) {
-    let state = {};
-    if (modal === 'json')
+  toggle (modal, data) {
+    let state = {}
+    if (modal === 'json') {
       state = {
         jsonModal: !this.state.jsonModal,
         jsonData: data ? data : ''
       }
+    }
     this.setState(state);
   }
 

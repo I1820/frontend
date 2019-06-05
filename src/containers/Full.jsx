@@ -1,59 +1,55 @@
-import React, {Component} from 'react';
-import {Switch, Route, Redirect} from 'react-router-dom';
-import {Container} from 'reactstrap';
-import Header from '../../components/Header/';
-import Sidebar from '../../components/Sidebar/Sidebar.jsx';
-import Breadcrumb from '../../components/Breadcrumb/';
-import Footer from '../../components/Footer/';
+import React, { Component } from 'react'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import { Container } from 'reactstrap'
+import Header from '../components/Header'
+import Sidebar from '../components/Sidebar/Sidebar.jsx'
+import Breadcrumb from '../components/Breadcrumb'
+import Footer from '../components/Footer'
 
-import Dashboard from '../../views/Dashboard/';
+import Dashboard from '../views/Dashboard'
 
-import globalCodec from '../../views/globalCodec/GlobalCodecList'
-import AddTemplate from '../../views/Editros/addGlobalTemplate'
-
+import globalCodec from '../views/globalCodec/GlobalCodecList'
+import AddTemplate from '../views/Editros/addGlobalTemplate'
 // PackageManagment
-import PackageList from '../../views/PackageManagement/PackageList'
-import NewPackage from '../../views/PackageManagement/PackageManage'
-
+import PackageList from '../views/PackageManagement'
+import NewPackage from '../views/PackageManagement/PackageManage'
 // usersManagement
-import UsersList from '../../views/UserPaymentManagment/UsersList'
-import RoleList from '../../views/UserPaymentManagment/RoleList'
-import UserInfo from '../../views/UserPaymentManagment/UserInfo'
-import UserTransactions from '../../views/UserPaymentManagment/UsersTrancations'
+import UsersList from '../views/UserPaymentManagment'
+import RoleList from '../views/UserPaymentManagment/RoleList'
+import UserInfo from '../views/UserPaymentManagment/UserInfo'
+import UserTransactions from '../views/UserPaymentManagment/UsersTrancations'
 
-import Gateways from '../../views/Gateways/Gateways';
-import GatewaysNew from '../../views/Gateways/GatewaysNew';
-import GatewaysView from '../../views/Gateways/GatewaysView';
+import Gateways from '../views/Gateways'
+import GatewaysNew from '../views/Gateways/GatewaysNew'
+import GatewaysView from '../views/Gateways/GatewaysView'
 
-import DeviceProfile from '../../views/DeviceProfile/DeviceProfile';
-import DeviceProfileNew from '../../views/DeviceProfile/DeviceProfileNew';
+import DeviceProfile from '../views/DeviceProfile'
+import DeviceProfileNew from '../views/DeviceProfile/DeviceProfileNew'
 
-import Profile from '../../views/Profile/';
+import Profile from '../views/Profile'
 
-import ProjectsList from '../../views/Projects/ProjectsList.js';
-import ProjectsManage from '../../views/Projects/ProjectsManage.js';
-import ProjectsView from '../../views/Projects/ProjectsView.js';
-
+import ProjectsList from '../views/Projects/ProjectsList'
+import ProjectsManage from '../views/Projects/ProjectsManage.js'
+import ProjectsView from '../views/Projects/ProjectsView.js'
 // Package
-import MyPackages from '../../views/Packages/MyPckages'
-import SelectedPackage from '../../views/Packages/SelectedPackage'
-import Transactions from '../../views/Packages/Transactions'
-import BuyedPackages from '../../views/Packages/BuyedPackage'
+import MyPackages from '../views/Packages/MyPckages'
+import SelectedPackage from '../views/Packages/SelectedPackage'
+import BuyedPackages from '../views/Packages/BuyedPackage'
 
-import ThingsExcel from '../../views/Things/ThingsExcel.js';
-import ThingsList from '../../views/Things/ThingsList.js'
-import CreateThing from '../../views/Things/CreateThing.js'
+import ThingsExcel from '../views/Things/ThingsExcel.js'
+import ThingsList from '../views/Things'
+import CreateThing from '../views/Things/CreateThing.js'
 
-import addScenario from '../../views/Editros/addScenario'
+import addScenario from '../views/Editros/addScenario'
 
-import sendCodec from '../../views/Editros/sendCodec';
-import addTemplate from '../../views/Editros/addTemplate';
-import AllTransactions from '../../views/AdminPayments/AllTransactions';
-import PaymentPortalList from '../../views/PaymentPortalManagment/PaymentPortalList';
-import AdminLinks from '../../views/Admin/AdminLinks';
+import sendCodec from '../views/Editros/sendCodec'
+import addTemplate from '../views/Editros/addTemplate'
+import AllTransactions from '../views/AdminPayments/AllTransactions'
+import PaymentPortalList from '../views/PaymentPortalManagment/PaymentPortalList'
+import AdminLinks from '../views/Admin/AdminLinks'
 
 class Full extends Component {
-  render() {
+  render () {
     return (
       <div className="app">
         <Header/>
@@ -111,7 +107,6 @@ class Full extends Component {
                 <Route path="/things/edit/:project_id/:thing_id" name="createThing" component={CreateThing}/>*/
                 <Route path="/project/manage/createThing/:project_id" name="createThing" component={CreateThing}/>
                 <Route path="/things" name="ThingsList" component={ThingsList}/>
-                /*
                 <Redirect from="/" to="/dashboard"/>
               </Switch>
             </Container>
@@ -119,8 +114,8 @@ class Full extends Component {
         </div>
         <Footer/>
       </div>
-    );
+    )
   }
 }
 
-export default Full;
+export default Full

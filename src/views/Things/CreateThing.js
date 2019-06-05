@@ -1,47 +1,26 @@
-import React, { Component } from 'react';
-import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Badge,
-  FormGroup,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  CardTitle,
-  Button,
-  ButtonGroup,
-  Label,
-  Input,
-  Table
-} from 'reactstrap';
+import React, { Component } from 'react'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Col, FormGroup, Input, Label } from 'reactstrap'
 
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
-import L from 'leaflet';
-import iconUrl from 'leaflet/dist/images/marker-icon.png';
-import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import L from 'leaflet'
+import iconUrl from 'leaflet/dist/images/marker-icon.png'
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-import { AvForm, AvField, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation'
 
-import connect from 'react-redux/es/connect/connect';
-import {
-  createThingAction,
-  editThingAction,
-  getThingAction,
-  getThingProfileListAction
-} from '../../actions/AppActions';
-import Spinner from '../Spinner/Spinner';
+import connect from 'react-redux/es/connect/connect'
+import { createThingAction, editThingAction, getThingAction, getThingProfileListAction } from '../../actions/AppActions'
+import Spinner from '../Spinner/Spinner'
 
-import { toast } from 'react-toastify';
-import { css } from 'glamor';
-import Select2 from 'react-select2-wrapper';
-import { toastAlerts } from '../Shared/toast_alert';
+import { toast } from 'react-toastify'
+import { css } from 'glamor'
+import Select2 from 'react-select2-wrapper'
+import { toastAlerts } from '../Shared/toast_alert'
 
 class CreateThing extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.changeForm = this.changeForm.bind(this)
     this.submitForm = this.submitForm.bind(this)
@@ -63,7 +42,7 @@ class CreateThing extends Component {
     }
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.props.dispatch(getThingProfileListAction())
     this.setState({
       project: this.props.match.params.project_id
@@ -76,14 +55,15 @@ class CreateThing extends Component {
     }
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps (props) {
     if (this.props.match.params.thing_id !== undefined) {
       props.things.forEach((thing) => {
         if (thing._id === this.props.match.params.thing_id) {
-          if (thing.profile !== undefined && thing.profile !== null)
-            this.thing_profile_slug = thing.profile.thing_profile_slug;
-          else
+          if (thing.profile !== undefined && thing.profile !== null) {
+            this.thing_profile_slug = thing.profile.thing_profile_slug
+          } else {
             this.thing_profile_slug = ''
+          }
           this.setState({
             thing: {
               ...thing,
@@ -100,7 +80,7 @@ class CreateThing extends Component {
     }
   }
 
-  render() {
+  render () {
     console.log(this.state.thing.lat)
     return (
       <div>
@@ -129,7 +109,7 @@ class CreateThing extends Component {
                          placeholder={'شی طبقه سوم'}
                          maxLength={150}
                          value={this.state.thing.description}
-                         style={{resize: 'none'}}
+                         style={{ resize: 'none' }}
                          type="textarea"/>
                 </Col>
               </FormGroup>
@@ -166,14 +146,14 @@ class CreateThing extends Component {
                   <AvFeedback>شناسه معتبر نیست</AvFeedback>
                 </Col>
               </AvGroup>
-              <FormGroup row style={{display: this.state.thing.type === 'lora' ? 'flex' : 'none'}}>
+              <FormGroup row style={{ display: this.state.thing.type === 'lora' ? 'flex' : 'none' }}>
                 <Label sm={3} htmlFor="select">پروفایل شی:</Label>
                 <Col md="5">
                   <Select2
                     name="device_profile_slug"
-                    style={{width: '100%'}}
+                    style={{ width: '100%' }}
                     data={this.props.profiles.map((profile) => {
-                      return {text: profile.name, id: profile.thing_profile_slug}
+                      return { text: profile.name, id: profile.thing_profile_slug }
                     })}
                     refs="tags"
                     value={this.state.thing_profile_slug}
@@ -186,7 +166,7 @@ class CreateThing extends Component {
                   />
                 </Col>
               </FormGroup>
-              <AvGroup row style={{display: this.state.thing.type !== 'lora' ? 'flex' : 'none'}}>
+              <AvGroup row style={{ display: this.state.thing.type !== 'lora' ? 'flex' : 'none' }}>
                 <Label sm={3}>آدرس IP:</Label>
                 <Col sm={5}>
 
@@ -200,7 +180,7 @@ class CreateThing extends Component {
                     type="text"/>
                   <AvFeedback>آدرس IP معتبر نیست</AvFeedback>
                 </Col>
-                </AvGroup>
+              </AvGroup>
 
               <FormGroup row>
                 <Label sm={3}>عرض جغرافیایی:</Label>
@@ -239,23 +219,24 @@ class CreateThing extends Component {
               <TileLayer
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker draggable={true} onDragend={this.onDragend} position={[this.state.thing.lat, this.state.thing.long]} icon={L.icon({
-                        iconSize: [ 25, 41 ],
-                        iconAnchor: [ 13, 41 ],
-                        iconUrl: iconUrl,
-                        shadowUrl: shadowUrl
-                })}>
+              />
+              <Marker draggable={true} onDragend={this.onDragend}
+                      position={[this.state.thing.lat, this.state.thing.long]} icon={L.icon({
+                iconSize: [25, 41],
+                iconAnchor: [13, 41],
+                iconUrl: iconUrl,
+                shadowUrl: shadowUrl
+              })}>
                 <Popup>Your Thing</Popup>
               </Marker>
             </Map>
           </CardBody>
         </Card>
       </div>
-    );
+    )
   }
 
-  onDragend(event) {
+  onDragend (event) {
     this.setState({
       thing: {
         lat: event.target._latlng.lat,
@@ -264,7 +245,7 @@ class CreateThing extends Component {
     })
   }
 
-  changeForm(event) {
+  changeForm (event) {
     this.setState({
       thing: {
         ...this.state.thing,
@@ -273,7 +254,7 @@ class CreateThing extends Component {
     })
   }
 
-  submitForm() {
+  submitForm () {
     const data = {
       name: this.state.thing.name,
       description: this.state.thing.description,
@@ -285,15 +266,15 @@ class CreateThing extends Component {
       type: this.state.thing.type,
       ip: this.state.thing.IP
     }
-    if (this.state.thing._id === undefined)
+    if (this.state.thing._id === undefined) {
       this.props.dispatch(createThingAction(data, this.state.project, toastAlerts))
-    else {
+    } else {
       this.props.dispatch(editThingAction(this.state.project, this.state.thing._id, data, toastAlerts))
     }
   }
 
-  callback(status, message) {
-    if (!status)
+  callback (status, message) {
+    if (!status) {
       toast(message, {
         position: toast.POSITION.BOTTOM_RIGHT,
         className: css({
@@ -303,11 +284,12 @@ class CreateThing extends Component {
         progressClassName: css({
           background: '#813838'
         })
-      });
+      })
+    }
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     profiles: state.thingProfileReducer,
     loading: state.homeReducer.currentlySending,

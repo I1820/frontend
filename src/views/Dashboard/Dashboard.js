@@ -1,44 +1,45 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
-  Row,
-  Col,
+  Button,
   Card,
-  Form,
-  Badge,
-  FormGroup,
-  CardHeader,
   CardBody,
   CardFooter,
+  CardHeader,
   CardTitle,
-  Button,
-  ButtonGroup,
-  Label,
+  Col,
+  FormGroup,
   Input,
-  Table, Modal, ModalHeader, ModalBody, ModalFooter
-} from 'reactstrap';
+  Label,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row
+} from 'reactstrap'
 import ReactTable from 'react-table'
-import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
-import { Link } from 'react-router-dom';
+import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation'
+import { Link } from 'react-router-dom'
 
-import { connect } from 'react-redux';
-import Select2 from 'react-select2-wrapper';
-import { toastAlerts } from '../Shared/toast_alert';
+import { connect } from 'react-redux'
+import Select2 from 'react-select2-wrapper'
+import { toastAlerts } from '../Shared/toast_alert'
 
 import {
-  deleteDashboardWidgetChartAction, getDashboardAction, getUserThingsAction,
+  deleteDashboardWidgetChartAction,
+  getDashboardAction,
+  getUserThingsAction,
   setDashboardWidgetChartAction
-} from '../../actions/AppActions';
-import moment from 'moment-jalaali';
-import _ from 'underscore';
-import { toPersianNumbers } from '../Shared/helpers';
-import Spinner from '../Spinner/Spinner';
+} from '../../actions/AppActions'
+import moment from 'moment-jalaali'
+import { toPersianNumbers } from '../Shared/helpers'
+import Spinner from '../Spinner/Spinner'
 
-const ReactHighcharts = require('react-highcharts');
+const ReactHighcharts = require('react-highcharts')
 
 class Dashboard extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.toggle = this.toggle.bind(this)
     this.refresh = this.refresh.bind(this)
     this.getThings = this.getThings.bind(this)
@@ -67,25 +68,28 @@ class Dashboard extends Component {
     }
   }
 
-  toggle(modal) {
-    this.setState({location: false, modalToggle: {...this.state.modalToggle, [modal]: !this.state.modalToggle[modal]}})
+  toggle (modal) {
+    this.setState({
+      location: false,
+      modalToggle: { ...this.state.modalToggle, [modal]: !this.state.modalToggle[modal] }
+    })
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.getThings()
     this.refresh()
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
   }
 
-  render() {
+  render () {
     return (
       <div>
         <Spinner display={this.state.loading || this.state.first_loading}/>
         <Modal isOpen={this.state.modalToggle.setWidgetChart}
                toggle={() => {
-                 this.toggle('setWidgetChart');
+                 this.toggle('setWidgetChart')
                  this.setSate({
                    widget: {
                      type: 'line',
@@ -103,7 +107,7 @@ class Dashboard extends Component {
                   <AvInput name={'name'}
                            onChange={(event) => {
                              this.setState({
-                               widget: {...this.state.widget, title: event.target.value}
+                               widget: { ...this.state.widget, title: event.target.value }
                              })
                            }}
                            type="text"
@@ -115,10 +119,10 @@ class Dashboard extends Component {
                 <Label sm={3}> شی : </Label>
                 <Col sm={9}>
                   <Select2
-                    style={{width: '100%'}}
+                    style={{ width: '100%' }}
                     value={this.devEUI}
                     data={this.state.things.map((thing) => {
-                      return {text: thing.name, id: thing.dev_eui}
+                      return { text: thing.name, id: thing.dev_eui }
                     })}
                     ref="tags"
                     onSelect={(event) => {
@@ -132,7 +136,7 @@ class Dashboard extends Component {
                   />
                 </Col>
               </FormGroup>
-              <AvGroup style={{display: this.state.location ? 'none' : 'flex'}} row>
+              <AvGroup style={{ display: this.state.location ? 'none' : 'flex' }} row>
                 <Label sm={3}> alias : </Label>
                 <Col sm={9}>
                   <Input type="select" onChange={(event) => {
@@ -144,14 +148,13 @@ class Dashboard extends Component {
                         }
                       })
                       this.setState({
-                        widget: {...this.state.widget, key: event.target.value, alias: aliasSelect},
+                        widget: { ...this.state.widget, key: event.target.value, alias: aliasSelect },
                         get_key: false,
 
                       })
-                    }
-                    else {
+                    } else {
                       this.setState({
-                        widget: {...this.state.widget, key: '', alias: ''},
+                        widget: { ...this.state.widget, key: '', alias: '' },
                         get_key: true,
                         alias: event.target.name
                       })
@@ -168,13 +171,13 @@ class Dashboard extends Component {
                   </Input>
                 </Col>
               </AvGroup>
-              <AvGroup style={{display: this.state.location || !this.state.get_key ? 'none' : 'flex'}} row>
+              <AvGroup style={{ display: this.state.location || !this.state.get_key ? 'none' : 'flex' }} row>
                 <Label sm={3}> کلید : </Label>
                 <Col sm={9}>
                   <AvInput name={'key'}
                            onChange={(event) => {
                              this.setState({
-                               widget: {...this.state.widget, key: event.target.value}
+                               widget: { ...this.state.widget, key: event.target.value }
                              })
                            }}
                            type="text"
@@ -182,12 +185,12 @@ class Dashboard extends Component {
                   <AvFeedback>الزامی است</AvFeedback>
                 </Col>
               </AvGroup>
-              <FormGroup style={{display: this.state.location ? 'none' : 'flex'}} row>
+              <FormGroup style={{ display: this.state.location ? 'none' : 'flex' }} row>
                 <Label sm={3}> بازه زمانی:</Label>
                 <Col sm={9}>
                   <Input type="select" onChange={(event) => {
                     this.setState({
-                      widget: {...this.state.widget, window: event.target.value}
+                      widget: { ...this.state.widget, window: event.target.value }
                     })
                   }}>
                     <option value={1}>یک ساعت اخیر</option>
@@ -201,9 +204,9 @@ class Dashboard extends Component {
                 <Label sm={3}> نوع افزونه:</Label>
                 <Col sm={9}>
                   <Input type="select" onChange={(event) => {
-                     this.setState({
-                        widget: {...this.state.widget, type: event.target.value}
-                      })
+                    this.setState({
+                      widget: { ...this.state.widget, type: event.target.value }
+                    })
                   }}>
                     <option value={'line'}>نمودار خطی</option>
                     <option value={'table'}>جدول</option>
@@ -214,16 +217,16 @@ class Dashboard extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color="primary" className="ml-1" onClick={() => {
-              this.setState({loading: true})
+              this.setState({ loading: true })
               this.toggle('setWidgetChart')
               this.props.dispatch(setDashboardWidgetChartAction({
                 ...this.state.widget,
                 devEUI: this.devEUI
               }, null, (a, v) => {
-                this.setState({loading: false})
+                this.setState({ loading: false })
                 toastAlerts(a, v)
               }))
-              this.setState({widget: {type: 'line', window: 1}});
+              this.setState({ widget: { type: 'line', window: 1 } })
               this.refresh()
             }}>ارسال</Button>
             <Button color="danger" onClick={() => this.toggle('setWidgetChart')}>انصراف</Button>
@@ -239,7 +242,7 @@ class Dashboard extends Component {
           </ModalBody>
           <ModalFooter>
             <Button color="primary" className="ml-1" onClick={() => {
-              this.props.dispatch(deleteDashboardWidgetChartAction(this.state.selectedChart, toastAlerts));
+              this.props.dispatch(deleteDashboardWidgetChartAction(this.state.selectedChart, toastAlerts))
               this.toggle('deleteWidgetChart')
               this.refresh()
             }}>حذف</Button>
@@ -259,7 +262,7 @@ class Dashboard extends Component {
               </CardBody>
               <CardFooter>
                 <Link to="/projects"><Button color="link" block
-                  className="text-muted d-flex justify-content-between align-items-center"
+                                             className="text-muted d-flex justify-content-between align-items-center"
                 >
                   <span className="small font-weight-bold">پروژه‌ها</span>
                   <i className="fa fa-angle-left"></i>
@@ -278,7 +281,7 @@ class Dashboard extends Component {
               </CardBody>
               <CardFooter>
                 <Link to="/things"><Button color="link" block
-                  className="text-muted d-flex justify-content-between align-items-center"
+                                           className="text-muted d-flex justify-content-between align-items-center"
                 >
                   <span className="small font-weight-bold">اشیا</span>
                   <i className="fa fa-angle-left"></i>
@@ -293,17 +296,18 @@ class Dashboard extends Component {
           </Col>
         </Row>
         <Row>
-          { this.renderWidgets() }
+          {this.renderWidgets()}
         </Row>
       </div>
-    );
+    )
   }
 
-  renderWidgets() {
+  renderWidgets () {
     return (
       Object.keys(this.state.charts).map((key) => {
-        if (this.state.charts[key].data === undefined)
-          return; // return where there is no data for the widget
+        if (this.state.charts[key].data === undefined) {
+          return
+        } // return where there is no data for the widget
 
         if (this.state.charts[key].type === 'line') {
           let config = {
@@ -358,14 +362,13 @@ class Dashboard extends Component {
                 </CardBody>
                 <CardFooter>
                   <Button onClick={() => {
-                    this.setState({selectedChart: key}, () => this.toggle('deleteWidgetChart'))
+                    this.setState({ selectedChart: key }, () => this.toggle('deleteWidgetChart'))
                   }} color="danger">حذف</Button>
                 </CardFooter>
               </Card>
             </Col>
           )
-        }
-        else if (this.state.charts[key].type === 'table') {
+        } else if (this.state.charts[key].type === 'table') {
           return (
             <Col sm="6" key={key}>
               <Card className="text-justify">
@@ -393,7 +396,7 @@ class Dashboard extends Component {
                 </CardBody>
                 <CardFooter>
                   <Button onClick={() => {
-                    this.setState({selectedChart: key}, () => this.toggle('deleteWidgetChart'))
+                    this.setState({ selectedChart: key }, () => this.toggle('deleteWidgetChart'))
                   }} color="danger">حذف</Button>
                 </CardFooter>
               </Card>
@@ -404,7 +407,7 @@ class Dashboard extends Component {
     )
   }
 
-  reactTableColumns(thing) {
+  reactTableColumns (thing) {
     return [
       {
         Header: 'شی فرستنده',
@@ -421,15 +424,16 @@ class Dashboard extends Component {
         Header: 'داده دریافت شده',
         accessor: row => JSON.stringify(row.value)
       },
-    ];
+    ]
   }
 
-  refresh() {
-    if (this.state.fetching === true)
-      return;
+  refresh () {
+    if (this.state.fetching === true) {
+      return
+    }
     this.setState({
       fetching: true,
-    });
+    })
     this.props.dispatch(getDashboardAction((data) => {
       this.setState({
         charts: data.charts,
@@ -437,11 +441,11 @@ class Dashboard extends Component {
         thing_num: data.things_num,
         fetching: false,
         first_loading: false
-      });
-    }));
+      })
+    }))
   }
 
-  getThings() {
+  getThings () {
     this.props.dispatch(getUserThingsAction(1, (data) => {
       this.setState({
         aliases: data.aliases,
@@ -451,8 +455,8 @@ class Dashboard extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {};
+function mapStateToProps (state) {
+  return {}
 }
 
 export default connect(mapStateToProps)(Dashboard);

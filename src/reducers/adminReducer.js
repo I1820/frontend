@@ -1,5 +1,4 @@
-import _ from 'underscore'
-import { GET_USERS, FETCH_USER, GET_CODECS } from '../constants/AppConstants'
+import { FETCH_USER, GET_CODECS, GET_USERS } from '../constants/AppConstants'
 
 export function adminReducer (state = { usersList: [], users: {} }, action) {
   switch (action.type) {

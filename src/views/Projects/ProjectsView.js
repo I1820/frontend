@@ -1,44 +1,37 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
-  Row,
-  Col,
+  Button,
   Card,
-  Form,
-  Badge,
-  FormGroup,
-  CardHeader,
   CardBody,
   CardFooter,
+  CardHeader,
   CardTitle,
-  Button,
-  ButtonGroup,
-  Label,
+  Col,
+  Form,
+  FormGroup,
   Input,
-  Table, PaginationItem, PaginationLink, Pagination
-} from 'reactstrap';
+  Label,
+  Row
+} from 'reactstrap'
 
 import _ from 'underscore'
 
-import ReactHighcharts from 'react-highcharts';
+import ReactHighcharts from 'react-highcharts'
 import moment from 'moment-jalaali'
-import JSONPretty from 'react-json-pretty';
-import {
-  getProject,
-  getThingsMainDataAction, DownloadThingsDataExcelAction
-} from '../../actions/AppActions';
-import { toast } from 'react-toastify';
-import { connect } from 'react-redux';
-import { DateTimeRangePicker, DateTimePicker } from 'react-advance-jalaali-datepicker';
-import Select2 from 'react-select2-wrapper';
-import Spinner from '../Spinner/Spinner';
-import { css } from 'glamor';
+import JSONPretty from 'react-json-pretty'
+import { DownloadThingsDataExcelAction, getProject, getThingsMainDataAction } from '../../actions/AppActions'
+import { toast } from 'react-toastify'
+import { connect } from 'react-redux'
+import { DateTimePicker, DateTimeRangePicker } from 'react-advance-jalaali-datepicker'
+import Select2 from 'react-select2-wrapper'
+import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
-import Loading from '../../components/Loading';
-import './project.css';
+import Loading from '../../components/Loading'
+import './project.css'
 
 class ProjectsView extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.setThing = this.setThing.bind(this)
     this.renderPeriodPicker = this.renderPeriodPicker.bind(this)
     this.renderTimePicker = this.renderTimePicker.bind(this)
@@ -54,11 +47,11 @@ class ProjectsView extends Component {
       pageSize: 10,
       loading: false,
       type: 'area',
-      selectedThing: {ids: []},
+      selectedThing: { ids: [] },
       period: 5000,
       project: {
         things: [],
-        _id:  this.props.match.params['id']
+        _id: this.props.match.params['id']
       },
       auto: false,
       config: {},
@@ -76,12 +69,11 @@ class ProjectsView extends Component {
     }
   }
 
-
-  componentWillMount() {
+  componentWillMount () {
     this.loadProject()
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps (props) {
     if (this.state.project._id) {
       props.projects.forEach((project) => {
         if (project._id === this.state.project._id) {
@@ -93,14 +85,14 @@ class ProjectsView extends Component {
     }
   }
 
-  loadProject() {
+  loadProject () {
     if (this.state.project._id) {
       this.props.dispatch(getProject(this.state.project._id, undefined, 1))
     }
   }
 
-  draw() {
-    this.setState({draw: true})
+  draw () {
+    this.setState({ draw: true })
     const config = {
       chart: {
         type: this.state.type,
@@ -146,8 +138,8 @@ class ProjectsView extends Component {
             '<div style="text-align: center;direction: rtl">' + this.point.name + '</div>' +
             '<div style="text-align: center">' + this.series.name +
             ': <span style="font-weight: bold; ">' + this.y + '</span></div>' +
-            '</div>';
-          return res;
+            '</div>'
+          return res
         }
       },
     }
@@ -161,7 +153,7 @@ class ProjectsView extends Component {
     let sensors = []
     this.state.data.map((d, i) => {
       _.allKeys(d.data).map((k, i2) => {
-        if (_.find(sensors, {name: `${things[d.thingid]}: ${k}`}) === undefined) {
+        if (_.find(sensors, { name: `${things[d.thingid]}: ${k}` }) === undefined) {
           sensors.push({
             label: k,
             name: `${things[d.thingid]}: ${k}`,
@@ -192,40 +184,41 @@ class ProjectsView extends Component {
     })
   }
 
-  getcolor(k) {
+  getcolor (k) {
     return ((((k.split('').reduce(function (a, b) {
-      a = ((a << 5) - a) + b.charCodeAt(0);
+      a = ((a << 5) - a) + b.charCodeAt(0)
       return a & a
     }, 0)) % 10) + 10) % 10)
   }
 
-  getThings() {
+  getThings () {
     let things = []
     this.state.project.things && this.state.project.things.forEach((thing) => {
-        things.push({text: thing.name, id: thing._id})
+        things.push({ text: thing.name, id: thing._id })
       }
     )
     return things
   }
 
-  setThing(things) {
-    let selectedThing = {ids: []}
-    for (let i = 0; i < things.target.selectedOptions.length; i++)
+  setThing (things) {
+    let selectedThing = { ids: [] }
+    for (let i = 0; i < things.target.selectedOptions.length; i++) {
       selectedThing.ids.push(things.target.selectedOptions[i].value)
-    this.setState({selectedThing})
+    }
+    this.setState({ selectedThing })
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     // use intervalId from the state to clear the interval
     this.stop()
   }
 
-  render() {
+  render () {
     return (
       <div>
         <Spinner display={(this.props.loading && !this.state.interval) || this.state.draw}/>
         <Card className="text-justify">
-          <CardHeader style={{display: 'flex', alignItems: 'center'}}>
+          <CardHeader style={{ display: 'flex', alignItems: 'center' }}>
             <CardTitle className="mb-0 font-weight-bold h6">دریافت داده</CardTitle>
           </CardHeader>
           <CardBody>
@@ -234,7 +227,7 @@ class ProjectsView extends Component {
                 <Label sm={2}>شی ارسال کننده:‌</Label>
                 <Col sm={5}>
                   <Select2
-                    style={{width: '100%'}}
+                    style={{ width: '100%' }}
                     multiple
                     data={this.getThings()}
                     ref="tags"
@@ -272,7 +265,7 @@ class ProjectsView extends Component {
                   </Input>
                 </Col>
               </FormGroup>
-              <FormGroup style={{display: this.state.auto ? 'none' : 'flex'}} row>
+              <FormGroup style={{ display: this.state.auto ? 'none' : 'flex' }} row>
                 <Label sm={2}></Label>
                 <Col sm={5}>
                   {this.renderTimePicker()}
@@ -283,9 +276,9 @@ class ProjectsView extends Component {
                 <Col sm={5}>
                   <Input type="select" name="type"
                          onChange={(event) => {
-                            this.setState({
-                              type: event.target.value,
-                            })
+                           this.setState({
+                             type: event.target.value,
+                           })
                          }} id="select">
                     <option value="area">خطی</option>
                     <option value="column">میله ای</option>
@@ -308,7 +301,7 @@ class ProjectsView extends Component {
                       limit: this.state.pageSize,
                       since: this.state.since ? this.state.since : Math.floor(Date.now() / 1000) - this.state.window * 60
                     }
-                  });
+                  })
                   this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
                     this.state.project._id,
                     0,
@@ -316,14 +309,16 @@ class ProjectsView extends Component {
                     this.state.since ? this.state.since : Math.floor(Date.now() / 1000) - this.state.window * 60,
                     (status, data) => {
                       let pages = 1
-                      if (this.state.pageSize === data.length)
-                        pages++;
-                      this.setState({tableData: data.reverse(), pages})
-                    }));
+                      if (this.state.pageSize === data.length) {
+                        pages++
+                      }
+                      this.setState({ tableData: data.reverse(), pages })
+                    }))
                 }
                 this.getData(() => {
-                  if (this.state.auto)
-                    this.start();
+                  if (this.state.auto) {
+                    this.start()
+                  }
                 })
               }
               }>دریافت اطلاعات</Button>
@@ -331,10 +326,10 @@ class ProjectsView extends Component {
           </CardBody>
         </Card>
         <Card className="text-justify">
-          <CardHeader style={{display: 'flex'}}>
+          <CardHeader style={{ display: 'flex' }}>
             <span>دریافت خودکار:</span>
-            <Button onClick={() => this.stop()} color="danger" style={{marginRight: '5px'}}>توقف</Button>
-            <Button onClick={() => this.start()} color="primary" style={{marginRight: '5px'}}>شروع</Button>
+            <Button onClick={() => this.stop()} color="danger" style={{ marginRight: '5px' }}>توقف</Button>
+            <Button onClick={() => this.start()} color="primary" style={{ marginRight: '5px' }}>شروع</Button>
             <Loading size={'30px'} isOpen={this.state.interval}/>
           </CardHeader>
           <CardBody>
@@ -373,9 +368,9 @@ class ProjectsView extends Component {
                     limit: state.pageSize,
                     since: this.state.since ? this.state.since : 0
                   }
-                });
-                this.setState({loading: false, tableData: [], pageSize: state.pageSize})
-                if (this.state.since || this.state.window)
+                })
+                this.setState({ loading: false, tableData: [], pageSize: state.pageSize })
+                if (this.state.since || this.state.window) {
                   this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
                     this.state.project._id,
                     (state.page) * state.pageSize,
@@ -384,10 +379,12 @@ class ProjectsView extends Component {
                     (status, data) => {
                       let pages = state.page + 1
                       console.log(state.pageSize, data.length)
-                      if (state.pageSize === data.length)
-                        pages++;
-                      this.setState({tableData: data.reverse(), loading: false, pages})
-                    }));
+                      if (state.pageSize === data.length) {
+                        pages++
+                      }
+                      this.setState({ tableData: data.reverse(), loading: false, pages })
+                    }))
+                }
               }}
             />
           </CardBody>
@@ -396,18 +393,19 @@ class ProjectsView extends Component {
           </CardFooter>
         </Card>
       </div>
-    );
+    )
   }
 
-  downloadExcel() {
-    const params = this.state.excelParams;
-    if (params.things && params.projectId)
+  downloadExcel () {
+    const params = this.state.excelParams
+    if (params.things && params.projectId) {
       this.props.dispatch(DownloadThingsDataExcelAction(params.things, params.projectId, params.offset, params.limit, params.since))
-    else
-      toastAlerts(false, 'داده‌ای موجود نیست');
+    } else {
+      toastAlerts(false, 'داده‌ای موجود نیست')
+    }
   }
 
-  renderTimePicker() {
+  renderTimePicker () {
     return (!this.state.auto ? <DateTimeRangePicker placeholderStart="تاریخ و ساعت شروع"
                                                     placeholderEnd="تاریخ و ساعت پایان"
                                                     format="تاریخ: jYYYY/jMM/jDD ساعت: HH:mm"
@@ -431,25 +429,26 @@ class ProjectsView extends Component {
     />)
   }
 
-  renderPeriodPicker() {
-    if (this.state.auto)
+  renderPeriodPicker () {
+    if (this.state.auto) {
       return (
         <Col>
           <Row>
-            <Label syle={{marginRight: 20}}>پس از </Label>
+            <Label syle={{ marginRight: 20 }}>پس از </Label>
             <Col sm={2}>
               <Input type="number" defaultValue={5} onChange={(e) => {
                 let value = e.target.value
-                this.setState({period: !isNaN(value) ? value * 1000 : 5000})
+                this.setState({ period: !isNaN(value) ? value * 1000 : 5000 })
               }}/>
             </Col>
-            <Label syle={{marginRight: 20}}>ثانیه </Label>
+            <Label syle={{ marginRight: 20 }}>ثانیه </Label>
           </Row>
         </Col>
       )
+    }
   }
 
-  reactTableColumns() {
+  reactTableColumns () {
     return [
       {
         id: 'time',
@@ -466,53 +465,54 @@ class ProjectsView extends Component {
         id: 'projectStatus',
         Header: 'داده دریافت شده',
         filterable: false,
-        accessor: row => <div style={{textAlign: 'left', direction: 'ltr'}}><JSONPretty id="json-pretty"
-                                                                                        json={row.data}/>
+        accessor: row => <div style={{ textAlign: 'left', direction: 'ltr' }}><JSONPretty id="json-pretty"
+                                                                                          json={row.data}/>
         </div>
       }, {
         id: 'raw',
         Header: 'داده خام',
         filterable: false,
-        accessor: row => <div style={{whiteSpace: 'pre-wrap', textAlign: 'left', direction: 'ltr'}}>
+        accessor: row => <div style={{ whiteSpace: 'pre-wrap', textAlign: 'left', direction: 'ltr' }}>
           {row.raw}
         </div>
       },
-    ];
+    ]
   }
 
-  start() {
-    if (this.state.selectedThing.ids.length)
+  start () {
+    if (this.state.selectedThing.ids.length) {
       this.setState({
         interval: setInterval(() => {
           this.getData()
         }, this.state.period)
       })
+    }
   }
 
-  stop() {
-    clearInterval(this.state.interval);
+  stop () {
+    clearInterval(this.state.interval)
     this.setState({
       interval: 0
     })
   }
 
-
-  getData(cb) {
+  getData (cb) {
     this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
       this.state.project._id,
       0,
       0,
       this.state.since ? this.state.since : Math.floor(Date.now() / 1000) - this.state.window * 60,
       (status, data) => {
-        this.setState({data: data.reverse()})
+        this.setState({ data: data.reverse() })
         this.draw()
-        if (cb)
+        if (cb) {
           cb()
+        }
       }));
   }
 }
 
-function mapStateToPropes(state) {
+function mapStateToPropes (state) {
   return {
     projects: state.projectReducer,
     loading: state.homeReducer.currentlySending

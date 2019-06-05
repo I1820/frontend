@@ -1,11 +1,10 @@
-import React, {Component} from 'react';
-import {Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Card, CardHeader, CardBody} from 'reactstrap';
-
+import React, { Component } from 'react'
+import { Button, Card, CardBody, CardHeader, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap'
 
 class Modals extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       modal: false,
       large: false,
@@ -15,67 +14,67 @@ class Modals extends Component {
       warning: false,
       danger: false,
       info: false
-    };
+    }
 
-    this.toggle = this.toggle.bind(this);
-    this.toggleLarge = this.toggleLarge.bind(this);
-    this.toggleSmall = this.toggleSmall.bind(this);
-    this.togglePrimary = this.togglePrimary.bind(this);
-    this.toggleSuccess = this.toggleSuccess.bind(this);
-    this.toggleWarning = this.toggleWarning.bind(this);
-    this.toggleDanger = this.toggleDanger.bind(this);
-    this.toggleInfo = this.toggleInfo.bind(this);
+    this.toggle = this.toggle.bind(this)
+    this.toggleLarge = this.toggleLarge.bind(this)
+    this.toggleSmall = this.toggleSmall.bind(this)
+    this.togglePrimary = this.togglePrimary.bind(this)
+    this.toggleSuccess = this.toggleSuccess.bind(this)
+    this.toggleWarning = this.toggleWarning.bind(this)
+    this.toggleDanger = this.toggleDanger.bind(this)
+    this.toggleInfo = this.toggleInfo.bind(this)
   }
 
-  toggle() {
+  toggle () {
     this.setState({
       modal: !this.state.modal
-    });
+    })
   }
 
-  toggleLarge() {
+  toggleLarge () {
     this.setState({
       large: !this.state.large
-    });
+    })
   }
 
-  toggleSmall() {
+  toggleSmall () {
     this.setState({
       small: !this.state.small
-    });
+    })
   }
 
-  togglePrimary() {
+  togglePrimary () {
     this.setState({
       primary: !this.state.primary
-    });
+    })
   }
 
-  toggleSuccess() {
+  toggleSuccess () {
     this.setState({
       success: !this.state.success
-    });
+    })
   }
 
-  toggleWarning() {
+  toggleWarning () {
     this.setState({
       warning: !this.state.warning
-    });
+    })
   }
 
-  toggleDanger() {
+  toggleDanger () {
     this.setState({
       danger: !this.state.danger
-    });
+    })
   }
 
-  toggleInfo() {
+  toggleInfo () {
     this.setState({
       info: !this.state.info
-    });
+    })
   }
 
-  render() {
+  render () {
     return (
       <div className="animated fadeIn">
         <Row>
@@ -231,4 +230,4 @@ class Modals extends Component {
   }
 }
 
-export default Modals;
+export default Modals

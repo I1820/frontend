@@ -1,35 +1,25 @@
-import React, {Component} from "react";
+import React, { Component } from 'react'
 // import {selectUser} from '../../actions/AppActions'
 import {
-  Row,
-  Col,
+  Button,
   Card,
-  Form,
-  Badge,
-  Modal,
-  FormGroup,
-  CardHeader,
   CardBody,
   CardFooter,
-  ModalHeader,
+  CardHeader,
+  CardTitle,
+  Modal,
   ModalBody,
   ModalFooter,
-  CardTitle,
-  Button,
-  ButtonGroup,
-  Label,
-  Input,
-  Table,
-  FormText
-} from 'reactstrap';
-import {connect} from 'react-redux';
-import Spinner from "../Spinner/Spinner";
+  ModalHeader
+} from 'reactstrap'
+import { connect } from 'react-redux'
+import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
-import {deleteGlobalCodecAction, getGlobalCodecsAction} from "../../actions/AppActions";
+import { deleteGlobalCodecAction, getGlobalCodecsAction } from '../../actions/AppActions'
 
 class globalCodecsList extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.toggle = this.toggle.bind(this)
     this.state = {
       items: [],
@@ -37,15 +27,15 @@ class globalCodecsList extends Component {
     }
   }
 
-  componentWillMount() {
-    this.props.dispatch(getGlobalCodecsAction());
+  componentWillMount () {
+    this.props.dispatch(getGlobalCodecsAction())
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({items: props.globalCodecs})
+  componentWillReceiveProps (props) {
+    this.setState({ items: props.globalCodecs })
   }
 
-  render() {
+  render () {
 
     return (
 
@@ -64,7 +54,7 @@ class globalCodecsList extends Component {
             <Button color="primary" className="ml-1" onClick={() => {
               this.toggle()
               this.props.dispatch(deleteGlobalCodecAction(this.state.deleteCodec, () => {
-                this.props.dispatch(getGlobalCodecsAction());
+                this.props.dispatch(getGlobalCodecsAction())
               }))
             }}>حذف</Button>
             <Button color="danger" onClick={() => this.toggle()}>انصراف</Button>
@@ -103,8 +93,7 @@ class globalCodecsList extends Component {
     )
   }
 
-
-  reactTableColumns() {
+  reactTableColumns () {
     return [
       {
         Header: 'نام کدک',
@@ -130,29 +119,28 @@ class globalCodecsList extends Component {
           <Button onClick={() => window.location = `#/admin/globalCodec/edit/${row._id}`} className="ml-1"
                   color="warning"
                   size="sm">ویرایش</Button>
-          {" "}
+          {' '}
           <Button onClick={() => {
             this.toggle()
-            this.setState({deleteCodec: row._id})
+            this.setState({ deleteCodec: row._id })
           }} className="ml-1" color="error"
                   size="sm">حذف</Button>
         </div>
       }
-    ];
+    ]
   }
 
-  toggle() {
-    this.setState({deleteModal: !this.state.deleteModal})
+  toggle () {
+    this.setState({ deleteModal: !this.state.deleteModal })
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     loading: state.homeReducer.currentlySending,
     globalCodecs: state.adminReducer.globalCodecs
-  };
+  }
 }
 
-
-export default connect(mapStateToProps)(globalCodecsList);
+export default connect(mapStateToProps)(globalCodecsList)
 

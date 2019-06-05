@@ -1,38 +1,26 @@
-import React, {Component} from 'react';
-import {
-  Col,
-  Card,
-  Form,
-  FormGroup,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  CardTitle,
-  Button,
-  Label,
-  Input
-} from 'reactstrap';
+import React, { Component } from 'react'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Col, FormGroup, Input, Label } from 'reactstrap'
 
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
-import L from 'leaflet';
-import iconUrl from 'leaflet/dist/images/marker-icon.png';
-import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import L from 'leaflet'
+import iconUrl from 'leaflet/dist/images/marker-icon.png'
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-import {AvForm, AvField, AvGroup, AvInput, AvFeedback} from 'availity-reactstrap-validation';
+import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation'
 
-import {createGatewayAction} from '../../actions/AppActions';
-import connect from 'react-redux/es/connect/connect';
-import Spinner from '../Spinner/Spinner';
+import { createGatewayAction } from '../../actions/AppActions'
+import connect from 'react-redux/es/connect/connect'
+import Spinner from '../Spinner/Spinner'
 
-import {toastAlerts} from '../Shared/toast_alert';
+import { toastAlerts } from '../Shared/toast_alert'
 
-const _ = require('lodash');
-const {compose, withProps, lifecycle} = require('recompose');
+const _ = require('lodash')
+const { compose, withProps, lifecycle } = require('recompose')
 
 class GatewaysNew extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.changeForm = this.changeForm.bind(this)
     this.submitForm = this.submitForm.bind(this)
@@ -42,15 +30,14 @@ class GatewaysNew extends Component {
       lat: 35.7024852,
       long: 51.4023424,
       mac: '',
-      online:true
+      online: true
     }
   }
 
-
-  componentDidMount() {
+  componentDidMount () {
   }
 
-  render() {
+  render () {
 
     return (
       <div>
@@ -68,7 +55,7 @@ class GatewaysNew extends Component {
                            placeholder="گذرگاه پژوهشکده"
                            maxLength="50"
                            name={'name'}
-                           onChange={event => this.setState({name: event.target.value})}
+                           onChange={event => this.setState({ name: event.target.value })}
                            required/>
                   <br/>
                   <AvFeedback>الزامی است</AvFeedback>
@@ -81,7 +68,7 @@ class GatewaysNew extends Component {
                            placeholder="AA00CC11DD22EE33"
                            maxLength="16"
                            name='macAddress'
-                           onChange={event => this.setState({mac: event.target.value})}
+                           onChange={event => this.setState({ mac: event.target.value })}
                            required/>
                   <AvFeedback>الزامی است</AvFeedback>
                 </Col>
@@ -90,18 +77,18 @@ class GatewaysNew extends Component {
                 <Label sm={2}>توضیحات : </Label>
                 <Col sm={5}>
                   <Input type="textarea"
-                         style={{resize: 'none'}}
+                         style={{ resize: 'none' }}
                          placeholder="گذرگاه سقف"
                          maxLength="150"
-                         onChange={event => this.setState({description: event.target.value})}/>
+                         onChange={event => this.setState({ description: event.target.value })}/>
                 </Col>
               </FormGroup>
               <FormGroup row>
                 <Label sm={2}> عرض جغرافیایی:</Label>
                 <Col sm={5}>
                   <Input dir="ltr" type="number"
-                    value={this.state.lat ? this.state.lat : 0}
-                    onChange={event => this.setState({lat: event.target.value})}
+                         value={this.state.lat ? this.state.lat : 0}
+                         onChange={event => this.setState({ lat: event.target.value })}
                   />
                 </Col>
               </FormGroup>
@@ -109,8 +96,8 @@ class GatewaysNew extends Component {
                 <Label sm={2}>طول جغرافیایی:</Label>
                 <Col sm={5}>
                   <Input dir="ltr" type="number"
-                    value={this.state.long ? this.state.long : 0}
-                    onChange={event => this.setState({long: event.target.value})}
+                         value={this.state.long ? this.state.long : 0}
+                         onChange={event => this.setState({ long: event.target.value })}
                   />
                 </Col>
               </FormGroup>
@@ -119,7 +106,7 @@ class GatewaysNew extends Component {
                 <Col sm={5}>
                   <Input type="number" dir="rtl"
                          placeholder="۱۰ متر"
-                         onChange={event => this.setState({altitude: event.target.value})}/>
+                         onChange={event => this.setState({ altitude: event.target.value })}/>
                 </Col>
               </FormGroup>
             </AvForm>
@@ -137,30 +124,31 @@ class GatewaysNew extends Component {
               <TileLayer
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker draggable={true} onDragend={this.onDragend} position={[this.state.lat, this.state.long]} icon={L.icon({
-                        iconSize: [ 25, 41 ],
-                        iconAnchor: [ 13, 41 ],
+              />
+              <Marker draggable={true} onDragend={this.onDragend} position={[this.state.lat, this.state.long]}
+                      icon={L.icon({
+                        iconSize: [25, 41],
+                        iconAnchor: [13, 41],
                         iconUrl: iconUrl,
                         shadowUrl: shadowUrl
-                })}>
+                      })}>
                 <Popup>Your Gateway</Popup>
               </Marker>
             </Map>
           </CardBody>
         </Card>
       </div>
-    );
+    )
   }
 
-  onDragend(event) {
+  onDragend (event) {
     this.setState({
       lat: event.target._latlng.lat,
       long: event.target._latlng.lng
     })
   }
 
-  changeForm(event) {
+  changeForm (event) {
     let state = {}
     state[event.target.name] = event.target.value
     this.setState({
@@ -171,7 +159,7 @@ class GatewaysNew extends Component {
     })
   }
 
-  submitForm() {
+  submitForm () {
     this.props.dispatch(createGatewayAction({
         name: this.state.name,
         mac: this.state.mac,
@@ -181,16 +169,17 @@ class GatewaysNew extends Component {
         altitude: this.state.altitude
       },
       (status, result) => {
-        if (status)
+        if (status) {
           window.location = '#/gateways/list'
-        else
-          toastAlerts(status, result);
+        } else {
+          toastAlerts(status, result)
+        }
       }
     ))
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return ({
     loading: state.homeReducer.currentlySending
   })

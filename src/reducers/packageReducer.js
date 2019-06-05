@@ -1,11 +1,11 @@
 import {
+  FREE,
   GET_ADMIN_PACKAGES,
-  GET_USER_PACKAGES,
-  GET_PACKAGE,
-  GET_DISCOUNTS,
   GET_ADMIN_PAYMENT_PORTALS,
-  GET_USER_PAYMENT_PORTALS,
-  FREE
+  GET_DISCOUNTS,
+  GET_PACKAGE,
+  GET_USER_PACKAGES,
+  GET_USER_PAYMENT_PORTALS
 } from '../constants/AppConstants'
 
 export function packageReducer (state = {

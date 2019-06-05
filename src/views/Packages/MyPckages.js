@@ -1,36 +1,34 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { forwardTo, getUserPackagesAction } from '../../actions/AppActions'
 import {
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  Button,
-  CardTitle,
-  CardBody,
   Badge,
-  Nav,
-  NavLink,
-  NavItem,
-  TabContent,
-  TabPane,
+  Button,
+  Card,
+  CardBody,
   CardFooter,
-  ListGroup,
-  ListGroupItem,
+  CardHeader,
+  CardTitle,
+  Col,
   Form,
   FormGroup,
   Label,
-
+  ListGroup,
+  ListGroupItem,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+  TabContent,
+  TabPane,
 } from 'reactstrap'
-import moment from 'moment';
-import { connect } from 'react-redux';
-import _ from 'lodash';
-import classnames from 'classnames';
-import { toastAlerts } from '../Shared/toast_alert';
+import moment from 'moment'
+import { connect } from 'react-redux'
+import _ from 'lodash'
+import classnames from 'classnames'
 
 class MyPackages extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.renderPackage = this.renderPackage.bind(this)
     this.toggleTab = this.toggleTab.bind(this)
     this.state = {
@@ -38,10 +36,10 @@ class MyPackages extends Component {
       my_package: {},
       activeTab: 'my_package',
 
-    };
+    }
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps (props) {
     this.setState({
       packages: props.packages,
       my_package: {
@@ -51,11 +49,11 @@ class MyPackages extends Component {
     })
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.props.dispatch(getUserPackagesAction())
   }
 
-  renderPackage(item) {
+  renderPackage (item) {
     return (
       <Col xs="12" sm="6" md="4" key={item._id}>
         <Card className="border-primary">
@@ -101,31 +99,30 @@ class MyPackages extends Component {
     )
   }
 
-  toggleTab(tab) {
+  toggleTab (tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
-      });
+      })
     }
   }
 
-
-  render() {
+  render () {
     return (
       <div className="animated fadeIn">
         <Nav tabs>
           <NavItem>
             <NavLink
-              className={classnames({active: this.state.activeTab === 'my_package'})}
+              className={classnames({ active: this.state.activeTab === 'my_package' })}
               onClick={() => {
-                this.toggleTab('my_package');
+                this.toggleTab('my_package')
               }}>بسته فعلی من</NavLink>
           </NavItem>
           <NavItem>
             <NavLink
-              className={classnames({active: this.state.activeTab === 'buy_package'})}
+              className={classnames({ active: this.state.activeTab === 'buy_package' })}
               onClick={() => {
-                this.toggleTab('buy_package');
+                this.toggleTab('buy_package')
               }}>خرید بسته</NavLink>
           </NavItem>
 
@@ -193,14 +190,13 @@ class MyPackages extends Component {
 
 }
 
-
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     loading: state.homeReducer.currentlySending,
     packages: state.packageReducer.userPackages,
     my_package: state.userReducer.package
-  };
+  }
 }
 
-export default connect(mapStateToProps)(MyPackages);
+export default connect(mapStateToProps)(MyPackages)
 

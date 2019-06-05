@@ -1,8 +1,6 @@
-import React from 'react'
-import { createStore, applyMiddleware, compose } from 'redux'
+import { applyMiddleware, compose, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from '../reducers'
-import logger from 'redux-logger'
 import persistState from 'redux-localstorage'
 
 const enhancer = compose(

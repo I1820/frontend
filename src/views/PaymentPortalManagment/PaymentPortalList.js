@@ -1,53 +1,37 @@
-import React, { Component } from 'react';
-import {
-  Row,
-  Col,
-  Card,
-  Badge,
-  CardHeader,
-  CardBody,
+import React, { Component } from 'react'
+import { Badge, Button, Card, CardBody, CardHeader, CardTitle, Table, } from 'reactstrap'
 
-  CardTitle,
-  Button,
-  Table,
-
-
-} from 'reactstrap';
-
-import { connect } from 'react-redux';
-import Spinner from '../Spinner/Spinner';
-
-import Data from './portalData'
-import { activatePaymentPortalsAction, getAdminPaymentPortalsAction } from '../../actions/AppActions';
-import { toastAlerts } from '../Shared/toast_alert';
+import { connect } from 'react-redux'
+import Spinner from '../Spinner/Spinner'
+import { activatePaymentPortalsAction, getAdminPaymentPortalsAction } from '../../actions/AppActions'
+import { toastAlerts } from '../Shared/toast_alert'
 
 class PaymentPortalList extends Component {
 
-  constructor(props) {
-    super(props);
-    this.activate = this.activate.bind(this);
+  constructor (props) {
+    super(props)
+    this.activate = this.activate.bind(this)
     this.state = {
       adminPortals: [],
     }
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.props.dispatch(getAdminPaymentPortalsAction())
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({adminPortals: [...props.adminPortals]}, () => console.log(this.state))
+  componentWillReceiveProps (props) {
+    this.setState({ adminPortals: [...props.adminPortals] }, () => console.log(this.state))
   }
 
-  activate(id, active) {
+  activate (id, active) {
     this.props.dispatch(activatePaymentPortalsAction(id, active, (status, message) => {
-      toastAlerts(status, message);
-      this.props.dispatch(getAdminPaymentPortalsAction());
+      toastAlerts(status, message)
+      this.props.dispatch(getAdminPaymentPortalsAction())
     }))
   }
 
-
-  render() {
+  render () {
     return (
       <div>
         <Spinner display={this.props.loading}/>
@@ -82,10 +66,10 @@ class PaymentPortalList extends Component {
         </Card>
 
       </div>
-    );
+    )
   }
 
-  renderItem(el, key = 0) {
+  renderItem (el, key = 0) {
     return (
       <tr>
         <th>{key + 1}</th>
@@ -107,15 +91,13 @@ class PaymentPortalList extends Component {
     )
   }
 
-
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     loading: state.homeReducer.currentlySending,
     adminPortals: state.packageReducer.adminPortals
-  };
+  }
 }
 
-
-export default connect(mapStateToProps)(PaymentPortalList);
+export default connect(mapStateToProps)(PaymentPortalList)

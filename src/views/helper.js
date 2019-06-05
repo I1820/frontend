@@ -16,7 +16,8 @@ let helper = {
         while (i < l) {
           (x = i % size)
             ? n[c][i] = input[i]
-            : n[c++] = {}; n[c][i] = input[i]
+            : n[c++] = {}
+          n[c][i] = input[i]
           i++
         }
       } else {
@@ -33,7 +34,8 @@ let helper = {
           if (input.hasOwnProperty(p)) {
             (x = i % size)
               ? n[c][p] = input[p]
-              : n[++c] = {}; n[c][p] = input[p]
+              : n[++c] = {}
+            n[c][p] = input[p]
             i++
           }
         }

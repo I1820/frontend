@@ -1,5 +1,4 @@
-import { GET_THINGS, FREE, FETCH_THING } from '../constants/AppConstants'
-import _ from 'underscore'
+import { FETCH_THING, FREE, GET_THINGS } from '../constants/AppConstants'
 
 export function thingReducer (state = [], action) {
   switch (action.type) {

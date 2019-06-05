@@ -24,129 +24,142 @@
  */
 
 import {
-  SET_AUTH,
   CHANGE_FORM,
-  SENDING_REQUEST,
-  SET_ERROR_MESSAGE,
-  INIT_USER,
-  SELECT_PROJECT,
-  GET_PROJECTS,
-  FETCH_PROJECT,
-  UPDATE_USER,
-  FREE,
-  GET_THINGS,
-  FETCH_THING,
-  GET_THINGS_PROFILE,
-  FETCH_THING_PROFILE,
-  GET_GATEWAYS,
   FETCH_CODEC_LIST,
-  SET_GATEWAY,
-  NEW_PACKAGE,
-  SELECT_USER,
-  PAYMENT_RESULT,
-  GET_USER_PACKAGES,
-  GET_ADMIN_PACKAGES,
-  GET_DISCOUNTS,
-  GET_PACKAGE,
-  GET_USERS,
-  GET_CODECS,
+  FETCH_PROJECT,
+  FETCH_THING,
+  FETCH_THING_PROFILE,
   FETCH_USER,
+  FREE,
+  GET_ADMIN_PACKAGES,
+  GET_ADMIN_PAYMENT_PORTALS,
+  GET_CODECS,
+  GET_DISCOUNTS,
+  GET_GATEWAYS,
+  GET_PACKAGE,
+  GET_PROJECTS,
+  GET_THINGS,
+  GET_THINGS_PROFILE,
+  GET_USER_PACKAGES,
+  GET_USER_PAYMENT_PORTALS,
+  GET_USERS,
+  INIT_USER,
+  NEW_PACKAGE,
+  PAYMENT_RESULT,
+  SELECT_PROJECT,
+  SELECT_USER,
+  SENDING_REQUEST,
+  SET_AUTH,
+  SET_ERROR_MESSAGE,
+  SET_GATEWAY,
   SET_TOKEN,
   SET_TRANSACTIONS,
-  GET_ADMIN_PAYMENT_PORTALS,
-  GET_USER_PAYMENT_PORTALS
+  UPDATE_USER
 } from '../constants/AppConstants'
 import * as errorMessages from '../constants/MessageConstants'
 import {
-  login as loginAPI, logout as logoutAPI, register as registerAPI,
-  listProject as listProjectsAPI, editProject as editProjectAPI,
-  getProject as getProjectAPI, createProject as createProjectAPI,
-  editProfile as editProfileAPI, changePassword as changePasswordAPI, getThings as listThingsAPI,
-  getThing as getThingAPI, connectThing as connectThingAPI,
-  createThing as createThingAPI, editThing as editThingAPI, editAliases as editAliasesAPI,
-  createCodec as createCodecAPI,
-  createScenario as createScenarioAPI, uploadExcel as uploadExcelAPI,
-  DownloadThingsExcel as DownloadThingsExcelAPI,
-  DownloadUserThingsExcel as DownloadUserThingsExcelAPI,
-  DownloadUserGatewaysExcel as DownloadUserGatewaysExcelAPI,
-  DownloadThingProfileThingsExcel as DownloadThingProfileThingsExcelAPI,
-  createGateway as createGatewayAPI, updateGateway as updateGatewayAPI,
-  deleteProject as deleteProjectAPI,
-  deleteDeviceProfile as deleteDeviceProfileAPI,
-  deleteGateway as deleteGatewaysAPI,
-  getSingleGateway as getSingleGatewayAPI,
-  getGateways,
-  deleteThing as deleteThingAPI,
-  deleteMultipleThing as deleteThingMultipleAPI,
-  newDownlink as newDownlinkAPI,
-  getUserTransaction, getUser, getAllTransactions, getTransactionsOverview,
-  lint,
-  baseURL,
-  activateScenario,
-  sendThingKeys,
-  createCodecTemplate,
-  createThingProfile,
-  deleteCodecTemplate,
-  deleteScenario,
-  getCodecTemplate,
-  getThingCodec,
-  updateCodecTemplate,
-  getCodecTemplateList,
-  getDashboard,
-  getUserThings,
-  getAdminPackage,
-  getPackage,
-  deletePackage,
-  createPackage,
-  updatePackage,
-  getDiscounts,
-  deleteDiscount,
-  createDiscount,
   activatePackage,
-  getUserPackage,
-  buyPackage,
-  getScenario,
-  getThingProfileList,
-  setDashboardWidgetChart,
-  deleteDashboardWidgetChart,
-  updateScenarioAPI,
-  viewProfile,
-  getDeviceProfileAPI,
-  getUsers,
-  getThingsMainData,
-  getThingsSampleData,
+  activatePaymentPortal,
+  activateProject,
+  activateScenario,
   activateThing,
   activeUser,
-  impersonateUser,
-  getUserTransactionsAPI,
-  activateProject,
+  addRole,
+  baseURL,
+  buyPackage,
+  changeAdminPassword,
+  changePassword as changePasswordAPI,
+  createCodec as createCodecAPI,
+  createCodecTemplate,
+  createDiscount,
+  createGateway as createGatewayAPI,
+  createGlobalCodecTemplate,
+  createPackage,
+  createProject as createProjectAPI,
+  createScenario as createScenarioAPI,
+  createThing as createThingAPI,
+  createThingProfile,
+  decryptFramePayload,
+  deleteCodecTemplate,
+  deleteDashboardWidgetChart,
+  deleteDeviceProfile as deleteDeviceProfileAPI,
+  deleteDiscount,
+  deleteGateway as deleteGatewaysAPI,
+  deleteGlobalCodec,
+  deleteMultipleThing as deleteThingMultipleAPI,
+  deletePackage,
+  deleteProject as deleteProjectAPI,
+  deleteRole,
+  deleteScenario,
+  deleteThing as deleteThingAPI,
+  DownloadAdminTransactionsExcel,
+  DownloadThingProfileThingsExcel as DownloadThingProfileThingsExcelAPI,
+  DownloadThingsDataExcel,
+  DownloadThingsExcel as DownloadThingsExcelAPI,
+  DownloadUserGatewaysExcel as DownloadUserGatewaysExcelAPI,
+  DownloadUsersListExcel,
+  DownloadUserThingsExcel as DownloadUserThingsExcelAPI,
+  DownloadUserTransactionsExcel,
+  editAliases as editAliasesAPI,
+  editProfile as editProfileAPI,
+  editProject as editProjectAPI,
+  editThing as editThingAPI,
+  getAdminPackage,
+  getAdminPaymentPortals,
+  getAllTransactions,
+  getCodecTemplate,
+  getCodecTemplateList,
+  getDashboard,
+  getDeviceProfileAPI,
+  getDiscounts,
+  getGateways,
   getGlobalCodecs,
   getGlobalCodecTemplate,
-  updateGlobalCodecTemplate,
-  createGlobalCodecTemplate,
-  deleteGlobalCodec,
-  changeAdminPassword,
-  resetPasswordAPI,
-  testCodecAPI,
+  getLogs,
+  getPackage,
   getPermissions,
+  getProject as getProjectAPI,
+  getProjectThings,
   getRoles,
+  getScenario,
+  getSingleGateway as getSingleGatewayAPI,
+  getThing as getThingAPI,
+  getThingCodec,
+  getThingProfileList,
+  getThings as listThingsAPI,
+  getThingsList,
+  getThingsMainData,
+  getThingsSampleData,
+  getTransactionsOverview,
+  getUser,
+  getUserPackage,
+  getUserPaymentPortals,
+  getUsers,
+  getUserThings,
+  getUserTransaction,
+  getUserTransactionsAPI,
+  impersonateUser,
+  lint,
+  listProject as listProjectsAPI,
+  login as loginAPI,
+  logout as logoutAPI,
+  newDownlink as newDownlinkAPI,
+  register as registerAPI,
+  resetPasswordAPI,
+  sendThingKeys,
+  setDashboardWidgetChart,
   setRole,
+  testCodecAPI,
+  updateCodecTemplate,
+  updateGateway as updateGatewayAPI,
+  updateGlobalCodecTemplate,
+  updatePackage,
+  updateRole,
+  updateScenarioAPI,
+  uploadExcel as uploadExcelAPI,
   uploadLegalDoc,
   uploadPicture,
-  updateRole,
-  deleteRole,
-  addRole,
-  decryptFramePayload,
-  getAdminPaymentPortals,
-  getUserPaymentPortals,
-  activatePaymentPortal,
-  DownloadUsersListExcel,
-  DownloadUserTransactionsExcel,
-  DownloadAdminTransactionsExcel,
-  DownloadThingsDataExcel,
-  getProjectThings,
-  getThingsList,
-  getLogs
+  viewProfile
 } from '../api/index'
 
 import fileDownload from 'js-file-download'
@@ -1111,7 +1124,11 @@ export function changePassword (data, cb) {
   return (dispatch) => {
     const promise = changePasswordAPI(data, dispatch)
     promise.then((response) => {
-      if (response.status === 'OK') { cb && cb(true, 'با موفقیت ویرایش یافت') } else { cb && cb(false, response.result) }
+      if (response.status === 'OK') {
+        cb && cb(true, 'با موفقیت ویرایش یافت')
+      } else {
+        cb && cb(false, response.result)
+      }
     }).catch((err) => {
       console.log(err)
     })
@@ -1122,7 +1139,11 @@ export function resetPasswordAction (data, cb) {
   return (dispatch) => {
     const promise = resetPasswordAPI(data, dispatch)
     promise.then((response) => {
-      if (response.status === 'OK' && response.result.success === true) { cb && cb('رمز عبور جدید به ایمیل شما ارسال شد') } else { cb && cb(response.result) }
+      if (response.status === 'OK' && response.result.success === true) {
+        cb && cb('رمز عبور جدید به ایمیل شما ارسال شد')
+      } else {
+        cb && cb(response.result)
+      }
     }).catch((err) => {
       console.log(err)
     })
@@ -1162,7 +1183,9 @@ export function getThingCodecAction (thingId, cb) {
     const promise = getThingCodec(thingId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        if (cb) { cb(true, response.result) }
+        if (cb) {
+          cb(true, response.result)
+        }
       } else {
         cb(false)
       }
@@ -1175,7 +1198,9 @@ export function getCodecTemplateAction (projectId, codecId, cb) {
     const promise = getCodecTemplate(projectId, codecId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        if (cb) { cb(true, response.result.codec) }
+        if (cb) {
+          cb(true, response.result.codec)
+        }
       } else {
         cb(false)
       }
@@ -1188,7 +1213,9 @@ export function getGlobalCodecTemplateAction (codecId, cb) {
     const promise = getGlobalCodecTemplate(codecId, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        if (cb) { cb(true, response.result.codec) }
+        if (cb) {
+          cb(true, response.result.codec)
+        }
       } else {
         cb(false)
       }
@@ -1202,7 +1229,9 @@ export function getCodecTemplateListAction (projectId, cb) {
     promise.then((response) => {
       if (response.status === 'OK') {
         dispatch({ type: FETCH_CODEC_LIST, newState: response.result, id: projectId })
-        if (cb) { cb(true, response.result) }
+        if (cb) {
+          cb(true, response.result)
+        }
       } else {
       }
     })
@@ -1212,7 +1241,11 @@ export function getCodecTemplateListAction (projectId, cb) {
 export function sendCodecAction (thingId, projectId, codec, codec_id, cb) {
   return (dispatch) => {
     let promise
-    if (codec) { promise = createCodecAPI({ codec }, thingId, projectId, dispatch) } else { promise = createCodecAPI({ codec_id }, thingId, projectId, dispatch) }
+    if (codec) {
+      promise = createCodecAPI({ codec }, thingId, projectId, dispatch)
+    } else {
+      promise = createCodecAPI({ codec_id }, thingId, projectId, dispatch)
+    }
     promise.then((response) => {
       if (response.status === 'OK') {
         forwardTo(`projects/manage/show/${projectId}`)
@@ -1560,7 +1593,9 @@ export function buyPackagesAction (packageId, code, cb) {
     const promise = buyPackage(packageId, code, dispatch)
     promise.then((response) => {
       if (response.status === 'OK') {
-        if (response.result.invoice.price > 0) { window.location = baseURL() + `/payment/${response.result.invoice._id}/pay` } else {
+        if (response.result.invoice.price > 0) {
+          window.location = baseURL() + `/payment/${response.result.invoice._id}/pay`
+        } else {
           dispatch(getProfileAction(() => forwardTo('packages')))
           toastAlerts(true, 'بسته به صورت رایگان اضافه شد')
         }
@@ -1870,7 +1905,11 @@ export function updateRoleAction (roleId, permissions, name, cb) {
   return (dispatch) => {
     const promise = updateRole(roleId, permissions, name, dispatch)
     promise.then((response) => {
-      if (response.status === 'OK') { cb && cb(true, 'با موفقیت انجام شد') } else { cb && cb(false, response.result) }
+      if (response.status === 'OK') {
+        cb && cb(true, 'با موفقیت انجام شد')
+      } else {
+        cb && cb(false, response.result)
+      }
     }).catch((err) => {
       cb && cb(false, 'خطای نامشخص')
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -1882,7 +1921,11 @@ export function deleteRoleAction (roleId, cb) {
   return (dispatch) => {
     const promise = deleteRole(roleId, dispatch)
     promise.then((response) => {
-      if (response.status === 'OK') { cb && cb(true, 'با موفقیت انجام شد') } else { cb && cb(false, response.result) }
+      if (response.status === 'OK') {
+        cb && cb(true, 'با موفقیت انجام شد')
+      } else {
+        cb && cb(false, response.result)
+      }
     }).catch((err) => {
       cb && cb(false, 'خطای نامشخص')
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -1894,7 +1937,11 @@ export function addRoleAction (permissions, cb) {
   return (dispatch) => {
     const promise = addRole(permissions, dispatch)
     promise.then((response) => {
-      if (response.status === 'OK') { cb && cb(true, 'با موفقیت انجام شد') } else { cb && cb(false, response.result) }
+      if (response.status === 'OK') {
+        cb && cb(true, 'با موفقیت انجام شد')
+      } else {
+        cb && cb(false, response.result)
+      }
     }).catch((err) => {
       cb && cb(false, 'خطای نامشخص')
       dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))

@@ -1,46 +1,30 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
-  Row,
-  Col,
-  Card,
-  CardHeader,
-  CardBlock,
+  Badge,
   Button,
-  CardTitle,
+  Card,
   CardBody,
-  Table,
   CardFooter,
+  CardHeader,
+  CardTitle,
+  Col,
   ListGroup,
   ListGroupItem,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Badge,
-  Label,
-  Input,
+  Row,
 } from 'reactstrap'
 
-import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
-
-import { connect } from 'react-redux';
-import Spinner from '../Spinner/Spinner';
+import { connect } from 'react-redux'
+import Spinner from '../Spinner/Spinner'
 import {
-  activateProjectAction,
-  activeUserAction, changePasswordAction, createProject, DownloadAdminTransactionsExcelAction, editProjectAction,
+  DownloadAdminTransactionsExcelAction,
   getAllTransactionsAction,
-  getTransactionsOverviewAction, getUserAction,
-  getUserTransactionsAction,
-  impersonateUserAction
-} from '../../actions/AppActions';
+  getTransactionsOverviewAction
+} from '../../actions/AppActions'
 import ReactTable from 'react-table'
-import { toastAlerts } from '../Shared/toast_alert';
-import Select2 from 'react-select2-wrapper';
-import { toPersianNumbers } from '../Shared/helpers';
 
 class PackageList extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.fetchInvoices = this.fetchInvoices.bind(this)
     this.state = {
       transactions: [],
@@ -49,23 +33,20 @@ class PackageList extends Component {
       offset: 0,
       limit: 10,
 
-    };
+    }
   }
 
-
-  componentDidMount() {
+  componentDidMount () {
     this.props.dispatch(getTransactionsOverviewAction((overview) => {
-      this.setState({overview_sum: overview})
+      this.setState({ overview_sum: overview })
     }))
   }
 
-
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
 
   }
 
-
-  render() {
+  render () {
     return (
 
       <div className="animated fadeIn text-justify">
@@ -137,7 +118,7 @@ class PackageList extends Component {
     )
   }
 
-  fetchInvoices(state, instance) {
+  fetchInvoices (state, instance) {
     this.props.dispatch(getAllTransactionsAction(state.pageSize, state.page * state.pageSize,
       (result) => {
         this.setState({
@@ -145,11 +126,11 @@ class PackageList extends Component {
           offset: state.page * state.pageSize,
           limit: state.pageSize,
         })
-      }));
+      }))
 
   }
 
-  renderTransaction() {
+  renderTransaction () {
     return [
       {
         Header: 'نام بسته',
@@ -178,17 +159,16 @@ class PackageList extends Component {
           {row.status === true ? 'موفق' : 'ناموفق'}
         </Badge>,
       }
-    ];
+    ]
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     loading: state.homeReducer.currentlySending,
-  };
+  }
 }
 
-
-export default connect(mapStateToProps)(PackageList);
+export default connect(mapStateToProps)(PackageList)
 
 

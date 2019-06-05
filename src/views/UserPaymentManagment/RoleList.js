@@ -1,60 +1,43 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 // import {selectUser} from '../../actions/AppActions'
+import { Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Input } from 'reactstrap'
 import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Badge,
-  Modal,
-  FormGroup,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  CardTitle,
-  Button,
-  ButtonGroup,
-  Label,
-  Input,
-  Table,
-  FormText
-} from 'reactstrap';
-import {
-  getUsersAction, getRolesAction, setRoleAction, updateRoleAction,
-  getPermissionsAction, deleteRoleAction, addRoleAction
-} from '../../actions/AppActions';
-import { connect } from 'react-redux';
-import Spinner from '../Spinner/Spinner';
+  addRoleAction,
+  deleteRoleAction,
+  getPermissionsAction,
+  getRolesAction,
+  updateRoleAction
+} from '../../actions/AppActions'
+import { connect } from 'react-redux'
+import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
-import { toastAlerts } from '../Shared/toast_alert';
-import Select2 from 'react-select2-wrapper';
+import { toastAlerts } from '../Shared/toast_alert'
+import Select2 from 'react-select2-wrapper'
 
 class RoleList extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       roles: [],
       defaultPermissions: []
     }
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.props.dispatch(getRolesAction((status, roles) => {
-      if (status)
-        this.setState({roles})
-      else
+      if (status) {
+        this.setState({ roles })
+      } else {
         toastAlerts(status, roles)
-    }));
+      }
+    }))
     this.props.dispatch(getPermissionsAction((defaultPermissions) => {
-      this.setState({defaultPermissions})
-    }));
+      this.setState({ defaultPermissions })
+    }))
 
   }
 
-  render() {
+  render () {
     return (
 
       <div>
@@ -93,11 +76,12 @@ class RoleList extends Component {
                 this.props.dispatch(addRoleAction(permissions, (status, message) => {
                   toastAlerts(status, message)
                   this.props.dispatch(getRolesAction((status, roles) => {
-                    if (status)
-                      this.setState({roles})
-                    else
+                    if (status) {
+                      this.setState({ roles })
+                    } else {
                       toastAlerts(status, roles)
-                  }));
+                    }
+                  }))
                 }))
               }
             }
@@ -109,8 +93,7 @@ class RoleList extends Component {
     )
   }
 
-
-  reactTableColumns() {
+  reactTableColumns () {
     return [
       {
         Header: 'نام نقش',
@@ -138,22 +121,24 @@ class RoleList extends Component {
           })
 
           return (<Select2
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             multiple
             data={this.state.defaultPermissions.map((permission) => {
-              return {text: permission.name, id: permission._id}
+              return { text: permission.name, id: permission._id }
             })}
             value={permissionsList}
             onSelect={(unselectedPermission) => {
               row.permissions = []
-              for (let i = 0; i < unselectedPermission.target.selectedOptions.length; i++)
+              for (let i = 0; i < unselectedPermission.target.selectedOptions.length; i++) {
                 row.permissions.push(unselectedPermission.target.selectedOptions[i].value)
+              }
               console.log('new permission', row.permissions)
             }}
             onUnselect={(unselectedPermission) => {
               row.permissions = []
-              for (let i = 0; i < unselectedPermission.target.selectedOptions.length; i++)
+              for (let i = 0; i < unselectedPermission.target.selectedOptions.length; i++) {
                 row.permissions.push(unselectedPermission.target.selectedOptions[i].value)
+              }
               console.log('new permission', row.permissions)
             }}
             options={
@@ -173,21 +158,23 @@ class RoleList extends Component {
           <Button onClick={() => {
             let permissions = []
             row.permissions.forEach((permission) => {
-              if (permission._id)
+              if (permission._id) {
                 permissions.push(permission._id)
-              else
+              } else {
                 permissions.push(permission)
+              }
             })
 
             console.log(row.permissions, permissions)
             this.props.dispatch(updateRoleAction(row._id, JSON.stringify(permissions), row.name, (status, message) => {
               toastAlerts(status, message)
               this.props.dispatch(getRolesAction((status, roles) => {
-                if (status)
-                  this.setState({roles})
-                else
+                if (status) {
+                  this.setState({ roles })
+                } else {
                   toastAlerts(status, roles)
-              }));
+                }
+              }))
             }))
           }}
                   className="ml-1" color="warning"
@@ -197,10 +184,11 @@ class RoleList extends Component {
             this.props.dispatch(deleteRoleAction(row._id, (status, message) => {
               toastAlerts(status, message)
               this.props.dispatch(getRolesAction((status, roles) => {
-                if (status)
-                  this.setState({roles})
-                else
+                if (status) {
+                  this.setState({ roles })
+                } else {
                   toastAlerts(status, roles)
+                }
               }));
             }))
           } className="ml-1" color="danger"
@@ -211,12 +199,11 @@ class RoleList extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     loading: state.homeReducer.currentlySending,
   };
 }
-
 
 export default connect(mapStateToProps)(RoleList);
 

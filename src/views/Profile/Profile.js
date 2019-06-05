@@ -1,41 +1,41 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
-  Row,
-  Col,
+  Button,
   Card,
-  Form,
-  FormGroup,
-  CardHeader,
   CardBody,
   CardFooter,
+  CardHeader,
+  CardImg,
   CardTitle,
-  Button,
-  ButtonGroup,
-  Label,
+  Col,
+  Form,
+  FormGroup,
   Input,
   InputGroup,
   InputGroupAddon,
-  CardImg,
-  Table,
-} from 'reactstrap';
+  Label,
+  Row,
+} from 'reactstrap'
 
-import { connect } from 'react-redux';
-import Spinner from '../Spinner/Spinner';
-import classnames from 'classnames';
-import { css } from 'glamor';
+import { connect } from 'react-redux'
+import Spinner from '../Spinner/Spinner'
 import {
-  editProfile, getProfileAction, changePassword, impersonateUserAction,
-  uploadLegalDocAction, uploadPictureAction, updateUser
-} from '../../actions/AppActions';
+  changePassword,
+  editProfile,
+  getProfileAction,
+  updateUser,
+  uploadLegalDocAction,
+  uploadPictureAction
+} from '../../actions/AppActions'
 import Phone from 'react-phone-number-input'
-import Select2 from 'react-select2-wrapper';
-import { toastAlerts } from '../Shared/toast_alert';
-import { base_files_url } from '../../api/index'
+import Select2 from 'react-select2-wrapper'
+import { toastAlerts } from '../Shared/toast_alert'
+import { baseFilesURL } from '../../api/index'
 
 class Profile extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.editUserProfile = this.editUserProfile.bind(this)
     this.changeUserPassword = this.changeUserPassword.bind(this)
@@ -57,12 +57,11 @@ class Profile extends Component {
     }
   }
 
-
-  componentWillMount() {
-    this.props.dispatch(getProfileAction());
+  componentWillMount () {
+    this.props.dispatch(getProfileAction())
   }
 
-  editUserProfile() {
+  editUserProfile () {
     this.props.dispatch(editProfile({
       'legal': this.state.legal,
       'name': this.state.name,
@@ -75,49 +74,53 @@ class Profile extends Component {
     }, toastAlerts))
   }
 
-  changeUserPassword() {
-    if (this.state.new_password === undefined)
+  changeUserPassword () {
+    if (this.state.new_password === undefined) {
       toastAlerts(false, 'رمز جدید را درست وارد کنید')
-    if (this.state.new_password !== this.state.re_new_password)
+    }
+    if (this.state.new_password !== this.state.re_new_password) {
       toastAlerts(false, 'رمز جدید با تکرار آن مطابقت ندارد')
-    else
+    } else {
       this.props.dispatch(changePassword({
         'password': this.state.password,
         'new_password': this.state.new_password,
       }, toastAlerts))
+    }
   }
 
-  uploadLegalDoc(file) {
-    if (!file)
+  uploadLegalDoc (file) {
+    if (!file) {
       toastAlerts(false, 'لطفا فایل را انتخاب کنید')
-    else
+    } else {
       this.props.dispatch(uploadLegalDocAction(file, (status, data) => {
         if (status) {
           toastAlerts(status, data.message)
-          this.setState({legal_doc: data.path})
-        }
-        else
+          this.setState({ legal_doc: data.path })
+        } else {
           toastAlerts(status, data.message)
+        }
       }))
+    }
   }
 
-  uploadPicture(file) {
-    if (!file)
+  uploadPicture (file) {
+    if (!file) {
       toastAlerts(false, 'لطفا عکس را انتخاب کنید')
-    else
+    } else {
       this.props.dispatch(uploadPictureAction(file, (status, data) => {
         if (status) {
-          console.log(data);
+          console.log(data)
           toastAlerts(status, data.message)
-          this.setState({picture: base_files_url() + data.user.picture})
-          this.props.dispatch(updateUser({user: data.user}));
+          this.setState({ picture: baseFilesURL() + data.user.picture })
+          this.props.dispatch(updateUser({ user: data.user }))
+        } else {
+          toastAlerts(status, data.message)
         }
-        else
-          toastAlerts(status, data.message)
       }))
+    }
   }
 
-  render() {
+  render () {
     return (
       <Row>
         <Spinner display={this.props.loading}/>
@@ -130,20 +133,20 @@ class Profile extends Component {
               <Form>
                 <FormGroup>
                   <Label for="fullName">نام و نام خانوادگی:</Label>
-                    <Input
-                      name="fullName"
-                      id="fullName"
-                      type="text"
-                      onChange={(event) => {
-                        this.setState({
-                          ...this.state,
-                          name: event.target.value
-                        })
-                      }}
-                      placeholder={'نام و نام خانوادگی'}
-                      maxLength={100}
-                      defaultValue={this.state.name}
-                      required/>
+                  <Input
+                    name="fullName"
+                    id="fullName"
+                    type="text"
+                    onChange={(event) => {
+                      this.setState({
+                        ...this.state,
+                        name: event.target.value
+                      })
+                    }}
+                    placeholder={'نام و نام خانوادگی'}
+                    maxLength={100}
+                    defaultValue={this.state.name}
+                    required/>
                 </FormGroup>
 
                 <FormGroup>
@@ -154,7 +157,7 @@ class Profile extends Component {
                       dir="ltr"
                       type="text"
                       onInput={event => {
-                        this.setState({phone: event.target.value.replace(/\D/, '')})
+                        this.setState({ phone: event.target.value.replace(/\D/, '') })
                         event.target.value = event.target.value.replace(/\D/, '')
                       }}
                       placeholder={'88888888'}
@@ -162,7 +165,7 @@ class Profile extends Component {
                       defaultValue={this.state.phone}/>
                     <InputGroupAddon addonType="prepend">
                       <Select2
-                        onSelect={(e) => this.setState({city: parseInt(e.target.value)})}
+                        onSelect={(e) => this.setState({ city: parseInt(e.target.value) })}
                         data={this.getCodes()}
                         value={this.state.city}
                       />
@@ -172,104 +175,104 @@ class Profile extends Component {
 
                 <FormGroup>
                   <Label>تلفن همراه:</Label>
-                    <Phone
-                      displayInitialValueAsLocalNumber
-                      // country="IR"
-                      style={{direction: 'ltr'}}
-                      smartCaret={false}
-                      placeholder=""
-                      value={this.state.mobile}
-                      onChange={mobile => this.setState({mobile})}/>
+                  <Phone
+                    displayInitialValueAsLocalNumber
+                    // country="IR"
+                    style={{ direction: 'ltr' }}
+                    smartCaret={false}
+                    placeholder=""
+                    value={this.state.mobile}
+                    onChange={mobile => this.setState({ mobile })}/>
                 </FormGroup>
 
                 <FormGroup>
                   <Label>نشانی:</Label>
                   <Input type="textarea" rows="4" onChange={(event) =>
-                      this.setState({address: event.target.value})
-                    }
-                    placeholder={'تهران - ...'}
-                    maxLength={500}
-                    value={this.state.address}/>
+                    this.setState({ address: event.target.value })
+                  }
+                         placeholder={'تهران - ...'}
+                         maxLength={500}
+                         value={this.state.address}/>
                 </FormGroup>
                 <FormGroup>
                   <Label> نوع کاربر:</Label>
                   <Input value={this.state.legal} onChange={(e) => {
-                      this.setState({legal: e.target.value})
-                    }}
-                    type="select" name="type" id="select">
+                    this.setState({ legal: e.target.value })
+                  }}
+                         type="select" name="type" id="select">
                     <option value={1}>حقوقی</option>
                     <option value={0}>حقیقی</option>
                   </Input>
                 </FormGroup>
               </Form>
-              <Form style={{display: this.state.legal === '1' ? 'block' : 'none'}}>
+              <Form style={{ display: this.state.legal === '1' ? 'block' : 'none' }}>
                 <FormGroup>
                   <Label for="orgName">نام شرکت: </Label>
-                    <Input
-                      name="orgName"
-                      id="orgName"
-                      type="text" onChange={(event) =>
-                      this.setState({
-                        legalInfo: {
-                          ...this.state.legalInfo,
-                          org_name: event.target.value
-                        }
-                      })
-                    }
+                  <Input
+                    name="orgName"
+                    id="orgName"
+                    type="text" onChange={(event) =>
+                    this.setState({
+                      legalInfo: {
+                        ...this.state.legalInfo,
+                        org_name: event.target.value
+                      }
+                    })
+                  }
                     placeholder={'نام شرکت'}
                     maxLength={100}
                     defaultValue={this.state.legalInfo.org_name}
-                    />
+                  />
                 </FormGroup>
                 <FormGroup>
                   <Label for="interfaceName" sm={4}>نام و نام خانوادگی واسط شرکت: </Label>
-                    <Input
-                      name="interfaceName"
-                      type="text" onChange={(event) =>
-                      this.setState({
-                        legalInfo: {
-                          ...this.state.legalInfo,
-                          org_interface_name: event.target.value
-                        }
-                      })
-                    }
+                  <Input
+                    name="interfaceName"
+                    type="text" onChange={(event) =>
+                    this.setState({
+                      legalInfo: {
+                        ...this.state.legalInfo,
+                        org_interface_name: event.target.value
+                      }
+                    })
+                  }
                     placeholder={'نام و نام خانوادگی'}
                     maxLength={100}
                     defaultValue={this.state.legalInfo.org_interface_name}
-                    />
+                  />
                 </FormGroup>
 
                 <FormGroup>
                   <Label>مستندات حقوقی:</Label>
                   {
                     this.state.legal_doc ?
-                      <a target="_blank" href={base_files_url() + this.state.legal_doc}>دانلود</a>
+                      <a target="_blank" href={baseFilesURL() + this.state.legal_doc}>دانلود</a>
                       : <p>سندی بارگذاری نشده است</p>
 
                   }
                   <Input name="docs"
-                          type="file"
-                          onChange={(event) => {
-                            this.uploadLegalDoc(event.target.files[0])
-                          }}
+                         type="file"
+                         onChange={(event) => {
+                           this.uploadLegalDoc(event.target.files[0])
+                         }}
                   />
                 </FormGroup>
 
                 <FormGroup>
                   <Label>تلفن همراه واسط شرکت:</Label>
-                    <Phone
-                      displayInitialValueAsLocalNumber
-                      // country="IR"
-                      style={{direction: 'ltr'}}
-                      smartCaret={false}
-                      placeholder=""
-                      value={this.state.legalInfo.org_interface_mobile}
-                      onChange={mobile => this.setState({
-                        legalInfo: {
-                          ...this.state.legalInfo,
-                          org_interface_mobile: mobile
-                        }
-                      })}/>
+                  <Phone
+                    displayInitialValueAsLocalNumber
+                    // country="IR"
+                    style={{ direction: 'ltr' }}
+                    smartCaret={false}
+                    placeholder=""
+                    value={this.state.legalInfo.org_interface_mobile}
+                    onChange={mobile => this.setState({
+                      legalInfo: {
+                        ...this.state.legalInfo,
+                        org_interface_mobile: mobile
+                      }
+                    })}/>
                 </FormGroup>
               </Form>
             </CardBody>
@@ -288,36 +291,36 @@ class Profile extends Component {
                 <FormGroup>
                   <Label>رمز عبور فعلی:</Label>
                   <Input
-                      name="oldPassword"
-                      type="password" onChange={(event) => {
-                      this.setState({
-                        ...this.state,
-                        password: event.target.value
-                      })
-                    }} placeholder={'رمز عبور فعلی'}
-                      required/>
+                    name="oldPassword"
+                    type="password" onChange={(event) => {
+                    this.setState({
+                      ...this.state,
+                      password: event.target.value
+                    })
+                  }} placeholder={'رمز عبور فعلی'}
+                    required/>
                 </FormGroup>
                 <FormGroup>
                   <Label>رمز عبور جدید:</Label>
-                    <Input
-                      name="newPassword" type="password" onChange={(event) => {
-                      this.setState({
-                        ...this.state,
-                        new_password: event.target.value
-                      })
-                    }} placeholder={'رمز عبور جدید'}
-                      required/>
+                  <Input
+                    name="newPassword" type="password" onChange={(event) => {
+                    this.setState({
+                      ...this.state,
+                      new_password: event.target.value
+                    })
+                  }} placeholder={'رمز عبور جدید'}
+                    required/>
                 </FormGroup>
                 <FormGroup>
                   <Label>تکرار رمز عبور جدید:</Label>
-                    <Input
-                      name="renewPassword" type="password" onChange={(event) => {
-                      this.setState({
-                        ...this.state,
-                        re_new_password: event.target.value
-                      })
-                    }} placeholder={'تکرار رمز عبور جدید'}
-                      required/>
+                  <Input
+                    name="renewPassword" type="password" onChange={(event) => {
+                    this.setState({
+                      ...this.state,
+                      re_new_password: event.target.value
+                    })
+                  }} placeholder={'تکرار رمز عبور جدید'}
+                    required/>
                 </FormGroup>
               </Form>
             </CardBody>
@@ -332,57 +335,57 @@ class Profile extends Component {
             </CardHeader>
             <CardBody>
               <FormGroup>
-                <Label>  (حداکثر 8Mb) ارسال عکس</Label>
-                  <Input type="file"
-                         onChange={(event) => {
-                           this.uploadPicture(event.target.files[0])
-                         }}/>
+                <Label> (حداکثر 8Mb) ارسال عکس</Label>
+                <Input type="file"
+                       onChange={(event) => {
+                         this.uploadPicture(event.target.files[0])
+                       }}/>
               </FormGroup>
               <CardImg width="100%" src={this.state.picture} alt="بدون عکس پروفایل"/>
             </CardBody>
           </Card>
         </Col>
       </Row>
-    );
+    )
   }
 
-  getCodes() {
-    return [{text: 'تهران', id: '021'}
-      , {text: 'البرز', id: '026'}
-      , {text: 'قم', id: '025'}
-      , {text: 'مرکزی', id: '086'}
-      , {text: 'زنجان', id: '024'}
-      , {text: 'سمنان', id: '023'}
-      , {text: 'همدان', id: '081'}
-      , {text: 'قزوین', id: '028'}
-      , {text: 'اصفهان', id: '031'}
-      , {text: 'آذربایجان غربی', id: '044'}
-      , {text: 'مازندران', id: '011'}
-      , {text: 'کهگیلویه و بویراحمد', id: '074'}
-      , {text: 'کرمانشاه', id: '083'}
-      , {text: 'خراسان رضوی', id: '051'}
-      , {text: 'اردبیل', id: '045'}
-      , {text: 'گلستان', id: '017'}
-      , {text: 'آذربایجان شرقی', id: '041'}
-      , {text: 'سیستان و بلوچستان', id: '054'}
-      , {text: 'کردستان', id: '087'}
-      , {text: 'فارس', id: '071'}
-      , {text: 'لرستان', id: '066'}
-      , {text: 'کرمان', id: '034'}
-      , {text: 'خراسان جنوبی', id: '056'}
-      , {text: 'گیلان', id: '013'}
-      , {text: 'بوشهر', id: '077'}
-      , {text: 'هرمزگان', id: '076'}
-      , {text: 'خوزستان', id: '061'}
-      , {text: 'چهارمحال و بختیاری', id: '038'}
-      , {text: 'خراسان شمالی', id: '058'}
-      , {text: 'یزد', id: '035'}
-      , {text: 'ایلام', id: '084'}]
+  getCodes () {
+    return [{ text: 'تهران', id: '021' }
+      , { text: 'البرز', id: '026' }
+      , { text: 'قم', id: '025' }
+      , { text: 'مرکزی', id: '086' }
+      , { text: 'زنجان', id: '024' }
+      , { text: 'سمنان', id: '023' }
+      , { text: 'همدان', id: '081' }
+      , { text: 'قزوین', id: '028' }
+      , { text: 'اصفهان', id: '031' }
+      , { text: 'آذربایجان غربی', id: '044' }
+      , { text: 'مازندران', id: '011' }
+      , { text: 'کهگیلویه و بویراحمد', id: '074' }
+      , { text: 'کرمانشاه', id: '083' }
+      , { text: 'خراسان رضوی', id: '051' }
+      , { text: 'اردبیل', id: '045' }
+      , { text: 'گلستان', id: '017' }
+      , { text: 'آذربایجان شرقی', id: '041' }
+      , { text: 'سیستان و بلوچستان', id: '054' }
+      , { text: 'کردستان', id: '087' }
+      , { text: 'فارس', id: '071' }
+      , { text: 'لرستان', id: '066' }
+      , { text: 'کرمان', id: '034' }
+      , { text: 'خراسان جنوبی', id: '056' }
+      , { text: 'گیلان', id: '013' }
+      , { text: 'بوشهر', id: '077' }
+      , { text: 'هرمزگان', id: '076' }
+      , { text: 'خوزستان', id: '061' }
+      , { text: 'چهارمحال و بختیاری', id: '038' }
+      , { text: 'خراسان شمالی', id: '058' }
+      , { text: 'یزد', id: '035' }
+      , { text: 'ایلام', id: '084' }]
   }
 
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     userInfo: state.userReducer,
     loading: state.homeReducer.currentlySending

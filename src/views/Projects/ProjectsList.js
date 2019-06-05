@@ -1,47 +1,40 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
-  Row,
-  Col,
-  Card,
-  Form,
   Badge,
-  Modal,
-  FormGroup,
-  CardHeader,
+  Button,
+  Card,
   CardBody,
   CardFooter,
-  ModalHeader,
+  CardHeader,
+  CardTitle,
+  Col,
+  Label,
+  Modal,
   ModalBody,
   ModalFooter,
-  CardTitle,
-  Button,
-  ButtonGroup,
-  Label,
-  Input,
-  Table
-} from 'reactstrap';
+  ModalHeader,
+  Row
+} from 'reactstrap'
 import ReactTable from 'react-table'
 
-import { AvForm, AvGroup, AvInput, AvFeedback } from 'availity-reactstrap-validation';
+import { AvFeedback, AvForm, AvGroup, AvInput } from 'availity-reactstrap-validation'
 
-import { toastAlerts } from '../Shared/toast_alert';
+import { toastAlerts } from '../Shared/toast_alert'
 
-import { connect } from 'react-redux';
-import { createProject, getProjects, deleteProjectAction } from '../../actions/AppActions';
-import Spinner from '../Spinner/Spinner';
-
+import { connect } from 'react-redux'
+import { createProject, deleteProjectAction, getProjects } from '../../actions/AppActions'
 
 class ProjectsList extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
-    this.toggle = this.toggle.bind(this);
-    this.showProject = this.showProject.bind(this);
-    this.onCreateProject = this.onCreateProject.bind(this);
-    this.deleteProject = this.deleteProject.bind(this);
-    this.loadProjects = this.loadProjects.bind(this);
-    this.reactTableColumns = this.reactTableColumns.bind(this);
+    this.toggle = this.toggle.bind(this)
+    this.showProject = this.showProject.bind(this)
+    this.onCreateProject = this.onCreateProject.bind(this)
+    this.deleteProject = this.deleteProject.bind(this)
+    this.loadProjects = this.loadProjects.bind(this)
+    this.reactTableColumns = this.reactTableColumns.bind(this)
 
     this.state = {
       createModal: false,
@@ -51,11 +44,11 @@ class ProjectsList extends Component {
     }
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.loadProjects()
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps (props) {
     if (props.projects !== undefined) {
       this.setState({
         projects: props.projects,
@@ -65,19 +58,18 @@ class ProjectsList extends Component {
     }
   }
 
-  deleteProject() {
+  deleteProject () {
     this.toggle('delete', this.state.deleteRowId)
     this.props.dispatch(deleteProjectAction(
       this.state.deleteRowId,
       (status, response) => {
-        this.loadProjects();
+        this.loadProjects()
         toastAlerts(status, response)
       }
     ))
   }
 
-
-  render() {
+  render () {
     return (
       <div>
         <Modal isOpen={this.state.deleteModal} toggle={() => this.toggle('delete')} className="text-right">
@@ -118,7 +110,7 @@ class ProjectsList extends Component {
                   <AvInput type="textarea"
                            name={'projectDescription'}
                            rows="2"
-                           style={{resize: 'none'}}
+                           style={{ resize: 'none' }}
                            onChange={event => this.setState({
                              projectDesc: event.target.value
                            })}/>
@@ -166,10 +158,10 @@ class ProjectsList extends Component {
           </CardFooter>
         </Card>
       </div>
-    );
+    )
   }
 
-  reactTableColumns() {
+  reactTableColumns () {
     return [
       {
         Header: 'نام پروژه',
@@ -197,62 +189,61 @@ class ProjectsList extends Component {
         accessor: '_id',
         Cell: row => <Row>
           <Col xs="4">
-          <Button block onClick={() => this.showProject(row.value)} className="ml-1" color="success"
-                  size="sm">نمایش</Button>
+            <Button block onClick={() => this.showProject(row.value)} className="ml-1" color="success"
+                    size="sm">نمایش</Button>
           </Col>
           <Col xs="4">
-          <Button block onClick={() => this.manageProject(row.value)} className="ml-1" color="warning"
-                  size="sm">مدیریت</Button>
+            <Button block onClick={() => this.manageProject(row.value)} className="ml-1" color="warning"
+                    size="sm">مدیریت</Button>
           </Col>
           <Col xs="4">
-          <Button block onClick={() => this.toggle('delete', row.value)} className="ml-1" color="danger"
-                  size="sm">حذف</Button>
+            <Button block onClick={() => this.toggle('delete', row.value)} className="ml-1" color="danger"
+                    size="sm">حذف</Button>
           </Col>
         </Row>
       }
-    ];
+    ]
   }
 
-  toggle(modal, id) {
-    let state = {};
-    if (modal == 'delete')
+  toggle (modal, id) {
+    let state = {}
+    if (modal == 'delete') {
       state = {
         deleteModal: !this.state.deleteModal,
         deleteRowId: id
       }
-    if (modal == 'create')
+    }
+    if (modal == 'create') {
       state = {
         createModal: !this.state.createModal,
       }
-    this.setState(state);
+    }
+    this.setState(state)
   }
 
-
-  onCreateProject(status, message) {
+  onCreateProject (status, message) {
     toastAlerts(status, message)
   }
 
-  loadProjects() {
+  loadProjects () {
     this.props.dispatch(getProjects())
   }
 
-  showProject(id) {
+  showProject (id) {
     window.location = `#/projects/view/${id}`
   }
 
-  manageProject(id) {
+  manageProject (id) {
     window.location = `#/projects/manage/show/${id}`
   }
 
-
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     projects: state.projectReducer,
     loading: state.homeReducer.currentlySending
-  };
+  }
 }
-
 
 export default connect(mapStateToProps)(ProjectsList);

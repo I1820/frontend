@@ -1,58 +1,48 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
-  Row,
-  Col,
-  Card,
-  Form,
-  Badge,
-  Modal,
-  FormGroup,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  CardTitle,
+  Alert,
   Button,
-  ButtonGroup,
-  Label,
+  Card,
+  CardBody,
+  CardHeader,
+  CardTitle,
+  Col,
+  FormGroup,
   Input,
-  Table,
+  Label,
   ListGroup,
   ListGroupItem,
-  Alert
-} from 'reactstrap';
+  Row
+} from 'reactstrap'
 import { buyPackagesAction, forwardTo, getPackageAction, getUserPaymentPortalsAction } from '../../actions/AppActions'
-import { toastAlerts } from '../Shared/toast_alert';
-
+import { toastAlerts } from '../Shared/toast_alert'
 
 class SelectedPackage extends Component {
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.pay = this.pay.bind(this)
     this.state = {
       package: {},
       agree: false,
       discountCode: ''
-    };
+    }
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps (props) {
     this.setState({
       package: props.package,
       portals: props.portals,
     })
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.props.dispatch(getPackageAction(this.props.match.params.id))
     this.props.dispatch(getUserPaymentPortalsAction())
   }
 
-  pay() {
+  pay () {
     if (this.state.agree === false) {
       toastAlerts(false, 'لطفا قوانین را بپذیرید')
       return
@@ -64,7 +54,7 @@ class SelectedPackage extends Component {
     this.props.dispatch(buyPackagesAction(this.props.match.params.id, this.state.discountCode, toastAlerts))
   }
 
-  render() {
+  render () {
     return (
       <div>
 
@@ -175,10 +165,10 @@ class SelectedPackage extends Component {
             <Alert color="dark">
               <Col md="9">
                 <div>
-                  <FormGroup check inline style={{marginRight: '0'}}>
+                  <FormGroup check inline style={{ marginRight: '0' }}>
                     <Input type="checkbox"
-                           name="inline-checkbox1" style={{marginLeft: '10px'}}
-                           onChange={() => this.setState({agree: !this.state.agree})}/>
+                           name="inline-checkbox1" style={{ marginLeft: '10px' }}
+                           onChange={() => this.setState({ agree: !this.state.agree })}/>
                     <Label className="form-check-label" check htmlFor="inline-checkbox"> <span> قوانین و مقررات را قبول می‌کنم.</span></Label>
                   </FormGroup>
                 </div>
@@ -189,19 +179,19 @@ class SelectedPackage extends Component {
                     <Col md='6'>
                       <Input type="text"
                              maxLength={15}
-                             onChange={(e) => this.setState({discountCode: e.target.value})}/>
+                             onChange={(e) => this.setState({ discountCode: e.target.value })}/>
                     </Col>
                   </Row>
                 </div>
-                <div style={{display: !this.props.currentlySending ? 'block' : 'none'}}>
+                <div style={{ display: !this.props.currentlySending ? 'block' : 'none' }}>
                   <Button color="success" onClick={this.pay}>
                     {'پرداخت از طریق درگاه'}
                   </Button>{' '}
                   <Button onClick={() => forwardTo('packages')} color="danger">انصراف</Button>{' '}
                 </div>
-                <div class="text-right" style={{display: this.props.currentlySending ? 'block' : 'none'}}>
+                <div class="text-right" style={{ display: this.props.currentlySending ? 'block' : 'none' }}>
                   <img
-                    style={{margin: 'auto'}}
+                    style={{ margin: 'auto' }}
                     src={'img/loading.gif'}/>
                 </div>
               </Col>
@@ -209,18 +199,18 @@ class SelectedPackage extends Component {
           </CardBody>
         </Card>
       </div>
-    );
+    )
   }
 
 }
 
-function select(state) {
+function select (state) {
   return {
     data: state.userReducer,
     package: state.packageReducer.package,
     portals: state.packageReducer.userPortals,
     currentlySending: state.homeReducer.currentlySending === undefined ? false : state.homeReducer.currentlySending
-  };
+  }
 }
 
-export default connect(select)(SelectedPackage);
+export default connect(select)(SelectedPackage)

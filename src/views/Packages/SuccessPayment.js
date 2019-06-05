@@ -1,34 +1,22 @@
-import React, { Component } from 'react';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardBody,
-  Alert,
-  Container,
-  CardFooter,
-  Button,
+import React, { Component } from 'react'
+import { Alert, Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Container, } from 'reactstrap'
 
-} from 'reactstrap';
-
-import { connect } from 'react-redux';
-import { getProfileAction } from '../../actions/AppActions';
-
+import { connect } from 'react-redux'
+import { getProfileAction } from '../../actions/AppActions'
 
 class SuccessPayment extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       price: 0,
       refId: 0,
-    };
+    }
 
   }
 
-
-  componentWillMount() {
-    const paramsString = this.props.location.search;
-    const params = new URLSearchParams(paramsString);
+  componentWillMount () {
+    const paramsString = this.props.location.search
+    const params = new URLSearchParams(paramsString)
     const data = {
       price: params.get('price'),
       refId: params.get('authority')
@@ -37,8 +25,7 @@ class SuccessPayment extends Component {
     this.props.dispatch(getProfileAction())
   }
 
-
-  render() {
+  render () {
     return (
       <div className="app-body">
         <main className="main">
@@ -74,12 +61,10 @@ class SuccessPayment extends Component {
   }
 }
 
-
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return ({})
 }
 
-
-export default connect(mapStateToProps)(SuccessPayment);
+export default connect(mapStateToProps)(SuccessPayment)
 
 

@@ -1,4 +1,4 @@
-import { SELECT_PROJECT, GET_PROJECTS, FETCH_PROJECT, FREE, FETCH_CODEC_LIST } from '../constants/AppConstants'
+import { FETCH_CODEC_LIST, FETCH_PROJECT, FREE, GET_PROJECTS } from '../constants/AppConstants'
 import _ from 'underscore'
 
 const assign = Object.assign || require('object.assign')
