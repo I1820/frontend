@@ -6,17 +6,17 @@
  * @license MIT
  */
 
-// Override Boostrap variables
+// Override Bootstrap variables
 @import "bootstrap-variables";
 
 // Import Bootstrap source files
-@import "../node_modules/bootstrap/scss/bootstrap";
+@import "~bootstrap/scss/bootstrap";
 
-@import "../node_modules/react-phone-number-input/rrui.css";
-@import "../node_modules/react-phone-number-input/style.css";
-@import "../node_modules/leaflet/dist/leaflet.css";
-@import "../node_modules/react-toastify/dist/ReactToastify.css";
-@import "../node_modules/react-table/react-table.css";
+@import "~react-phone-number-input/rrui.css";
+@import "~react-phone-number-input/style.css";
+@import "~leaflet/dist/leaflet.css";
+@import "~react-toastify/dist/ReactToastify.css";
+@import "~react-table/react-table.css";
 
 
 // Override core variables
