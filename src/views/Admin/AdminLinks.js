@@ -32,12 +32,12 @@ class AdminLinks extends Component {
             <Row>
               <Col>
                 <Button color="link"
-                        disabled={this.state.portainerUrl == '' || this.state.portainerUrl == null ? true : false}
+                        disabled={this.state.portainerUrl === '' || this.state.portainerUrl == null}
                         onClick={() => window.open(this.state.portainerUrl, '_blank')}>Portainer</Button>
               </Col>
               <Col>
                 <Button color="link"
-                        disabled={this.state.prometheusUrl == '' || this.state.prometheusUrl == null ? true : false}
+                        disabled={this.state.prometheusUrl === '' || this.state.prometheusUrl == null}
                         onClick={() => window.open(this.state.prometheusUrl, '_blank')}>Prometheus</Button>
               </Col>
             </Row>
