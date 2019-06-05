@@ -45,9 +45,6 @@ import {
   GET_USERS,
   INIT_USER,
   NEW_PACKAGE,
-  PAYMENT_RESULT,
-  SELECT_PROJECT,
-  SELECT_USER,
   SENDING_REQUEST,
   SET_AUTH,
   SET_ERROR_MESSAGE,
@@ -389,21 +386,6 @@ export function register (data, cb) {
   }
 }
 
-export function connectThing (thingId, projectId) {
-  return (dispatch) => {
-    const promise = connectThingAPI(thingId, projectId, dispatch)
-    promise.then((response) => {
-      if (response.status === 'OK') {
-        dispatch(getProject(projectId))
-      } else {
-        dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-      }
-    }).catch((err) => {
-      dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-    })
-  }
-}
-
 /**
  * Sets the authentication state of the application
  * @param {boolean} newState True means a user is logged in, false means no user is logged in
@@ -451,32 +433,9 @@ export function updateUser (newState) {
  */
 const NEW_OBJECT = -1
 
-export function selectProject (newState = NEW_OBJECT) {
-  newState !== NEW_OBJECT ? forwardTo('project/' + newState) : forwardTo('project/new')
-  return { type: SELECT_PROJECT, newState }
-}
-
-export function selectThing (newState = NEW_OBJECT) {
-  newState !== NEW_OBJECT ? forwardTo('thing/' + newState) : forwardTo('thing/new')
-  return { type: SELECT_PROJECT, newState }
-}
-
 export function NewPackage (newState = NEW_OBJECT) {
   newState !== NEW_OBJECT ? forwardTo('admin/packages/edit' + newState) : forwardTo('admin/packages/new')
   return { type: NEW_PACKAGE, newState }
-}
-
-export function SelectUser (newState = NEW_OBJECT) {
-  forwardTo('admin/users/info/' + newState)
-  return { type: SELECT_USER, newState }
-}
-
-export function resultOfPay (newState) {
-  newState == 'success' ? forwardTo('paymentResult/S/' + newState) : forwardTo('paymentResult/F/' + newState)
-  //   console.log('status pay : '+ newState)
-  // forwardTo('paymentResultS/'+newState)
-  // console.log('status pay : '+ newState)
-  return { type: PAYMENT_RESULT, newState }
 }
 
 /**
@@ -530,7 +489,6 @@ function translateErrorMessage (message) {
 export function forwardTo (location) {
   console.log('forwardTo(' + location + ')')
 
-  // browserHistory.push(location);
   window.location = '#/' + location
 
   cleanErrorMessage()
