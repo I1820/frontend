@@ -14,7 +14,7 @@ import AddTemplate from '../views/Editros/addGlobalTemplate'
 import PackageList from '../views/PackageManagement'
 import NewPackage from '../views/PackageManagement/PackageManage'
 // usersManagement
-import UsersList from '../views/AdminUsers'
+import UsersList from '../views/AdminUsers/UsersList'
 import RoleList from '../views/AdminUsers/RoleList'
 import UserInfo from '../views/AdminUsers/UserInfo'
 import UserTransactions from '../views/PackageManagement/Trancations'
