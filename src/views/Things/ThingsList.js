@@ -25,6 +25,7 @@ import {
   getUsersThingsListAction
 } from '../../actions/AppActions'
 import { toastAlerts } from '../Shared/toast_alert'
+import { Link } from 'react-router-dom'
 
 class ThingsList extends Component {
 
@@ -118,7 +119,7 @@ class ThingsList extends Component {
           <CardBody>
             <ReactTable
               data={this.state.things}
-              columns={this.reactTableColumns('things')}
+              columns={this.reactTableColumns()}
               nextText='بعدی'
               previousText='قبلی'
               filterable={true}
@@ -161,101 +162,99 @@ class ThingsList extends Component {
     this.setState({ deleteThingIds: ids }, () => console.log(this.state))
   }
 
-  reactTableColumns (type) {
-    switch (type) {
-      case 'things':
-        return [
-          {
-            Header: 'انتخاب',
-            id: 'select',
-            accessor: row => <input type="checkbox" onChange={() => this.toggleCheckbox(row._id)}/>,
-            maxWidth: 50
-          },
-          {
-            Header: 'نام شی',
-            accessor: 'name',
-            maxWidth: 200
-          },
-          {
-            Header: 'آدرس',
-            accessor: 'dev_eui',
-            filterMethod: (filter, row) =>
-              row[filter.id].startsWith(filter.value) ||
-              row[filter.id].endsWith(filter.value),
-            maxWidth: 180
-          },
-          {
-            Header: 'نوع',
-            accessor: 'activation',
-            filterMethod: (filter, row) => row[filter.id].startsWith(filter.value.toUpperCase()),
-            maxWidth: 60
-          },
-          {
-            id: 'status',
-            Header: 'وضعیت',
-            filterable: false,
-            accessor: row => {
-              return (<div>
-                {row.type === 'lora' ?
-                  <Badge id={`tooltip-${row._id}`}
-                         color={row.last_seen_at['status']}>{row.last_seen_at['time'] ?
-                    'اخرین تاریخ دریافت داده' : 'عدم دریافت داده'}</Badge> : ''}
-                {row.last_seen_at['time'] &&
-                <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
-                  {moment(row.last_seen_at.time, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
-                </UncontrolledTooltip>}
-                {' '}
-                <Badge color={row.active ? 'success' : 'secondary'}>
-                  {'وضعیت:'} {row.active ? 'فعال' : 'غیرفعال'}
-                </Badge>
-                {' '}
-                <Badge id={`tooltip2-${row._id}`} color={!row.last_parsed_at ? 'secondary' : 'success'}>
-                  {row.last_parsed_at && row.last_parsed_at !== '' ? 'اخرین زمان پارس داده' : 'عدم پارس داده'}
-                </Badge>
-                {row.last_parsed_at && row.last_parsed_at !== '' ?
-                  <UncontrolledTooltip placement="top" target={`tooltip2-${row._id}`}>
-                    {moment(row.last_parsed_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
-                  </UncontrolledTooltip> : ''}
-              </div>)
-            }
-          },
-          {
-            id: 'rowTools',
-            Header: 'امکانات',
-            maxWidth: 150,
-            filterable: false,
-            accessor: row => {
-              return (<div>
-                <Input type="select" name="type"
-                       onChange={(e) => {
-                         let action = e.target.value
-                         e.target.value = ''
-                         if (action === 'edit') {
-                           window.location = `#/things/edit/${row.project._id}/${row._id}`
-                         } else if (action === 'send_codec') {
-                           window.location = `#/codec/${row.project._id}/${row._id}`
-                         }
+  reactTableColumns () {
+    return [
+      {
+        Header: 'انتخاب',
+        id: 'select',
+        accessor: row => <input type="checkbox" onChange={() => this.toggleCheckbox(row._id)}/>,
+        maxWidth: 50
+      },
+      {
+        Header: 'نام شی',
+        accessor: 'name',
+        maxWidth: 200
+      },
+      {
+        Header: 'آدرس',
+        accessor: 'dev_eui',
+        filterMethod: (filter, row) =>
+          row[filter.id].startsWith(filter.value) ||
+          row[filter.id].endsWith(filter.value),
+        maxWidth: 180
+      },
+      {
+        Header: 'نوع',
+        accessor: 'activation',
+        filterMethod: (filter, row) => row[filter.id].startsWith(filter.value.toUpperCase()),
+        maxWidth: 60
+      },
+      {
+        id: 'status',
+        Header: 'وضعیت',
+        filterable: false,
+        accessor: row => {
+          return (<div>
+            {row.type === 'lora' ?
+              <Badge id={`tooltip-${row._id}`}
+                     color={row.last_seen_at['status']}>{row.last_seen_at['time'] ?
+                'اخرین تاریخ دریافت داده' : 'عدم دریافت داده'}</Badge> : ''}
+            {row.last_seen_at['time'] &&
+            <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
+              {moment(row.last_seen_at.time, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
+            </UncontrolledTooltip>}
+            {' '}
+            <Badge color={row.active ? 'success' : 'secondary'}>
+              {'وضعیت:'} {row.active ? 'فعال' : 'غیرفعال'}
+            </Badge>
+            {' '}
+            <Badge id={`tooltip2-${row._id}`} color={!row.last_parsed_at ? 'secondary' : 'success'}>
+              {row.last_parsed_at && row.last_parsed_at !== '' ? 'اخرین زمان پارس داده' : 'عدم پارس داده'}
+            </Badge>
+            {row.last_parsed_at && row.last_parsed_at !== '' ?
+              <UncontrolledTooltip placement="top" target={`tooltip2-${row._id}`}>
+                {moment(row.last_parsed_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
+              </UncontrolledTooltip> : ''}
+          </div>)
+        }
+      },
+      {
+        id: 'rowTools',
+        Header: 'امکانات',
+        maxWidth: 150,
+        filterable: false,
+        accessor: row => {
+          return (<div>
+            <Input type="select" name="type"
+                   onChange={(e) => {
+                     let action = e.target.value
+                     e.target.value = ''
+                     if (action === 'edit') {
+                       window.location = `#/things/edit/${row.project._id}/${row._id}`
+                     } else if (action === 'send_codec') {
+                       window.location = `#/codec/${row.project._id}/${row._id}`
+                     }
 
-                       }} id="select">
-                  <option value="">امکانات</option>
-                  <option value="edit">ویرایش</option>
-                  <option value="send_codec">ارسال codec</option>
-                </Input>
-              </div>)
-            }
-          },
-          {
-            id: 'project',
-            Header: 'پروژه',
-            maxWidth: 200,
-            filterable: false,
-            accessor: row => <Button onClick={() => {
-              window.location = `#/projects/manage/${row.project._id}`
-            }} className="ml-1" color="warning" size="sm">{row.project.name}</Button>,
-          },
-        ]
-    }
-
+                   }} id="select">
+              <option value="">امکانات</option>
+              <option value="edit">ویرایش</option>
+              <option value="send_codec">ارسال codec</option>
+            </Input>
+          </div>)
+        }
+      },
+      {
+        id: 'project',
+        Header: 'پروژه',
+        maxWidth: 200,
+        filterable: false,
+        accessor: (row) => {
+          return (<Link to={`/projects/manage/show/${row.project._id}`}>
+            <Button className="ml-1" color="warning" size="sm">{row.project.name}</Button>
+          </Link>)
+        }
+      },
+    ]
   }
 }
 
@@ -266,4 +265,4 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(mapStateToProps)(ThingsList);
+export default connect(mapStateToProps)(ThingsList)
