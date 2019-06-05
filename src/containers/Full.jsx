@@ -6,7 +6,7 @@ import Sidebar from '../components/Sidebar/Sidebar.jsx'
 import Breadcrumb from '../components/Breadcrumb'
 import Footer from '../components/Footer'
 
-import Dashboard from '../views/Dashboard'
+import Dashboard from '../views/Dashboard/Dashboard.jsx'
 
 import globalCodec from '../views/globalCodec/GlobalCodecList'
 import AddTemplate from '../views/Editros/addGlobalTemplate'
