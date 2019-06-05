@@ -103,7 +103,7 @@ class Gateways extends Component {
             />
           </CardBody>
           <CardFooter>
-            <Link to={'#/gateways/new'}>
+            <Link to={'/gateways/new'}>
               <Button color="primary">ساخت جدید</Button>
             </Link>
             <Button
@@ -161,7 +161,7 @@ class Gateways extends Component {
         Header: 'عملیات',
         filterable: false,
         accessor: row => <div>
-          <Link to={`#/gateways/view/${row._id}`}>
+          <Link to={`/gateways/view/${row._id}`}>
             <Button className="ml-1" color="success"
                     size="sm">نمایش</Button>
           </Link>
