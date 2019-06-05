@@ -14,9 +14,6 @@ import Spinner from '../Spinner/Spinner'
 
 import { toastAlerts } from '../Shared/toast_alert'
 
-const _ = require('lodash')
-const { compose, withProps, lifecycle } = require('recompose')
-
 class GatewaysNew extends Component {
 
   constructor (props) {

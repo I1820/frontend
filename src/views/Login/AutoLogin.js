@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Alert, Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Container, } from 'reactstrap'
-import { forwardTo, getProfileAction, setAuthState, setTokenAction } from '../../../actions/AppActions'
+import { forwardTo, getProfileAction, setAuthState, setTokenAction } from '../../actions/AppActions'
 import { connect } from 'react-redux'
 
 class AutoLogin extends Component {
@@ -37,7 +37,7 @@ class AutoLogin extends Component {
                 </CardBody>
                 <CardFooter>
                   <Button color={'success'} onClick={() => {
-                    this.props.dispatch(getProfileAction(() => forwardTo('/')))
+                    this.props.dispatch(getProfileAction(() => this.props.history.push('/')))
                   }}>
                     {'هدایت به داشبورد'}
                   </Button>

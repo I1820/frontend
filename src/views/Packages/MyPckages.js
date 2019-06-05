@@ -25,6 +25,8 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import classnames from 'classnames'
+import Line from 'react-lazylog/src/components/Line'
+import { Link } from 'react-router-dom'
 
 class MyPackages extends Component {
   constructor (props) {
@@ -89,9 +91,11 @@ class MyPackages extends Component {
             </ListGroup>
           </CardBody>
           <CardFooter>
-            <Button color="primary" onClick={() => forwardTo('selectedPackage/' + item._id)}>
-              <i className="icon-basket-loaded icons"/> خرید
-            </Button>
+            <Link to={`selectedPackage/${item._id}`}>
+              <Button color="primary">
+                <i className="icon-basket-loaded icons"/> خرید
+              </Button>
+            </Link>
           </CardFooter>
 
         </Card>

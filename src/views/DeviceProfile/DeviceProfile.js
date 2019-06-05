@@ -16,6 +16,7 @@ import connect from 'react-redux/es/connect/connect'
 import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
 import { toastAlerts } from '../Shared/toast_alert'
+import { Link } from 'react-router-dom'
 
 class DeviceProfile extends Component {
 
@@ -138,8 +139,10 @@ class DeviceProfile extends Component {
         accessor: row => <div>
           <Button onClick={() => this.toggle('delete', row._id)} className="ml-1" color="danger"
                   size="sm">حذف</Button>
-          <Button onClick={() => forwardTo(`device-profile/list/view/${row._id}`)} className="ml-1" color="primary"
+          <Link to={`device-profile/list/view/${row._id}`}>
+          <Button className="ml-1" color="primary"
                   size="sm">مشاهده</Button>
+          </Link>
         </div>
       }
     ]

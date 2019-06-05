@@ -17,6 +17,7 @@ import {
 } from 'reactstrap'
 import { buyPackagesAction, forwardTo, getPackageAction, getUserPaymentPortalsAction } from '../../actions/AppActions'
 import { toastAlerts } from '../Shared/toast_alert'
+import { Link } from 'react-router-dom'
 
 class SelectedPackage extends Component {
 
@@ -186,10 +187,13 @@ class SelectedPackage extends Component {
                 <div style={{ display: !this.props.currentlySending ? 'block' : 'none' }}>
                   <Button color="success" onClick={this.pay}>
                     {'پرداخت از طریق درگاه'}
-                  </Button>{' '}
-                  <Button onClick={() => forwardTo('packages')} color="danger">انصراف</Button>{' '}
+                  </Button>
+                  &nsbp;
+                  <Link to={'packages'}>
+                    <Button color="danger">انصراف</Button>
+                  </Link>
                 </div>
-                <div class="text-right" style={{ display: this.props.currentlySending ? 'block' : 'none' }}>
+                <div className="text-right" style={{ display: this.props.currentlySending ? 'block' : 'none' }}>
                   <img
                     style={{ margin: 'auto' }}
                     src={'img/loading.gif'}/>

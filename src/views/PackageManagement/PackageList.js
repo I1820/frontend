@@ -41,6 +41,7 @@ import { connect } from 'react-redux'
 import Spinner from '../Spinner/Spinner'
 import { toastAlerts } from '../Shared/toast_alert'
 import classnames from 'classnames'
+import { Link } from 'react-router-dom'
 
 function mapStateToProps (state) {
   return {
@@ -131,9 +132,11 @@ class PackageList extends Component {
                     onClick={() => this.toggle('deletePackage', item._id)}>
               <i className="fa fa-remove fa-lg "/>حذف </Button>
 
-            <Button color="info" size="sm" className="ml-1"
-                    onClick={() => forwardTo(`package/${item._id}`)}>
-              <i className="fa fa-remove fa-lg "/>ویرایش </Button>
+            <Link to={`package/${item._id}`}>
+            <Button color="info" size="sm" className="ml-1">
+              <i className="fa fa-remove fa-lg "/>ویرایش
+            </Button>
+            </Link>
             <Button
               color="warning"
               size="sm"
