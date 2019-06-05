@@ -88,7 +88,7 @@ class MyPackages extends Component {
             </ListGroup>
           </CardBody>
           <CardFooter>
-            <Link to={`selectedPackage/${item._id}`}>
+            <Link to={`/selectedPackage/${item._id}`}>
               <Button color="primary">
                 <i className="icon-basket-loaded icons"/> خرید
               </Button>

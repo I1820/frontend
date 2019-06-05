@@ -132,7 +132,7 @@ class PackageList extends Component {
                     onClick={() => this.toggle('deletePackage', item._id)}>
               <i className="fa fa-remove fa-lg "/>حذف </Button>
 
-            <Link to={`package/${item._id}`}>
+            <Link to={`/package/${item._id}`}>
             <Button color="info" size="sm" className="ml-1">
               <i className="fa fa-remove fa-lg "/>ویرایش
             </Button>

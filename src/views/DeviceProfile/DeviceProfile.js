@@ -139,7 +139,7 @@ class DeviceProfile extends Component {
         accessor: row => <div>
           <Button onClick={() => this.toggle('delete', row._id)} className="ml-1" color="danger"
                   size="sm">حذف</Button>
-          <Link to={`device-profile/list/view/${row._id}`}>
+          <Link to={`/device-profile/list/view/${row._id}`}>
           <Button className="ml-1" color="primary"
                   size="sm">مشاهده</Button>
           </Link>

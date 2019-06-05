@@ -189,7 +189,7 @@ class SelectedPackage extends Component {
                     {'پرداخت از طریق درگاه'}
                   </Button>
                   &nsbp;
-                  <Link to={'packages'}>
+                  <Link to={'/packages'}>
                     <Button color="danger">انصراف</Button>
                   </Link>
                 </div>
