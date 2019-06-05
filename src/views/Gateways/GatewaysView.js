@@ -203,7 +203,7 @@ class GatewaysView extends Component {
                   attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
-                  <Marker draggable={true} onDragend={this.onDragend} position={[this.state.lat, this.state.long]}
+                  <Marker draggable={true} onDragend={this.onDragend} position={[this.state.gateway.latitude, this.state.gateway.longitude]}
                       icon={L.icon({
                         iconSize: [25, 41],
                         iconAnchor: [13, 41],
