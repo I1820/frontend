@@ -56,13 +56,14 @@ class SendCodec extends Component {
   }
 
   componentWillMount () {
-    const splitedUrl = window.location.href.split('/')
+    const projectID = this.props.match.params.project_id
+    const thingID = this.props.match.params.thing_id
     this.setState({
-      project: splitedUrl[5],
-      thing: splitedUrl[6]
+      project: projectID,
+      thing: thingID
     })
-    this.props.dispatch(getCodecTemplateListAction(splitedUrl[5], (status, templates) => {
-      this.props.dispatch(getThingCodecAction(splitedUrl[6], (status, result) => {
+    this.props.dispatch(getCodecTemplateListAction(projectID, (status, templates) => {
+      this.props.dispatch(getThingCodecAction(thingID, (status, result) => {
         if (status && result !== null) {
           this.setState({
             codec: result.codec
@@ -88,7 +89,6 @@ class SendCodec extends Component {
     return (
       <div>
         <Spinner display={this.props.loading}/>
-
 
         <Modal isOpen={this.state.modal} toggle={() => this.setState({ modal: !this.state.modal })}
                className="text-right">
@@ -129,28 +129,21 @@ class SendCodec extends Component {
               this.props.dispatch(testCodec(this.state.thing, { data: this.state.testValue }, this.state.testType, (testResult) => {
                 this.setState({ testResult })
               }))
-            }} className="ml-1">ارسال</Button>
+            }} className="ml-1">ارسال
+            </Button>
             <Button color="danger" onClick={() => this.setState({ modal: !this.state.modal })}>انصراف</Button>
           </ModalFooter>
         </Modal>
 
-
         <Card className="text-justify">
           <CardHeader>
-            <CardTitle className="mb-0 font-weight-bold h6">ویرایشگر codec</CardTitle>
+            <CardTitle className="mb-0 font-weight-bold h6">ویرایشگر Codec</CardTitle>
           </CardHeader>
           <CardBody>
             <Form>
               <FormGroup row>
                 <Label sm={2}>قالب Decoder: </Label>
                 <Col sm={6}>
-                  {/*<Input type="select" name="supportsJoin" id="select" onChange={(event) => {*/}
-                  {/*if (event.target.value !== '') {*/}
-                  {/*}*/}
-                  {/*}}>*/}
-                  {/*<option value="">قالب را انتخاب کنید</option>*/}
-                  {/*{this.renderTemplates()}*/}
-                  {/*</Input>*/}
                   <Select2
                     style={{ width: '70%' }}
                     data={this.renderTemplates()}
@@ -180,12 +173,12 @@ class SendCodec extends Component {
                       }
                     }
                   />
-                  <button style={{ width: '20%', marginRight: '10px' }} class="btn btn-info" onClick={() => {
+                  <Button style={{ width: '20%', marginRight: '10px' }} color={'info'} onClick={() => {
                     this.setState({
                       global: false,
                       templateId: ''
                     })
-                  }}>{'به صورت دستی'}</button>
+                  }}>{'به صورت دستی'}</Button>
                 </Col>
               </FormGroup>
               <FormGroup style={{ display: this.state.global === false ? 'flex' : 'none' }} row>
@@ -194,7 +187,7 @@ class SendCodec extends Component {
                   mode="python"
                   theme="monokai"
                   className="col-md-12"
-                  name="UNIQUE_ID_OF_DIV"
+                  name="codec-editor"
                   value={this.state.codec}
                   fontSize={14}
                   showPrintMargin={true}
@@ -223,13 +216,15 @@ class SendCodec extends Component {
               }}
               className="ml-1"
               style={{ display: this.state.global === false ? 'inline-block' : 'none' }}
-              color="secondary" size="md">بررسی کدک</Button>
-            {this.state.codec && <Button
+              color="secondary" size="md">بررسی کدک
+            </Button>
+            <Button
               onClick={() => {
                 this.setState({ modal: true })
               }}
               className="ml-1"
-              color="warning" size="md">آزمایش کدک</Button>}
+              color="warning" size="md">آزمایش کدک
+            </Button>
           </CardFooter>
         </Card>
         <Card style={{ display: this.state.global === false ? 'flex' : 'none' }} className="text-justify">
