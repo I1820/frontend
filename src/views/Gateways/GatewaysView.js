@@ -32,6 +32,7 @@ class GatewaysView extends Component {
 
   constructor (props) {
     super(props)
+    this.onDragend = this.onDragend.bind(this)
     this.toggleTab = this.toggleTab.bind(this)
     this.changeForm = this.changeForm.bind(this)
     this.submitForm = this.submitForm.bind(this)
@@ -42,7 +43,9 @@ class GatewaysView extends Component {
         name: '',
         description: '',
         mac: '',
-        altitude: ''
+        altitude: '',
+        latitude: 0,
+        longitude: 0
       },
       keys: {
         appSKey: '',
@@ -62,6 +65,7 @@ class GatewaysView extends Component {
         if (gateway._id === gatewayID) {
           this.setState({
             gateway: {
+              _id: gateway._id,
               altitude: gateway.altitude,
               description: gateway.description,
               name: gateway.name,
@@ -164,7 +168,7 @@ class GatewaysView extends Component {
                     <Col sm={5}>
                       <Input dir="ltr" type="number"
                              value={this.state.gateway.latitude ? this.state.gateway.latitude : 0}
-                             onChange={event => this.setState({ gateway: { latitude: event.target.value }})}
+                             onChange={event => this.setState({ gateway: { ...this.state.gateway, latitude: event.target.value }})}
                       />
                     </Col>
                   </FormGroup>
@@ -173,7 +177,7 @@ class GatewaysView extends Component {
                     <Col sm={5}>
                       <Input dir="ltr" type="number"
                              value={this.state.gateway.longitude ? this.state.gateway.longitude : 0}
-                             onChange={event => this.setState({ gateway: { longitude: event.target.value }})}
+                             onChange={event => this.setState({ gateway: { ...this.state.gateway, longitude: event.target.value }})}
                       />
                     </Col>
                   </FormGroup>
@@ -198,7 +202,7 @@ class GatewaysView extends Component {
                 <CardTitle className="mb-0 font-weight-bold h6">محل قرارگیری گذرگاه</CardTitle>
               </CardHeader>
               <CardBody>
-                <Map center={[this.state.lat, this.state.long]} zoom={15}>
+                <Map center={[this.state.gateway.latitude, this.state.gateway.longitude]} zoom={15}>
                   <TileLayer
                   attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -302,6 +306,16 @@ class GatewaysView extends Component {
         </TabContent>
       </div>
     )
+  }
+
+  onDragend (event) {
+    this.setState({
+      gateway: {
+        ...this.state.gateway,
+        latitude: event.target._latlng.lat,
+        longitude: event.target._latlng.lng
+      }
+    })
   }
 
   toggleTab (tab) {
