@@ -10,7 +10,7 @@ import Dashboard from '../views/Dashboard/Dashboard.jsx'
 
 import globalCodec from '../views/globalCodec/GlobalCodecList'
 import AddTemplate from '../views/Editros/addGlobalTemplate'
-// PackageManagment
+// PackageManagement
 import PackageList from '../views/PackageManagement'
 import NewPackage from '../views/PackageManagement/PackageManage'
 // usersManagement
@@ -34,7 +34,6 @@ import ProjectsView from '../views/Projects/ProjectsView.js'
 // Package
 import MyPackages from '../views/Packages/MyPckages'
 import SelectedPackage from '../views/Packages/SelectedPackage'
-import BuyedPackages from '../views/Packages/BuyedPackage'
 
 import ThingsExcel from '../views/Things/ThingsExcel.js'
 import ThingsList from '../views/Things'
@@ -99,8 +98,6 @@ class Full extends Component {
                 <Route path="/portals" name="portals" component={PaymentPortalList}/>
                 <Route path="/packages" name="packages" component={MyPackages}/>
                 <Route path="/selectedPackage/:id" name="selectedPackage" component={SelectedPackage}/>
-
-                <Route path="/buyedPackages" name="BuyedPackages" component={BuyedPackages}/>
 
                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
                 <Route path="/things/edit/:project_id/:thing_id" name="createThing" component={CreateThing}/>
