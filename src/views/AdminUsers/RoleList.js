@@ -96,8 +96,9 @@ class RoleList extends Component {
   reactTableColumns () {
     return [
       {
-        Header: 'نام نقش',
+        Header: 'نام',
         id: 'name',
+        maxWidth: 80,
         accessor: row => {
           return (<Input
             onChange={(event) => {
@@ -147,7 +148,6 @@ class RoleList extends Component {
       {
         id: 'tools',
         Header: 'امکانات',
-        maxWidth: 80,
         filterable: false,
         accessor: row => <Row>
           <Col xs={6}>
