@@ -82,7 +82,7 @@ class Full extends Component {
                 <Route path="/device-profile" name="DeviceProfile" component={DeviceProfile}/>
 
                 <Route path="/scenario" name="addScenario" component={addScenario}/>
-                <Route path="/codec" name="sendCodec" component={sendCodec}/>
+                <Route path="/codec/:project_id/:thing_id" name="sendCodec" component={sendCodec}/>
                 <Route path="/template" name="addTemplate" component={addTemplate}/>
 
                 <Route path="/admin/globalCodec/edit/:id" name="AddTemplate" component={AddTemplate}/>
@@ -103,8 +103,7 @@ class Full extends Component {
                 <Route path="/buyedPackages" name="BuyedPackages" component={BuyedPackages}/>
 
                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
-                /*
-                <Route path="/things/edit/:project_id/:thing_id" name="createThing" component={CreateThing}/>*/
+                <Route path="/things/edit/:project_id/:thing_id" name="createThing" component={CreateThing}/>
                 <Route path="/project/manage/createThing/:project_id" name="createThing" component={CreateThing}/>
                 <Route path="/things" name="ThingsList" component={ThingsList}/>
                 <Redirect from="/" to="/dashboard"/>
