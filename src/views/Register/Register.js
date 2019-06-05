@@ -16,6 +16,7 @@ import {
 import { connect } from 'react-redux'
 import { register } from '../../actions/AppActions'
 import { toastAlerts } from '../Shared/toast_alert'
+import { Link } from 'react-router-dom'
 
 class Register extends Component {
 
@@ -121,13 +122,14 @@ class Register extends Component {
                   </Button>
                 </CardBody>
                 <CardFooter>
-                  <Button
-                    style={{ display: !this.props.currentlySending ? 'block' : 'none' }}
-                    color="primary"
-                    onClick={() => window.location = '#/login'}
-                    block>
+                  <Link to={'/login'}>
+                    <Button
+                      style={{ display: !this.props.currentlySending ? 'block' : 'none' }}
+                      color="primary"
+                      block>
                     بازگشت
                   </Button>
+                  </Link>
                 </CardFooter>
               </Card>
             </Col>
