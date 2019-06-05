@@ -21,11 +21,11 @@ import { toast } from 'react-toastify'
 // Containers
 import Full from './containers/Full.jsx'
 // Views
-import Login from './views/Pages/Login/Login'
-import Register from './views/Pages/Register/Register'
+import Login from './views/Login/Login'
+import Register from './views/Register/Register'
 import SuccessPayment from './views/Packages/SuccessPayment'
 import FailurePayment from './views/Packages/FailurePayment'
-import AutoLogin from './views/Pages/Login/AutoLogin'
+import AutoLogin from './views/Login/AutoLogin'
 
 function PrivateRoute ({ component: Component, ...rest }) {
   let { loggedIn } = store.getState().homeReducer
