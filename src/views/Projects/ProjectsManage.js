@@ -765,9 +765,7 @@ class ProjectsManage extends Component {
             <Link to={`#/things/excel/${this.state.project._id}`}>
               <Button className="ml-1" color="success">افزودن دسته ای شی</Button>
             </Link>
-            <Link to={}>
-              <Button onClick={this.downloadExcel} className="ml-1" color="success">خروجی اکسل</Button>
-            </Link>
+            <Button onClick={this.downloadExcel} className="ml-1" color="success">خروجی اکسل</Button>
           </CardFooter>
         </Card>
 
