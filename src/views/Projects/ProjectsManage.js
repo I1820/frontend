@@ -47,6 +47,7 @@ import { toastAlerts } from '../Shared/toast_alert'
 import moment from 'moment-jalaali'
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 class ProjectsManage extends Component {
   constructor (props) {
@@ -265,7 +266,12 @@ class ProjectsManage extends Component {
             <FormGroup style={{ display: 'flex' }} row>
               <Label sm={3}>کلید:</Label>
               <Col sm={9}>
-                <Input value={this.state.keys.JWT} type="textarea" readOnly name="" rows="6"/>
+                <Input value={this.state.keys.JWT} type="textarea" readOnly dir="ltr" rows="6"/>
+                <CopyToClipboard text={this.state.keys.JWT}>
+                  <Button color={'info'}><i color="info" className={'icon-docs'} onClick={() => {
+                    toast('کپی شد', {autoClose: 15000, type: toast.TYPE.SUCCESS})
+                  }}/></Button>
+                </CopyToClipboard>
               </Col>
             </FormGroup>
           </ModalBody>
