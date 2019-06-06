@@ -264,6 +264,7 @@ class CreateThing extends Component {
       devEUI: this.state.thing.devEUI,
       thing_profile_slug: this.thing_profile_slug,
       type: this.state.thing.type,
+      model: this.state.thing.model,
     }
     if (this.state.thing._id === undefined) {
       this.props.dispatch(createThingAction(data, this.state.project, toastAlerts))
