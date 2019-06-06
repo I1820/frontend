@@ -27,6 +27,11 @@ import {
 import { toastAlerts } from '../Shared/toast_alert'
 import { Link } from 'react-router-dom'
 
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import L from 'leaflet'
+import iconUrl from 'leaflet/dist/images/marker-icon.png'
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+
 class ThingsList extends Component {
 
   constructor (props) {
@@ -146,6 +151,34 @@ class ThingsList extends Component {
               className="ml-1"
               color="success">خروجی اکسل</Button>
           </CardFooter>
+        </Card>
+        <Card className="text-justify">
+          <CardHeader>
+            <CardTitle className="mb-0 font-weight-bold h6">محل قرارگیری اشیا</CardTitle>
+          </CardHeader>
+          <CardBody>
+            <Map center={[35.806027697498365, 51.3983747884308]} zoom={10}>
+              <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              {
+                this.state.things.map((t) => {
+                  return (<Marker draggable={false}
+                                  position={[t.loc.coordinates[1], t.loc.coordinates[0]]}
+                                  icon={L.icon({
+                                    iconSize: [25, 41],
+                                    iconAnchor: [13, 41],
+                                    iconUrl: iconUrl,
+                                    shadowUrl: shadowUrl
+                                  })}
+                  >
+                    <Popup>t.name</Popup>
+                  </Marker>)
+                })
+              }
+            </Map>
+          </CardBody>
         </Card>
       </div>
     )
