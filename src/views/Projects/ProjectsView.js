@@ -158,7 +158,7 @@ class ProjectsView extends Component {
             label: k,
             name: `${things[d.thingid]}: ${k}`,
             data: [],
-            colorIndex: this.getcolor(k)
+            colorIndex: ProjectsView.getColor(k)
           })
         }
       })
@@ -184,7 +184,7 @@ class ProjectsView extends Component {
     })
   }
 
-  getcolor (k) {
+  static getColor (k) {
     return ((((k.split('').reduce(function (a, b) {
       a = ((a << 5) - a) + b.charCodeAt(0)
       return a & a

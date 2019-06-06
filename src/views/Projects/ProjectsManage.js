@@ -46,16 +46,14 @@ import Logger from '../../components/Logger'
 import { toastAlerts } from '../Shared/toast_alert'
 import moment from 'moment-jalaali'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
 
 class ProjectsManage extends Component {
   constructor (props) {
     super(props)
 
-    this.addThing = this.addThing.bind(this)
-    this.addScenario = this.addScenario.bind(this)
     this.renderDownlinkRow = this.renderDownlinkRow.bind(this)
     this.addTemplate = this.addTemplate.bind(this)
-    this.uploadExcel = this.uploadExcel.bind(this)
     this.downloadExcel = this.downloadExcel.bind(this)
     this.deleteThing = this.deleteThing.bind(this)
     this.activateThing = this.activateThing.bind(this)
@@ -761,9 +759,15 @@ class ProjectsManage extends Component {
             />
           </CardBody>
           <CardFooter>
-            <Button onClick={this.addThing} className="ml-1" color="primary">افزودن شی</Button>
-            <Button onClick={this.uploadExcel} className="ml-1" color="success">افزودن دسته ای شی</Button>
-            <Button onClick={this.downloadExcel} className="ml-1" color="success">خروجی اکسل</Button>
+            <Link to={`#/project/manage/createThing/${this.state.project._id}`}>
+              <Button className="ml-1" color="primary">افزودن شی</Button>
+            </Link>
+            <Link to={`#/things/excel/${this.state.project._id}`}>
+              <Button className="ml-1" color="success">افزودن دسته ای شی</Button>
+            </Link>
+            <Link to={}>
+              <Button onClick={this.downloadExcel} className="ml-1" color="success">خروجی اکسل</Button>
+            </Link>
           </CardFooter>
         </Card>
 
@@ -802,7 +806,9 @@ class ProjectsManage extends Component {
             />
           </CardBody>
           <CardFooter>
-            <Button onClick={this.addScenario} color="primary">افزودن سناریو</Button>
+            <Link to={`#/scenario/${this.state.project._id}/new`}>
+              <Button color="primary">افزودن سناریو</Button>
+            </Link>
           </CardFooter>
         </Card>
 
@@ -877,10 +883,6 @@ class ProjectsManage extends Component {
 
   }
 
-  uploadExcel () {
-    window.location = `#/things/excel/${this.state.project._id}`
-  }
-
   deleteAlias (event) {
     const key = event.target.value
     const newState = {
@@ -897,14 +899,6 @@ class ProjectsManage extends Component {
 
   downloadExcel () {
     this.props.dispatch(DownloadThingsExcelAction(this.state.project._id))
-  }
-
-  addThing () {
-    window.location = `#/project/manage/createThing/${this.state.project._id}`
-  }
-
-  addScenario () {
-    window.location = `#/scenario/${this.state.project._id}/new`
   }
 
   callback (status, message) {
@@ -962,6 +956,10 @@ class ProjectsManage extends Component {
             accessor: 'activation',
             filterMethod: (filter, row) => row[filter.id].startsWith(filter.value.toUpperCase()),
             maxWidth: 60
+          },
+          {
+            Header: 'نحوه پارس کردن',
+            accessor: 'model',
           },
           {
             id: 'status',

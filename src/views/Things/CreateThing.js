@@ -38,6 +38,7 @@ class CreateThing extends Component {
       zoom: 13,
       project: '',
       thing: {
+        model: 'generic',
         lat: 35.7024852,
         long: 51.4023424,
         name: '',
@@ -116,6 +117,17 @@ class CreateThing extends Component {
                          value={this.state.thing.description}
                          style={{ resize: 'none' }}
                          type="textarea"/>
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Label sm={3}>نحوه پارس کردن:</Label>
+                <Col md="5">
+                  <Input type="select" name="model"
+                         value={this.state.thing.model}
+                         onChange={this.changeForm} id="select">
+                    <option value="generic">Generic</option>
+                    <option value="aolab">Aolab</option>
+                  </Input>
                 </Col>
               </FormGroup>
               <FormGroup row>
