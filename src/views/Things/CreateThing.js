@@ -239,6 +239,7 @@ class CreateThing extends Component {
   onDragend (event) {
     this.setState({
       thing: {
+        ...this.state.thing,
         lat: event.target._latlng.lat,
         long: event.target._latlng.lng
       }

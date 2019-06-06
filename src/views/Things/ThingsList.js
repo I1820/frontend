@@ -173,7 +173,7 @@ class ThingsList extends Component {
                                     shadowUrl: shadowUrl
                                   })}
                   >
-                    <Popup>t.name</Popup>
+                    <Popup>{t.name}</Popup>
                   </Marker>)
                 })
               }
