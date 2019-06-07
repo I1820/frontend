@@ -1909,6 +1909,6 @@ export function addRoleAction (permissions, cb) {
 
 export function setTokenAction (token) {
   return (dispatch) => {
-    dispatch({ type: SET_TOKEN, newState: { token: token } })
+    dispatch({ type: SET_TOKEN, newState: { access_token: token } })
   }
 }

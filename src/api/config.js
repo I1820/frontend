@@ -4,6 +4,11 @@ function getAuth () {
   return 'Bearer ' + store.getState().userReducer.access_token
 }
 
+export const refreshConfigToken = (config) => {
+  config.headers['Authorization'] = getAuth()
+  return config
+}
+
 export const refreshConfig = () => ({
   method: 'PUT',
   body: '',
