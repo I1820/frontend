@@ -27,7 +27,6 @@ import {
     uploadLegalDocAction,
     uploadPictureAction
 } from '../../actions/AppActions'
-import Phone from 'react-phone-number-input'
 import Select2 from 'react-select2-wrapper'
 import {toastAlerts} from '../Shared/toast_alert'
 import {baseFilesURL} from '../../api/index'
@@ -166,7 +165,7 @@ class Profile extends Component {
                                         <InputGroupAddon addonType="prepend">
                                             <Select2
                                                 onSelect={(e) => this.setState({city: parseInt(e.target.value)})}
-                                                data={this.getCodes()}
+                                                data={Profile.getCodes()}
                                                 value={this.state.city}
                                             />
                                         </InputGroupAddon>
@@ -175,14 +174,11 @@ class Profile extends Component {
 
                                 <FormGroup>
                                     <Label>تلفن همراه:</Label>
-                                    <Phone
-                                        displayInitialValueAsLocalNumber
-                                        // country="IR"
-                                        style={{direction: 'ltr'}}
-                                        smartCaret={false}
-                                        placeholder=""
+                                    <Input
+                                        dir="ltr"
+                                        placeholder="+989390909540"
                                         value={this.state.mobile}
-                                        onChange={mobile => this.setState({mobile})}/>
+                                        onChange={event => this.setState({mobile: event.target.value})}/>
                                 </FormGroup>
 
                                 <FormGroup>
@@ -246,9 +242,9 @@ class Profile extends Component {
                                     <Label>مستندات حقوقی:</Label>
                                     {
                                         this.state.legal_doc ?
-                                            <a target="_blank" href={baseFilesURL() + this.state.legal_doc}>دانلود</a>
+                                            <a target="_blank" rel="noopener noreferrer"
+                                               href={baseFilesURL() + this.state.legal_doc}>دانلود</a>
                                             : <p>سندی بارگذاری نشده است</p>
-
                                     }
                                     <Input name="docs"
                                            type="file"
@@ -260,17 +256,14 @@ class Profile extends Component {
 
                                 <FormGroup>
                                     <Label>تلفن همراه واسط شرکت:</Label>
-                                    <Phone
-                                        displayInitialValueAsLocalNumber
-                                        // country="IR"
-                                        style={{direction: 'ltr'}}
-                                        smartCaret={false}
-                                        placeholder=""
+                                    <Input
+                                        dir="ltr"
+                                        placeholder="+989390909540"
                                         value={this.state.legalInfo.org_interface_mobile}
-                                        onChange={mobile => this.setState({
+                                        onChange={event => this.setState({
                                             legalInfo: {
                                                 ...this.state.legalInfo,
-                                                org_interface_mobile: mobile
+                                                org_interface_mobile: event.target.value
                                             }
                                         })}/>
                                 </FormGroup>
@@ -349,7 +342,7 @@ class Profile extends Component {
         )
     }
 
-    getCodes() {
+    static getCodes() {
         return [{text: 'تهران', id: '021'}
             , {text: 'البرز', id: '026'}
             , {text: 'قم', id: '025'}
