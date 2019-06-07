@@ -1,5 +1,14 @@
-import {deleteConfig, getConfig, loginConfig, patchConfig, postConfig, putConfig, refreshConfig} from './config'
-import {initUser, logout, sendingRequest, setAuthState} from '../actions/AppActions'
+import {
+    deleteConfig,
+    getConfig,
+    loginConfig,
+    patchConfig,
+    postConfig,
+    putConfig,
+    refreshConfig,
+    refreshConfigToken
+} from './config'
+import {logout, sendingRequest, setAuthState, setTokenAction} from '../actions/AppActions'
 
 import _ from 'underscore'
 
@@ -73,23 +82,26 @@ function fetchData(endpoint = '/404', config = {}, dispatch, newUrl = false, loa
                 const {status, message, code} = controller(json);
 
                 if ((code === 701 || code === 401) && endpoint !== endpoints.login) {
-                    console.log(message === 'token expired' && store.getState().userReducer.keep);
-                    if (message === 'token expired' && store.getState().userReducer.keep) {
+                    if (message === 'token expired') {
                         const promise = fetchData(endpoints.refresh, refreshConfig(), dispatch);
                         promise.then((response) => {
                             if (response.status === 'OK') {
                                 dispatch(setAuthState(true));
-                                dispatch(initUser({...response.result, keep: true}))
+                                dispatch(setTokenAction(response.result.token));
+                                // retry the query
+                                return fetchData(endpoint, refreshConfigToken(config), dispatch, newUrl, loading).then(resolve)
+                            } else {
+                                dispatch(logout())
                             }
                         })
                     } else {
                         dispatch(logout())
                     }
-                }
-                if (!status || (code && code.toString(10).startsWith('7'))) {
+                } else if (!status || (code && code.toString(10).startsWith('7'))) {
                     return resolve({status: 'FAILED', result: message, code})
+                } else {
+                    return resolve({result: json.result, status: 'OK', code})
                 }
-                return resolve({result: json.result, status: 'OK', code})
             })
             .catch((err) => {
                 dispatch(sendingRequest(false));
@@ -382,8 +394,7 @@ export function DownloadAdminTransactionsExcel(limit, offset) {
         responseType: 'blob'
     };
     return get(url, config)
-};
-
+}
 export function DownloadThingsDataExcel(things, projectId, offset, limit, since) {
     const url = `${BASE_URL}/things/data/excel`;
     const config = {

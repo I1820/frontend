@@ -174,7 +174,7 @@ class ThingsList extends Component {
                                                         shadowUrl: shadowUrl
                                                     })}
                                     >
-                                        <Popup>t.name</Popup>
+                                        <Popup>{t.name}</Popup>
                                     </Marker>)
                                 })
                             }
@@ -219,9 +219,19 @@ class ThingsList extends Component {
             },
             {
                 Header: 'نوع',
+                accessor: 'type',
+                maxWidth: 50
+            },
+            {
+                Header: 'نحوه پارس کردن',
+                accessor: 'model',
+                maxWidth: 50
+            },
+            {
+                Header: 'فعال سازی',
                 accessor: 'activation',
                 filterMethod: (filter, row) => row[filter.id].startsWith(filter.value.toUpperCase()),
-                maxWidth: 60
+                maxWidth: 50
             },
             {
                 id: 'status',

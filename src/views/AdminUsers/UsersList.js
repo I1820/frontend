@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
 import {toastAlerts} from '../Shared/toast_alert'
+import moment from 'moment-jalaali';
 
 class UsersList extends Component {
     constructor(props) {
@@ -104,7 +105,7 @@ class UsersList extends Component {
             }, {
                 Header: 'تاریخ ثبت نام',
                 id: 'created_at',
-                accessor: row => <div style={{textAlign: 'right', direction: 'ltr'}}>{row.created_at}</div>,
+                accessor: row => moment(row.created_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'),
                 filterable: false,
             },
             {

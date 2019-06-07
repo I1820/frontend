@@ -957,13 +957,19 @@ class ProjectsManage extends Component {
                     },
                     {
                         Header: 'نوع',
-                        accessor: 'activation',
-                        filterMethod: (filter, row) => row[filter.id].startsWith(filter.value.toUpperCase()),
-                        maxWidth: 60
+                        accessor: 'type',
+                        maxWidth: 50
                     },
                     {
                         Header: 'نحوه پارس کردن',
                         accessor: 'model',
+                        maxWidth: 50
+                    },
+                    {
+                        Header: 'فعال سازی',
+                        accessor: 'activation',
+                        filterMethod: (filter, row) => row[filter.id].startsWith(filter.value.toUpperCase()),
+                        maxWidth: 50
                     },
                     {
                         id: 'status',
