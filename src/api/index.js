@@ -74,7 +74,7 @@ function fetchData (endpoint = '/404', config = {}, dispatch, newUrl = false, lo
 
         if ((code === 701 || code === 401) && endpoint !== endpoints.login) {
           console.log(message === 'token expired' && store.getState().userReducer.keep)
-          if (message === 'token expired' && store.getState().userReducer.keep) {
+          if (message === 'token expired') {
             const promise = fetchData(endpoints.refresh, refreshConfig(), dispatch)
             promise.then((response) => {
               if (response.status === 'OK') {
