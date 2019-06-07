@@ -765,10 +765,10 @@ class ProjectsManage extends Component {
             />
           </CardBody>
           <CardFooter>
-            <Link to={`#/project/manage/createThing/${this.state.project._id}`}>
+            <Link to={`/project/manage/createThing/${this.state.project._id}`}>
               <Button className="ml-1" color="primary">افزودن شی</Button>
             </Link>
-            <Link to={`#/things/excel/${this.state.project._id}`}>
+            <Link to={`/things/excel/${this.state.project._id}`}>
               <Button className="ml-1" color="success">افزودن دسته ای شی</Button>
             </Link>
             <Button onClick={this.downloadExcel} className="ml-1" color="success">خروجی اکسل</Button>
@@ -810,7 +810,7 @@ class ProjectsManage extends Component {
             />
           </CardBody>
           <CardFooter>
-            <Link to={`#/scenario/${this.state.project._id}/new`}>
+            <Link to={`/scenario/${this.state.project._id}/new`}>
               <Button color="primary">افزودن سناریو</Button>
             </Link>
           </CardFooter>
