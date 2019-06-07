@@ -50,7 +50,6 @@ class PaymentPortalList extends Component {
                                 <th>وب‌سایت</th>
                                 <th>وضعیت</th>
                                 <th> فعال‌سازی</th>
-
                             </tr>
                             </thead>
                             <tbody>
@@ -74,19 +73,23 @@ class PaymentPortalList extends Component {
             <tr>
                 <th>{key + 1}</th>
                 <td>
-                    <img className="portal-style" src={el.image}/>
+                    <img className="portal-style" src={el.image} alt={el.name}/>
                 </td>
                 <td>{el.name}</td>
-                <td>{el.website}</td>
+                <td dir={'ltr'}><a href={el.website}>{el.website}</a></td>
                 <td>{el.active === true ? <Badge color="success"> فعال</Badge> :
                     <Badge color="danger"> غیر فعال</Badge>}</td>
-
                 <td>
-                    {el.active === false ? <Button outline color="success" onClick={() => this.activate(el._id, 1)}>
-                            <i className="fa fa-edit"/>فعال‌سازی</Button> :
-                        <Button outline color="danger"
-                                onClick={() => this.activate(el._id, 0)}><i className="fa fa-edit"/>غیر فعال
-                            سازی</Button>}
+                    {
+                        el.active === false ?
+                            <Button outline color="success" onClick={() => this.activate(el._id, 1)}>
+                                فعال‌سازی
+                            </Button> :
+                            <Button outline color="danger"
+                                    onClick={() => this.activate(el._id, 0)}>
+                                غیر فعال سازی
+                            </Button>
+                    }
                 </td>
 
             </tr>

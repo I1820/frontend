@@ -862,7 +862,7 @@ class ProjectsManage extends Component {
                 <Col sm={5}>
                     <Input type="text" value={key} onChange={(e) => {
                         const newRows = [...this.state.modalDownlinkRows];
-                        const item = newRows.findIndex(item => item.id == id);
+                        const item = newRows.findIndex(item => item.id === id);
                         newRows[item].key = e.target.value;
                         this.setState({modalDownlinkRows: newRows})
                     }} placeholder="کلید"/>
@@ -870,7 +870,7 @@ class ProjectsManage extends Component {
                 <Col sm={5}>
                     <Input type="text" value={value} onChange={(e) => {
                         const newRows = [...this.state.modalDownlinkRows];
-                        const item = newRows.findIndex(item => item.id == id);
+                        const item = newRows.findIndex(item => item.id === id);
                         newRows[item].value = e.target.value;
                         this.setState({modalDownlinkRows: newRows})
                     }} placeholder="مقدار"/>
@@ -878,7 +878,7 @@ class ProjectsManage extends Component {
                 <Col sm={2} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <Button color="danger" onClick={() => {
                         this.setState({
-                            modalDownlinkRows: this.state.modalDownlinkRows.filter((value) => value.id != id)
+                            modalDownlinkRows: this.state.modalDownlinkRows.filter((value) => value.id !== id)
                         })
                     }} className="btn-sm" style={{float: 'left'}}>&times;</Button>
                 </Col>
@@ -1122,7 +1122,9 @@ class ProjectsManage extends Component {
                             justifyContent: 'center'
                         }
                     }
-                ]
+                ];
+            default:
+                return [];
         }
 
     }

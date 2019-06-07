@@ -36,12 +36,7 @@ class UsersList extends Component {
     }
 
     render() {
-
-        let usersInfo = this.state.items;
-        const usersArray = Object.values(usersInfo);
-
         return (
-
             <div>
                 <Spinner display={this.props.loading}/>
                 <Card className="text-justify">

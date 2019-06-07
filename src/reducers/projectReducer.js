@@ -1,8 +1,6 @@
 import {FETCH_CODEC_LIST, FETCH_PROJECT, FREE, GET_PROJECTS} from '../constants/AppConstants'
 import _ from 'underscore'
 
-const assign = Object.assign || require('object.assign');
-
 export function projectReducer(state = [], action) {
     switch (action.type) {
         case GET_PROJECTS:
@@ -40,6 +38,7 @@ export function projectReducer(state = [], action) {
                     }
                 })
             }
+            return [];
         case FREE:
             return [];
         default:

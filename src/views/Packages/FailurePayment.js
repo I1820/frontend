@@ -2,10 +2,6 @@ import React, {Component} from 'react'
 import {Alert, Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Container,} from 'reactstrap'
 
 class FailurePayment extends Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         return (
             <div className="app-body">

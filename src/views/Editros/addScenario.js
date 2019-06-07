@@ -77,7 +77,7 @@ class AddScenario extends Component {
                             </AvGroup>
                             <FormGroup row>
                                 <AceEditor
-                                    onChange={(code) => this.state.code = code}
+                                    onChange={(code) => this.setState({code: code})}
                                     mode="python"
                                     theme="monokai"
                                     className="col-md-12"

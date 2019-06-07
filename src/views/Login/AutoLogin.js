@@ -5,11 +5,6 @@ import {connect} from 'react-redux'
 
 class AutoLogin extends Component {
 
-    constructor(props) {
-        super(props)
-
-    }
-
     componentWillMount() {
         if (this.props.match.params.token) {
             const {dispatch} = this.props;

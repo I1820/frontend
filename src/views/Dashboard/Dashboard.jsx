@@ -16,9 +16,9 @@ import {
     ModalHeader,
     Row
 } from 'reactstrap'
-import ReactTable from 'react-table'
 import {AvFeedback, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation'
 import {Link} from 'react-router-dom'
+import Widget from './Widget'
 
 import {connect} from 'react-redux'
 import Select2 from 'react-select2-wrapper'
@@ -30,11 +30,9 @@ import {
     getUserThingsAction,
     setDashboardWidgetChartAction
 } from '../../actions/AppActions'
-import moment from 'moment-jalaali'
 import {toPersianNumbers} from '../Shared/helpers'
 import Spinner from '../Spinner/Spinner'
 
-const ReactHighcharts = require('react-highcharts');
 
 class Dashboard extends Component {
 
@@ -316,126 +314,24 @@ class Dashboard extends Component {
     renderWidgets() {
         return (
             Object.keys(this.state.charts).map((key) => {
-                if (this.state.charts[key].data === undefined) {
-                    return
-                } // return where there is no data for the widget
-
-                if (this.state.charts[key].type === 'line') {
-                    let config = {
-                        plotOptions: {
-                            line: {
-                                animation: false
-                            }
-                        },
-                        chart: {
-                            style: {
-                                fontFamily: 'Tahoma'
-                            }
-                        },
-                        title: {
-                            text: ''
-                        },
-                        xAxis: {
-                            categories: []
-                        },
-                        yAxis: {
-                            title: {
-                                text: 'مقدار'
-                            }
-                        },
-                        series: [{
-                            data: []
-                        }],
-                        credits: {
-                            enabled: true
-                        },
-                    };
-
-                    config.series[0].data = [];
-                    config.series[0].name = this.state.charts[key].alias;
-                    config.series[0].label = this.state.charts[key].alias;
-                    this.state.charts[key].data.reverse().map((d) => {
-                        config.xAxis.categories.push(moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'));
-                        config.series[0].data.push(d.value);
-                        config.series[0].name = this.state.charts[key].alias
-                    });
-                    this.state.charts[key].data.reverse(); // switch back to default order!
-
-                    return (
-                        <Col sm="6" key={key}>
-                            <Card className="text-justify">
-                                <CardHeader>
-                                    <CardTitle
-                                        className="mb-0 font-weight-bold h6">{this.state.charts[key].title}</CardTitle>
-                                </CardHeader>
-                                <CardBody>
-                                    <ReactHighcharts config={config}/>
-                                </CardBody>
-                                <CardFooter>
-                                    <Button onClick={() => {
-                                        this.setState({selectedChart: key}, () => this.toggle('deleteWidgetChart'))
-                                    }} color="danger">حذف</Button>
-                                </CardFooter>
-                            </Card>
-                        </Col>
-                    )
-                } else if (this.state.charts[key].type === 'table') {
-                    return (
-                        <Col sm="6" key={key}>
-                            <Card className="text-justify">
-                                <CardHeader>
-                                    <CardTitle
-                                        className="mb-0 font-weight-bold h6">{this.state.charts[key].title}</CardTitle>
-                                </CardHeader>
-                                <CardBody>
-                                    <ReactTable
-                                        data={this.state.charts[key].data.reverse()}
-                                        columns={this.reactTableColumns(this.state.charts[key].thing)}
-                                        pageSizeOptions={[5]}
-                                        nextText='بعدی'
-                                        previousText='قبلی'
-                                        filterable={true}
-                                        rowsText='ردیف'
-                                        pageText='صفحه'
-                                        ofText='از'
-                                        minRows='1'
-                                        noDataText='داده‌ای وجود ندارد'
-                                        resizable={false}
-                                        defaultPageSize={10}
-                                        className="-striped -highlight"
-                                    />
-                                </CardBody>
-                                <CardFooter>
-                                    <Button onClick={() => {
-                                        this.setState({selectedChart: key}, () => this.toggle('deleteWidgetChart'))
-                                    }} color="danger">حذف</Button>
-                                </CardFooter>
-                            </Card>
-                        </Col>
-                    )
-                }
+                return (
+                    <Col sm="6" key={key}>
+                        <Card className="text-justify">
+                            <CardHeader>
+                                <CardTitle
+                                    className="mb-0 font-weight-bold h6">{this.state.title}</CardTitle>
+                            </CardHeader>
+                            <Widget chart={this.state.charts[key]}/>
+                            <CardFooter>
+                                <Button onClick={() => {
+                                    this.setState({selectedChart: key}, () => this.toggle('deleteWidgetChart'))
+                                }} color="danger">حذف</Button>
+                            </CardFooter>
+                        </Card>
+                    </Col>
+                )
             })
         )
-    }
-
-    reactTableColumns(thing) {
-        return [
-            {
-                Header: 'شی فرستنده',
-                id: 'thing',
-                accessor: row => thing.name
-            },
-            {
-                id: 'timestamp',
-                Header: 'زمان دریافت داده',
-                accessor: row => moment(row.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')
-            },
-            {
-                id: 'value',
-                Header: 'داده دریافت شده',
-                accessor: row => JSON.stringify(row.value)
-            },
-        ]
     }
 
     refresh() {
