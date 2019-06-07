@@ -5,28 +5,20 @@
  * Copyright (c) 2018 creativeLabs Łukasz Holeczek
  * @license MIT
  */
-
 // Override Bootstrap variables
 @import "bootstrap-variables";
-
 // Import Bootstrap source files
 @import "~bootstrap/scss/bootstrap";
-
 @import "~react-phone-number-input/rrui.css";
 @import "~react-phone-number-input/style.css";
 @import "~leaflet/dist/leaflet.css";
 @import "~react-toastify/dist/ReactToastify.css";
 @import "~react-table/react-table.css";
-
-
 // Override core variables
 @import "core-variables";
-
 // Import core styles
 @import "core/core";
-
 // Custom styles
 @import "custom";
-
 //Loading
 @import "loading";

@@ -88,77 +88,78 @@
 
 
   @include media-breakpoint-down(md) {
-      .sidebar {
-        margin-left: auto;
-        margin-right: - $mobile-sidebar-width;
-      }
-      .aside-menu {
-        margin-right: auto;
-        margin-left: - $aside-menu-width;
-      }
+    .sidebar {
+      margin-left: auto;
+      margin-right: - $mobile-sidebar-width;
     }
-    .sidebar-hidden {
-      .sidebar {
-        margin-right: - $sidebar-width;
-        margin-left: auto;
-      }
+    .aside-menu {
+      margin-right: auto;
+      margin-left: - $aside-menu-width;
+    }
+  }
+
+  .sidebar-hidden {
+    .sidebar {
+      margin-right: - $sidebar-width;
+      margin-left: auto;
+    }
+  }
+
+  .sidebar-mobile-show {
+    .sidebar {
+      margin-right: 0;
     }
 
-    .sidebar-mobile-show {
-      .sidebar {
+    .main {
+      margin-left: - $mobile-sidebar-width !important;
+      margin-right: $mobile-sidebar-width !important;
+    }
+  }
+
+  .sidebar-fixed {
+
+    .main, .app-footer {
+      margin-right: $sidebar-width;
+      @include media-breakpoint-down(md) {
         margin-right: 0;
       }
-      .main {
-        margin-left: - $mobile-sidebar-width !important;
-        margin-right: $mobile-sidebar-width !important;
-      }
     }
 
-    .sidebar-fixed {
+    &.sidebar-hidden {
 
       .main, .app-footer {
-        margin-right: $sidebar-width;
-        @include media-breakpoint-down(md) {
-          margin-right: 0;
-        }
-      }
-
-      &.sidebar-hidden {
-
-        .main, .app-footer {
-          margin-right: 0;
-        }
+        margin-right: 0;
       }
     }
+  }
 
-    .sidebar-compact {
+  .sidebar-compact {
+    .sidebar {
+      flex: 0 0 $sidebar-compact-width;
+    }
+
+    &.sidebar-hidden {
+
       .sidebar {
-        flex: 0 0 $sidebar-compact-width;
+        margin-left: - $sidebar-compact-width;
+        margin-right: auto;
+      }
+    }
+
+    &.sidebar-fixed {
+
+      .main, .app-footer {
+        margin-left: $sidebar-compact-width;
       }
 
       &.sidebar-hidden {
 
-        .sidebar {
-          margin-left: - $sidebar-compact-width;
-          margin-right: auto;
-        }
-      }
-
-      &.sidebar-fixed {
-
         .main, .app-footer {
-          margin-left: $sidebar-compact-width;
-        }
-
-        &.sidebar-hidden {
-
-          .main, .app-footer {
-            margin-left: 0;
-          }
+          margin-left: 0;
         }
       }
     }
-
+  }
 
 
   //
@@ -209,14 +210,17 @@
         .nav-item {
           .nav-link {
             direction: rtl;
+
             i {
               margin: 0 0 0 ($sidebar-nav-link-padding-x / 2);
             }
+
             .badge {
               float: left;
               margin-top: 2px;
               // margin-left: 10px;
             }
+
             &.nav-dropdown-toggle {
               &::before {
                 position: absolute;
@@ -226,6 +230,7 @@
               }
             }
           }
+
           &.nav-dropdown {
             &.open {
               > .nav-link.nav-dropdown-toggle::before {
@@ -241,16 +246,19 @@
   .sidebar-minimized .sidebar {
     .nav-link {
       padding-right: 0;
+
       i {
         float: right;
         padding: 0;
         margin: 0;
       }
+
       .badge {
         right: auto;
         left: 15px;
       }
     }
+
     .nav > .nav-dropdown {
 
       &:hover {

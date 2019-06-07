@@ -1,38 +1,38 @@
 @font-face {
   font-family: 'Vazir';
 
-  src: url('../public/fonts/vazir-wol/Vazir-Light-WOL.eot');
-  src: url('../public/fonts/vazir-wol/Vazir-Light-WOL.eot?#iefix') format('embedded-opentype'),
-  url('../public/fonts/vazir-wol/Vazir-Light-WOL.woff') format('woff'),
-  url('../public/fonts/vazir-wol/Vazir-Light-WOL.ttf') format('truetype');
+  src: url('../assets/fonts/vazir-wol/Vazir-Light-WOL.eot');
+  src: url('../assets/fonts/vazir-wol/Vazir-Light-WOL.eot?#iefix') format('embedded-opentype'),
+  url('../assets/fonts/vazir-wol/Vazir-Light-WOL.woff') format('woff'),
+  url('../assets/fonts/vazir-wol/Vazir-Light-WOL.ttf') format('truetype');
   font-weight: normal;
 }
 
 @font-face {
   font-family: 'Vazir';
-  src: url('../public/fonts/vazir-wol/Vazir-Bold-WOL.eot');
-  src: url('../public/fonts/vazir-wol/Vazir-Bold-WOL.eot?#iefix') format('embedded-opentype'),
-  url('../public/fonts/vazir-wol/Vazir-Bold-WOL.woff') format('woff'),
-  url('../public/fonts/vazir-wol/Vazir-Bold-WOL.ttf') format('truetype');
+  src: url('../assets/fonts/vazir-wol/Vazir-Bold-WOL.eot');
+  src: url('../assets/fonts/vazir-wol/Vazir-Bold-WOL.eot?#iefix') format('embedded-opentype'),
+  url('../assets/fonts/vazir-wol/Vazir-Bold-WOL.woff') format('woff'),
+  url('../assets/fonts/vazir-wol/Vazir-Bold-WOL.ttf') format('truetype');
   font-weight: bold;
 }
 
 @font-face {
   font-family: 'Vazir';
 
-  src: url('../public/fonts/vazir-wol/Vazir-Light-WOL.eot');
-  src: url('../public/fonts/vazir-wol/Vazir-Light-WOL.eot?#iefix') format('embedded-opentype'),
-  url('../public/fonts/vazir-wol/Vazir-Light-WOL.woff') format('woff'),
-  url('../public/fonts/vazir-wol/Vazir-Light-WOL.ttf') format('truetype');
+  src: url('../assets/fonts/vazir-wol/Vazir-Light-WOL.eot');
+  src: url('../assets/fonts/vazir-wol/Vazir-Light-WOL.eot?#iefix') format('embedded-opentype'),
+  url('../assets/fonts/vazir-wol/Vazir-Light-WOL.woff') format('woff'),
+  url('../assets/fonts/vazir-wol/Vazir-Light-WOL.ttf') format('truetype');
   font-weight: normal;
 }
 
 @font-face {
   font-family: 'Vazir';
-  src: url('../public/fonts/vazir-wol/Vazir-Bold-WOL.eot');
-  src: url('../public/fonts/vazir-wol/Vazir-Bold-WOL.eot?#iefix') format('embedded-opentype'),
-  url('../public/fonts/vazir-wol/Vazir-Bold-WOL.woff') format('woff'),
-  url('../public/fonts/vazir-wol/Vazir-Bold-WOL.ttf') format('truetype');
+  src: url('../assets/fonts/vazir-wol/Vazir-Bold-WOL.eot');
+  src: url('../assets/fonts/vazir-wol/Vazir-Bold-WOL.eot?#iefix') format('embedded-opentype'),
+  url('../assets/fonts/vazir-wol/Vazir-Bold-WOL.woff') format('woff'),
+  url('../assets/fonts/vazir-wol/Vazir-Bold-WOL.ttf') format('truetype');
   font-weight: bold;
 }
 
@@ -46,6 +46,7 @@ body {
 
 .english {
   font-family: Tahoma;
+
   label, input {
     direction: ltr;
     text-align: left;
@@ -75,7 +76,7 @@ body {
 
   position: fixed;
   background-color: rgba(0, 0, 0, 0.6);
-  background-image: url('../public/img/spinner.gif');
+  background-image: url('../assets/img/spinner.gif');
   background-position: center;
   background-repeat: no-repeat;
   top: 0px;
@@ -1501,7 +1502,7 @@ ults__option[aria-disabled=true] {
 }
 
 .ReactTable.-striped .rt-tr.-odd {
-  background: rgba(0,0,0,0.07);
+  background: rgba(0, 0, 0, 0.07);
 }
 
 .select2-container--classic .select2-results__group {

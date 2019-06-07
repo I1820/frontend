@@ -163,11 +163,11 @@
 @mixin switch-variant($color) {
   > .switch-input:checked ~ .switch-label {
     background: $color !important;
-    border-color: darken($color,10%);
+    border-color: darken($color, 10%);
   }
 
   > .switch-input:checked ~ .switch-handle {
-    border-color: darken($color,10%);
+    border-color: darken($color, 10%);
   }
 }
 
@@ -280,6 +280,7 @@ $switch-icon-xs-font-size: 7px;
   .switch-label::before {
     right: 2px !important;
   }
+
   .switch-label::after {
     left: 2px !important;
   }
