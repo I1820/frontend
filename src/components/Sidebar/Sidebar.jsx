@@ -132,8 +132,8 @@ class Sidebar extends Component {
         const navDropdown = (item, key) => {
             return (
                 <li key={key} className={this.activeRoute(item.url, props)}>
-                    <a className="nav-link nav-dropdown-toggle" href="#" onClick={this.handleClick}><i
-                        className={item.icon}></i>{item.name}</a>
+                    <button className="nav-link nav-dropdown-toggle" onClick={this.handleClick}><i
+                        className={item.icon}></i>{item.name}</button>
                     <ul className="nav-dropdown-items">
                         {navList(item.children)}
                     </ul>
@@ -150,10 +150,10 @@ class Sidebar extends Component {
 
         // nav list
         const navList = (items) => {
-            return items.map((item, index) => {
-                if (this.state.user.indexOf(item.type) > -1) {
-                    return navType(item, index)
-                }
+            return items.filter((item, index) => {
+                return this.state.user.indexOf(item.type) > -1;
+            }).map((item, index) => {
+                return navType(item, index);
             })
         };
 

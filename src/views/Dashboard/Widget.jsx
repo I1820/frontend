@@ -55,7 +55,7 @@ class Widget extends Component {
             config.series[0].data = [];
             config.series[0].name = this.state.alias;
             config.series[0].label = this.state.alias;
-            this.state.data.reverse().map((d) => {
+            this.state.data.reverse().forEach((d) => {
                 config.xAxis.categories.push(moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'));
                 config.series[0].data.push(d.value);
                 config.series[0].name = this.state.alias
