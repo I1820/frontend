@@ -132,8 +132,8 @@ class Sidebar extends Component {
         const navDropdown = (item, key) => {
             return (
                 <li key={key} className={this.activeRoute(item.url, props)}>
-                    <button className="nav-link nav-dropdown-toggle" onClick={this.handleClick}><i
-                        className={item.icon}></i>{item.name}</button>
+                    <button className="btn btn-default btn-block text-right nav-link nav-dropdown-toggle" onClick={this.handleClick}><i
+    className={item.icon}/>{item.name}</button>
                     <ul className="nav-dropdown-items">
                         {navList(item.children)}
                     </ul>
