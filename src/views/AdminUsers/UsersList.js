@@ -134,7 +134,7 @@ class UsersList extends Component {
                 maxWidth: 80,
                 filterable: false,
                 accessor: row => <div>
-                    <Link to={`/admin/users/info/${row._id}`}>
+                    <Link to={`/admin/users/${row._id}`}>
                         <Button className="ml-1" color="warning"
                                 size="sm">مدیریت</Button>
                     </Link>

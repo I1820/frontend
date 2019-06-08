@@ -70,7 +70,7 @@ class PaymentPortalList extends Component {
 
     renderItem(el, key = 0) {
         return (
-            <tr>
+            <tr key={key}>
                 <th>{key + 1}</th>
                 <td>
                     <img className="portal-style" src={el.image} alt={el.name}/>

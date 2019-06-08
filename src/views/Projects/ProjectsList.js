@@ -13,7 +13,6 @@ import {
     ModalBody,
     ModalFooter,
     ModalHeader,
-    Row
 } from 'reactstrap'
 import ReactTable from 'react-table'
 
@@ -23,6 +22,8 @@ import {toastAlerts} from '../Shared/toast_alert'
 
 import {connect} from 'react-redux'
 import {createProject, deleteProjectAction, getProjects} from '../../actions/AppActions'
+import {Link} from "react-router-dom";
+import ButtonGroup from "reactstrap/es/ButtonGroup";
 
 class ProjectsList extends Component {
 
@@ -30,7 +31,6 @@ class ProjectsList extends Component {
         super(props);
 
         this.toggle = this.toggle.bind(this);
-        this.showProject = this.showProject.bind(this);
         this.onCreateProject = this.onCreateProject.bind(this);
         this.deleteProject = this.deleteProject.bind(this);
         this.loadProjects = this.loadProjects.bind(this);
@@ -52,8 +52,6 @@ class ProjectsList extends Component {
         if (props.projects !== undefined) {
             this.setState({
                 projects: props.projects,
-                projectName: '',
-                projectDesc: ''
             })
         }
     }
@@ -187,20 +185,19 @@ class ProjectsList extends Component {
                 id: 'rowTools',
                 Header: 'گزینه‌ها',
                 accessor: '_id',
-                Cell: row => <Row>
-                    <Col xs="4">
-                        <Button block onClick={() => this.showProject(row.value)} className="ml-1" color="success"
-                                size="sm">نمایش</Button>
-                    </Col>
-                    <Col xs="4">
-                        <Button block onClick={() => this.manageProject(row.value)} className="ml-1" color="warning"
-                                size="sm">مدیریت</Button>
-                    </Col>
-                    <Col xs="4">
+                sortable: false,
+                style: {textAlign: 'center'},
+                Cell: row => <ButtonGroup>
+                        <Link to={`/projects/${row.value}`}>
+                            <Button block className="ml-1" color="warning" size="sm">
+                                <i className={'fa fa-eye'}/>
+                            </Button>
+                        </Link>
                         <Button block onClick={() => this.toggle('delete', row.value)} className="ml-1" color="danger"
-                                size="sm">حذف</Button>
-                    </Col>
-                </Row>
+                                size="sm">
+                            <i className={'fa fa-trash'}/>
+                        </Button>
+                </ButtonGroup>
             }
         ]
     }
@@ -228,15 +225,6 @@ class ProjectsList extends Component {
     loadProjects() {
         this.props.dispatch(getProjects())
     }
-
-    showProject(id) {
-        window.location = `#/projects/view/${id}`
-    }
-
-    manageProject(id) {
-        window.location = `#/projects/manage/show/${id}`
-    }
-
 }
 
 function mapStateToProps(state) {

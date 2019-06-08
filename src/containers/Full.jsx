@@ -46,6 +46,7 @@ import addTemplate from '../views/Editros/addTemplate'
 import AllTransactions from '../views/AdminPayments/AllTransactions'
 import PaymentPortalList from '../views/PaymentPortalManagment/PaymentPortalList'
 import AdminLinks from '../views/Admin/AdminLinks'
+import Project from "../views/Projects/Project";
 
 class Full extends Component {
     render() {
@@ -63,23 +64,23 @@ class Full extends Component {
 
                                 <Route path="/admin/packages/show" name="PackageList" component={PackageList}/>
                                 <Route path="/admin/transactions" name="AllTransactions" component={AllTransactions}/>
-                                <Route path="/admin/users/list" name="UsersList" component={UsersList}/>
                                 <Route path="/admin/roles" name="RoleList" component={RoleList}/>
 
                                 <Route path="/admin/packages/new" name="NewPackage" component={NewPackage}/>
                                 <Route path="/admin/packages/edit/:id" name="EditPackage" component={NewPackage}/>
-                                <Route path="/admin/users/info/:user" name="UserInfo" component={UserInfo}/>
+
+                                <Route path="/admin/users/:user" name="UserInfo" component={UserInfo}/>
+                                <Route path="/admin/users" name="UsersList" component={UsersList}/>
 
                                 <Route path="/transactions" name="UserTransactions" component={UserTransactions}/>
 
                                 <Route path="/gateways/new" name="GatewaysNew" component={GatewaysNew}/>
-                                <Route path="/gateways/view/:id" name="GatewaysView" component={GatewaysView}/>
+                                <Route path="/gateways/:id" name="GatewaysView" component={GatewaysView}/>
                                 <Route path="/gateways" name="Gateways" component={Gateways}/>
 
-                                <Route path="/device-profile/new" name="DeviceProfileNew" component={DeviceProfileNew}/>
-                                <Route path="/device-profile/list/view/:id" name="ViewDeviceProfile"
-                                       component={DeviceProfileNew}/>
-                                <Route path="/device-profile" name="DeviceProfile" component={DeviceProfile}/>
+                                <Route path="/device-profiles/new" name="DeviceProfileNew" component={DeviceProfileNew}/>
+                                <Route path="/device-profiles/:id" name="ViewDeviceProfile" component={DeviceProfileNew}/>
+                                <Route path="/device-profiles" name="DeviceProfile" component={DeviceProfile}/>
 
                                 <Route path="/scenario" name="addScenario" component={addScenario}/>
                                 <Route path="/codec/:project_id/:thing_id" name="sendCodec" component={sendCodec}/>
@@ -91,9 +92,11 @@ class Full extends Component {
 
                                 <Route path="/admin/links" name="Adminlinks" component={AdminLinks}/>
 
-                                <Route path="/projects/manage/show/:id" name="ProjectsManage"
-                                       component={ProjectsManage}/>
-                                <Route path="/projects/view/:id" name="ProjectsView" component={ProjectsView}/>
+                                <Route path="/projects/:id/manage/things/:tid" name="editThing" component={CreateThing}/>
+                                <Route path="/projects/:id/manage/things" name="createThing" component={CreateThing}/>
+                                <Route path="/projects/:id/manage" name="ProjectsManage" component={ProjectsManage}/>
+                                <Route path="/projects/:id/view" name="ProjectsView" component={ProjectsView}/>
+                                <Route path="/projects/:id" name="Project" component={Project}/>
                                 <Route path="/projects" name="ProjectsList" component={ProjectsList}/>
 
 
@@ -102,10 +105,6 @@ class Full extends Component {
                                 <Route path="/selectedPackage/:id" name="selectedPackage" component={SelectedPackage}/>
 
                                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
-                                <Route path="/things/edit/:project_id/:thing_id" name="createThing"
-                                       component={CreateThing}/>
-                                <Route path="/project/manage/createThing/:project_id" name="createThing"
-                                       component={CreateThing}/>
                                 <Route path="/things" name="ThingsList" component={ThingsList}/>
                                 <Redirect from="/" to="/dashboard"/>
                             </Switch>

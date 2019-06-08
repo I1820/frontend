@@ -11,7 +11,7 @@ import {createThingAction, editThingAction, getThingAction, getThingProfileListA
 import Spinner from '../Spinner/Spinner'
 
 import Select2 from 'react-select2-wrapper'
-import {toastAlerts} from '../Shared/toast_alert'
+import {toast} from "react-toastify";
 
 class CreateThing extends Component {
 
@@ -42,20 +42,20 @@ class CreateThing extends Component {
     componentWillMount() {
         this.props.dispatch(getThingProfileListAction());
         this.setState({
-            project: this.props.match.params.project_id
+            project: this.props.match.params.id
         });
-        if (this.props.match.params.thing_id) {
+        if (this.props.match.params.tid) {
             this.setState({
-                thingId: this.props.match.params.thing_id
+                thingId: this.props.match.params.tid
             });
-            this.props.dispatch(getThingAction(this.props.match.params.thing_id))
+            this.props.dispatch(getThingAction(this.props.match.params.tid))
         }
     }
 
     componentWillReceiveProps(props) {
-        if (this.props.match.params.thing_id !== undefined) {
+        if (this.props.match.params.tid !== undefined) {
             props.things.forEach((thing) => {
-                if (thing._id === this.props.match.params.thing_id) {
+                if (thing._id === this.props.match.params.tid) {
                     if (thing.profile !== undefined && thing.profile !== null) {
                         this.thing_profile_slug = thing.profile.thing_profile_slug
                     } else {
@@ -256,9 +256,21 @@ class CreateThing extends Component {
             model: this.state.thing.model,
         };
         if (this.state.thing._id === undefined) {
-            this.props.dispatch(createThingAction(data, this.state.project, toastAlerts))
+            this.props.dispatch(createThingAction(data, this.state.project, (status, message) => {
+                if (status) {
+                    toast(message, {autoClose: 15000, type: toast.TYPE.SUCCESS});
+                } else {
+                    toast(message, {autoClose: 15000, type: toast.TYPE.ERROR});
+                }
+            }))
         } else {
-            this.props.dispatch(editThingAction(this.state.project, this.state.thing._id, data, toastAlerts))
+            this.props.dispatch(editThingAction(this.state.project, this.state.thing._id, data, (status, message) => {
+                if (status) {
+                    toast(message, {autoClose: 15000, type: toast.TYPE.SUCCESS});
+                } else {
+                    toast(message, {autoClose: 15000, type: toast.TYPE.ERROR});
+                }
+            }))
         }
     }
 }

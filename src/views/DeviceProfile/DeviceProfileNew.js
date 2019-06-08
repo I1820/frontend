@@ -75,16 +75,16 @@ class DeviceProfileNew extends Component {
     }
 
     componentDidMount() {
-        const splitedUrl = window.location.href.split('/');
-        if (splitedUrl[splitedUrl.length - 1] !== 'new') {
+        const id = this.props.match.params.id;
+        if (id) {
             this.setState({
                 new: false
             });
 
-            this.props.dispatch(getDeviceProfile(splitedUrl[splitedUrl.length - 1], (result, data) => {
+            this.props.dispatch(getDeviceProfile(id, (result, data) => {
                 if (result) {
                     this.setState({
-                        _id: splitedUrl[splitedUrl.length - 1],
+                        _id: id,
                         form: {
                             ...data.parameters,
                             name: data.name,

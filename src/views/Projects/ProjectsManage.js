@@ -8,7 +8,6 @@ import {
     CardHeader,
     CardTitle,
     Col,
-    Form,
     FormGroup,
     Input,
     Label,
@@ -31,8 +30,6 @@ import {
     deleteThingAction,
     DownloadThingsExcelAction,
     editAliasesAction,
-    editProjectAction,
-    getCodecTemplateListAction,
     getProject,
     getProjectThingsListAction,
     refreshJWTAction,
@@ -202,10 +199,10 @@ class ProjectsManage extends Component {
     }
 
     componentWillReceiveProps(props) {
-        const splitedUrl = window.location.href.split('/');
-        if (splitedUrl[splitedUrl.length - 1]) {
+        const projectID = this.props.match.params.id;
+        if (projectID) {
             props.projects.forEach((project) => {
-                if (project._id === splitedUrl[splitedUrl.length - 1]) {
+                if (project._id === projectID) {
                     this.setState({
                         project
                     })
@@ -214,27 +211,22 @@ class ProjectsManage extends Component {
         }
     }
 
+    loadProject() {
+        const projectID = this.props.match.params.id;
+        if (projectID) {
+            this.props.dispatch(getProject(projectID))
+        }
+    }
+
     fetchThings(state, instance) {
-        const splitedUrl = window.location.href.split('/');
-        this.setState({table: {...this.state.table, loading: true}});
+        const projectID = this.props.match.params.id;
         this.props.dispatch(getProjectThingsListAction(
-            splitedUrl[splitedUrl.length - 1],
+            projectID,
             state.pageSize,
             state.page * state.pageSize,
             {sorted: JSON.stringify(state.sorted), filtered: JSON.stringify(state.filtered)},
             this.setThings
         ))
-    }
-
-    loadProject() {
-        const splitedUrl = window.location.href.split('/');
-        if (splitedUrl[splitedUrl.length - 1]) {
-            this.props.dispatch(getProject(splitedUrl[splitedUrl.length - 1], (status) => {
-                if (status) {
-                    this.props.dispatch(getCodecTemplateListAction(splitedUrl[splitedUrl.length - 1]))
-                }
-            }, 1))
-        }
     }
 
     render() {
@@ -586,156 +578,87 @@ class ProjectsManage extends Component {
                     </ModalFooter>
                 </Modal>
 
-                <div className="row">
-                    <div className="col-md-12 col-lg-6">
-                        <Card className="text-justify">
-                            <CardHeader>
-                                <CardTitle className="mb-0 font-weight-bold h6">تغییر اطلاعات پروژه</CardTitle>
-                            </CardHeader>
-                            <CardBody>
-                                <Form>
-                                    <FormGroup style={{display: 'flex'}}>
-                                        <div style={{minWidth: '65px', width: '20%'}}>
-                                            <Label>نام پروژه:</Label>
-                                        </div>
-                                        <div style={{width: '80%'}}>
-                                            <Input type="text" onChange={(event) => {
-                                                this.setState({
-                                                    project: {
-                                                        ...this.state.project,
-                                                        name: event.target.value
-                                                    }
-                                                })
-                                            }} maxLength="50" value={this.state.project.name || ''}/>
-                                        </div>
-                                    </FormGroup>
-                                    <FormGroup style={{display: 'flex'}}>
-                                        <div style={{minWidth: '65px', width: '20%'}}>
-                                            <Label>توضیحات:</Label>
-                                        </div>
-                                        <div style={{width: '80%'}}>
-                                            <Input value={this.state.project.description || ''} onChange={(event) => {
-                                                this.setState({
-                                                    project: {
-                                                        ...this.state.project,
-                                                        description: event.target.value
-                                                    }
-                                                })
-                                            }} maxLength="150" type="textarea" style={{resize: 'none'}} name=""
-                                                   rows="2"/>
-                                        </div>
-                                    </FormGroup>
-                                    <FormGroup style={{display: 'flex'}}>
-                                        <div style={{minWidth: '65px', width: '20%'}}>
-                                            <Label>وضعیت:</Label>
-                                        </div>
-                                        <div style={{width: '80%'}}>
-                                            <Badge color={this.state.project.active === true ? 'success' : 'danger'}>
-                                                {this.state.project.active === true ? 'فعال' : 'غیرفعال'}
-                                            </Badge>
-                                        </div>
-                                    </FormGroup>
-                                </Form>
-                            </CardBody>
-                            <CardFooter>
-                                <Button onClick={() => {
-                                    this.props.dispatch(editProjectAction(this.state.project._id, {
-                                        name: this.state.project.name,
-                                        description: this.state.project.description
-                                    }, this.callback))
-                                }} className="ml-1" color="primary">ثبت اطلاعات</Button>
-
-                                <Button onClick={() => this.toggle('activeProject')} className="ml-1" color="warning">{
-                                    this.state.project.active ? 'غیرفعال سازی پروژه' : 'فعال سازی پروژه'
-                                }</Button>
-                            </CardFooter>
-                        </Card>
-                    </div>
-
-                    <div className="col-md-12 col-lg-6">
-                        <Card className="text-justify">
-                            <CardHeader>
-                                <CardTitle className="mb-0 font-weight-bold h6">نام مستعار کلید داده‌ها</CardTitle>
-                            </CardHeader>
-                            <CardBody>
-                                <ReactTable
-                                    data={this.getAliases()}
-                                    columns={this.reactTableColumns('aliases')}
-                                    showPageSizeOptions={false}
-                                    nextText='بعدی'
-                                    previousText='قبلی'
-                                    rowsText='ردیف'
-                                    pageText='صفحه'
-                                    ofText='از'
-                                    minRows='1'
-                                    noDataText='یافت نشد'
-                                    resizable={false}
-                                    defaultPageSize={3}
-                                    className="-striped -highlight"
-                                />
-                                <table className="table">
-                                    <tbody>
-                                    <tr>
-                                        <td><input ref={input => this.el_refs.alias.key = input}
-                                                   onChange={(event) => {
-                                                       this.setState({
-                                                           newAlias: {
-                                                               ...this.state.newAlias,
-                                                               key: event.target.value
-                                                           }
-                                                       })
-                                                   }}
-                                                   type="text" className="form-control" placeholder={'مقدار اصلی'}/>
-                                        </td>
-                                        <td><input ref={input => this.el_refs.alias.value = input}
-                                                   onChange={(event) => {
-                                                       this.setState({
-                                                           newAlias: {
-                                                               ...this.state.newAlias,
-                                                               alias: event.target.value
-                                                           }
-                                                       })
-                                                   }} type="text" className="form-control"
-                                                   placeholder={'نام مستعار'}/>
-                                        </td>
-                                        <td>
-                                            <Button onClick={() => {
-                                                const newAlias = this.state.newAlias;
-                                                if (!newAlias.key || !newAlias.alias) {
-                                                    toast('اطلاعات را کامل وارد کنید', {
-                                                        autoClose: 15000, type: toast.TYPE.ERROR
-                                                    });
-                                                    return
+                <Card className="text-justify">
+                    <CardHeader>
+                        <CardTitle className="mb-0 font-weight-bold h6">نام مستعار کلید داده‌ها</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                        <ReactTable
+                            data={this.getAliases()}
+                            columns={this.reactTableColumns('aliases')}
+                            showPageSizeOptions={false}
+                            nextText='بعدی'
+                            previousText='قبلی'
+                            rowsText='ردیف'
+                            pageText='صفحه'
+                            ofText='از'
+                            minRows='1'
+                            noDataText='یافت نشد'
+                            resizable={false}
+                            defaultPageSize={3}
+                            className="-striped -highlight"
+                        />
+                        <table className="table">
+                            <tbody>
+                            <tr>
+                                <td><input ref={input => this.el_refs.alias.key = input}
+                                           onChange={(event) => {
+                                               this.setState({
+                                                   newAlias: {
+                                                       ...this.state.newAlias,
+                                                       key: event.target.value
+                                                   }
+                                               })
+                                           }}
+                                           type="text" className="form-control" placeholder={'مقدار اصلی'}/>
+                                </td>
+                                <td><input ref={input => this.el_refs.alias.value = input}
+                                           onChange={(event) => {
+                                               this.setState({
+                                                   newAlias: {
+                                                       ...this.state.newAlias,
+                                                       alias: event.target.value
+                                                   }
+                                               })
+                                           }} type="text" className="form-control"
+                                           placeholder={'نام مستعار'}/>
+                                </td>
+                                <td>
+                                    <Button onClick={() => {
+                                        const newAlias = this.state.newAlias;
+                                        if (!newAlias.key || !newAlias.alias) {
+                                            toast('اطلاعات را کامل وارد کنید', {
+                                                autoClose: 15000, type: toast.TYPE.ERROR
+                                            });
+                                            return
+                                        }
+                                        this.setState({
+                                            project: {
+                                                ...this.state.project,
+                                                aliases: {
+                                                    ...this.state.project.aliases,
+                                                    [newAlias.key]: newAlias.alias
                                                 }
-                                                this.setState({
-                                                    project: {
-                                                        ...this.state.project,
-                                                        aliases: {
-                                                            ...this.state.project.aliases,
-                                                            [newAlias.key]: newAlias.alias
-                                                        }
-                                                    }
-                                                });
-                                                this.el_refs.alias.key.value = '';
-                                                this.el_refs.alias.value.value = ''
+                                            }
+                                        });
+                                        this.el_refs.alias.key.value = '';
+                                        this.el_refs.alias.value.value = ''
 
-                                            }} type="button" className="btn btn-primary">اضافه کردن
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </CardBody>
-                            <CardFooter>
-                                <Button onClick={() => {
-                                    this.props.dispatch(editAliasesAction(this.state.project._id, {
-                                        aliases: JSON.stringify(this.state.project.aliases)
-                                    }, toastAlerts))
-                                }} color="primary">ثبت</Button>
-                            </CardFooter>
-                        </Card>
-                    </div>
-                </div>
+                                    }} type="button" className="btn btn-primary">اضافه کردن
+                                    </Button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </CardBody>
+                    <CardFooter>
+                        <Button onClick={() => {
+                            this.props.dispatch(editAliasesAction(this.state.project._id, {
+                                aliases: JSON.stringify(this.state.project.aliases)
+                            }, toastAlerts))
+                        }} color="primary">ثبت</Button>
+                    </CardFooter>
+                </Card>
 
                 <Card className="text-justify">
                     <CardHeader>
@@ -765,7 +688,7 @@ class ProjectsManage extends Component {
                         />
                     </CardBody>
                     <CardFooter>
-                        <Link to={`/project/manage/createThing/${this.state.project._id}`}>
+                        <Link to={`/projects/${this.state.project._id}/manage/things`}>
                             <Button className="ml-1" color="primary">افزودن شی</Button>
                         </Link>
                         <Link to={`/things/excel/${this.state.project._id}`}>
@@ -1017,7 +940,7 @@ class ProjectsManage extends Component {
                                                    keys: row.keys.length !== 0 ? row.keys : {skipFCntCheck: true}
                                                })
                                            } else if (action === 'edit') {
-                                               window.location = `#/things/edit/${this.state.project._id}/${row._id}`
+                                               window.location = `#/projects/${this.state.project._id}/manage/things/${row._id}`
                                            } else if (action === 'send_codec') {
                                                window.location = `#/codec/${this.state.project._id}/${row._id}`
                                            } else if (action === 'send_data') {

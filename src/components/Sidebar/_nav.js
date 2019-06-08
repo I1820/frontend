@@ -32,7 +32,7 @@ export default {
 
                 {
                     name: 'پروفایل اشیا',
-                    url: '/device-profile/list',
+                    url: '/device-profiles',
                     icon: 'icon-grid',
                     type: 'user'
                 }]
@@ -74,7 +74,7 @@ export default {
                 },
                 {
                     name: 'مدیریت کاربران',
-                    url: '/admin/users/list',
+                    url: '/admin/users',
                     icon: 'icon-people',
                     type: 'admin'
                 }, {
@@ -95,7 +95,7 @@ export default {
                     icon: 'icon-docs',
                     type: 'admin'
                 }, {
-                    name: 'سامانه‌های مدیریت',
+                    name: 'سامانه‌های نظارتی',
                     url: '/admin/links',
                     icon: 'icon-link',
                     type: 'admin'

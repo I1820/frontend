@@ -345,7 +345,6 @@ export function editThingAction(projectId, thingId, data, cb) {
             if (response.status === 'OK') {
                 dispatch(setThing(response.result));
                 cb(true, 'با موفقیت انجام شد');
-                forwardTo(`projects/manage/show/${projectId}`)
             } else {
                 cb(false, response.result);
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -615,7 +614,6 @@ export function createThingAction(data, project, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 dispatch(setThing(response.result));
-                forwardTo(`projects/manage/show/${project}`);
                 cb(true, 'با موفقیت انجام شد')
             } else {
                 cb(false, response.result);
@@ -915,13 +913,14 @@ export function editProjectAction(id, state, cb) {
         const promise = editProjectAPI(id, state, dispatch);
         promise.then((response) => {
             if (response.status === 'OK') {
-                dispatch(setProject(response.result))
+                dispatch(setProject(response.result));
+                cb && cb(true, 'با موفقیت انجام شد');
             } else {
                 cb && cb(false, response.result);
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         }).catch((e) => {
-            console.log(e)
+            cb && cb(false, 'خطای نامشخص');
         })
     }
 }

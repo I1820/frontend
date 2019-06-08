@@ -202,12 +202,12 @@ class ThingsList extends Component {
                 Header: 'انتخاب',
                 id: 'select',
                 accessor: row => <input type="checkbox" onChange={() => this.toggleCheckbox(row._id)}/>,
-                maxWidth: 50
+                width: 50
             },
             {
                 Header: 'نام',
                 accessor: 'name',
-                maxWidth: 200
+                width: 200
             },
             {
                 Header: 'آدرس',
@@ -215,28 +215,30 @@ class ThingsList extends Component {
                 filterMethod: (filter, row) =>
                     row[filter.id].startsWith(filter.value) ||
                     row[filter.id].endsWith(filter.value),
-                maxWidth: 180
+                width: 180
             },
             {
                 Header: 'نوع',
                 accessor: 'type',
-                maxWidth: 50
+                width: 50
             },
             {
                 Header: 'نحوه پارس کردن',
                 accessor: 'model',
-                maxWidth: 50
+                width: 50
             },
             {
                 Header: 'فعال سازی',
                 accessor: 'activation',
                 filterMethod: (filter, row) => row[filter.id].startsWith(filter.value.toUpperCase()),
-                maxWidth: 50
+                width: 50
             },
             {
                 id: 'status',
                 Header: 'وضعیت',
                 filterable: false,
+                sortable: false,
+                width: 250,
                 accessor: row => {
                     return (<div>
                         {row.type === 'lora' ?
@@ -265,8 +267,9 @@ class ThingsList extends Component {
             {
                 id: 'rowTools',
                 Header: 'امکانات',
-                maxWidth: 150,
+                width: 150,
                 filterable: false,
+                sortable: false,
                 accessor: row => {
                     return (<div>
                         <Input type="select" name="type"
@@ -290,7 +293,8 @@ class ThingsList extends Component {
             {
                 id: 'project',
                 Header: 'پروژه',
-                maxWidth: 200,
+                width: 200,
+                sortable: false,
                 filterable: false,
                 accessor: (row) => {
                     return (<Link to={`/projects/manage/show/${row.project._id}`}>

@@ -93,14 +93,14 @@ class GatewaysView extends Component {
                 <Nav tabs>
                     <NavItem>
                         <NavLink
-                            className={{active: this.state.activeTab === 'info'}}
+                            className={this.state.activeTab === 'info' ? 'active' : ''}
                             onClick={() => {
                                 this.toggleTab('info')
                             }}>اطلاعات</NavLink>
                     </NavItem>
                     <NavItem>
                         <NavLink
-                            className={{active: this.state.activeTab === 'liveFrame'}}
+                            className={this.state.activeTab === 'liveFrame' ? 'active' : ''}
                             onClick={() => {
                                 this.toggleTab('liveFrame')
                             }}>لایو فریم</NavLink>
@@ -108,7 +108,7 @@ class GatewaysView extends Component {
 
                     <NavItem>
                         <NavLink
-                            className={{active: this.state.activeTab === 'decrypt'}}
+                            className={this.state.activeTab === 'decrypt' ? 'active' : ''}
                             onClick={() => {
                                 this.toggleTab('decrypt')
                             }}>رمزگشایی</NavLink>
