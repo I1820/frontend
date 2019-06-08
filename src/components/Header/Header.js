@@ -4,10 +4,6 @@ import HeaderDropdown from './HeaderDropdown'
 
 class Header extends Component {
 
-    constructor(props) {
-        super(props)
-    }
-
     sidebarToggle(e) {
         e.preventDefault();
         document.body.classList.toggle('sidebar-hidden')

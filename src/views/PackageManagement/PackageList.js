@@ -275,7 +275,7 @@ class PackageList extends Component {
                             <CardBody>
                                 <ReactTable
                                     data={this.state.discounts}
-                                    columns={this.reactTableColumns('discounts')}
+                                    columns={this.reactTableColumns()}
                                     pageSizeOptions={[10, 15, 25]}
                                     nextText='بعدی'
                                     previousText='قبلی'
@@ -350,51 +350,48 @@ class PackageList extends Component {
         this.props.dispatch(activatePackagesAction(package_.id, package_.value, toastAlerts))
     }
 
-    reactTableColumns(type) {
-        switch (type) {
-            case 'discounts':
-                return [
-                    {
-                        id: 'code',
-                        Header: 'کد',
-                        accessor: row => <div>
-                            <CopyToClipboard text={row.code}>
-                                <i color="info" className={'icon-docs'}
-                                   style={{marginRight: '10px', cursor: 'pointer'}}/>
-                            </CopyToClipboard>
-                            {row.code}
-                        </div>,
-                        filterable: false,
-                        maxWidth: 200
-                    },
-                    {
-                        Header: 'مقدار',
-                        accessor: 'value',
-                        filterable: false,
-                        maxWidth: 200
-                    },
-                    {
-                        Header: 'وضیعت',
-                        id: 'status',
-                        accessor: row => <Badge
-                            color={row.expired ? 'danger' : 'success'}>{row.expired ? 'استفاده شده' : 'استفاده نشده'} </Badge>,
-                        filterable: false,
-                        maxWidth: 200
-                    },
-                    {
-                        id: 'rowTools',
-                        Header: 'امکانات',
-                        filterable: false,
-                        accessor: row => {
-                            return (<div>
-                                <Button onClick={() => this.toggle('deleteDiscount', row._id)} className="ml-1"
-                                        color="danger"
-                                        size="sm">حذف کد تخفیف</Button>
-                            </div>)
-                        }
-                    },
-                ]
-        }
+    reactTableColumns() {
+        return [
+            {
+                id: 'code',
+                Header: 'کد',
+                accessor: row => <div>
+                    <CopyToClipboard text={row.code}>
+                        <i color="info" className={'icon-docs'}
+                           style={{marginRight: '10px', cursor: 'pointer'}}/>
+                    </CopyToClipboard>
+                    {row.code}
+                </div>,
+                filterable: false,
+                maxWidth: 200
+            },
+            {
+                Header: 'مقدار',
+                accessor: 'value',
+                filterable: false,
+                maxWidth: 200
+            },
+            {
+                Header: 'وضیعت',
+                id: 'status',
+                accessor: row => <Badge
+                    color={row.expired ? 'danger' : 'success'}>{row.expired ? 'استفاده شده' : 'استفاده نشده'} </Badge>,
+                filterable: false,
+                maxWidth: 200
+            },
+            {
+                id: 'rowTools',
+                Header: 'امکانات',
+                filterable: false,
+                accessor: row => {
+                    return (<div>
+                        <Button onClick={() => this.toggle('deleteDiscount', row._id)} className="ml-1"
+                                color="danger"
+                                size="sm">حذف کد تخفیف</Button>
+                    </div>)
+                }
+            },
+        ]
     }
 }
 

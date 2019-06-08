@@ -18,6 +18,7 @@ import {
 import {buyPackagesAction, getPackageAction, getUserPaymentPortalsAction} from '../../actions/AppActions'
 import {toastAlerts} from '../Shared/toast_alert'
 import {Link} from 'react-router-dom'
+import loadingGif from '../../assets/img/loading.gif';
 
 class SelectedPackage extends Component {
 
@@ -198,7 +199,7 @@ class SelectedPackage extends Component {
                                      style={{display: this.props.currentlySending ? 'block' : 'none'}}>
                                     <img
                                         style={{margin: 'auto'}}
-                                        src={'img/loading.gif'}/>
+                                        src={loadingGif} alt={'loading'}/>
                                 </div>
                             </Col>
                         </Alert>

@@ -158,8 +158,8 @@ class ProjectsView extends Component {
 
         // creates sensors series by their identification
         let sensors = [];
-        this.state.data.map((d, i) => {
-            _.allKeys(d.data).map((k, i2) => {
+        this.state.data.map((d) => {
+            _.allKeys(d.data).map((k) => {
                 if (_.find(sensors, {name: `${things[d.thingid]}: ${k}`}) === undefined) {
                     sensors.push({
                         label: k,
@@ -175,7 +175,7 @@ class ProjectsView extends Component {
         this.state.data.map((d) => {
             sensors.map((dataset, index) => {
                 const n = Number(d.data[dataset.label]);
-                if (n !== NaN) {
+                if (!isNaN(n)) {
                     dataset.data.push({
                         name: moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'),
                         x: new Date(d.timestamp).getTime(),

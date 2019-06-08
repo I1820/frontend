@@ -32,13 +32,13 @@ class Register extends Component {
                 'name': this.state.name,
                 'email': this.state.email,
                 'password': this.state.password,
-            }, this.manageToastAlerts))
+            }, Register.manageToastAlerts))
         } else {
             toastAlerts(false, 'کلمه عبور و تکرار آن یکسان نیستند.')
         }
     }
 
-    manageToastAlerts(status) {
+    static manageToastAlerts(status) {
         if (status === true) {
             toastAlerts(status, 'ثبت نام با موفقیت انجام شد و لینک فعال سازی برای شما ارسال شد')
         } else {
@@ -61,7 +61,7 @@ class Register extends Component {
                                         <InputGroup className="mb-3">
                                             <InputGroupAddon addonType="prepend">
                                                 <InputGroupText>
-                                                    <i className="icon-user"></i>
+                                                    <i className="icon-user"/>
                                                 </InputGroupText>
                                             </InputGroupAddon>
                                             <Input
@@ -87,7 +87,7 @@ class Register extends Component {
                                         <InputGroup className="mb-4">
                                             <InputGroupAddon addonType="prepend">
                                                 <InputGroupText>
-                                                    <i className="icon-lock"></i>
+                                                    <i className="icon-lock"/>
                                                 </InputGroupText>
                                             </InputGroupAddon>
                                             <Input
@@ -99,7 +99,7 @@ class Register extends Component {
                                         <InputGroup className="mb-4">
                                             <InputGroupAddon addonType="prepend">
                                                 <InputGroupText>
-                                                    <i className="icon-lock"></i>
+                                                    <i className="icon-lock"/>
                                                 </InputGroupText>
                                             </InputGroupAddon>
                                             <Input
@@ -114,6 +114,7 @@ class Register extends Component {
                                             display: this.props.currentlySending ? 'block' : 'none',
                                             margin: 'auto'
                                         }}
+                                        alt={'loading'}
                                         src={'img/loading.gif'}
                                     />
 

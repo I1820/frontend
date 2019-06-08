@@ -109,7 +109,7 @@ class DeviceProfile extends Component {
 
     toggle(modal, id) {
         let state = {};
-        if (modal == 'delete') {
+        if (modal === 'delete') {
             state = {
                 deleteModal: !this.state.deleteModal,
                 deleteRowId: id

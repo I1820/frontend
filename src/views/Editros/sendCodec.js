@@ -185,7 +185,7 @@ class SendCodec extends Component {
                             </FormGroup>
                             <FormGroup style={{display: this.state.global === false ? 'flex' : 'none'}} row>
                                 <AceEditor
-                                    onChange={(code) => this.state.codec = code}
+                                    onChange={(code) => this.setState({codec: code})}
                                     mode="python"
                                     theme="monokai"
                                     className="col-md-12"
