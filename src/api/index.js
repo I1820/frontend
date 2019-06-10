@@ -303,7 +303,7 @@ export function uploadExcel(data, projectId, dispatch) {
     formData.append('project_id', projectId);
     const config = {
         headers: {
-            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Authorization': 'Bearer ' + store.getState().userReducer.access_token,
             'Content-Type': 'multipart/form-data'
         }
     };
@@ -316,7 +316,7 @@ export function uploadLegalDoc(file, dispatch) {
     formData.append('file', file);
     const config = {
         headers: {
-            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Authorization': 'Bearer ' + store.getState().userReducer.access_token,
             'Content-Type': 'multipart/form-data'
         }
     };
@@ -329,7 +329,7 @@ export function uploadPicture(file, dispatch) {
     formData.append('picture', file);
     const config = {
         headers: {
-            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Authorization': 'Bearer ' + store.getState().userReducer.access_token,
             'Content-Type': 'multipart/form-data'
         }
     };
@@ -340,7 +340,7 @@ export function DownloadThingsExcel(projectId, dispatch) {
     const url = `${BASE_URL}/project/${projectId}/things/export`;
     const config = {
         headers: {
-            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Authorization': 'Bearer ' + store.getState().userReducer.access_token,
             'Content-Type': 'multipart/form-data'
         },
         responseType: 'blob'
@@ -352,7 +352,7 @@ export function DownloadUserThingsExcel(dispatch) {
     const url = `${BASE_URL}/things/to-excel`;
     const config = {
         headers: {
-            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Authorization': 'Bearer ' + store.getState().userReducer.access_token,
             'Content-Type': 'multipart/form-data'
         },
         responseType: 'blob'
@@ -364,7 +364,7 @@ export function DownloadUserGatewaysExcel(dispatch) {
     const url = `${BASE_URL}/gateway/to-excel`;
     const config = {
         headers: {
-            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Authorization': 'Bearer ' + store.getState().userReducer.access_token,
             'Content-Type': 'multipart/form-data'
         },
         responseType: 'blob'
@@ -376,7 +376,7 @@ export function DownloadUserTransactionsExcel() {
     const url = `${BASE_URL}/payment/excel`;
     const config = {
         headers: {
-            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Authorization': 'Bearer ' + store.getState().userReducer.access_token,
             'Content-Type': 'multipart/form-data'
         },
         responseType: 'blob'
@@ -388,7 +388,7 @@ export function DownloadAdminTransactionsExcel(limit, offset) {
     const url = `${BASE_ADMIN_URL}/payment/to-excel?limit=${limit}&offset=${offset}`;
     const config = {
         headers: {
-            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Authorization': 'Bearer ' + store.getState().userReducer.access_token,
             'Content-Type': 'multipart/form-data'
         },
         responseType: 'blob'
@@ -399,7 +399,7 @@ export function DownloadThingsDataExcel(things, projectId, offset, limit, since)
     const url = `${BASE_URL}/things/data/excel`;
     const config = {
         headers: {
-            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Authorization': 'Bearer ' + store.getState().userReducer.access_token,
             'Content-Type': 'multipart/form-data'
         },
         responseType: 'blob'
@@ -417,7 +417,7 @@ export function DownloadUsersListExcel() {
     const url = `${BASE_ADMIN_URL}/users/excel`;
     const config = {
         headers: {
-            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Authorization': 'Bearer ' + store.getState().userReducer.access_token,
             'Content-Type': 'multipart/form-data'
         },
         responseType: 'blob'
@@ -429,7 +429,7 @@ export function DownloadThingProfileThingsExcel(profileId, dispatch) {
     const url = `${BASE_URL}/thing-profile/${profileId}/things-excel`;
     const config = {
         headers: {
-            'Authorization': 'Bearer ' + store.getState().userReducer.token,
+            'Authorization': 'Bearer ' + store.getState().userReducer.access_token,
             'Content-Type': 'multipart/form-data'
         },
         responseType: 'blob'
