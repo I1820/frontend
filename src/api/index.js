@@ -66,13 +66,13 @@ const translate = (error) => {
     return Errors[error] !== undefined ? Errors[error] : error
 };
 
-function fetchData(endpoint = '/404', config = {}, dispatch, newUrl = false, loading = true) {
+function fetchData(endpoint = '/404', config = {}, dispatch, admin = false, loading = true) {
     return new Promise((resolve, reject) => {
         if (loading) {
             dispatch(sendingRequest(true))
         }
 
-        fetch(newUrl ? endpoint : BASE_URL + endpoint, config)
+        fetch(admin ? endpoint : BASE_URL + endpoint, config)
             .then((response) => response.json())
             .then((json) => {
                 if (loading) {
@@ -89,7 +89,7 @@ function fetchData(endpoint = '/404', config = {}, dispatch, newUrl = false, loa
                                 dispatch(setAuthState(true));
                                 dispatch(setTokenAction(response.result.token));
                                 // retry the query
-                                return fetchData(endpoint, refreshConfigToken(config), dispatch, newUrl, loading).then(resolve)
+                                return fetchData(endpoint, refreshConfigToken(config), dispatch, admin, loading).then(resolve)
                             } else {
                                 dispatch(logout())
                             }
