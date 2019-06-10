@@ -1799,8 +1799,6 @@ export function impersonateUserAction(userId, active = 1, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 dispatch({type: INIT_USER, newState: response.result});
-                forwardTo('');
-                window.location.reload();
                 cb && cb(true, 'با موفقیت انجام شد')
             } else {
                 cb && cb(false, response.result)
