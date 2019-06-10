@@ -23,7 +23,7 @@ const BASE_ADMIN_URL = 'http://api.dev2.platform.ceit.aut.ac.ir/api/admin';
 const endpoints = {
     login: '/login',
     register: '/register',
-    logout: '/logoutAPI',
+    logout: '/logout',
     refresh: '/refresh',
 
     createProject: '/project',
