@@ -724,7 +724,10 @@ export function activeUser(userID, action = 0, dispatch) {
 }
 
 export function impersonateUser(userID, active = 1, dispatch) {
-    return fetchData(`${BASE_ADMIN_URL}/users/${userID}/impersonate?active=${active}`, getConfig(), dispatch, true)
+    if (active === 1) {
+        return fetchData(`${BASE_ADMIN_URL}/users/${userID}/impersonate`, getConfig(), dispatch, true)
+    }
+    return fetchData(`${BASE_ADMIN_URL}/users/impersonate`, getConfig(), dispatch, true)
 }
 
 export function changeAdminPassword(userID, password, dispatch) {
