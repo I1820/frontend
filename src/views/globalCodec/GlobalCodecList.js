@@ -16,6 +16,7 @@ import {connect} from 'react-redux'
 import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
 import {deleteGlobalCodecAction, getGlobalCodecsAction} from '../../actions/AppActions'
+import {Link} from "react-router-dom";
 
 class globalCodecsList extends Component {
     constructor(props) {
@@ -84,9 +85,11 @@ class globalCodecsList extends Component {
                         />
                     </CardBody>
                     <CardFooter>
-                        <Button onClick={() => window.location = `#/admin/globalCodec/create`} className="ml-1"
+                        <Link to='/admin/global-codecs/new'>
+                        <Button className="ml-1"
                                 color="warning"
                                 size="sm">ایجاد قالب</Button>
+                        </Link>
                     </CardFooter>
                 </Card>
             </div>
@@ -103,27 +106,20 @@ class globalCodecsList extends Component {
                 Header: 'کدک',
                 accessor: 'code'
             },
-            // {
-            //   id: 'projectStatus',
-            //   Header: 'وضعیت',
-            //   filterable: false,
-            //   accessor: row => <Badge color={row.active === true ? 'success' : 'danger'}>
-            //     {row.active === true ? 'فعال' : 'غیرفعال'}
-            //   </Badge>
-            // // },
             {
                 id: 'rowTools',
                 Header: 'امکانات',
                 filterable: false,
                 accessor: row => <div>
-                    <Button onClick={() => window.location = `#/admin/globalCodec/edit/${row._id}`} className="ml-1"
+                    <Link to={`/admin/global-codecs/${row._id}`}>
+                    <Button className="ml-1"
                             color="warning"
                             size="sm">ویرایش</Button>
-                    {' '}
+                    </Link>
                     <Button onClick={() => {
                         this.toggle();
                         this.setState({deleteCodec: row._id})
-                    }} className="ml-1" color="error"
+                    }} className="ml-1" color="danger"
                             size="sm">حذف</Button>
                 </div>
             }

@@ -1,7 +1,17 @@
 import React, {Component} from 'react'
-import {Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Col, FormGroup, Label,} from 'reactstrap'
-
-import {AvFeedback, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation'
+import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+    Col,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+} from 'reactstrap'
 
 import AceEditor from 'react-ace'
 
@@ -18,7 +28,7 @@ import connect from 'react-redux/es/connect/connect'
 import Spinner from '../Spinner/Spinner'
 import {toastAlerts} from '../Shared/toast_alert'
 
-class AddTemplate extends Component {
+class AddGlobalTemplate extends Component {
 
     constructor(props) {
         super(props);
@@ -38,7 +48,6 @@ class AddTemplate extends Component {
         });
 
         if (this.props.match.params.id) {
-
             this.props.dispatch(getGlobalCodecTemplateAction(this.props.match.params.id, (status, codec) => {
                 if (status) {
                     this.setState({
@@ -59,21 +68,19 @@ class AddTemplate extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">ویرایشگر قالب codec</CardTitle>
                     </CardHeader>
                     <CardBody>
-                        <AvForm>
-                            <AvGroup row>
-                                <Label sm={1}>نام قالب:</Label>
+                        <Form>
+                            <FormGroup row>
+                                <Label>نام قالب:</Label>
                                 <Col sm={5}>
-                                    <AvInput
+                                    <Input
                                         name="name"
                                         value={this.state.name}
                                         onChange={(event) => {
                                             this.setState({name: event.target.value})
                                         }} type="text"
                                         required/>
-                                    <br/>
-                                    <AvFeedback>الزامی است</AvFeedback>
                                 </Col>
-                            </AvGroup>
+                            </FormGroup>
                             <FormGroup row>
                                 <AceEditor
                                     onChange={(code) => this.setState({code: code})}
@@ -96,7 +103,7 @@ class AddTemplate extends Component {
                                     }}
                                 />
                             </FormGroup>
-                        </AvForm>
+                        </Form>
                     </CardBody>
                     <CardFooter>
                         <Button onClick={this.sendTemplate} className="ml-1" color="primary" size="md">ارسال
@@ -107,24 +114,8 @@ class AddTemplate extends Component {
         )
     }
 
-    renderLog() {
-        return this.state.lint.map((lint, key) => {
-            let color = 'black';
-            if (lint.type === 'error') {
-                color = 'red'
-            } else if (lint.type === 'warning') {
-                color = 'orange'
-            } else if (lint.type === 'convention') {
-                color = 'cadetblue'
-            }
-            return <p key={`log-${key}`} style={{fontFamily: 'sans-serif', color}}>
-                line {lint.line}:{lint.column} - {lint.type}: {lint.message}!
-            </p>
-        })
-    }
 
     sendTemplate() {
-
         if (this.state.id === undefined) {
             this.props.dispatch(createGlobalCodecTemplateAction(
                 {
@@ -151,4 +142,4 @@ function mapStateToProps(state) {
     })
 }
 
-export default connect(mapStateToProps)(AddTemplate);
+export default connect(mapStateToProps)(AddGlobalTemplate);

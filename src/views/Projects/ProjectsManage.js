@@ -688,7 +688,7 @@ class ProjectsManage extends Component {
                         />
                     </CardBody>
                     <CardFooter>
-                        <Link to={`/projects/${this.state.project._id}/manage/things`}>
+                        <Link to={`/projects/${this.state.project._id}/manage/things/new`}>
                             <Button className="ml-1" color="primary">افزودن شی</Button>
                         </Link>
                         <Link to={`/things/excel/${this.state.project._id}`}>

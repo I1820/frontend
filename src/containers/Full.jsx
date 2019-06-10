@@ -9,7 +9,7 @@ import Footer from '../components/Footer'
 import Dashboard from '../views/Dashboard/Dashboard.jsx'
 
 import globalCodec from '../views/globalCodec/GlobalCodecList'
-import AddTemplate from '../views/Editros/addGlobalTemplate'
+import AddGlobalTemplate from '../views/Editros/AddGlobalTemplate'
 // PackageManagement
 import PackageList from '../views/PackageManagement'
 import NewPackage from '../views/PackageManagement/PackageManage'
@@ -86,14 +86,14 @@ class Full extends Component {
                                 <Route path="/codec/:project_id/:thing_id" name="sendCodec" component={sendCodec}/>
                                 <Route path="/template" name="addTemplate" component={addTemplate}/>
 
-                                <Route path="/admin/globalCodec/edit/:id" name="AddTemplate" component={AddTemplate}/>
-                                <Route path="/admin/globalCodec/create" name="AddTemplate" component={AddTemplate}/>
-                                <Route path="/admin/globalCodec" name="globalCodec" component={globalCodec}/>
+                                <Route path="/admin/global-codecs/new" name="addTemplate" component={AddGlobalTemplate}/>
+                                <Route path="/admin/global-codecs/:id" name="editTemplate" component={AddGlobalTemplate}/>
+                                <Route path="/admin/global-codecs" name="globalCodec" component={globalCodec}/>
 
                                 <Route path="/admin/links" name="Adminlinks" component={AdminLinks}/>
 
+                                <Route path="/projects/:id/manage/things/new" name="createThing" component={CreateThing}/>
                                 <Route path="/projects/:id/manage/things/:tid" name="editThing" component={CreateThing}/>
-                                <Route path="/projects/:id/manage/things" name="createThing" component={CreateThing}/>
                                 <Route path="/projects/:id/manage" name="ProjectsManage" component={ProjectsManage}/>
                                 <Route path="/projects/:id/view" name="ProjectsView" component={ProjectsView}/>
                                 <Route path="/projects/:id" name="Project" component={Project}/>

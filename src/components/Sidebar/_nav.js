@@ -91,7 +91,7 @@ export default {
                 },
                 {
                     name: ' قالب های عمومی',
-                    url: '/admin/globalCodec',
+                    url: '/admin/global-codecs',
                     icon: 'icon-docs',
                     type: 'admin'
                 }, {

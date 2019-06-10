@@ -4,14 +4,16 @@ const routes = {
     '/profile': 'حساب کاربری',
 
     '/projects': 'لیست پروژه‌ها',
-    '/project': 'لیست پروژه‌ها',
     '/projects/:id/view': 'نمایش پروژه',
     '/projects/:id': ':id',
     '/projects/:id/manage': 'مدیریت پروژه',
-    '/projects/:id/manage/things': 'شی',
+    '/projects/:id/manage/things': 'اشیا',
+    '/projects/:id/manage/things/new': 'ساخت شی',
     '/projects/:id/manage/things/:tid': ':id',
 
-    '/admin/globalCodec': 'مدیریت پروژه',
+    '/admin/global-codecs': 'قالب‌های عمومی',
+    '/admin/global-codecs/new': 'ساخت قالب عمومی',
+    '/admin/global-codecs/:id': ':id',
 
     '/things': 'لیست اشیا',
     '/things/edit': 'ویرایش شی',
