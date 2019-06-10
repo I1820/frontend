@@ -19,7 +19,6 @@ export function userReducer(state = initialState, action) {
                 access_token: action.newState.access_token,
                 refresh_token: action.newState.refresh_token,
                 config: action.newState.config,
-                keep: action.newState.keep ? action.newState.keep : state.keep,
                 is_admin: action.newState.user.is_admin,
                 package: action.newState.user.package,
                 legal_info: action.newState.user.legal_info,
