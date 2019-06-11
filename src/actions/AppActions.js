@@ -236,9 +236,9 @@ export function getThings() {
  * List Project things
  *
  */
-export function getProjectThingsListAction(projectId, limit, offset, data, cb) {
+export function getProjectThingsListAction(projectId, limit, offset, sorted, filtered, cb) {
     return (dispatch) => {
-        const promise = getProjectThings(projectId, limit, offset, data, dispatch, false);
+        const promise = getProjectThings(projectId, limit, offset, sorted, filtered, dispatch, false);
         promise.then((response) => {
             if (response.status === 'OK') {
                 cb(response.result)

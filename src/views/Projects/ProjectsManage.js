@@ -224,7 +224,8 @@ class ProjectsManage extends Component {
             projectID,
             state.pageSize,
             state.page * state.pageSize,
-            {sorted: JSON.stringify(state.sorted), filtered: JSON.stringify(state.filtered)},
+            state.sorted,
+            state.filtered,
             this.setThings
         ))
     }
