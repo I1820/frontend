@@ -4,10 +4,10 @@ class Footer extends Component {
     render() {
         return (
             <footer className="app-footer">
-                <div>
+                <div dir={'rtl'}>
                     تمامی حقوق این پلتفرم برای
                     &ensp;
-                    <a href="https://aiotrc.github.io">کارگروه اینترنت اشیا دانشکده کامپویتر دانشگاه امیرکبیر</a>
+                    <a href="https://aolab.github.io">کارگروه اینترنت اشیا دانشکده کامپیوتر دانشگاه امیرکبیر</a>
                     &ensp;
                     محفوظ است
                 </div>

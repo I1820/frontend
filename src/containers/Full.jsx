@@ -4,7 +4,7 @@ import {Container} from 'reactstrap'
 import Header from '../components/Header'
 import Sidebar from '../components/Sidebar/Sidebar.jsx'
 import Breadcrumb from '../components/Breadcrumb'
-import Footer from '../components/Footer'
+import Footer from '../components/Footer/Footer'
 
 import Dashboard from '../views/Dashboard/Dashboard.jsx'
 
