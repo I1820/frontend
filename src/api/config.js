@@ -14,7 +14,7 @@ export const refreshConfig = () => ({
     body: '',
     headers: {
         'Authorization': 'Bearer ' + store.getState().userReducer.refresh_token,
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
 
@@ -23,7 +23,7 @@ export const refreshConfig = () => ({
 export const loginConfig = {
     method: 'POST',
     headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
 };
@@ -33,7 +33,7 @@ export const postConfig = () => ({
     body: '',
     headers: {
         'Authorization': getAuth(),
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
 });
@@ -43,7 +43,7 @@ export const putConfig = () => ({
     body: '',
     headers: {
         'Authorization': getAuth(),
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
 });
@@ -70,7 +70,7 @@ export const patchConfig = () => ({
     method: 'PATCH',
     headers: {
         'Authorization': getAuth(),
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
 });
@@ -79,7 +79,7 @@ export const deleteConfig = () => ({
     method: 'DELETE',
     headers: {
         'Authorization': getAuth(),
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
 });

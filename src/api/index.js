@@ -11,8 +11,6 @@ import {
 import {sendingRequest, setAuthState, setTokenAction} from '../actions/AppActions'
 import {logout as logoutAction} from '../actions/auth';
 
-import _ from 'underscore'
-
 import {get, post} from 'axios'
 import store from '../store'
 /* global fetch */
@@ -119,18 +117,9 @@ export function streamFetch(endpoint = '/404', cb) {
         })
 }
 
-function getFormData(object) {
-    let formData = '';
-    Object.keys(object).forEach(key => {
-        formData += _.isUndefined(object[key]) ? ''
-            : key + '=' + encodeURIComponent(object[key]) + '&'
-    });
-    return formData
-}
-
 export function login(email, password, dispatch) {
     const config = loginConfig;
-    Object.assign(config, {body: getFormData({email, password})});
+    Object.assign(config, {body: JSON.stringify({email, password})});
     return fetchData(endpoints.login, config, dispatch)
 }
 
@@ -140,7 +129,7 @@ export function listProject(dispatch) {
 
 export function register(data, dispatch) {
     const config = loginConfig;
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(endpoints.register, config, dispatch)
 }
 
@@ -154,12 +143,10 @@ export function viewProfile(dispatch) {
 
 export function createProject(data, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(endpoints.createProject, config, dispatch)
 }
 
-//
-//
 export function getProject(id, compress, dispatch) {
     if (compress) {
         return fetchData(endpoints.getProject + '/' + id + '?compress=1', getConfig(), dispatch)
@@ -167,25 +154,22 @@ export function getProject(id, compress, dispatch) {
     return fetchData(endpoints.getProject + '/' + id, getConfig(), dispatch)
 }
 
-//
-//
-//
 export function editThing(thingId, data, dispatch) {
     const config = patchConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/things/${thingId}`, config, dispatch)
 }
 
 //
 export function editProject(id, data, dispatch) {
     const config = patchConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData('/project/' + id, config, dispatch)
 }
 
 export function editAliases(id, data, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData('/project/' + id + '/aliases', config, dispatch)
 }
 
@@ -194,7 +178,7 @@ export function editAliases(id, data, dispatch) {
 //     if (data.other_info !== undefined) {
 //         data.other_info = JSON.stringify(data.other_info)
 //     }
-//     Object.assign(config, {body: getFormData(data)})
+//     Object.assign(config, {body: JSON.stringify(data)})
 //     return fetchData(endpoints.editProfile, config, dispatch)
 // }
 
@@ -211,12 +195,9 @@ export function getThings(dispatch) {
     return fetchData(`/things`, getConfig(), dispatch)
 }
 
-export function getProjectThings(projectId, limit = 10, offset = 0, data, dispatch, loading = true) {
+export function getProjectThings(projectId, limit = 10, offset = 0, sorted = [], filtered = [], dispatch, loading = true) {
     const config = postConfig();
-    const formData = {
-        limit, offset, ...data
-    };
-    Object.assign(config, {body: getFormData(formData)});
+    Object.assign(config, {body: JSON.stringify({limit, offset, sorted, filtered})});
     return fetchData(`/project/${projectId}/things`, config, dispatch, false, loading)
 }
 
@@ -225,7 +206,7 @@ export function getThingsList(limit = 10, offset = 0, data, dispatch, loading = 
     const formData = {
         limit, offset, ...data
     };
-    Object.assign(config, {body: getFormData(formData)});
+    Object.assign(config, {body: JSON.stringify(formData)});
     return fetchData(`/things/list`, config, dispatch, false, loading)
 }
 
@@ -236,7 +217,7 @@ export function getGateways(dispatch) {
 export function createThing(data, projectId, dispatch) {
     const config = postConfig();
     data['project_id'] = projectId;
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/things`, config, dispatch)
 }
 
@@ -248,7 +229,7 @@ export function createThing(data, projectId, dispatch) {
 export function getThingsMainData(thingIDs, projectID, offset, limit, since, dispatch) {
     const config = postConfig();
     Object.assign(config, {
-        body: getFormData({
+        body: JSON.stringify({
             'project_id': projectID,
             since,
             offset,
@@ -262,7 +243,7 @@ export function getThingsMainData(thingIDs, projectID, offset, limit, since, dis
 export function getThingsSampleData(thingIDs, projectID, since, until, window, dispatch) {
     const config = postConfig();
     Object.assign(config, {
-        body: getFormData({
+        body: JSON.stringify({
             'project_id': projectID,
             since,
             window,
@@ -275,25 +256,25 @@ export function getThingsSampleData(thingIDs, projectID, since, until, window, d
 
 export function createCodec(data, thingId, projectId, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/things/${thingId}/codec`, config, dispatch)
 }
 
 export function createGateway(data, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/gateway`, config, dispatch)
 }
 
 export function updateGateway(data, dispatch) {
     const config = putConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/gateway/${data._id}`, config, dispatch)
 }
 
 export function decryptFramePayload(data, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/decrypt-phy-payload/`, config, dispatch)
 }
 
@@ -444,25 +425,25 @@ export function getThingProfileList(dispatch) {
 
 export function createThingProfile(data, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/thing-profile`, config, dispatch)
 }
 
 export function createScenario(data, id, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/project/${id}/scenario`, config, dispatch)
 }
 
 export function updateScenarioAPI(data, projectId, scenarioId, dispatch) {
     const config = patchConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/project/${projectId}/scenario/${scenarioId}`, config, dispatch)
 }
 
 export function sendThingKeys(data, thingId, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/things/${thingId}/keys`, config, dispatch)
 }
 
@@ -478,25 +459,25 @@ export function deleteGateway(gatewayId, dispatch) {
 
 export function editProfile(data, dispatch) {
     const config = patchConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/user/update`, config, dispatch)
 }
 
 export function changePassword(data, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/user/password`, config, dispatch)
 }
 
 export function resetPasswordAPI(data, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/password/email`, config, dispatch)
 }
 
 export function testCodecAPI(thingId, data, decode, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/things/${thingId}/test?decode=${decode}`, config, dispatch)
 }
 
@@ -521,7 +502,7 @@ export function deleteThing(projectId, thingId, dispatch) {
 export function deleteMultipleThing(thingIds, dispatch) {
     const config = postConfig();
     Object.assign(config, {
-        body: getFormData({
+        body: JSON.stringify({
             thing_ids: JSON.stringify(thingIds)
         })
     });
@@ -545,19 +526,19 @@ export function deleteScenario(projectId, scenarioId, dispatch) {
 
 export function newDownlink(thingId, data, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/things/${thingId}/send`, config, dispatch)
 }
 
 export function createCodecTemplate(projectId, data, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/project/${projectId}/codec`, config, dispatch)
 }
 
 export function updateCodecTemplate(codec_id, projectId, data, dispatch) {
     const config = patchConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`/project/${projectId}/codec/${codec_id}`, config, dispatch)
 }
 
@@ -607,7 +588,7 @@ export function deleteDiscount(id, dispatch) {
 
 export function createDiscount(value, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData({value: value})});
+    Object.assign(config, {body: JSON.stringify({value: value})});
     return fetchData(`${BASE_ADMIN_URL}/discount`, config, dispatch, true)
 }
 
@@ -617,13 +598,13 @@ export function getPackage(packageId, dispatch) {
 
 export function createPackage(data, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`${BASE_ADMIN_URL}/packages`, config, dispatch, true)
 }
 
 export function updatePackage(packageId, data, dispatch) {
     const config = patchConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`${BASE_ADMIN_URL}/packages/${packageId}`, config, dispatch, true)
 }
 
@@ -646,7 +627,7 @@ export function buyPackage(packageId, code, dispatch) {
 
 export function lint(projectId, code, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData({code})});
+    Object.assign(config, {body: JSON.stringify({code})});
     return fetchData(`/project/${projectId}/lint`, config, dispatch)
 }
 
@@ -663,7 +644,7 @@ export function setDashboardWidgetChart(widget, id, dispatch) {
     if (id) {
         widget.id = id
     }
-    Object.assign(config, {body: getFormData(widget)});
+    Object.assign(config, {body: JSON.stringify(widget)});
     return fetchData(`/user/widget/charts`, config, dispatch)
 }
 
@@ -677,7 +658,7 @@ export function getLogs(limit = 10, offset = 0, data, dispatch, loading = true) 
     const formData = {
         limit, offset, ...data
     };
-    Object.assign(config, {body: getFormData(formData)});
+    Object.assign(config, {body: JSON.stringify(formData)});
     return fetchData(`${BASE_ADMIN_URL}/logs`, config, dispatch, true, loading)
 }
 
@@ -733,7 +714,7 @@ export function impersonateUser(userID, active = 1, dispatch) {
 
 export function changeAdminPassword(userID, password, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData({password})});
+    Object.assign(config, {body: JSON.stringify({password})});
     return fetchData(`${BASE_ADMIN_URL}/users/${userID}/password`, config, dispatch, true)
 }
 
@@ -751,19 +732,19 @@ export function getGlobalCodecTemplate(codecId, dispatch) {
 
 export function updateGlobalCodecTemplate(codec_id, data, dispatch) {
     const config = patchConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`${BASE_ADMIN_URL}/codec/${codec_id}`, config, dispatch, true)
 }
 
 export function createGlobalCodecTemplate(data, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData(data)});
+    Object.assign(config, {body: JSON.stringify(data)});
     return fetchData(`${BASE_ADMIN_URL}/codec`, config, dispatch, true)
 }
 
 export function updateRole(roleId, permissions_ids, name, dispatch) {
     const config = patchConfig();
-    Object.assign(config, {body: getFormData({name, permissions_ids})});
+    Object.assign(config, {body: JSON.stringify({name, permissions_ids})});
     return fetchData(`${BASE_ADMIN_URL}/permission/role/${roleId}`, config, dispatch, true)
 }
 
@@ -777,7 +758,7 @@ export function deleteRole(roleId, dispatch) {
 
 export function addRole(permissions, dispatch) {
     const config = postConfig();
-    Object.assign(config, {body: getFormData({name: 'نقش جدید', permissions_ids: JSON.stringify(permissions)})});
+    Object.assign(config, {body: JSON.stringify({name: 'نقش جدید', permissions_ids: JSON.stringify(permissions)})});
     return fetchData(`${BASE_ADMIN_URL}/permission/role`, config, dispatch, true)
 }
 
