@@ -2,8 +2,10 @@ import React, {Component} from 'react'
 
 import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap'
 import connect from 'react-redux/es/connect/connect'
-import {impersonateUserAction, logout} from '../../actions/AppActions'
+import {impersonateUserAction} from '../../actions/AppActions'
+import {logout} from '../../actions/auth'
 import {toastAlerts} from '../../views/Shared/toast_alert'
+import {Link} from "react-router-dom";
 
 class HeaderDropdown extends Component {
 
@@ -11,7 +13,6 @@ class HeaderDropdown extends Component {
         super(props);
 
         this.toggle = this.toggle.bind(this);
-        this.profileLink = this.profileLink.bind(this);
 
         this.state = {
             dropdownOpen: false,
@@ -25,10 +26,6 @@ class HeaderDropdown extends Component {
                 activeUserInfo: props.userInfo,
             })
         }
-    }
-
-    profileLink() {
-        window.location = '#/profile'
     }
 
     toggle() {
@@ -47,14 +44,17 @@ class HeaderDropdown extends Component {
                     <DropdownItem header className="text-center">
                         <strong>{this.state.activeUserInfo.username}</strong>
                     </DropdownItem>
-                    <DropdownItem onClick={this.profileLink}><i className="fa fa-user"/>{'حساب کاربری'}
-                    </DropdownItem>
+                    <Link to='/profile'>
+                        <DropdownItem>
+                            <i className="fa fa-user"/>{'حساب کاربری'}
+                        </DropdownItem>
+                    </Link>
                     {this.state.activeUserInfo.impersonated ?
                         <DropdownItem onClick={() => this.props.dispatch(impersonateUserAction(0, 0, toastAlerts))}>
                             <i className="fa fa-power-off"/>{'خروج از حالت شخص سوم'}
                         </DropdownItem> : ''}
                     <DropdownItem onClick={() => this.props.dispatch(logout())}><i
-    className="fa fa-lock"/>خروج</DropdownItem>
+                        className="fa fa-lock"/>خروج</DropdownItem>
                 </DropdownMenu>
             </UncontrolledDropdown>
         )

@@ -138,8 +138,6 @@ import {
     impersonateUser,
     lint,
     listProject as listProjectsAPI,
-    login as loginAPI,
-    logoutAPI,
     newDownlink as newDownlinkAPI,
     register as registerAPI,
     resetPasswordAPI,
@@ -161,46 +159,6 @@ import {
 
 import fileDownload from 'js-file-download'
 import {toastAlerts} from '../views/Shared/toast_alert'
-
-/**
- * Logs an user in
- * @param  {string} username The username of the user to be logged in
- * @param  {string} password The password of the user to be logged in
- * @param {function} errorCallback
- */
-export function login(username, password, keep, errorCallback) {
-    return (dispatch) => {
-        // Show the loading indicator, hide the last error
-        // If no username or password was specified, throw a field-missing error
-        if (anyElementsEmpty({username, password})) {
-            errorCallback(errorMessages.FIELD_MISSING);
-            return
-        }
-        const promise = loginAPI(username, password, dispatch);
-
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                dispatch(setAuthState(true));
-                dispatch(initUser({...response.result, keep: !!keep}));
-                forwardTo('/dashboard')
-            } else {
-                errorCallback(translateErrorMessage(response.result))
-            }
-        })
-    }
-}
-
-/**
- * Logs the current user out
- */
-export function logout() {
-    return (dispatch) => {
-        forwardTo('/');
-        dispatch(setAuthState(false));
-        const promise = logoutAPI(dispatch);
-        promise.then(() => dispatch(freeState()))
-    }
-}
 
 /**
  * List All projects
@@ -389,7 +347,7 @@ export function setAuthState(newState) {
     return {type: SET_AUTH, newState}
 }
 
-function freeState() {
+export function freeState() {
     return {type: FREE}
 }
 
@@ -468,15 +426,6 @@ export function setErrorMessage(message) {
     }
 }
 
-function translateErrorMessage(message) {
-    switch (message) {
-        case 'The email must be a valid email address.':
-            return 'ایمیل وارد شده صحیح نیست';
-        default:
-            return message
-    }
-}
-
 /**
  * Forwards the user
  * @param {string} location The route the user should be forwarded to
@@ -487,20 +436,6 @@ export function forwardTo(location) {
     window.location = '#/' + location;
 
     cleanErrorMessage()
-}
-
-/**
- * Checks if any elements of a JSON object are empty
- * @param  {object} elements The object that should be checked
- * @return {boolean}         True if there are empty elements, false if there aren't
- */
-function anyElementsEmpty(elements) {
-    for (let element in elements) {
-        if (!elements[element]) {
-            return true
-        }
-    }
-    return false
 }
 
 export function cleanErrorMessage() {

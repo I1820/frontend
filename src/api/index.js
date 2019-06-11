@@ -8,7 +8,8 @@ import {
     refreshConfig,
     refreshConfigToken
 } from './config'
-import {logout, sendingRequest, setAuthState, setTokenAction} from '../actions/AppActions'
+import {sendingRequest, setAuthState, setTokenAction} from '../actions/AppActions'
+import {logout as logoutAction} from '../actions/auth';
 
 import _ from 'underscore'
 
@@ -91,11 +92,11 @@ function fetchData(endpoint = '/404', config = {}, dispatch, admin = false, load
                                 // retry the query
                                 return fetchData(endpoint, refreshConfigToken(config), dispatch, admin, loading).then(resolve)
                             } else {
-                                dispatch(logout())
+                                dispatch(logoutAction())
                             }
                         })
                     } else {
-                        dispatch(logout())
+                        dispatch(logoutAction())
                     }
                 } else if (!status || (code && code.toString(10).startsWith('7'))) {
                     return resolve({status: 'FAILED', result: message, code})
@@ -143,7 +144,7 @@ export function register(data, dispatch) {
     return fetchData(endpoints.register, config, dispatch)
 }
 
-export function logoutAPI(dispatch) {
+export function logout(dispatch) {
     return fetchData(endpoints.logout, postConfig(), dispatch)
 }
 
