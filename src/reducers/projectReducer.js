@@ -4,28 +4,25 @@ import _ from 'underscore'
 export function projectReducer(state = [], action) {
     switch (action.type) {
         case GET_PROJECTS:
-            state = [];
             return [
-                ...state,
                 ...action.newState.projects
             ];
         case FETCH_PROJECT:
             if (_.find(state, {_id: action.newState.project._id}) !== undefined) {
-                return state.map((currentItem, index) => {
+                return state.map((currentItem) => {
                     if (action.newState.project._id === currentItem._id) {
                         return {
-                            ...action.newState.project,
-                            currentItem
-                        }
+                            ...currentItem,
+                            ...action.newState.project
+                        };
                     } else {
-                        return currentItem
+                        return currentItem;
                     }
                 })
             } else {
-                return [
-                    ...state,
-                    action.newState.project
-                ]
+                let newState = state.slice();
+                newState.splice(newState.length, 0, action.newState.project);
+                return newState;
             }
         case FETCH_CODEC_LIST:
             if (_.find(state, {_id: action.id}) !== undefined) {
