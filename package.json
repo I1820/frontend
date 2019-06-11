@@ -68,6 +68,9 @@
     ]
   },
   "devDependencies": {
+    "@types/react-redux": "^7.0.9",
+    "@types/react-router-dom": "^4.3.3",
+    "@types/reactstrap": "^8.0.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "node-sass": "^4.12.0"
   }

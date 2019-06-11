@@ -12,23 +12,38 @@ import {
     FormGroup,
     Input,
     Label,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
     Row,
 } from 'reactstrap'
-
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {editProjectAction, getProject,} from '../../actions/AppActions'
-import Spinner from "../Spinner/Spinner";
-import {Link} from "react-router-dom";
+import {activateProjectAction, editProjectAction, getProject,} from '../../actions/AppActions'
 import {toast} from "react-toastify";
+import {IProject} from "../../api/project";
+import Spinner from "../Spinner/Spinner";
 
-class Project extends Component {
-    constructor(props) {
+interface IState {
+    project: IProject;
+    projectActivationModal: boolean;
+}
+
+class Project extends Component<any, IState> {
+    constructor(props: any) {
         super(props);
 
         this.loadProject = this.loadProject.bind(this);
 
         this.state = {
-            project: {},
+            project: {
+                _id: '',
+                name: '',
+                active: false,
+                description: '',
+            },
+            projectActivationModal: false,
         };
     }
 
@@ -36,16 +51,11 @@ class Project extends Component {
         this.loadProject()
     }
 
-    componentWillReceiveProps(props) {
-        const projectID = this.props.match.params.id;
-        if (projectID) {
-            props.projects.forEach((project) => {
-                if (project._id === projectID) {
-                    this.setState({
-                        project
-                    })
-                }
-            })
+    static callback(status: boolean, message: string) {
+        if (status) {
+            toast(message, {type: toast.TYPE.SUCCESS, autoClose: 15000});
+        } else {
+            toast(message, {type: toast.TYPE.ERROR, autoClose: 15000})
         }
     }
 
@@ -56,17 +66,55 @@ class Project extends Component {
         }
     }
 
-    static callback(status, message) {
-        if (status) {
-            toast(message, {type: toast.TYPE.SUCCESS, autoClose: 15000});
-        } else {
-            toast(message, {type: toast.TYPE.ERROR, autoClose: 15000})
+    componentWillReceiveProps(props: any) {
+        const projectID = this.props.match.params.id;
+        if (projectID) {
+            let projects: IProject[] = props.projects;
+            projects.forEach((project: IProject) => {
+                if (project._id === projectID) {
+                    this.setState({
+                        project
+                    })
+                }
+            })
         }
     }
 
     render() {
         return (
             <div>
+                <Modal isOpen={this.state.projectActivationModal}
+                       toggle={() => this.setState({projectActivationModal: !this.state.projectActivationModal})}
+                       className="text-right">
+                    <ModalHeader>{`${this.state.project.active ? 'غیرفعال سازی' : 'فعال سازی'} پروژه `}</ModalHeader>
+                    <ModalBody>
+                        <h3>{` آیا از  ${this.state.project.active ? 'غیرفعال سازی' : 'فعال سازی'} مطمئن هستید؟  `}</h3>
+                        <br/>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" className="ml-1"
+                                onClick={() => {
+                                    this.props.dispatch(activateProjectAction(
+                                        this.state.project._id,
+                                        this.state.project.active ? 0 : 1,
+                                        () => {
+                                            toast('با موفیت انجام شد.', {
+                                                autoClose: 15000,
+                                                type: toast.TYPE.SUCCESS
+                                            })
+                                        }
+                                    ));
+                                    this.setState({projectActivationModal: !this.state.projectActivationModal})
+                                }
+                                }>
+                            {this.state.project.active ? 'غیرفعال سازی' : 'فعال سازی'}
+                        </Button>
+                        <Button color="danger"
+                                onClick={() => this.setState({projectActivationModal: !this.state.projectActivationModal})}
+                        >انصراف</Button>
+                    </ModalFooter>
+                </Modal>
+
                 <Spinner display={this.props.loading}/>
                 <Row>
                     <Col>
@@ -88,7 +136,7 @@ class Project extends Component {
                                                         name: event.target.value
                                                     }
                                                 })
-                                            }} maxLength="50" value={this.state.project.name || ''}/>
+                                            }} value={this.state.project.name || ''}/>
                                         </div>
                                     </FormGroup>
                                     <FormGroup style={{display: 'flex'}}>
@@ -103,7 +151,7 @@ class Project extends Component {
                                                         description: event.target.value
                                                     }
                                                 })
-                                            }} maxLength="150" type="textarea" style={{resize: 'none'}} name=""
+                                            }} type="textarea" style={{resize: 'none'}} name=""
                                                    rows="2"/>
                                         </div>
                                     </FormGroup>
@@ -112,8 +160,8 @@ class Project extends Component {
                                             <Label>وضعیت:</Label>
                                         </div>
                                         <div style={{width: '80%'}}>
-                                            <Badge color={this.state.project.active === true ? 'success' : 'danger'}>
-                                                {this.state.project.active === true ? 'فعال' : 'غیرفعال'}
+                                            <Badge color={this.state.project.active ? 'success' : 'danger'}>
+                                                {this.state.project.active ? 'فعال' : 'غیرفعال'}
                                             </Badge>
                                         </div>
                                     </FormGroup>
@@ -127,9 +175,13 @@ class Project extends Component {
                                     }, Project.callback))
                                 }} className="ml-1" color="primary">ثبت اطلاعات</Button>
 
-                                <Button onClick={() => this.toggle('activeProject')} className="ml-1" color="danger">{
-                                    this.state.project.active ? 'غیرفعال سازی پروژه' : 'فعال سازی پروژه'
-                                }</Button>
+                                <Button
+                                    onClick={() => this.setState({projectActivationModal: !this.state.projectActivationModal})}
+                                    className="ml-1" color="danger">
+                                    {
+                                        this.state.project.active ? 'غیرفعال سازی پروژه' : 'فعال سازی پروژه'
+                                    }
+                                </Button>
 
                                 <Link to={`/projects/${this.state.project._id}/view`}>
                                     <Button color="warning" className="ml-1">
@@ -151,7 +203,7 @@ class Project extends Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any) {
     return {
         projects: state.projectReducer,
         loading: state.homeReducer.currentlySending

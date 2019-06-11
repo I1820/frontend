@@ -22,7 +22,6 @@ import {AvFeedback, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validati
 
 import {connect} from 'react-redux'
 import {
-    activateProjectAction,
     activateScenarioAction,
     activateThingAction,
     deleteCodecTemplateAction,
@@ -291,35 +290,6 @@ class ProjectsManage extends Component {
                         <Button color="danger" onClick={() => this.toggle('deleteCodec')}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
-
-
-                <Modal isOpen={this.state.activeProject} toggle={() => this.toggle('activeProject')}
-                       className="text-right">
-                    <ModalHeader>{`${this.state.project.active ? 'غیرفعال سازی' : 'فعال سازی'} پروژه `}</ModalHeader>
-                    <ModalBody>
-                        <h3>{` آیا از  ${this.state.project.active ? 'غیرفعال سازی' : 'فعال سازی'} مطمئن هستید؟  `}</h3>
-                        <br/>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" className="ml-1" onClick={() => {
-                            this.props.dispatch(activateProjectAction(
-                                this.state.project._id,
-                                this.state.project.active ? 0 : 1,
-                                (result) => {
-                                    if (result.success === true) {
-                                        this.loadProject();
-                                        toastAlerts(true, 'با موفیت انجام شد.')
-                                    } else {
-                                        toastAlerts(false, result)
-                                    }
-                                }
-                            ));
-                            this.toggle('activeProject')
-                        }}>{this.state.project.active ? 'غیرفعال سازی' : 'فعال سازی'}</Button>
-                        <Button color="danger" onClick={() => this.toggle('activeProject')}>انصراف</Button>
-                    </ModalFooter>
-                </Modal>
-
 
                 <Modal isOpen={this.state.deleteThingModal}
                        toggle={() => this.toggle('deleteThing')}
@@ -1104,11 +1074,6 @@ class ProjectsManage extends Component {
                     active: id && id.active ? id.active : 0
                 }
 
-            }
-        }
-        if (modal === 'activeProject') {
-            state = {
-                activeProject: !this.state.activeProject
             }
         }
         if (modal === 'JWT') {
