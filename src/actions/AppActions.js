@@ -1779,7 +1779,8 @@ export function activateProjectAction(projectId, active, cb) {
         const promise = activateProject(projectId, active, dispatch);
         promise.then((response) => {
             if (response.status === 'OK') {
-                cb(response.result)
+                dispatch(setProject(response.result));
+                cb && cb(response.result);
             }
         }).catch((err) => {
             dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
