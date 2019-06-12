@@ -4,7 +4,7 @@ class Footer extends Component {
     render() {
         return (
             <footer className="app-footer">
-                <div dir={'rtl'}>
+                <div style={{textAlign: 'right'}}>
                     تمامی حقوق این پلتفرم برای
                     &ensp;
                     <a href="https://aolab.github.io">کارگروه اینترنت اشیا دانشکده کامپیوتر دانشگاه امیرکبیر</a>
