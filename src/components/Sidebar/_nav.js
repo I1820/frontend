@@ -68,7 +68,7 @@ export default {
                 },
                 {
                     name: 'مدیریت بسته‌ها',
-                    url: '/admin/packages/show',
+                    url: '/admin/packages',
                     icon: 'icon-handbag',
                     type: 'admin'
                 },

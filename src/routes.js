@@ -42,11 +42,9 @@ const routes = {
     '/transactions': 'تراکنش‌ها',
 
     '/admin': 'حوزه مدیریت',
-    '/admin/packages/show': 'مدیریت بسته‌ها',
     '/admin/packages': 'مدیریت بسته‌ها',
-    '/admin/packages/edit': 'ویرایش بسته',
     '/admin/packages/new': 'افزودن بسته جدید',
-    '/admin/packages/edit/$$': 'ویرایش بسته',
+    '/admin/packages/:id': ':id',
 
     '/admin/users': 'مدیریت کاربران سیستم',
     '/admin/users/:user': ':user',

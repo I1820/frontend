@@ -5,14 +5,15 @@ import Header from '../components/Header'
 import Sidebar from '../components/Sidebar/Sidebar.jsx'
 import Breadcrumb from '../components/Breadcrumb'
 import Footer from '../components/Footer/Footer'
+import Loading from "../components/Loading/Loading";
 
 import Dashboard from '../views/Dashboard/Dashboard.jsx'
 
 import globalCodec from '../views/globalCodec/GlobalCodecList'
 import AddGlobalTemplate from '../views/Editros/AddGlobalTemplate'
 // PackageManagement
-import PackageList from '../views/PackageManagement'
-import NewPackage from '../views/PackageManagement/PackageManage'
+import PackageList from '../views/PackageManagement/PackageList'
+import PackageCreate from '../views/PackageManagement/PackageCreate'
 // usersManagement
 import UsersList from '../views/AdminUsers/UsersList'
 import RoleList from '../views/AdminUsers/RoleList'
@@ -48,6 +49,8 @@ import PaymentPortalList from '../views/PaymentPortalManagment/PaymentPortalList
 import AdminLinks from '../views/Admin/AdminLinks'
 import Project from "../views/Projects/Project";
 
+import {connect} from "react-redux";
+
 class Full extends Component {
     render() {
         return (
@@ -58,16 +61,17 @@ class Full extends Component {
                     <main className="main">
                         <Breadcrumb/>
                         <Container fluid>
+                            <Loading display={this.props.loading}/>
                             <Switch>
                                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                                 <Route path="/profile" name="Profile" component={Profile}/>
 
-                                <Route path="/admin/packages/show" name="PackageList" component={PackageList}/>
                                 <Route path="/admin/transactions" name="AllTransactions" component={AllTransactions}/>
                                 <Route path="/admin/roles" name="RoleList" component={RoleList}/>
 
-                                <Route path="/admin/packages/new" name="NewPackage" component={NewPackage}/>
-                                <Route path="/admin/packages/edit/:id" name="EditPackage" component={NewPackage}/>
+                                <Route path="/admin/packages/new" name="NewPackage" component={PackageCreate}/>
+                                <Route path="/admin/packages/:id" name="EditPackage" component={PackageCreate}/>
+                                <Route path="/admin/packages" name="PackageList" component={PackageList}/>
 
                                 <Route path="/admin/users/:user" name="UserInfo" component={UserInfo}/>
                                 <Route path="/admin/users" name="UsersList" component={UsersList}/>
@@ -117,4 +121,11 @@ class Full extends Component {
     }
 }
 
-export default Full
+function mapStateToProps(state) {
+    return {
+        loading: state.homeReducer.currentlySending
+    };
+}
+
+
+export default connect(mapStateToProps)(Full);
