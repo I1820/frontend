@@ -33,7 +33,6 @@ import {
     testCodec
 } from '../../actions/AppActions'
 import connect from 'react-redux/es/connect/connect'
-import Spinner from '../Spinner/Spinner'
 import Select2 from 'react-select2-wrapper'
 
 import _ from 'underscore'
@@ -89,8 +88,6 @@ class SendCodec extends Component {
     render() {
         return (
             <div>
-                <Spinner display={this.props.loading}/>
-
                 <Modal isOpen={this.state.modal} toggle={() => this.setState({modal: !this.state.modal})}
                        className="text-right">
                     <ModalHeader>آزمایش کدک</ModalHeader>
@@ -283,7 +280,6 @@ class SendCodec extends Component {
 
 function mapStateToProps(state) {
     return ({
-        loading: state.homeReducer.currentlySending,
 
     })
 }

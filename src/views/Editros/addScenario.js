@@ -11,7 +11,6 @@ import 'brace/snippets/python'
 import 'brace/ext/language_tools'
 import {createScenario, getScenarioAction, lintCode, updateScenarioAction} from '../../actions/AppActions'
 import connect from 'react-redux/es/connect/connect'
-import Spinner from '../Spinner/Spinner'
 import {toastAlerts} from '../Shared/toast_alert'
 
 class AddScenario extends Component {
@@ -53,7 +52,6 @@ class AddScenario extends Component {
     render() {
         return (
             <div>
-                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">ویرایشگر سناریو</CardTitle>
@@ -158,7 +156,6 @@ class AddScenario extends Component {
 
 function mapStateToProps(state) {
     return ({
-        loading: state.homeReducer.currentlySending,
     })
 }
 
