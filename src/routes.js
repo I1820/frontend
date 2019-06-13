@@ -38,7 +38,8 @@ const routes = {
     '/device-profiles/new': 'افزودن پروفایل اشیا',
     '/device-profiles/:id': ':id',
 
-    '/packages': 'خرید بسته',
+    '/packages': 'بسته‌ها',
+    '/packages/:id': ':id',
     '/transactions': 'تراکنش‌ها',
 
     '/admin': 'حوزه مدیریت',
