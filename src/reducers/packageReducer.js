@@ -1,11 +1,9 @@
 import {
     FREE,
     GET_ADMIN_PACKAGES,
-    GET_ADMIN_PAYMENT_PORTALS,
     GET_DISCOUNTS,
     GET_PACKAGE,
     GET_USER_PACKAGES,
-    GET_USER_PAYMENT_PORTALS
 } from '../constants/AppConstants'
 
 export function packageReducer(state = {
@@ -37,18 +35,8 @@ export function packageReducer(state = {
                 ...state,
                 discounts: [...action.newState]
             };
-        case GET_ADMIN_PAYMENT_PORTALS:
-            return {
-                ...state,
-                adminPortals: [...action.newState]
-            };
-        case GET_USER_PAYMENT_PORTALS:
-            return {
-                ...state,
-                userPortals: [...action.newState]
-            };
         case FREE:
-            return {adminPackages: [], userPackages: [], package: {}, userPortals: [], adminPortals: []};
+            return {adminPackages: [], userPackages: [], package: {}};
         default:
             return state
     }
