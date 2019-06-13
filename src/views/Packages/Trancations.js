@@ -2,10 +2,9 @@ import React, {Component} from 'react'
 import {Badge, Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Col} from 'reactstrap'
 import {DownloadUserTransactionsExcelAction, getUserTransactions} from '../../actions/AppActions'
 import {connect} from 'react-redux'
-import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
 import moment from 'moment-jalaali'
-import {toPersianNumbers} from '../Shared/helpers'
+import {toPersianNumbers} from '../Shared/persian'
 
 class UserTransactions extends Component {
     constructor(props) {
@@ -41,12 +40,11 @@ class UserTransactions extends Component {
                 <Col xs="12" sm="6" lg="3">
                     <Card className="text-white bg-primary text-center" style={{cursor: 'pointer'}}>
                         <CardBody className="pb-0">
-                            <h4 className="mb-0 h3 font-weight-bold">{toPersianNumbers(this.state.total)}</h4>
+                            <h4 className="mb-0 h3 font-weight-bold">{toPersianNumbers(this.state.total)} ریال</h4>
                             <p>مجموع تراکنش های موفق</p>
                         </CardBody>
                     </Card>
                 </Col>
-                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">لیست تراکنش ها</CardTitle>
@@ -82,6 +80,7 @@ class UserTransactions extends Component {
             {
                 Header: 'تاریخ تراکنش',
                 id: 'created_at',
+                minWidth: 160,
                 accessor: row => moment(row.created_at, 'YYYY-MM-DD HH:mm:ss').format('HH:mm:ss jYYYY/jM/jD')
             },
             {
@@ -104,7 +103,7 @@ class UserTransactions extends Component {
             }, {
                 Header: 'مبلغ',
                 id: 'price',
-                accessor: row => row.package.price
+                accessor: row => toPersianNumbers(row.package.price) + ' ریال'
             },
             {
                 Header: 'درگاه پرداخت',

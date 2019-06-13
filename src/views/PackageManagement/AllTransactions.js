@@ -14,7 +14,6 @@ import {
 } from 'reactstrap'
 
 import {connect} from 'react-redux'
-import Spinner from '../Spinner/Spinner'
 import {
     DownloadAdminTransactionsExcelAction,
     getAllTransactionsAction,
@@ -83,9 +82,7 @@ class PackageList extends Component {
 
     render() {
         return (
-
             <div className="animated fadeIn text-justify">
-                <Spinner display={this.props.loading}/>
                 <Row>
                     <Col xs="36" sm="18" md="12">
                         <Card className="border-success">

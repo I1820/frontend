@@ -14,11 +14,12 @@ import AddGlobalTemplate from '../views/Editros/AddGlobalTemplate'
 // PackageManagement
 import PackageList from '../views/PackageManagement/PackageList'
 import PackageCreate from '../views/PackageManagement/PackageCreate'
+import UserTransactions from '../views/Packages/Trancations'
+
 // usersManagement
 import UsersList from '../views/AdminUsers/UsersList'
 import RoleList from '../views/AdminUsers/RoleList'
 import UserInfo from '../views/AdminUsers/UserInfo'
-import UserTransactions from '../views/PackageManagement/Trancations'
 
 import Gateways from '../views/Gateways'
 import GatewaysNew from '../views/Gateways/GatewaysNew'
@@ -44,7 +45,7 @@ import addScenario from '../views/Editros/addScenario'
 
 import sendCodec from '../views/Editros/sendCodec'
 import addTemplate from '../views/Editros/addTemplate'
-import AllTransactions from '../views/AdminPayments/AllTransactions'
+import AllTransactions from '../views/PackageManagement/AllTransactions'
 import AdminLinks from '../views/Admin/AdminLinks'
 import Project from "../views/Projects/Project";
 
