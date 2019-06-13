@@ -35,7 +35,6 @@ import {
     sendDownlinkAction,
     sendThingKeysAction,
 } from '../../actions/AppActions'
-import Spinner from '../Spinner/Spinner'
 
 import ReactTable from 'react-table'
 import Logger from '../../components/Logger'
@@ -232,8 +231,6 @@ class ProjectsManage extends Component {
     render() {
         return (
             <div>
-                <Spinner display={this.props.loading}/>
-
                 <Modal isOpen={this.state.deleteScenarioModal} toggle={() => this.toggle('deleteScenario')}
                        className="text-right">
                     <ModalHeader>حذف سناریو</ModalHeader>
@@ -1091,7 +1088,6 @@ class ProjectsManage extends Component {
 function mapStateToProps(state) {
     return {
         projects: state.projectReducer,
-        loading: state.homeReducer.currentlySending
     };
 }
 

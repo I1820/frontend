@@ -23,7 +23,6 @@ import {connect} from 'react-redux'
 import {activateProjectAction, editProjectAction, getProject,} from '../../actions/AppActions'
 import {toast} from "react-toastify";
 import {IProject} from "../../api/project";
-import Spinner from "../Spinner/Spinner";
 
 interface IState {
     project: IProject;
@@ -115,7 +114,6 @@ class Project extends Component<any, IState> {
                     </ModalFooter>
                 </Modal>
 
-                <Spinner display={this.props.loading}/>
                 <Row>
                     <Col>
                         <Card className="text-justify">
@@ -206,7 +204,6 @@ class Project extends Component<any, IState> {
 function mapStateToProps(state: any) {
     return {
         projects: state.projectReducer,
-        loading: state.homeReducer.currentlySending
     };
 }
 

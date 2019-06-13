@@ -12,7 +12,7 @@ import {
     Modal,
     ModalBody,
     ModalFooter,
-    ModalHeader,
+    ModalHeader, Row,
 } from 'reactstrap'
 import ReactTable from 'react-table'
 
@@ -128,33 +128,36 @@ class ProjectsList extends Component {
                     </ModalFooter>
                 </Modal>
 
-
-                <Card className="text-justify">
-                    <CardHeader>
-                        <CardTitle className="mb-0 font-weight-bold h6">لیست پروژه‌ها</CardTitle>
-                    </CardHeader>
-                    <CardBody>
-                        <ReactTable
-                            data={this.state.projects}
-                            columns={this.reactTableColumns()}
-                            loading={this.props.loading}
-                            pageSizeOptions={[5, 10, 25]}
-                            nextText='بعدی'
-                            previousText='قبلی'
-                            rowsText='ردیف'
-                            pageText='صفحه'
-                            ofText='از'
-                            minRows='1'
-                            noDataText='پروژه‌ای برای نمایش وجود ندارد'
-                            resizable={false}
-                            defaultPageSize={5}
-                            className="-striped -highlight"
-                        />
-                    </CardBody>
-                    <CardFooter>
-                        <Button onClick={() => this.toggle('create')} color="primary">پروژه جدید</Button>
-                    </CardFooter>
-                </Card>
+                <Row>
+                    <Col md={12}>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="mb-0 font-weight-bold h6">لیست پروژه‌ها</CardTitle>
+                            </CardHeader>
+                            <CardBody>
+                                <ReactTable
+                                    data={this.state.projects}
+                                    columns={this.reactTableColumns()}
+                                    loading={this.props.loading}
+                                    pageSizeOptions={[5, 10, 25]}
+                                    nextText='بعدی'
+                                    previousText='قبلی'
+                                    rowsText='ردیف'
+                                    pageText='صفحه'
+                                    ofText='از'
+                                    minRows='1'
+                                    noDataText='پروژه‌ای برای نمایش وجود ندارد'
+                                    resizable={false}
+                                    defaultPageSize={5}
+                                    className="-striped -highlight"
+                                />
+                            </CardBody>
+                            <CardFooter>
+                                <Button onClick={() => this.toggle('create')} color="primary">پروژه جدید</Button>
+                            </CardFooter>
+                        </Card>
+                    </Col>
+                </Row>
             </div>
         )
     }
@@ -188,15 +191,15 @@ class ProjectsList extends Component {
                 sortable: false,
                 style: {textAlign: 'center'},
                 Cell: row => <ButtonGroup>
-                        <Link to={`/projects/${row.value}`}>
-                            <Button block className="ml-1" color="warning" size="sm">
-                                <i className={'fa fa-eye'}/>
-                            </Button>
-                        </Link>
-                        <Button block onClick={() => this.toggle('delete', row.value)} className="ml-1" color="danger"
-                                size="sm">
-                            <i className={'fa fa-trash'}/>
+                    <Link to={`/projects/${row.value}`}>
+                        <Button block className="ml-1" color="warning" size="sm">
+                            <i className={'fa fa-eye'}/>
                         </Button>
+                    </Link>
+                    <Button block onClick={() => this.toggle('delete', row.value)} className="ml-1" color="danger"
+                            size="sm">
+                        <i className={'fa fa-trash'}/>
+                    </Button>
                 </ButtonGroup>
             }
         ]

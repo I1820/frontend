@@ -24,7 +24,6 @@ import {toast} from 'react-toastify'
 import {connect} from 'react-redux'
 import {DateTimePicker, DateTimeRangePicker} from 'react-advance-jalaali-datepicker'
 import Select2 from 'react-select2-wrapper'
-import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
 import Loading from '../../components/Loading'
 import './project.css'
@@ -216,7 +215,6 @@ class ProjectsView extends Component {
     render() {
         return (
             <div>
-                <Spinner display={(this.props.loading && !this.state.interval) || this.state.draw}/>
                 <Card className="text-justify">
                     <CardHeader style={{display: 'flex', alignItems: 'center'}}>
                         <CardTitle className="mb-0 font-weight-bold h6">دریافت داده</CardTitle>
@@ -518,7 +516,6 @@ class ProjectsView extends Component {
 function mapStateToPropes(state) {
     return {
         projects: state.projectReducer,
-        loading: state.homeReducer.currentlySending
     }
 }
 
