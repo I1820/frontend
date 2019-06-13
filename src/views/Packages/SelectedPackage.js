@@ -8,6 +8,7 @@ import {
     CardHeader,
     CardTitle,
     Col,
+    Form,
     FormGroup,
     Input,
     Label,
@@ -15,10 +16,9 @@ import {
     ListGroupItem,
     Row
 } from 'reactstrap'
-import {buyPackagesAction, getPackageAction, getUserPaymentPortalsAction} from '../../actions/AppActions'
+import {buyPackagesAction, getPackageAction} from '../../actions/AppActions'
 import {toastAlerts} from '../Shared/toast_alert'
 import {Link} from 'react-router-dom'
-import loadingGif from '../../assets/img/loading.gif';
 
 class SelectedPackage extends Component {
 
@@ -35,22 +35,16 @@ class SelectedPackage extends Component {
     componentWillReceiveProps(props) {
         this.setState({
             package: props.package,
-            portals: props.portals,
         })
     }
 
     componentWillMount() {
         this.props.dispatch(getPackageAction(this.props.match.params.id));
-        this.props.dispatch(getUserPaymentPortalsAction())
     }
 
     pay() {
         if (this.state.agree === false) {
             toastAlerts(false, 'لطفا قوانین را بپذیرید');
-            return
-        }
-        if (!this.state.portals.length) {
-            toastAlerts(false, 'درگاه فعالی وجود ندارد');
             return
         }
         this.props.dispatch(buyPackagesAction(this.props.match.params.id, this.state.discountCode, toastAlerts))
@@ -121,7 +115,10 @@ class SelectedPackage extends Component {
                                     <ListGroupItem>
                                         <Row>
                                             <Col md='6'><strong> مبلغ قابل پرداخت</strong></Col>
-                                            <Col md='6'><span>{this.state.package.price}</span><span>تومان</span></Col>
+                                            <Col md='6'>
+                                                <span>{this.state.package.price}</span>
+                                                <span>ریال</span>
+                                            </Col>
                                         </Row>
                                     </ListGroupItem>
                                     <ListGroupItem>
@@ -152,57 +149,52 @@ class SelectedPackage extends Component {
                                     className="icon-basket-loaded icons"/>درگاه پرداخت</CardTitle>
                             </CardHeader>
                             <CardBody>
-                                {this.props.portals.length ?
-                                    <Row>
-                                        <Col md="5">
-                                            <Input className="pay-input-style back3" type="radio" id="radio3"
-                                                   name="radios"
-                                                   defaultChecked={true}
-                                                   value="زرین پال"/>
-                                        </Col>
-                                    </Row> : ''
-                                }
-
+                                <Row>
+                                    <Col md="5">
+                                        <Input className="pay-input-style back3" type="radio" id="radio3"
+                                               name="radios"
+                                               defaultChecked={true}
+                                               value="زرین پال"/>
+                                    </Col>
+                                </Row>
                             </CardBody>
                         </Card>
-                        <Alert color="dark">
-                            <Col md="9">
-                                <div>
-                                    <FormGroup check inline style={{marginRight: '0'}}>
-                                        <Input type="checkbox"
-                                               name="inline-checkbox1" style={{marginLeft: '10px'}}
-                                               onChange={() => this.setState({agree: !this.state.agree})}/>
-                                        <Label className="form-check-label" check htmlFor="inline-checkbox"> <span> قوانین و مقررات را قبول می‌کنم.</span></Label>
+                        <Card>
+                            <CardBody>
+                                <Form>
+                                    <FormGroup check className={'text-right'}>
+                                        <Label check>
+                                            <Input type="checkbox"
+                                                   onChange={() => this.setState({agree: !this.state.agree})}
+                                            />
+                                            &emsp;
+                                            قوانین و مقررات را قبول می‌کنم.
+                                        </Label>
                                     </FormGroup>
-                                </div>
-                                <br/>
-                                <div>
-                                    <Row>
-                                        <Col md='4'><strong>کد تخفیف دارید؟</strong></Col>
+                                    <FormGroup row>
+                                        <Label md='4'><strong>کد تخفیف دارید؟</strong></Label>
                                         <Col md='6'>
                                             <Input type="text"
                                                    maxLength={15}
                                                    onChange={(e) => this.setState({discountCode: e.target.value})}/>
                                         </Col>
-                                    </Row>
-                                </div>
-                                <div style={{display: !this.props.currentlySending ? 'block' : 'none'}}>
-                                    <Button color="success" onClick={this.pay}>
-                                        {'پرداخت از طریق درگاه'}
-                                    </Button>
-                                    &nsbp;
-                                    <Link to={'/packages'}>
-                                        <Button color="danger">انصراف</Button>
-                                    </Link>
-                                </div>
-                                <div className="text-right"
-                                     style={{display: this.props.currentlySending ? 'block' : 'none'}}>
-                                    <img
-                                        style={{margin: 'auto'}}
-                                        src={loadingGif} alt={'loading'}/>
-                                </div>
-                            </Col>
-                        </Alert>
+                                    </FormGroup>
+                                </Form>
+                                <Row>
+                                    <Col md={4}>
+                                        <Button color="success" onClick={this.pay}>
+                                            {'پرداخت از طریق درگاه'}
+                                        </Button>
+                                    </Col>
+                                    <Col md={4}/>
+                                    <Col md={4}>
+                                        <Link to={'/packages'}>
+                                            <Button color="danger">انصراف</Button>
+                                        </Link>
+                                    </Col>
+                                </Row>
+                            </CardBody>
+                        </Card>
                     </CardBody>
                 </Card>
             </div>
@@ -215,8 +207,7 @@ function select(state) {
     return {
         data: state.userReducer,
         package: state.packageReducer.package,
-        portals: state.packageReducer.userPortals,
-        currentlySending: state.homeReducer.currentlySending === undefined ? false : state.homeReducer.currentlySending
+        currentlySending: state.homeReducer.currentlySending
     }
 }
 
