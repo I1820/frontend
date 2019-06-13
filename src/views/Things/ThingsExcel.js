@@ -15,7 +15,6 @@ import {
 } from 'reactstrap'
 import {uploadExcelAction} from '../../actions/AppActions'
 import connect from 'react-redux/es/connect/connect'
-import Spinner from '../Spinner/Spinner'
 import {toastAlerts} from '../Shared/toast_alert'
 
 class ThingsExcel extends Component {
@@ -36,7 +35,6 @@ class ThingsExcel extends Component {
     render() {
         return (
             <div>
-                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">آپلود فایل Excel</CardTitle>

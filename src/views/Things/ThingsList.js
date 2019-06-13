@@ -17,7 +17,6 @@ import {
 import moment from 'moment-jalaali'
 import ReactTable from 'react-table'
 import {connect} from 'react-redux'
-import Spinner from '../Spinner/Spinner'
 import {
     deleteMultipleThingAction,
     DownloadUserThingsExcelAction,
@@ -116,7 +115,6 @@ class ThingsList extends Component {
                     </ModalFooter>
                 </Modal>
 
-                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">لیست اشیاء</CardTitle>

@@ -8,7 +8,6 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
 import connect from 'react-redux/es/connect/connect'
 import {createThingAction, editThingAction, getThingAction, getThingProfileListAction} from '../../actions/AppActions'
-import Spinner from '../Spinner/Spinner'
 
 import Select2 from 'react-select2-wrapper'
 import {toast} from "react-toastify";
@@ -79,7 +78,6 @@ class CreateThing extends Component {
     render() {
         return (
             <div>
-                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">اطلاعات شی</CardTitle>
