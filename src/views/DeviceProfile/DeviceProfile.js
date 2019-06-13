@@ -13,7 +13,6 @@ import {
 } from 'reactstrap'
 import {deleteDeviceProfileAction, getThingProfileListAction} from '../../actions/AppActions'
 import connect from 'react-redux/es/connect/connect'
-import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
 import {toastAlerts} from '../Shared/toast_alert'
 import {Link} from 'react-router-dom'
@@ -58,7 +57,6 @@ class DeviceProfile extends Component {
     render() {
         return (
             <div>
-
                 <Modal isOpen={this.state.deleteModal} toggle={() => this.toggle('delete')} className="text-right">
                     <ModalHeader>حذف پروفایل</ModalHeader>
                     <ModalBody>
@@ -74,8 +72,6 @@ class DeviceProfile extends Component {
                         <Button color="danger" onClick={() => this.toggle('delete')}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
-                <Spinner display={this.props.loading}/>
-
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">پروفایل اشیا</CardTitle>
@@ -154,7 +150,6 @@ class DeviceProfile extends Component {
 function mapStateToProps(state) {
     return {
         profiles: state.thingProfileReducer,
-        loading: state.homeReducer.currentlySending
     }
 }
 
