@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-// import {selectUser} from '../../actions/AppActions'
 import {
     Button,
     Card,
@@ -13,7 +12,6 @@ import {
     ModalHeader
 } from 'reactstrap'
 import {connect} from 'react-redux'
-import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
 import {deleteGlobalCodecAction, getGlobalCodecsAction} from '../../actions/AppActions'
 import {Link} from "react-router-dom";
@@ -41,8 +39,6 @@ class globalCodecsList extends Component {
         return (
 
             <div>
-                <Spinner display={this.props.loading}/>
-
                 <Modal isOpen={this.state.deleteModal} toggle={() => this.toggle()}
                        className="text-right">
                     <ModalHeader>حذف قالب</ModalHeader>
@@ -133,7 +129,6 @@ class globalCodecsList extends Component {
 
 function mapStateToProps(state) {
     return {
-        loading: state.homeReducer.currentlySending,
         globalCodecs: state.adminReducer.globalCodecs
     }
 }
