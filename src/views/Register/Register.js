@@ -22,13 +22,18 @@ class Register extends Component {
 
     constructor(props) {
         super(props);
-        this.realRegister = this.realRegister.bind(this)
+        this.register = this.register.bind(this);
+        this.state = {
+            name: '',
+            email: '',
+            password: '',
+            passwordRepeat: '',
+        }
     }
 
-    realRegister() {
+    register() {
         if (this.state.passwordRepeat === this.state.password) {
             this.props.dispatch(register({
-                'legal': 0,
                 'name': this.state.name,
                 'email': this.state.email,
                 'password': this.state.password,
@@ -120,7 +125,7 @@ class Register extends Component {
 
                                     <Button
                                         style={{display: !this.props.currentlySending ? 'block' : 'none'}}
-                                        color="success" onClick={this.realRegister} block>
+                                        color="success" onClick={this.register} block>
                                         ثبت نام
                                     </Button>
                                 </CardBody>
@@ -144,7 +149,7 @@ class Register extends Component {
 }
 
 function mapStateToProps(state) {
-    return {currentlySending: state.homeReducer.currentlySending === undefined ? false : state.homeReducer.currentlySending}
+    return {currentlySending: state.homeReducer.currentlySending}
 }
 
 export default connect(mapStateToProps)(Register);
