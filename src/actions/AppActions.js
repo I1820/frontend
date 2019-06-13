@@ -30,9 +30,7 @@ import {
     FETCH_THING,
     FETCH_THING_PROFILE,
     FETCH_USER,
-    FREE,
     GET_ADMIN_PACKAGES,
-    GET_ADMIN_PAYMENT_PORTALS,
     GET_CODECS,
     GET_DISCOUNTS,
     GET_GATEWAYS,
@@ -41,13 +39,8 @@ import {
     GET_THINGS,
     GET_THINGS_PROFILE,
     GET_USER_PACKAGES,
-    GET_USER_PAYMENT_PORTALS,
     GET_USERS,
     INIT_USER,
-    NEW_PACKAGE,
-    SENDING_REQUEST,
-    SET_AUTH,
-    SET_ERROR_MESSAGE,
     SET_GATEWAY,
     SET_TOKEN,
     SET_TRANSACTIONS,
@@ -56,7 +49,6 @@ import {
 import * as errorMessages from '../constants/MessageConstants'
 import {
     activatePackage,
-    activatePaymentPortal,
     activateProject,
     activateScenario,
     activateThing,
@@ -102,7 +94,6 @@ import {
     editProject as editProjectAPI,
     editThing as editThingAPI,
     getAdminPackage,
-    getAdminPaymentPortals,
     getAllTransactions,
     getCodecTemplate,
     getCodecTemplateList,
@@ -126,11 +117,9 @@ import {
     getThings as listThingsAPI,
     getThingsList,
     getThingsMainData,
-    getThingsSampleData,
     getTransactionsOverview,
     getUser,
     getUserPackage,
-    getUserPaymentPortals,
     getUsers,
     getUserThings,
     getUserTransaction,
@@ -1301,48 +1290,6 @@ export function deleteDiscountAction(discountId, cb) {
                 dispatch(getDiscountsAction())
             } else {
                 cb && cb(false, response.result);
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        })
-    }
-}
-
-export function getAdminPaymentPortalsAction() {
-    return (dispatch) => {
-        const promise = getAdminPaymentPortals(dispatch);
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                dispatch({type: GET_ADMIN_PAYMENT_PORTALS, newState: response.result.portals})
-            } else {
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        })
-    }
-}
-
-export function activatePaymentPortalsAction(id, active, cb) {
-    return (dispatch) => {
-        const promise = activatePaymentPortal(id, active, dispatch);
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                cb && cb(true, 'با موفقیت انجام شد.')
-            } else {
-                cb && cb(true, response.result);
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        }).catch((err) => {
-            cb && cb(false, 'خطای نامشخص')
-        })
-    }
-}
-
-export function getUserPaymentPortalsAction() {
-    return (dispatch) => {
-        const promise = getUserPaymentPortals(dispatch);
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                dispatch({type: GET_USER_PAYMENT_PORTALS, newState: response.result.portals})
-            } else {
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
             }
         })
