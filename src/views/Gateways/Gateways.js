@@ -16,7 +16,6 @@ import {
 import ReactTable from 'react-table'
 import connect from 'react-redux/es/connect/connect'
 import {deleteGatewaysAction, DownloadUserGatewaysExcelAction, getGatewaysAction} from '../../actions/AppActions'
-import Spinner from '../Spinner/Spinner'
 import {toast} from 'react-toastify'
 import {Link} from 'react-router-dom'
 
@@ -66,7 +65,6 @@ class Gateways extends Component {
     render() {
         return (
             <div>
-                <Spinner display={this.props.loading}/>
                 <Modal isOpen={this.state.deleteModal} toggle={this.deleteModalToggle} className="text-right">
                     <ModalHeader>حذف Gateway</ModalHeader>
                     <ModalBody>
@@ -178,7 +176,6 @@ class Gateways extends Component {
 function mapStateToProps(state) {
     return ({
         gateways: state.gatewayReducer,
-        loading: state.homeReducer.currentlySending
     })
 }
 

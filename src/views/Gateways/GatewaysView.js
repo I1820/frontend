@@ -19,7 +19,6 @@ import {
 } from 'reactstrap'
 import connect from 'react-redux/es/connect/connect'
 import {decryptFramePayloadAction, getSingleGatewayAction, updateGatewayAction} from '../../actions/AppActions'
-import Spinner from '../Spinner/Spinner'
 import GatewayLogger from '../../components/GatewayLogger'
 import {toastAlerts} from '../Shared/toast_alert'
 
@@ -89,7 +88,6 @@ class GatewaysView extends Component {
     render() {
         return (
             <div>
-                <Spinner display={this.props.loading}/>
                 <Nav tabs>
                     <NavItem>
                         <NavLink
@@ -382,7 +380,6 @@ class GatewaysView extends Component {
 function mapStateToProps(state) {
     return ({
         gateway: state.gatewayReducer,
-        loading: state.homeReducer.currentlySending
     })
 }
 

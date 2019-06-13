@@ -10,7 +10,6 @@ import {AvFeedback, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validati
 
 import {createGatewayAction, forwardTo} from '../../actions/AppActions'
 import connect from 'react-redux/es/connect/connect'
-import Spinner from '../Spinner/Spinner'
 
 import {toastAlerts} from '../Shared/toast_alert'
 
@@ -38,7 +37,6 @@ class GatewaysNew extends Component {
 
         return (
             <div>
-                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">افزودن Gateway</CardTitle>
@@ -179,7 +177,6 @@ class GatewaysNew extends Component {
 
 function mapStateToProps(state) {
     return ({
-        loading: state.homeReducer.currentlySending
     })
 }
 
