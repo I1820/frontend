@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Alert, Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Container,} from 'reactstrap'
-import {getProfileAction, setAuthState, setTokenAction} from '../../actions/AppActions'
+import {getProfileAction, setTokenAction} from '../../actions/AppActions'
+import {setAuthState} from '../../actions/HomeActions'
 import {connect} from 'react-redux'
 
 class AutoLogin extends Component {
