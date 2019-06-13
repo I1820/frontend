@@ -43,13 +43,13 @@ export default {
             icon: 'icon-diamond',
             children: [
                 {
-                    name: 'تراکنش ها',
+                    name: 'تراکنش‌ها',
                     url: '/transactions',
                     icon: 'icon-grid',
                     type: 'user'
                 },
                 {
-                    name: 'خرید بسته',
+                    name: 'بسته‌ها',
                     url: '/packages',
                     icon: 'icon-grid',
                     type: 'user'
@@ -60,12 +60,6 @@ export default {
             type: 'admin',
             icon: 'icon-briefcase',
             children: [
-                {
-                    name: 'مدیریت درگاه پرداخت',
-                    url: '/portals',
-                    icon: 'icon-paypal',
-                    type: 'admin'
-                },
                 {
                     name: 'مدیریت بسته‌ها',
                     url: '/admin/packages',

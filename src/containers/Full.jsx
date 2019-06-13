@@ -33,7 +33,7 @@ import ProjectsList from '../views/Projects/ProjectsList'
 import ProjectsManage from '../views/Projects/ProjectsManage.js'
 import ProjectsView from '../views/Projects/ProjectsView.js'
 // Package
-import MyPackages from '../views/Packages/MyPckages'
+import Packages from '../views/Packages/Packages'
 import SelectedPackage from '../views/Packages/SelectedPackage'
 
 import ThingsExcel from '../views/Things/ThingsExcel.js'
@@ -45,7 +45,6 @@ import addScenario from '../views/Editros/addScenario'
 import sendCodec from '../views/Editros/sendCodec'
 import addTemplate from '../views/Editros/addTemplate'
 import AllTransactions from '../views/AdminPayments/AllTransactions'
-import PaymentPortalList from '../views/PaymentPortalManagment/PaymentPortalList'
 import AdminLinks from '../views/Admin/AdminLinks'
 import Project from "../views/Projects/Project";
 
@@ -104,9 +103,8 @@ class Full extends Component {
                                 <Route path="/projects" name="ProjectsList" component={ProjectsList}/>
 
 
-                                <Route path="/portals" name="portals" component={PaymentPortalList}/>
-                                <Route path="/packages" name="packages" component={MyPackages}/>
-                                <Route path="/selectedPackage/:id" name="selectedPackage" component={SelectedPackage}/>
+                                <Route path="/packages/:id" name="Package" component={SelectedPackage}/>
+                                <Route path="/packages" name="Packages" component={Packages}/>
 
                                 <Route path="/things/excel" name="ThingsExcel" component={ThingsExcel}/>
                                 <Route path="/things" name="ThingsList" component={ThingsList}/>
