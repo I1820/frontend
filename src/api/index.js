@@ -8,7 +8,8 @@ import {
     refreshConfig,
     refreshConfigToken
 } from './config'
-import {sendingRequest, setAuthState, setTokenAction} from '../actions/AppActions'
+import {sendingRequest, setAuthState,} from '../actions/HomeActions'
+import {setTokenAction} from '../actions/AppActions'
 import {logout as logoutAction} from '../actions/auth';
 
 import {get, post} from 'axios'
@@ -377,6 +378,7 @@ export function DownloadAdminTransactionsExcel(limit, offset) {
     };
     return get(url, config)
 }
+
 export function DownloadThingsDataExcel(things, projectId, offset, limit, since) {
     const url = `${BASE_URL}/things/data/excel`;
     const config = {
