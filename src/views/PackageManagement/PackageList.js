@@ -6,11 +6,11 @@ import {
     deletePackagesAction,
     getAdminPackagesAction,
     getDiscountsAction,
-    NewPackage
 } from '../../actions/AppActions'
 import {
     Badge,
     Button,
+    ButtonGroup,
     Card,
     CardBody,
     CardFooter,
@@ -37,18 +37,9 @@ import {
 import {CopyToClipboard} from 'react-copy-to-clipboard'
 import ReactTable from 'react-table'
 import {connect} from 'react-redux'
-import Spinner from '../Spinner/Spinner'
 import {toastAlerts} from '../Shared/toast_alert'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
-
-function mapStateToProps(state) {
-    return {
-        loading: state.homeReducer.currentlySending,
-        packages: state.packageReducer.adminPackages,
-        discounts: state.packageReducer.discounts
-    }
-}
 
 class PackageList extends Component {
     constructor(props) {
@@ -90,10 +81,10 @@ class PackageList extends Component {
 
     renderPackage(item) {
         return (
-            <Col xs="12" sm="6" md="4" key={item._id}>
-                <Card className="border-primary">
+            <Col xs="12" sm="4" md="6" key={item._id}>
+                <Card outline>
                     <CardHeader>
-                        {item.name}
+                        <span style={{float: "right"}}> {item.name}</span>
                         <Badge color={item.default ? 'info' : item.is_active === true ? 'success' : 'danger'}>
                             {item.default ? 'پیش فرض' : item.is_active === true ? 'فعال' : 'غیرفعال'}
                         </Badge>
@@ -127,24 +118,25 @@ class PackageList extends Component {
                         </ListGroup>
                     </CardBody>
                     <CardFooter>
-                        <Button color="danger" size="sm" className="ml-1"
-                                onClick={() => this.toggle('deletePackage', item._id)}>
-                            <i className="fa fa-remove fa-lg "/>حذف </Button>
+                        <ButtonGroup>
+                            <Button color="danger" size="sm" className="ml-1"
+                                    onClick={() => this.toggle('deletePackage', item._id)}>
+                                <i className="fa fa-remove fa-lg "/>حذف </Button>
 
-                        <Link to={`/package/${item._id}`}>
-                            <Button color="info" size="sm" className="ml-1">
-                                <i className="fa fa-remove fa-lg "/>ویرایش
+                            <Link to={`/admin/packages/${item._id}`}>
+                                <Button color="info" size="sm" className="ml-1">
+                                    <i className="fa fa-edit fa-lg "/>ویرایش
+                                </Button>
+                            </Link>
+                            <Button
+                                color="warning"
+                                size="sm"
+                                onClick={() => this.toggle('activatePackage', {id: item._id, value: !item.is_active})}
+                                className="ml-1">
+                                {item.is_active === true ? 'غیرفعال سازی' : 'فعال سازی'}
                             </Button>
-                        </Link>
-                        <Button
-                            color="warning"
-                            size="sm"
-                            onClick={() => this.toggle('activatePackage', {id: item._id, value: !item.is_active})}
-                            className="ml-1">
-                            <i className="fa fa-edit fa-lg"/> {item.is_active === true ? 'غیرفعال سازی' : 'فعال سازی'}
-                        </Button>
+                        </ButtonGroup>
                     </CardFooter>
-
                 </Card>
             </Col>
         )
@@ -153,7 +145,6 @@ class PackageList extends Component {
     render() {
         return (
             <div className="animated fadeIn">
-                <Spinner display={this.props.loading}/>
                 <Modal isOpen={this.state.deletePackageModal}
                        toggle={() => this.toggle('deletePackage')}
                        className="text-right">
@@ -244,28 +235,20 @@ class PackageList extends Component {
                                 this.toggleTab('discounts')
                             }}>کدهای تخفیف</NavLink>
                     </NavItem>
-
                 </Nav>
-                <br/>
-
-                <TabContent activeTab={this.state.activeTab} className="border-0">
+                <TabContent activeTab={this.state.activeTab}>
                     <TabPane tabId={'packages'}>
-                        <Card className="text-justify">
-                            <CardHeader>
-                                <CardTitle className="mb-0 font-weight-bold h6">لیست بسته‌ها</CardTitle>
-                            </CardHeader>
-                            <CardBody>
-                                <div className="animated fadeIn">
-                                    <Row>
-                                        {this.state.packages.map((item) => this.renderPackage(item))}
-                                    </Row>
-                                </div>
-                            </CardBody>
-                            <CardFooter>
-                                <Button color="primary"
-                                        onClick={() => this.props.dispatch(NewPackage())}>{'بسته جدید'}</Button>
-                            </CardFooter>
-                        </Card>
+                        <Row>
+                            {this.state.packages.map((item) => this.renderPackage(item))}
+                        </Row>
+                        <Row>
+                            <Col md={4}/>
+                            <Col md={4}>
+                                <Link to={"/admin/packages/new"}>
+                                    <Button color="primary">{'بسته جدید'}</Button>
+                                </Link>
+                            </Col>
+                        </Row>
                     </TabPane>
                     <TabPane tabId={'discounts'}>
                         <Card className="text-justify">
@@ -392,6 +375,13 @@ class PackageList extends Component {
                 }
             },
         ]
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        packages: state.packageReducer.adminPackages,
+        discounts: state.packageReducer.discounts
     }
 }
 

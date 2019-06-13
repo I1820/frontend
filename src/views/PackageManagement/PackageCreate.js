@@ -14,7 +14,7 @@ import {
 } from 'reactstrap'
 import connect from 'react-redux/es/connect/connect'
 import {createPackagesAction, getPackageAction, updatePackagesAction} from '../../actions/AppActions'
-import {toastAlerts} from '../Shared/toast_alert'
+import {toast} from "react-toastify";
 
 class PackageCreate extends Component {
 
@@ -133,9 +133,13 @@ class PackageCreate extends Component {
             price: this.state.price,
         };
         if (this.props.match.params.id) {
-            this.props.dispatch(updatePackagesAction(this.props.match.params.id, data, toastAlerts))
+            this.props.dispatch(updatePackagesAction(this.props.match.params.id, data,
+                () => toast('با موفقیت انجام شد', {type: toast.TYPE.SUCCESS, autoClose: 1500})
+            ))
         } else {
-            this.props.dispatch(createPackagesAction(data, toastAlerts))
+            this.props.dispatch(createPackagesAction(data,
+                () => toast('خطایی رخ داده است', {type: toast.TYPE.ERROR, autoClose: 1500})
+            ))
         }
 
     }

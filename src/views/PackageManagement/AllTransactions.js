@@ -21,6 +21,8 @@ import {
 } from '../../actions/AppActions'
 import ReactTable from 'react-table'
 import {Link} from 'react-router-dom'
+import {toPersianNumbers} from "../Shared/persian";
+import moment from 'moment-jalaali'
 
 class PackageList extends Component {
     constructor(props) {
@@ -46,18 +48,18 @@ class PackageList extends Component {
             {
                 Header: 'تاریخ تراکنش',
                 id: 'data',
-                accessor: row => row.updated_at
+                accessor: row => moment(row.updated_at, 'YYYY-MM-DD HH:mm:ss').format('HH:mm:ss jYYYY/jM/jD'),
             },
             {
                 Header: 'مبلغ تراکنش',
                 id: 'amount',
-                accessor: row => row.package.price
+                accessor: row => toPersianNumbers(row.package.price) + ' ریال'
             }, {
                 Header: 'کاربر',
                 id: 'user',
                 accessor: row => row.user &&
-                    <Link to={`/admin/users/info/${row.user_id}`}>
-                        <Button color={'info'}>{row.user.name}</Button>
+                    <Link to={`/admin/users/${row.user_id}`}>
+                        <Button color={'info'} outline>{row.user.name}</Button>
                     </Link>
             },
             {
@@ -85,7 +87,7 @@ class PackageList extends Component {
             <div className="animated fadeIn text-justify">
                 <Row>
                     <Col xs="36" sm="18" md="12">
-                        <Card className="border-success">
+                        <Card>
                             <CardHeader>
                                 <CardTitle className="mb-0 font-weight-bold h6">اطلاعات حساب کاربری</CardTitle>
                             </CardHeader>
@@ -94,11 +96,23 @@ class PackageList extends Component {
                                     <ListGroupItem>
                                         <Row>
                                             <Col md='3'><strong>جمع کل تراکنش‌ها:</strong></Col>
-                                            <Col
-                                                md='3'><span> {this.state.overview_sum.all_transactions_sum}</span></Col>
+                                            <Col md='3'>
+                                                <span>
+                                                    {
+                                                        toPersianNumbers(this.state.overview_sum.all_transactions_sum)
+                                                        + ' ریال'
+                                                    }
+                                                </span>
+                                            </Col>
                                             <Col md='3'><strong>جمع تراکنش‌های هفته اخیر:</strong></Col>
-                                            <Col
-                                                md='3'><span>{this.state.overview_sum.last_week_transactions_sum}</span></Col>
+                                            <Col md='3'>
+                                                <span>
+                                                    {
+                                                        toPersianNumbers(this.state.overview_sum.last_week_transactions_sum)
+                                                        + ' ریال'
+                                                    }
+                                                </span>
+                                            </Col>
                                         </Row>
                                     </ListGroupItem>
                                 </ListGroup>
