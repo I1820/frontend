@@ -1,5 +1,6 @@
 import {login as loginAPI, logout as logoutAPI} from '../api/index';
-import {freeState, initUser, setAuthState} from "./AppActions";
+import {initUser} from "./AppActions";
+import {freeState, setAuthState} from './HomeActions'
 
 import {ThunkDispatch} from 'redux-thunk'
 import {AnyAction} from 'redux';
