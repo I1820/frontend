@@ -81,7 +81,7 @@ class Login extends Component {
                                                         this.mergeWithState({email: event.target.value})
                                                     }}
                                                     dir={"ltr"}
-                                                    type="text" placeholder="آدرس ایمیل"
+                                                    type="text" placeholder="پست الکترونیکی"
                                                     required/>
                                             </InputGroup>
                                             <InputGroup className="mb-4">
