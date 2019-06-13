@@ -18,7 +18,6 @@ import {
 } from 'reactstrap'
 
 import {connect} from 'react-redux'
-import Spinner from '../Spinner/Spinner'
 import {
     changePassword,
     editProfile,
@@ -122,7 +121,6 @@ class Profile extends Component {
     render() {
         return (
             <Row>
-                <Spinner display={this.props.loading}/>
                 <Col md="12" lg="7">
                     <Card className="text-justify">
                         <CardHeader>
@@ -381,7 +379,6 @@ class Profile extends Component {
 function mapStateToProps(state) {
     return {
         userInfo: state.userReducer,
-        loading: state.homeReducer.currentlySending
     };
 }
 
