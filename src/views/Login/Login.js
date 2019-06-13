@@ -21,7 +21,6 @@ import {resetPasswordAction} from '../../actions/AppActions'
 import {login} from '../../actions/auth'
 import {toast} from 'react-toastify'
 import {Link} from 'react-router-dom'
-import loadingGif from '../../assets/img/loading.gif';
 
 class Login extends Component {
 
@@ -29,8 +28,7 @@ class Login extends Component {
         super(props);
 
         this.submit = this.submit.bind(this);
-        this.onRespond = this.onRespond.bind(this);
-        this.goToResetPassword = this.goToResetPassword.bind(this);
+        Login.onRespond = Login.onRespond.bind(this);
         this.reset = this.reset.bind(this);
 
         this.state = {
@@ -38,6 +36,21 @@ class Login extends Component {
             password: '',
             reset: false
         }
+    }
+
+    static onRespond(error, message) {
+        if (error) {
+            toast(error, {autoClose: 15000, type: toast.TYPE.ERROR})
+        } else {
+            toast(message, {autoClose: 15000, type: toast.TYPE.SUCCESS})
+        }
+    }
+
+    mergeWithState(newState = {}) {
+        this.setState({
+            ...this.state,
+            ...newState
+        })
     }
 
     render() {
@@ -74,7 +87,7 @@ class Login extends Component {
                                             <InputGroup className="mb-4">
                                                 <InputGroupAddon addonType="prepend">
                                                     <InputGroupText>
-                                                        <i className="icon-lock"></i>
+                                                        <i className="icon-lock"/>
                                                     </InputGroupText>
                                                 </InputGroupAddon>
                                                 <Input
@@ -98,26 +111,23 @@ class Login extends Component {
                                                 </Label>
                                             </FormGroup>
 
-                                            <Row>
-                                                <Col xs="12" className="text-right">
-                                                    <img
-                                                        style={{
-                                                            display: this.props.currentlySending ? 'block' : 'none',
-                                                            margin: 'auto'
-                                                        }}
-                                                        alt={'loading'}
-                                                        src={loadingGif}/>
-                                                </Col>
-                                            </Row>
                                             <Row style={{
-                                                display: !this.props.currentlySending ? 'flex' : 'none',
                                                 margin: 'auto'
                                             }}>
                                                 <Col xs="6">
                                                     <Button
                                                         block
                                                         onClick={() => this.submit()} color="primary"
-                                                        className="px-4">ورود</Button>
+                                                        disabled={this.props.currentlySending}
+                                                        className="px-4">
+                                                        {
+                                                            this.props.currentlySending
+                                                                ?
+                                                                'در حال بارگذاری...'
+                                                                :
+                                                                'ورود'
+                                                        }
+                                                    </Button>
                                                 </Col>
                                                 <Col xs="6">
                                                     <Button
@@ -155,33 +165,18 @@ class Login extends Component {
         )
     }
 
-    goToResetPassword() {
-        this.setState({reset: true, email: ''})
-    }
-
-    mergeWithState(newState = {}) {
-        this.setState({
-            ...this.state,
-            ...newState
-        })
-    }
-
     reset() {
-        this.props.dispatch(resetPasswordAction({email: this.state.email}, this.onRespond))
+        this.props.dispatch(resetPasswordAction({email: this.state.email}, Login.onRespond))
     }
 
     submit() {
-        this.props.dispatch(login(this.state.email, this.state.password, this.state.keep, this.onRespond))
-    }
-
-    onRespond(errorMessage) {
-        toast(errorMessage, {autoClose: 15000, type: toast.TYPE.ERROR})
+        this.props.dispatch(login(this.state.email, this.state.password, this.state.keep, Login.onRespond))
     }
 }
 
 function mapStateToProps(state) {
     return {
-        currentlySending: state.homeReducer.currentlySending === undefined ? false : state.homeReducer.currentlySending
+        currentlySending: state.homeReducer.currentlySending
     }
 }
 
