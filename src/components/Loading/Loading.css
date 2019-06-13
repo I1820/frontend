@@ -1,0 +1,13 @@
+.loading {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.6);
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    vertical-align: middle;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 9995;
+}
