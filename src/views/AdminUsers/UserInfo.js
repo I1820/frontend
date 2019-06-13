@@ -8,7 +8,6 @@ import {
     CardHeader,
     CardTitle,
     Col,
-    Input,
     Label,
     ListGroup,
     ListGroupItem,
@@ -22,7 +21,6 @@ import {
 import {AvFeedback, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation'
 
 import {connect} from 'react-redux'
-import Spinner from '../Spinner/Spinner'
 import {
     activeUserAction,
     changePasswordAction,
@@ -32,19 +30,15 @@ import {
 } from '../../actions/AppActions'
 import ReactTable from 'react-table'
 import {toastAlerts} from '../Shared/toast_alert'
-import {toPersianNumbers} from '../Shared/helpers'
+import {toPersianNumbers} from '../Shared/persian'
 
 class PackageList extends Component {
     constructor(props) {
         super(props);
-        this.renderProject = this.renderProject.bind(this);
-        this.getPermissions = this.getPermissions.bind(this);
-        this.renderPackage = this.renderPackage.bind(this);
-        this.renderThing = this.renderThing.bind(this);
         this.toggle = this.toggle.bind(this);
         this.state = {
-            activateUser: false,
-            modal: false,
+            activateUserModal: false,
+            resetPasswordModal: false,
             userInfo: {
                 overview: {},
                 name: '',
@@ -62,7 +56,6 @@ class PackageList extends Component {
                 active: true
             },
             transactions: [],
-            permissions: []
         }
     }
 
@@ -88,11 +81,8 @@ class PackageList extends Component {
 
     render() {
         return (
-
             <div className="animated fadeIn text-justify">
-                <Spinner display={this.props.loading}/>
-
-                <Modal isOpen={this.state.activateUser} toggle={() => this.toggle('active_user')}
+                <Modal isOpen={this.state.activateUserModal} toggle={() => this.toggle('activate_user')}
                        className="text-right">
                     <ModalHeader>{`${this.state.userInfo.active ? 'غیرفعال سازی' : 'فعال سازی'} کاربر `}</ModalHeader>
                     <ModalBody>
@@ -108,7 +98,7 @@ class PackageList extends Component {
                     </ModalFooter>
                 </Modal>
 
-                <Modal isOpen={this.state.modal} toggle={() => this.toggle()} className="text-right">
+                <Modal isOpen={this.state.resetPasswordModal} toggle={() => this.toggle('reset_password')} className="text-right">
                     <ModalHeader>{`تغییر گذرواژه ${this.state.userInfo.name}`}</ModalHeader>
                     <ModalBody>
                         <AvForm>
@@ -134,7 +124,7 @@ class PackageList extends Component {
                                 this.state.password,
                                 toastAlerts))
                         }}>ذخیره</Button>
-                        <Button color="danger" onClick={() => this.toggle('create')}>انصراف</Button>
+                        <Button color="danger" onClick={() => this.toggle('reset_password')}>انصراف</Button>
                     </ModalFooter>
                 </Modal>
 
@@ -216,11 +206,11 @@ class PackageList extends Component {
                                 <Button
                                     onClick={() => this.props.dispatch(impersonateUserAction(this.state.userId, 1, toastAlerts))}
                                     className="ml-1" color="info"
-                                    size="sm">{'Impersonate'}</Button>
+                                    size="sm">حالت سوم شخص</Button>
                                 <Button className="ml-1" color="danger"
-                                        onClick={() => this.toggle()}
-                                        size="sm">{'تغییر گذرواژه'}</Button>
-
+                                        onClick={() => this.toggle('reset_password')}
+                                        size="sm">{'تغییر گذرواژه'}
+                                </Button>
                             </CardFooter>
                         </Card>
                     </Col>
@@ -256,69 +246,20 @@ class PackageList extends Component {
         )
     }
 
-    renderProject(el, key = 0) {
-
-        return (
-            <tr>
-                <th>{key + 1}</th>
-                <td>{el.projectName}</td>
-                <td>{el.projectState === true ? <Badge color="success"> فعال</Badge> :
-                    <Badge color="danger"> غیر فعال</Badge>}</td>
-            </tr>
-        )
-    }
-
-    renderPackage(el, key = 0) {
-        return (
-            <tr>
-                <th>{key + 1}</th>
-                <td>{el.packName}</td>
-                <td>{el.cost}</td>
-                <td>{el.state === true ? <Badge color="success"> فعال</Badge> :
-                    <Badge color="danger"> غیر فعال</Badge>}</td>
-                <td>
-
-                    <Label className="switch switch-text switch-pill switch-success">
-                        <Input type="checkbox" className="switch-input" defaultChecked/>
-                        <span className="switch-label" data-on="فعال" data-off=""/>
-                        <span className="switch-handle"/>
-                    </Label>
-
-                </td>
-            </tr>
-        )
-    }
-
-    renderThing(el, key = 0) {
-        return (
-            <tr>
-                <th>{key + 1}</th>
-                <td>{el.thingName}</td>
-                <td>{el.thingType}</td>
-
-            </tr>
-        )
-    }
-
-    getPermissions() {
-        let permissions = [];
-        this.state.permissions && this.state.permissions.forEach((permission) => {
-                permissions.push({text: permission.name, _id: permission._id})
-            }
-        );
-        return permissions
-    }
-
     toggle(key) {
-
-        if (key === undefined) {
-            this.setState({
-                modal: !this.state.modal
-            })
-        } else {
-            this.setState({
-                activateUser: !this.state.activateUser
-            })
+        switch (key) {
+            case 'activate_user':
+                this.setState({
+                    activateUserModal: !this.state.activateUserModal
+                });
+                break;
+            case 'reset_password':
+                this.setState({
+                    resetPasswordModal: !this.state.resetPasswordModal,
+                });
+                break;
+            default:
+                return
         }
     }
 
@@ -353,7 +294,6 @@ class PackageList extends Component {
 
 function mapStateToProps(state) {
     return {
-        loading: state.homeReducer.currentlySending,
         user: state.adminReducer.users
     }
 }
