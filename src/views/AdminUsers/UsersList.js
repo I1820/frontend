@@ -3,7 +3,6 @@ import {Badge, Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Input}
 import {Link} from 'react-router-dom'
 import {DownloadUsersListExcelAction, getRolesAction, getUsersAction, setRoleAction} from '../../actions/AppActions'
 import {connect} from 'react-redux'
-import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
 import {toastAlerts} from '../Shared/toast_alert'
 import moment from 'moment-jalaali';
@@ -38,7 +37,6 @@ class UsersList extends Component {
     render() {
         return (
             <div>
-                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">لیست کاربران</CardTitle>

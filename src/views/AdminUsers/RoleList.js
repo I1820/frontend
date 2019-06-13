@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-// import {selectUser} from '../../actions/AppActions'
 import {Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Col, Input, Row} from 'reactstrap'
 import {
     addRoleAction,
@@ -9,7 +8,6 @@ import {
     updateRoleAction
 } from '../../actions/AppActions'
 import {connect} from 'react-redux'
-import Spinner from '../Spinner/Spinner'
 import ReactTable from 'react-table'
 import {toastAlerts} from '../Shared/toast_alert'
 import Select2 from 'react-select2-wrapper'
@@ -39,9 +37,7 @@ class RoleList extends Component {
 
     render() {
         return (
-
             <div>
-                <Spinner display={this.props.loading}/>
                 <Card className="text-justify">
                     <CardHeader>
                         <CardTitle className="mb-0 font-weight-bold h6">لیست نقش‌ها</CardTitle>
