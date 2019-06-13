@@ -30,8 +30,7 @@ import {
     getUserThingsAction,
     setDashboardWidgetChartAction
 } from '../../actions/AppActions'
-import {toPersianNumbers} from '../Shared/helpers'
-import Spinner from '../Spinner/Spinner'
+import {toPersianNumbers} from '../Shared/persian'
 
 
 class Dashboard extends Component {
@@ -84,11 +83,10 @@ class Dashboard extends Component {
     render() {
         return (
             <div>
-                <Spinner display={this.state.loading || this.state.first_loading}/>
                 <Modal isOpen={this.state.modalToggle.setWidgetChart}
                        toggle={() => {
                            this.toggle('setWidgetChart');
-                           this.setSate({
+                           this.setState({
                                widget: {
                                    type: 'line',
                                    window: 1
