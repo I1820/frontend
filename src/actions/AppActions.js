@@ -2,7 +2,7 @@
  * Actions change things in your application
  * Since this boilerplate uses a uni-directional data flow, specifically redux,
  * we have these actions which are the only way your application interacts with
- * your appliction state. This guarantees that your state is up to date and nobody
+ * your application state. This guarantees that your state is up to date and nobody
  * messes it up weirdly somewhere.
  *
  * To add a new Action:
@@ -148,6 +148,9 @@ import {
 
 import fileDownload from 'js-file-download'
 import {toastAlerts} from '../views/Shared/toast_alert'
+
+import {sendingRequest, setErrorMessage} from './HomeActions'
+import {toast} from "react-toastify";
 
 /**
  * List All projects
@@ -328,17 +331,7 @@ export function register(data, cb) {
     }
 }
 
-/**
- * Sets the authentication state of the application
- * @param {boolean} newState True means a user is logged in, false means no user is logged in
- */
-export function setAuthState(newState) {
-    return {type: SET_AUTH, newState}
-}
 
-export function freeState() {
-    return {type: FREE}
-}
 
 /**
  * Sets the form state
@@ -368,54 +361,6 @@ export function updateUser(newState) {
 }
 
 /**
- * Sets the form state
- * @param  {object} newState          The new state of the form
- * @param  {string} newState.selectedProject The new text of the username input field of the form
- * @return {object}                   Formatted action for the reducer to handle
- */
-const NEW_OBJECT = -1;
-
-export function NewPackage(newState = NEW_OBJECT) {
-    newState !== NEW_OBJECT ? forwardTo('admin/packages/edit' + newState) : forwardTo('admin/packages/new');
-    return {type: NEW_PACKAGE, newState}
-}
-
-/**
- * Sets the requestSending state, which displays a loading indicator during requests
- * @param  {boolean} sending The new state the app should have
- * @return {object}          Formatted action for the reducer to handle
- */
-export function sendingRequest(sending) {
-    return {type: SENDING_REQUEST, sending}
-}
-
-/**
- * Sets the errorMessage state, which displays the ErrorMessage component when it is not empty
- * @param message
- */
-export function setErrorMessage(message) {
-    return (dispatch) => {
-        dispatch({type: SET_ERROR_MESSAGE, message});
-
-        const form = document.querySelector('.form-page__form-wrapper');
-        if (form) {
-            form.classList.add('js-form__err-animation');
-
-            // Remove the animation class after the animation is finished, so it
-            // can play again on the next error
-            setTimeout(() => {
-                form.classList.remove('js-form__err-animation')
-            }, 150);
-
-            // Remove the error message after 3 seconds
-            setTimeout(() => {
-                dispatch({type: SET_ERROR_MESSAGE, message: ''})
-            }, 3000)
-        }
-    }
-}
-
-/**
  * Forwards the user
  * @param {string} location The route the user should be forwarded to
  */
@@ -424,10 +369,6 @@ export function forwardTo(location) {
 
     window.location = '#/' + location;
 
-    cleanErrorMessage()
-}
-
-export function cleanErrorMessage() {
     setErrorMessage('')
 }
 
@@ -458,19 +399,6 @@ export function DownloadThingsDataExcelAction(things, projectId, offset, limit, 
     }
 }
 
-export function getThingsSampleDataAction(things, projectId, offset, limit, window, callback) {
-    return (dispatch) => {
-        const promise = getThingsSampleData(things, projectId, offset, limit, window, dispatch);
-        promise.then((response) => {
-            if (response.status === 'OK') {
-                callback(true, response.result.data)
-            } else {
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
-            }
-        })
-    }
-}
-
 /* thing profile actions */
 
 export function getThingProfileListAction() {
@@ -491,7 +419,6 @@ export function deleteDeviceProfileAction(profileId, cb) {
         const promise = deleteDeviceProfileAPI(profileId, dispatch);
         promise.then((response) => {
             if (response.status === 'OK') {
-                window.location = '#/device-profile/list';
                 cb(true, 'با موفقیت حذف شد')
             } else {
                 cb(false, response.result)
@@ -508,7 +435,6 @@ export function getDeviceProfile(profileId, cb) {
                 cb(true, response.result.thing_profile)
             } else {
                 cb(false, response.result)
-                // window.location = '#/device-profile/list'
             }
         })
     }
@@ -1017,9 +943,9 @@ export function resetPasswordAction(data, cb) {
         const promise = resetPasswordAPI(data, dispatch);
         promise.then((response) => {
             if (response.status === 'OK' && response.result.success === true) {
-                cb && cb('رمز عبور جدید به ایمیل شما ارسال شد')
+                cb && cb(null, 'رمز عبور جدید به ایمیل شما ارسال شد')
             } else {
-                cb && cb(response.result)
+                cb && cb(response.result, '')
             }
         }).catch((err) => {
             console.log(err)
@@ -1258,7 +1184,7 @@ export function getAdminPackagesAction() {
             if (response.status === 'OK') {
                 dispatch({type: GET_ADMIN_PACKAGES, newState: response.result.packages})
             } else {
-                dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
+                toast('', {autoClose: 1000, type: toast.TYPE.ERROR})
             }
         })
     }
@@ -1374,7 +1300,7 @@ export function deletePackagesAction(packageId, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 cb && cb(true, 'با موفقیت حذف شد');
-                dispatch(new getAdminPackagesAction())
+                dispatch(getAdminPackagesAction())
             } else {
                 cb && cb(false, response.result);
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -1394,7 +1320,7 @@ export function activatePackagesAction(packageId, active, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 cb && cb(true, 'با موفقیت انجام شد');
-                dispatch(new getAdminPackagesAction())
+                dispatch(getAdminPackagesAction())
             } else {
                 cb && cb(false, response.result);
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
