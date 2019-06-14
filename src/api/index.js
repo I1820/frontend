@@ -16,9 +16,10 @@ import {get, post} from 'axios'
 import store from '../store'
 /* global fetch */
 
-const BASE_URL = 'http://api.dev2.platform.ceit.aut.ac.ir/api/v1';
-const BASE_FILES_URL = 'http://api.dev2.platform.ceit.aut.ac.ir';
-const BASE_ADMIN_URL = 'http://api.dev2.platform.ceit.aut.ac.ir/api/admin';
+const URL=process.env.REACT_APP_URL;
+const BASE_URL = `${URL}/api/v1`;
+const BASE_FILES_URL = `${URL}`;
+const BASE_ADMIN_URL = `${URL}/api/admin`;
 
 const endpoints = {
     login: '/login',
