@@ -172,6 +172,9 @@ class ProjectsView extends Component {
 
         // maps the sensors data into their series
         this.state.data.forEach((d) => {
+            if (!d.data || d.data === null) { // do not parse the null data
+              return
+            }
             sensors.forEach((dataset) => {
                 const n = Number(d.data[dataset.label]);
                 if (!isNaN(n)) {
