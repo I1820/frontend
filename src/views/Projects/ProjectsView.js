@@ -159,10 +159,10 @@ class ProjectsView extends Component {
         let sensors = [];
         this.state.data.forEach((d) => {
             _.allKeys(d.data).forEach((k) => {
-                if (_.find(sensors, {name: `${things[d.thingid]}: ${k}`}) === undefined) {
+                if (_.find(sensors, {name: `${things[d.thing_id]}: ${k}`}) === undefined) {
                     sensors.push({
                         label: k,
-                        name: `${things[d.thingid]}: ${k}`,
+                        name: `${things[d.thing_id]}: ${k}`,
                         data: [],
                         colorIndex: ProjectsView.getColor(k)
                     })
