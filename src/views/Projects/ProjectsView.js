@@ -22,10 +22,11 @@ import JSONPretty from 'react-json-pretty'
 import {DownloadThingsDataExcelAction, getProject, getThingsMainDataAction} from '../../actions/AppActions'
 import {toast} from 'react-toastify'
 import {connect} from 'react-redux'
-import {DateTimePicker, DateTimeRangePicker} from 'react-advance-jalaali-datepicker'
-import Select2 from 'react-select2-wrapper'
+import {DateTimeRangePicker} from 'react-advance-jalaali-datepicker'
+import Select from 'react-select'
 import ReactTable from 'react-table'
 import Loading from '../../components/Loading'
+import randomColor from 'randomcolor'
 import './project.css'
 
 class ProjectsView extends Component {
@@ -46,7 +47,7 @@ class ProjectsView extends Component {
             pageSize: 10,
             loading: false,
             type: 'area',
-            selectedThing: {ids: []},
+            selectedThing: {ids: [], options: []},
             period: 5000,
             project: {
                 things: [],
@@ -69,10 +70,7 @@ class ProjectsView extends Component {
     }
 
     static getColor(k) {
-        return ((((k.split('').reduce(function (a, b) {
-            a = ((a << 5) - a) + b.charCodeAt(0);
-            return a & a
-        }, 0)) % 10) + 10) % 10)
+        return randomColor({luminosity: 'light', seed: k})
     }
 
     componentWillMount() {
@@ -164,7 +162,7 @@ class ProjectsView extends Component {
                         label: k,
                         name: `${things[d.thing_id]}: ${k}`,
                         data: [],
-                        colorIndex: ProjectsView.getColor(k)
+                        color: ProjectsView.getColor(k)
                     })
                 }
             })
@@ -196,16 +194,17 @@ class ProjectsView extends Component {
     getThings() {
         let things = [];
         this.state.project.things && this.state.project.things.forEach((thing) => {
-                things.push({text: thing.name, id: thing._id})
+                things.push({label: thing.name, value: thing._id})
             }
         );
         return things
     }
 
     setThing(things) {
-        let selectedThing = {ids: []};
-        for (let i = 0; i < things.target.selectedOptions.length; i++) {
-            selectedThing.ids.push(things.target.selectedOptions[i].value)
+        let selectedThing = {ids: [], options: []};
+        selectedThing.options = things
+        for (let i = 0; i < things.length; i++) {
+            selectedThing.ids.push(things[i].value)
         }
         this.setState({selectedThing})
     }
@@ -227,43 +226,42 @@ class ProjectsView extends Component {
                             <FormGroup row>
                                 <Label sm={2}>شی ارسال کننده:‌</Label>
                                 <Col sm={5}>
-                                    <Select2
+                                    <Select
                                         style={{width: '100%'}}
-                                        multiple
-                                        data={this.getThings()}
-                                        ref="tags"
-                                        value={this.state.selectedThing.ids}
-                                        onSelect={
-                                            this.setThing
-                                        }
-                                        onUnselect={this.setThing}
-                                        options={
-                                            {
-                                                placeholder: 'شی مورد نظر را انتخاب کنید',
-                                            }
-                                        }
+                                        isMulti={true}
+                                        isSearchable={true}
+                                        options={this.getThings()}
+                                        value={this.state.selectedThing.options}
+                                        onChange={this.setThing}
+                                        placeholder='اشیا'
+                                        isRtl={true}
                                     />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
                                 <Label sm={2}>زمان داده:‌</Label>
                                 <Col sm={5}>
-                                    <Input type="select" onChange={
-                                        (event) => {
+                                    <Select onChange={
+                                        (option) => {
                                             this.stop();
                                             this.setState({
-                                                auto: !(event.target.value === '0'),
-                                                window: event.target.value
+                                                auto: !(option.value === 0),
+                                                window: option.value
                                             })
                                         }
-                                    } name="type" id="select">
-                                        <option value={0}> بازه زمانی</option>
-                                        <option value={60}>یک ساعت اخیر</option>
-                                        <option value={5 * 60}>پنج ساعت اخیر</option>
-                                        <option value={10 * 60}>ده ساعت اخیر</option>
-                                        <option value={24 * 60}>یک روز اخیر</option>
-                                        <option value={168 * 60}>یک هفته اخیر</option>
-                                    </Input>
+                                    } options={[
+                                        { value: 0, label: 'بازه زمانی' },
+                                        { value: 60, label: 'یک ساعت اخیر' },
+                                        { value: 5 * 60, label: 'پنج ساعت اخیر' },
+                                        { value: 10 * 60, label: 'ده ساعت اخیر' },
+                                        { value: 24 * 60, label: 'یک روز اخیر' },
+                                        { value: 7 * 24 * 60, label: 'یک هفته اخیر' }
+                                    ]}
+                                    defaultValue={
+                                        { value: 0, label: 'بازه زمانی' }
+                                    }
+                                    isRtl={true}
+                                  />
                                 </Col>
                             </FormGroup>
                             <FormGroup style={{display: this.state.auto ? 'none' : 'flex'}} row>
@@ -275,15 +273,21 @@ class ProjectsView extends Component {
                             <FormGroup row>
                                 <Label sm={2}> نوع نمودار :</Label>
                                 <Col sm={5}>
-                                    <Input type="select" name="type"
+                                    <Select
                                            onChange={(event) => {
                                                this.setState({
-                                                   type: event.target.value,
+                                                   type: event.value,
                                                })
-                                           }} id="select">
-                                        <option value="area">خطی</option>
-                                        <option value="column">میله ای</option>
-                                    </Input>
+                                           }}
+                                           options={[
+                                             { value: "area", label: "خطی" },
+                                             { value: "column", label: "میله ای" }
+                                           ]}
+                                           defaultValue={
+                                             { value: "area", label: "خطی" }
+                                           }
+                                           isRtl={true}
+                                    />
                                 </Col>
                             </FormGroup>
                             <Button outline color="success" size="sm" onClick={() => {
@@ -353,7 +357,7 @@ class ProjectsView extends Component {
                             loading={this.state.loading}
                             nextText='بعدی'
                             previousText='قبلی'
-                            filterable={true}
+                            filterable={false}
                             rowsText='ردیف'
                             pageText='صفحه'
                             ofText='از'
@@ -361,6 +365,7 @@ class ProjectsView extends Component {
                             noDataText='داده‌ای وجود ندارد'
                             resizable={false}
                             defaultPageSize={10}
+                            sortable={false}
                             className="-striped -highlight"
                             manual
                             onFetchData={(state, instance) => {
@@ -379,7 +384,7 @@ class ProjectsView extends Component {
                                         this.state.project._id,
                                         (state.page) * state.pageSize,
                                         state.pageSize,
-                                        this.state.since ? this.state.since : 0,
+                                        this.state.since ? this.state.since : Math.floor(Date.now() / 1000) - this.state.window * 60,
                                         (status, data) => {
                                             let pages = state.page + 1;
                                             console.log(state.pageSize, data.length);
@@ -410,26 +415,17 @@ class ProjectsView extends Component {
     }
 
     renderTimePicker() {
-        return (!this.state.auto ? <DateTimeRangePicker placeholderStart="تاریخ و ساعت شروع"
-                                                        placeholderEnd="تاریخ و ساعت پایان"
-                                                        format="تاریخ: jYYYY/jMM/jDD ساعت: HH:mm"
-                                                        onChangeStart={(e, b) => {
-                                                            this.setState({
-                                                                since: e
-                                                            })
-                                                        }}
-                                                        onChangeEnd={(e, b) => {
-                                                            this.setState({
-                                                                until: e
-                                                            })
-                                                        }}
-        /> : <DateTimePicker placeholder="انتخاب تاریخ و ساعت" format="تاریخ: jYYYY/jMM/jDD ساعت: HH:mm"
-                             id="dateTimePicker"
-                             onChange={(e, b) => {
-                                 this.setState({
-                                     since: e
-                                 })
-                             }}
+      return (
+        <DateTimeRangePicker
+            placeholderStart="تاریخ و ساعت شروع"
+            placeholderEnd="تاریخ و ساعت پایان"
+            format="jYYYY/jMM/jDD HH:mm"
+            onChangeStart={(e, b) => {
+                this.setState({ since: e })
+            }}
+            onChangeEnd={(e, b) => {
+                this.setState({ until: e })
+            }}
         />)
     }
 
@@ -457,25 +453,21 @@ class ProjectsView extends Component {
             {
                 id: 'time',
                 Header: 'زمان دریافت داده',
-                filterable: false,
                 accessor: row => moment(row.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')
             },
             {
                 Header: 'شی فرستنده',
-                filterable: false,
                 accessor: 'thing_id'
             },
             {
-                id: 'projectStatus',
+                id: 'data',
                 Header: 'داده دریافت شده',
-                filterable: false,
                 accessor: row => <div style={{textAlign: 'left', direction: 'ltr'}}><JSONPretty id="json-pretty"
                                                                                                 json={row.data}/>
                 </div>
             }, {
                 id: 'raw',
                 Header: 'داده خام',
-                filterable: false,
                 accessor: row => <div style={{whiteSpace: 'pre-wrap', textAlign: 'left', direction: 'ltr'}}>
                     {row.raw}
                 </div>
