@@ -166,26 +166,25 @@ class ProjectsList extends Component {
         return [
             {
                 Header: 'نام پروژه',
+                style: {textAlign: 'center'},
                 accessor: 'name'
             },
             {
-                Header: 'توضیحات',
-                accessor: 'description',
-            },
-            {
                 Header: 'صاحب پروژه',
+                style: {textAlign: 'center'},
                 accessor: 'owner.name'
             },
             {
-                id: 'projectStatus',
+                id: 'status',
                 Header: 'وضعیت',
                 accessor: 'active',
+                style: {textAlign: 'center'},
                 Cell: row => <Badge color={row.value === true ? 'success' : 'danger'}>
                     {row.value === true ? 'فعال' : 'غیرفعال'}
                 </Badge>
             },
             {
-                id: 'rowTools',
+                id: 'tools',
                 Header: 'گزینه‌ها',
                 accessor: '_id',
                 sortable: false,
