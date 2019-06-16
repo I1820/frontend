@@ -67,6 +67,54 @@ class ProjectsView extends Component {
                 since: ''
             }
         }
+
+        // highchart initial configuration
+        this.state.config = {
+            chart: {
+                zoomType: 'x',
+                style: {
+                    fontFamily: 'Vazir'
+                }
+            },
+            plotOptions: {
+                series: {
+                    connectNulls: true
+                }
+            },
+            time: {
+                useUTC: false,
+            },
+            title: {
+                text: 'داده‌های دریافتی'
+            },
+            xAxis: {
+                type: 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: 'مقدار'
+                }
+            },
+            credits: {
+                enabled: true
+            },
+            tooltip: {
+                backgroundColor: 'lightgray',
+                borderColor: '#7CB5EC',
+                borderRadius: 10,
+                borderWidth: 3,
+                useHTML: true,
+                formatter: function () {
+                    const res =
+                        '<div>' +
+                        '<div style="text-align: center;direction: rtl">' + this.point.name + '</div>' +
+                        '<div style="text-align: center">' + this.series.name +
+                        ': <span style="font-weight: bold; ">' + this.y + '</span></div>' +
+                        '</div>';
+                    return res
+                }
+            },
+        };
     }
 
     static getColor(k) {
@@ -102,50 +150,12 @@ class ProjectsView extends Component {
                 type: this.state.type,
                 zoomType: 'x',
                 style: {
-                    fontFamily: 'Tahoma'
-                }
-            },
-            plotOptions: {
-                series: {
-                    connectNulls: true
-                }
-            },
-            time: {
-                useUTC: false,
-            },
-            title: {
-                text: 'داده‌های دریافتی'
-            },
-            xAxis: {
-                type: 'datetime'
-            },
-            yAxis: {
-                title: {
-                    text: 'مقدار'
+                    fontFamily: 'Vazir'
                 }
             },
             series: [{
                 data: []
             }],
-            credits: {
-                enabled: true
-            },
-            tooltip: {
-                backgroundColor: 'lightgray',
-                borderColor: '#7CB5EC',
-                borderRadius: 10,
-                borderWidth: 3,
-                useHTML: true,
-                formatter: function () {
-                    const res =
-                        '<div>' +
-                        '<div style="text-align: center;direction: rtl">' + this.point.name + '</div>' +
-                        '<div style="text-align: center">' + this.series.name +
-                        ': <span style="font-weight: bold; ">' + this.y + '</span></div>' +
-                        '</div>';
-                    return res
-                }
-            },
         };
 
         let things = {};
@@ -186,7 +196,7 @@ class ProjectsView extends Component {
         });
         config.series = sensors;
         this.setState({
-            config,
+            config: Object.assign({}, this.state.config, config),
             draw: false
         })
     }
@@ -341,7 +351,7 @@ class ProjectsView extends Component {
                         <Loading size={'30px'} isOpen={this.state.interval}/>
                     </CardHeader>
                     <CardBody>
-                        <ReactHighcharts config={this.state.config}/>
+                        <ReactHighcharts config={this.state.config} isPureConfig={true}/>
                     </CardBody>
                 </Card>
                 <Card className="text-justify">
