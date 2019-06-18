@@ -699,7 +699,7 @@ class ProjectsManage extends Component {
                         />
                     </CardBody>
                     <CardFooter>
-                        <Link to={`/scenario/${this.state.project._id}/new`}>
+                        <Link to={`/projects/${this.state.project._id}/manage/scenarios/new`}>
                             <Button color="primary">افزودن سناریو</Button>
                         </Link>
                     </CardFooter>
@@ -933,9 +933,9 @@ class ProjectsManage extends Component {
                         accessor: row => <div>
                             <Button onClick={() => this.toggle('deleteScenario', row._id)}
                                     className="ml-1 float-left" color="danger" size="sm">حذف</Button>
-                            <Button className="ml-1 float-left" onClick={() => {
-                                window.location = `#/scenario/${this.state.project._id}/${row._id}`
-                            }} color="warning" size="sm">ویرایش</Button>
+                                <Link to={`/projects/${this.state.project._id}/manage/scenarios/${row._id}`}>
+                            <Button className="ml-1 float-left" color="warning" size="sm">ویرایش</Button>
+                        </Link>
                             <Button onClick={() => {
                                 this.props.dispatch(activateScenarioAction(this.state.project._id, row._id))
                             }} disabled={row.is_active} className="ml-1 float-left" color="success"
