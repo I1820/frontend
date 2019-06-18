@@ -28,17 +28,18 @@ class AddScenario extends Component {
     }
 
     componentWillMount() {
-        const splitedUrl = window.location.href.split('/');
+        const projectID = this.props.match.params.id;
+        const scenarioID = this.props.match.params.sid;
         this.setState({
-            project: splitedUrl[5]
+            project: projectID
         });
 
-        if (splitedUrl[6] !== 'new') {
+        if (scenarioID !== '') {
             this.setState({
-                id: splitedUrl[6]
+                id: scenarioID
             });
 
-            this.props.dispatch(getScenarioAction(splitedUrl[5], splitedUrl[6], (status, scenario) => {
+            this.props.dispatch(getScenarioAction(projectID, scenarioID, (status, scenario) => {
                 if (status) {
                     this.setState({
                         code: scenario.code,
