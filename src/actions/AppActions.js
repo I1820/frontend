@@ -728,7 +728,6 @@ export function createScenario(projectId, data, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 cb(true, 'با موفقیت انجام شد');
-                forwardTo(`projects/manage/show/${projectId}`)
             } else {
                 cb(false, response.result);
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
@@ -746,7 +745,6 @@ export function updateScenarioAction(projectId, scenarioId, data, cb) {
         promise.then((response) => {
             if (response.status === 'OK') {
                 cb(true, 'با موفقیت انجام شد');
-                forwardTo(`projects/manage/show/${projectId}`)
             } else {
                 cb(false, response.result);
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
