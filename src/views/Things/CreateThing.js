@@ -9,7 +9,7 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import connect from 'react-redux/es/connect/connect'
 import {createThingAction, editThingAction, getThingAction, getThingProfileListAction} from '../../actions/AppActions'
 
-import Select2 from 'react-select2-wrapper'
+import Select from 'react-select';
 import {toast} from "react-toastify";
 
 class CreateThing extends Component {
@@ -149,22 +149,17 @@ class CreateThing extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row style={{display: this.state.thing.type === 'lora' ? 'flex' : 'none'}}>
-                                <Label sm={3} htmlFor="select">پروفایل شی:</Label>
+                                <Label sm={3}>پروفایل شی:</Label>
                                 <Col md="5">
-                                    <Select2
+                                    <Select
                                         name="device_profile_slug"
-                                        style={{width: '100%'}}
-                                        data={this.props.profiles.map((profile) => {
-                                            return {text: profile.name, id: profile.thing_profile_slug}
+                                        isRtl={true}
+                                        options={this.props.profiles.map((profile) => {
+                                            return {label: profile.name, value: profile.thing_profile_slug}
                                         })}
-                                        refs="tags"
                                         value={this.state.thing_profile_slug}
-                                        onSelect={(e) => this.thing_profile_slug = e.target.value}
-                                        options={
-                                            {
-                                                placeholder: 'پروفایل شی مورد نظر را انتخاب کنید',
-                                            }
-                                        }
+                                        onChange={(e) => this.setState({thing_profile_slug: e})}
+                                        placeholder='پروفایل شی مورد نظر را انتخاب کنید'
                                     />
                                 </Col>
                             </FormGroup>
@@ -249,7 +244,7 @@ class CreateThing extends Component {
             lat: this.state.thing.lat,
             long: this.state.thing.long,
             devEUI: this.state.thing.devEUI,
-            thing_profile_slug: this.thing_profile_slug,
+            thing_profile_slug: this.state.thing_profile_slug.value,
             type: this.state.thing.type,
             model: this.state.thing.model,
         };
