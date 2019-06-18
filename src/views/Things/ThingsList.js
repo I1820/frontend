@@ -12,9 +12,7 @@ import {
     ModalBody,
     ModalFooter,
     ModalHeader,
-    UncontrolledTooltip
 } from 'reactstrap'
-import moment from 'moment-jalaali'
 import ReactTable from 'react-table'
 import {connect} from 'react-redux'
 import {
@@ -199,73 +197,53 @@ class ThingsList extends Component {
             {
                 Header: 'انتخاب',
                 id: 'select',
+                width: 50,
                 accessor: row => <input type="checkbox" onChange={() => this.toggleCheckbox(row._id)}/>,
-                width: 50
             },
             {
                 Header: 'نام',
                 accessor: 'name',
-                width: 200
             },
             {
                 Header: 'آدرس',
                 accessor: 'dev_eui',
+                style: { textAlign: 'center' },
                 filterMethod: (filter, row) =>
                     row[filter.id].startsWith(filter.value) ||
                     row[filter.id].endsWith(filter.value),
-                width: 180
             },
             {
                 Header: 'نوع',
                 accessor: 'type',
-                width: 50
+                style: { textAlign: 'center' },
             },
             {
                 Header: 'نحوه پارس کردن',
                 accessor: 'model',
-                width: 50
+                style: { textAlign: 'center' },
             },
             {
                 Header: 'فعال سازی',
                 accessor: 'activation',
+                style: { textAlign: 'center' },
                 filterMethod: (filter, row) => row[filter.id].startsWith(filter.value.toUpperCase()),
-                width: 50
             },
             {
                 id: 'status',
                 Header: 'وضعیت',
                 filterable: false,
                 sortable: false,
-                width: 250,
                 accessor: row => {
                     return (<div>
-                        {row.type === 'lora' ?
-                            <Badge id={`tooltip-${row._id}`}
-                                   color={row.last_seen_at['status']}>{row.last_seen_at['time'] ?
-                                'اخرین تاریخ دریافت داده' : 'عدم دریافت داده'}</Badge> : ''}
-                        {row.last_seen_at['time'] &&
-                        <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
-                            {moment(row.last_seen_at.time, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
-                        </UncontrolledTooltip>}
-                        {' '}
                         <Badge color={row.active ? 'success' : 'secondary'}>
                             {'وضعیت:'} {row.active ? 'فعال' : 'غیرفعال'}
                         </Badge>
-                        {' '}
-                        <Badge id={`tooltip2-${row._id}`} color={!row.last_parsed_at ? 'secondary' : 'success'}>
-                            {row.last_parsed_at && row.last_parsed_at !== '' ? 'اخرین زمان پارس داده' : 'عدم پارس داده'}
-                        </Badge>
-                        {row.last_parsed_at && row.last_parsed_at !== '' ?
-                            <UncontrolledTooltip placement="top" target={`tooltip2-${row._id}`}>
-                                {moment(row.last_parsed_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
-                            </UncontrolledTooltip> : ''}
                     </div>)
                 }
             },
             {
                 id: 'rowTools',
                 Header: 'امکانات',
-                width: 150,
                 filterable: false,
                 sortable: false,
                 accessor: row => {
@@ -291,7 +269,6 @@ class ThingsList extends Component {
             {
                 id: 'project',
                 Header: 'پروژه',
-                width: 200,
                 sortable: false,
                 filterable: false,
                 accessor: (row) => {
