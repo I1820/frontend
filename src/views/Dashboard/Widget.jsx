@@ -29,8 +29,9 @@ class Widget extends Component {
                     }
                 },
                 chart: {
+                    zoomType: 'x',
                     style: {
-                        fontFamily: 'Tahoma'
+                        fontFamily: 'Vazir'
                     }
                 },
                 title: {
@@ -56,8 +57,12 @@ class Widget extends Component {
             config.series[0].name = this.state.alias;
             config.series[0].label = this.state.alias;
             this.state.data.reverse().forEach((d) => {
+                const n = Number(d.value);
+                if (isNaN(n)) {
+                    return
+                }
                 config.xAxis.categories.push(moment(d.timestamp, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss'));
-                config.series[0].data.push(d.value);
+                config.series[0].data.push(n);
                 config.series[0].name = this.state.alias
             });
             this.state.data.reverse(); // switch back to default order!

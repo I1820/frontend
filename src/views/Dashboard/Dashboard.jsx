@@ -21,7 +21,7 @@ import {Link} from 'react-router-dom'
 import Widget from './Widget'
 
 import {connect} from 'react-redux'
-import Select2 from 'react-select2-wrapper'
+import Select from 'react-select'
 import {toastAlerts} from '../Shared/toast_alert'
 
 import {
@@ -114,21 +114,13 @@ class Dashboard extends Component {
                             <FormGroup row>
                                 <Label sm={3}> شی : </Label>
                                 <Col sm={9}>
-                                    <Select2
+                                    <Select
                                         style={{width: '100%'}}
-                                        value={this.devEUI}
-                                        data={this.state.things.map((thing) => {
-                                            return {text: thing.name, id: thing.dev_eui}
-                                        })}
-                                        ref="tags"
-                                        onSelect={(event) => {
-                                            this.devEUI = event.target.value
+                                        options={this.state.things.map((thing) => ({label: thing.name, value: thing.dev_eui}))}
+                                        onChange={(event) => {
+                                            this.devEUI = event.value
                                         }}
-                                        options={
-                                            {
-                                                placeholder: 'شی مورد نظر را انتخاب کنید',
-                                            }
-                                        }
+                                        placeholder='شی مورد نظر را انتخاب کنید'
                                     />
                                 </Col>
                             </FormGroup>
@@ -316,8 +308,9 @@ class Dashboard extends Component {
                     <Col sm="6" key={key}>
                         <Card className="text-justify">
                             <CardHeader>
-                                <CardTitle
-                                    className="mb-0 font-weight-bold h6">{this.state.title}</CardTitle>
+                                <CardTitle className="mb-0 font-weight-bold h6">
+                                    {this.state.charts[key].title}
+                                </CardTitle>
                             </CardHeader>
                             <Widget chart={this.state.charts[key]}/>
                             <CardFooter>
