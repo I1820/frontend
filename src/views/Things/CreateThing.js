@@ -244,10 +244,12 @@ class CreateThing extends Component {
             lat: this.state.thing.lat,
             long: this.state.thing.long,
             devEUI: this.state.thing.devEUI,
-            thing_profile_slug: this.state.thing_profile_slug.value,
             type: this.state.thing.type,
             model: this.state.thing.model,
         };
+        if (this.state.thing.type === 'lora') {
+            data.thing_profile_slug = this.state.thing_profile_slug.value
+        }
         if (this.state.thing._id === undefined) {
             this.props.dispatch(createThingAction(data, this.state.project, (status, message) => {
                 if (status) {
