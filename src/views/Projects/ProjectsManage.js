@@ -15,7 +15,6 @@ import {
     ModalBody,
     ModalFooter,
     ModalHeader,
-    UncontrolledTooltip
 } from 'reactstrap'
 
 import {AvFeedback, AvForm, AvGroup, AvInput} from 'availity-reactstrap-validation'
@@ -39,7 +38,6 @@ import {
 import ReactTable from 'react-table'
 import Logger from '../../components/Logger'
 import {toastAlerts} from '../Shared/toast_alert'
-import moment from 'moment-jalaali'
 import {toast} from 'react-toastify'
 import {Link} from 'react-router-dom'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
@@ -836,7 +834,6 @@ class ProjectsManage extends Component {
                     {
                         Header: 'نام شی',
                         accessor: 'name',
-                        maxWidth: 200
                     },
                     {
                         Header: 'آدرس',
@@ -844,23 +841,19 @@ class ProjectsManage extends Component {
                         filterMethod: (filter, row) =>
                             row[filter.id].startsWith(filter.value) ||
                             row[filter.id].endsWith(filter.value),
-                        maxWidth: 180
                     },
                     {
                         Header: 'نوع',
                         accessor: 'type',
-                        maxWidth: 50
                     },
                     {
                         Header: 'نحوه پارس کردن',
                         accessor: 'model',
-                        maxWidth: 50
                     },
                     {
                         Header: 'فعال سازی',
                         accessor: 'activation',
                         filterMethod: (filter, row) => row[filter.id].startsWith(filter.value.toUpperCase()),
-                        maxWidth: 50
                     },
                     {
                         id: 'status',
@@ -868,33 +861,15 @@ class ProjectsManage extends Component {
                         filterable: false,
                         accessor: row => {
                             return (<div>
-                                {row.type === 'lora' ?
-                                    <Badge id={`tooltip-${row._id}`}
-                                           color={row.last_seen_at['status']}>
-                                        {row.last_seen_at['time'] ? 'اخرین تاریخ دریافت داده' : 'عدم دریافت داده'}</Badge> : ''}
-                                {row.last_seen_at['time'] &&
-                                <UncontrolledTooltip placement="top" target={`tooltip-${row._id}`}>
-                                    {moment(row.last_seen_at.time, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
-                                </UncontrolledTooltip>}
-                                {' '}
                                 <Badge color={row.active ? 'success' : 'secondary'}>
                                     {'وضعیت:'} {row.active ? 'فعال' : 'غیرفعال'}
                                 </Badge>
-                                {' '}
-                                <Badge id={`tooltip2-${row._id}`} color={!row.last_parsed_at ? 'secondary' : 'success'}>
-                                    {row.last_parsed_at && row.last_parsed_at !== '' ? 'اخرین زمان پارس داده' : 'عدم پارس داده'}
-                                </Badge>
-                                {row.last_parsed_at && row.last_parsed_at !== '' ?
-                                    <UncontrolledTooltip placement="top" target={`tooltip2-${row._id}`}>
-                                        {moment(row.last_parsed_at, 'YYYY-MM-DD HH:mm:ss').format('jYYYY/jM/jD HH:mm:ss')}
-                                    </UncontrolledTooltip> : ''}
                             </div>)
                         }
                     },
                     {
                         id: 'rowTools',
                         Header: 'امکانات',
-                        maxWidth: 200,
                         filterable: false,
                         accessor: row => {
                             return (<div>
