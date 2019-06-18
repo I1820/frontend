@@ -40,7 +40,7 @@ class Project extends Component<any, IState> {
                 _id: '',
                 name: '',
                 active: false,
-                description: '',
+                description: ''
             },
             projectActivationModal: false,
         };
@@ -122,11 +122,11 @@ class Project extends Component<any, IState> {
                             </CardHeader>
                             <CardBody>
                                 <Form>
-                                    <FormGroup style={{display: 'flex'}}>
-                                        <div style={{minWidth: '65px', width: '20%'}}>
+                                    <FormGroup row>
+                                        <Col xs={3}>
                                             <Label>نام پروژه:</Label>
-                                        </div>
-                                        <div style={{width: '80%'}}>
+                                        </Col>
+                                        <Col xs={9}>
                                             <Input type="text" onChange={(event) => {
                                                 this.setState({
                                                     project: {
@@ -134,34 +134,33 @@ class Project extends Component<any, IState> {
                                                         name: event.target.value
                                                     }
                                                 })
-                                            }} value={this.state.project.name || ''}/>
-                                        </div>
+                                            }} value={this.state.project.name}/>
+                                        </Col>
                                     </FormGroup>
-                                    <FormGroup style={{display: 'flex'}}>
-                                        <div style={{minWidth: '65px', width: '20%'}}>
+                                    <FormGroup row>
+                                        <Col xs={3}>
                                             <Label>توضیحات:</Label>
-                                        </div>
-                                        <div style={{width: '80%'}}>
-                                            <Input value={this.state.project.description || ''} onChange={(event) => {
+                                        </Col>
+                                        <Col xs={9}>
+                                            <Input value={this.state.project.description} onChange={(event) => {
                                                 this.setState({
                                                     project: {
                                                         ...this.state.project,
                                                         description: event.target.value
                                                     }
                                                 })
-                                            }} type="textarea" style={{resize: 'none'}} name=""
-                                                   rows="2"/>
-                                        </div>
+                                            }} type="textarea" rows="2"/>
+                                        </Col>
                                     </FormGroup>
-                                    <FormGroup style={{display: 'flex'}}>
-                                        <div style={{minWidth: '65px', width: '20%'}}>
+                                    <FormGroup row>
+                                        <Col xs={3}>
                                             <Label>وضعیت:</Label>
-                                        </div>
-                                        <div style={{width: '80%'}}>
+                                        </Col>
+                                        <Col xs={9}>
                                             <Badge color={this.state.project.active ? 'success' : 'danger'}>
                                                 {this.state.project.active ? 'فعال' : 'غیرفعال'}
                                             </Badge>
-                                        </div>
+                                        </Col>
                                     </FormGroup>
                                 </Form>
                             </CardBody>
