@@ -10,6 +10,9 @@ const routes = {
     '/projects/:id/manage/things': 'اشیا',
     '/projects/:id/manage/things/new': 'ساخت شی',
     '/projects/:id/manage/things/:tid': ':id',
+    '/projects/:id/manage/scenarios': 'سناروی‌ها',
+    '/projects/:id/manage/scenarios/new': 'ساخت سناروی',
+    '/projects/:id/manage/scenarios/:sid': 'ویرایش سناری',
 
     '/admin/global-codecs': 'قالب‌های عمومی',
     '/admin/global-codecs/new': 'ساخت قالب عمومی',
@@ -25,8 +28,6 @@ const routes = {
 
     '/codec': 'ارسال کدک',
     '/codec/$$': 'ارسال کدک',
-    '/scenario': 'ارسال سناریو',
-    '/scenario/$$': 'ارسال سناریو',
     '/template': 'ارسال قالب',
     '/template/$$': 'ارسال قالب',
 
