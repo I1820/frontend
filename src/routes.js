@@ -10,9 +10,9 @@ const routes = {
     '/projects/:id/manage/things': 'اشیا',
     '/projects/:id/manage/things/new': 'ساخت شی',
     '/projects/:id/manage/things/:tid': ':id',
-    '/projects/:id/manage/scenarios': 'سناروی‌ها',
-    '/projects/:id/manage/scenarios/new': 'ساخت سناروی',
-    '/projects/:id/manage/scenarios/:sid': 'ویرایش سناری',
+    '/projects/:id/manage/scenarios': 'سناریو‌ها',
+    '/projects/:id/manage/scenarios/new': 'ساخت سناریو',
+    '/projects/:id/manage/scenarios/:sid': ':sid',
 
     '/admin/global-codecs': 'قالب‌های عمومی',
     '/admin/global-codecs/new': 'ساخت قالب عمومی',
