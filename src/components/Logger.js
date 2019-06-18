@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Button, Card, CardBody, CardHeader, Col, Row,} from 'reactstrap'
 import Loading from './Loading'
 import {streamFetch} from '../api'
+import moment from 'moment-jalaali'
 
 export default class Logger extends Component {
     constructor(props) {
@@ -75,13 +76,13 @@ export default class Logger extends Component {
         const data = this.state.platform.data;
         return (data.slice(0).reverse().map((data, key) => {
             return (
-                <Row style={{padding: 22}} key={key}>
-                    <Col style={{width: '20%'}}>
-                        {`${data.Time}`}
-                        <br/>
-                        {`${data.Job}`}
+                <Row key={key}>
+                    <Col xs={3}>
+                        {
+                            moment(data.Time).format('jYYYY/jM/jD HH:mm:ss')
+                        }
                     </Col>
-                    <Col style={{width: '80%'}}>
+                    <Col xs={9}>
                         <pre style={{color: '#fff'}}>
                             {data.Message}
                         </pre>
