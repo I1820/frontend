@@ -33,17 +33,19 @@ class AddTemplate extends Component {
     }
 
     componentWillMount() {
-        const splitedUrl = window.location.href.split('/');
+        const projectID = this.props.match.params.id;
+        const templateID = this.props.match.params.tid;
+
         this.setState({
-            project: splitedUrl[5]
+            project: projectID
         });
 
-        if (splitedUrl[6] !== 'new') {
+        if (templateID) {
             this.setState({
-                id: splitedUrl[6]
+                id: templateID
             });
 
-            this.props.dispatch(getCodecTemplateAction(splitedUrl[5], splitedUrl[6], (status, codec) => {
+            this.props.dispatch(getCodecTemplateAction(projectID, projectID, (status, codec) => {
                 if (status) {
                     this.setState({
                         code: codec.code,

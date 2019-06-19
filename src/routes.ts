@@ -50,6 +50,18 @@ const routes: IRoutes = {
         name: ':id',
         enable: true,
     },
+    '/projects/:id/manage/templates': {
+        name: 'قالب‌ها',
+        enable: false,
+    },
+    '/projects/:id/manage/templates/new': {
+        name: 'ارسال قالب',
+        enable: true,
+    },
+    '/projects/:id/manage/templates/:tid': {
+        name: ':id',
+        enable: true,
+    },
     '/projects/:id/manage/scenarios': {
         name: 'سناریو‌ها',
         enable: false,
@@ -82,11 +94,6 @@ const routes: IRoutes = {
 
     '/things': {
         name: 'لیست اشیا',
-        enable: true,
-    },
-
-    '/template': {
-        name: 'ارسال قالب',
         enable: true,
     },
 

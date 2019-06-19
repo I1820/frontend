@@ -86,7 +86,6 @@ class Full extends Component {
                                 <Route path="/device-profiles/:id" name="ViewDeviceProfile" component={DeviceProfileNew}/>
                                 <Route path="/device-profiles" name="DeviceProfile" component={DeviceProfile}/>
 
-                                <Route path="/template" name="addTemplate" component={addTemplate}/>
 
                                 <Route path="/admin/global-codecs/new" name="addTemplate" component={AddGlobalTemplate}/>
                                 <Route path="/admin/global-codecs/:id" name="editTemplate" component={AddGlobalTemplate}/>
@@ -94,6 +93,8 @@ class Full extends Component {
 
                                 <Route path="/admin/links" name="Adminlinks" component={AdminLinks}/>
 
+                                <Route path="/projects/:id/manage/templates/new" name="addTemplate" component={addTemplate}/>
+                                <Route path="/projects/:id/manage/templates/:tid" name="editTemplate" component={addTemplate}/>
                                 <Route path="/projects/:id/manage/scenarios/new" name="addScenario" component={addScenario}/>
                                 <Route path="/projects/:id/manage/scenarios/:sid" name="editScenario" component={addScenario}/>
                                 <Route path="/projects/:id/manage/things/new" name="createThing" component={CreateThing}/>

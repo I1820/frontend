@@ -47,7 +47,6 @@ class ProjectsManage extends Component {
         super(props);
 
         this.renderDownlinkRow = this.renderDownlinkRow.bind(this);
-        this.addTemplate = this.addTemplate.bind(this);
         this.downloadExcel = this.downloadExcel.bind(this);
         this.deleteThing = this.deleteThing.bind(this);
         this.activateThing = this.activateThing.bind(this);
@@ -729,7 +728,9 @@ class ProjectsManage extends Component {
                         />
                     </CardBody>
                     <CardFooter>
-                        <Button onClick={this.addTemplate} color="primary">افزودن قالب</Button>
+                        <Link to={`/projects/${this.state.project._id}/manage/templates/new`}>
+                            <Button color="primary">افزودن قالب</Button>
+                        </Link>
                     </CardFooter>
                 </Card>
 
@@ -821,10 +822,6 @@ class ProjectsManage extends Component {
                 return (this.renderTemplateItem(template, key))
             }))
         }
-    }
-
-    addTemplate() {
-        window.location = `#/template/${this.state.project._id}/new`
     }
 
     reactTableColumns(type) {
@@ -961,9 +958,9 @@ class ProjectsManage extends Component {
                         accessor: row => <div>
                             <Button onClick={() => this.toggle('deleteCodec', row._id)}
                                     className="ml-1 float-left" color="danger" size="sm">حذف</Button>
-                            <Button onClick={() => {
-                                window.location = `#/template/${this.state.project._id}/${row._id}`
-                            }} className="ml-1 float-left" color="warning" size="sm">ویرایش</Button>
+                                <Link to={`/projects/${this.state.project._id}/manage/templates/${row._id}`}>
+                            <Button className="ml-1 float-left" color="warning" size="sm">ویرایش</Button>
+                            </Link>
                         </div>
                     },
                 ];
