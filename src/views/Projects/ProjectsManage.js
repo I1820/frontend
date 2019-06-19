@@ -24,6 +24,7 @@ import {
     activateScenarioAction,
     activateThingAction,
     deleteCodecTemplateAction,
+    getCodecTemplateListAction,
     deleteScenarioAction,
     deleteThingAction,
     DownloadThingsExcelAction,
@@ -54,7 +55,6 @@ class ProjectsManage extends Component {
         this.deleteScenario = this.deleteScenario.bind(this);
         this.loadProject = this.loadProject.bind(this);
         this.downLinksAdd = this.downLinksAdd.bind(this);
-        this.renderCodecs = this.renderCodecs.bind(this);
         this.deleteAlias = this.deleteAlias.bind(this);
         this.refreshToken = this.refreshToken.bind(this);
         this.reactTableColumns = this.reactTableColumns.bind(this);
@@ -209,7 +209,10 @@ class ProjectsManage extends Component {
     loadProject() {
         const projectID = this.props.match.params.id;
         if (projectID) {
-            this.props.dispatch(getProject(projectID))
+            this.props.dispatch(getProject(projectID, (status) => {
+                if (status)
+                    this.props.dispatch(getCodecTemplateListAction(projectID))
+            }, 1))
         }
     }
 
@@ -814,14 +817,6 @@ class ProjectsManage extends Component {
                 loading: false,
             }
         })
-    }
-
-    renderCodecs() {
-        if (this.state.project.templates) {
-            return (this.state.project.templates.map((template, key) => {
-                return (this.renderTemplateItem(template, key))
-            }))
-        }
     }
 
     reactTableColumns(type) {
