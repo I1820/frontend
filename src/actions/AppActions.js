@@ -1066,7 +1066,7 @@ export function createCodecTemplateAction(projectId, data, cb) {
         const promise = createCodecTemplate(projectId, data, dispatch);
         promise.then((response) => {
             if (response.status === 'OK') {
-                forwardTo(`projects/manage/show/${projectId}`)
+                cb(true, 'کدک با موفقیت ارسال شد.')
             } else {
                 cb(false, response.result);
                 dispatch(setErrorMessage(errorMessages.GENERAL_ERROR))
