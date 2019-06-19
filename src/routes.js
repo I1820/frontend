@@ -13,6 +13,7 @@ const routes = {
     '/projects/:id/manage/scenarios': 'سناریو‌ها',
     '/projects/:id/manage/scenarios/new': 'ساخت سناریو',
     '/projects/:id/manage/scenarios/:sid': ':sid',
+    '/projects/:id/manage/things/:tid/codec': 'ارسال کدک',
 
     '/admin/global-codecs': 'قالب‌های عمومی',
     '/admin/global-codecs/new': 'ساخت قالب عمومی',
@@ -26,7 +27,6 @@ const routes = {
     '/things/excel': 'آپلود فایل Excel',
     '/things/excel/$$': 'آپلود فایل Excel',
 
-    '/codec': 'ارسال کدک',
     '/codec/$$': 'ارسال کدک',
     '/template': 'ارسال قالب',
     '/template/$$': 'ارسال قالب',
