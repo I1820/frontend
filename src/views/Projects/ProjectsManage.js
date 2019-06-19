@@ -885,7 +885,7 @@ class ProjectsManage extends Component {
                                            } else if (action === 'edit') {
                                                window.location = `#/projects/${this.state.project._id}/manage/things/${row._id}`
                                            } else if (action === 'send_codec') {
-                                               window.location = `#/codec/${this.state.project._id}/${row._id}`
+                                               window.location = `#/projects/${this.state.project._id}/manage/things/${row._id}/codec`
                                            } else if (action === 'send_data') {
                                                this.toggle('downlink', row._id)
                                            } else if (action === 'delete') {
