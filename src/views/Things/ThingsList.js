@@ -253,9 +253,9 @@ class ThingsList extends Component {
                                    let action = e.target.value;
                                    e.target.value = '';
                                    if (action === 'edit') {
-                                       window.location = `#/things/edit/${row.project._id}/${row._id}`
+                                       window.location = `#/projects/${row.project._id}/manage/things/${row._id}`
                                    } else if (action === 'send_codec') {
-                                       window.location = `#/codec/${row.project._id}/${row._id}`
+                                       window.location = `#/projects/${row.project._id}/manage/things/${row._id}/codec`
                                    }
 
                                }} id="select">
