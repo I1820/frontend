@@ -56,8 +56,8 @@ class SendCodec extends Component {
     }
 
     componentWillMount() {
-        const projectID = this.props.match.params.project_id;
-        const thingID = this.props.match.params.thing_id;
+        const projectID = this.props.match.params.id;
+        const thingID = this.props.match.params.tid;
         this.setState({
             project: projectID,
             thing: thingID
@@ -93,7 +93,7 @@ class SendCodec extends Component {
                     <ModalHeader>آزمایش کدک</ModalHeader>
                     <ModalBody>
                         <FormGroup style={{display: 'flex'}} row>
-                            <Label sm={5}>مقدار آزمایشی:</Label>
+                            <Label sm={5}>مقدار آزمایش (در مبنای ۶۴):</Label>
                             <Col sm={7}>
                                 <Input maxLength="150" type="textarea" name=""
                                        onChange={(e) => {
@@ -146,7 +146,6 @@ class SendCodec extends Component {
                                     <Select2
                                         style={{width: '70%'}}
                                         data={this.renderTemplates()}
-                                        ref="tags"
                                         value={this.state.templateId}
                                         onSelect={(template) => {
                                             let templateId = template.target.selectedOptions[0].value;
@@ -165,12 +164,7 @@ class SendCodec extends Component {
                                             }
 
                                         }}
-                                        // onUnselect={this.setThing}
-                                        options={
-                                            {
-                                                placeholder: 'قالب مورد نظر را انتخاب کنید',
-                                            }
-                                        }
+                                        placeholder='قالب مورد نظر را انتخاب کنید'
                                     />
                                     <Button style={{width: '20%', marginRight: '10px'}} color={'info'} onClick={() => {
                                         this.setState({
