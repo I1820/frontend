@@ -1049,7 +1049,6 @@ export function sendCodecAction(thingId, projectId, codec, codec_id, cb) {
         }
         promise.then((response) => {
             if (response.status === 'OK') {
-                forwardTo(`projects/manage/show/${projectId}`);
                 cb(true, 'کدک با موفقیت ارسال شد.')
             } else {
                 cb(false, response.result);
