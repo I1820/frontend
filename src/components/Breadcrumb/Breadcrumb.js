@@ -28,20 +28,28 @@ const BreadcrumbsItem = ({match, ...rest}) => {
         return <Redirect to='/' />
     }
 
-    if (routeName.startsWith(':')) {
-        routeName = match.url.split('/').pop();
+    if (routeName.name.startsWith(':')) {
+        routeName.name = match.url.split('/').pop();
+    }
+
+    if (routeName.enable === false && match.isExact === true) {
+        return <Redirect to='..' />
     }
 
     return (
         (match.isExact) ?
             (
-                <BreadcrumbItem active>{routeName}</BreadcrumbItem>
-            ) :
+                <BreadcrumbItem active>{routeName.name}</BreadcrumbItem>
+            ) : (routeName.enable) ?
             (
                 <BreadcrumbItem>
                     <Link to={match.url}>
-                        {routeName}
+                        {routeName.name}
                     </Link>
+                </BreadcrumbItem>
+            ) : (
+                <BreadcrumbItem active>
+                    {routeName.name}
                 </BreadcrumbItem>
             )
     )
