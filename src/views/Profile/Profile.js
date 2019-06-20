@@ -26,7 +26,7 @@ import {
     uploadLegalDocAction,
     uploadPictureAction
 } from '../../actions/AppActions'
-import Select2 from 'react-select2-wrapper'
+import Select from 'react-select'
 import {toastAlerts} from '../Shared/toast_alert'
 import {baseFilesURL} from '../../api/index'
 
@@ -39,9 +39,10 @@ class Profile extends Component {
         this.changeUserPassword = this.changeUserPassword.bind(this);
         this.uploadPicture = this.uploadPicture.bind(this);
         this.uploadLegalDoc = this.uploadLegalDoc.bind(this);
+
         this.state = {
             city: this.props.userInfo.phone && this.props.userInfo.phone.split('-')[0] ?
-                this.props.userInfo.phone.split('-')[0]
+                Profile.getCodes().filter((c) => c.value === this.props.userInfo.phone.split('-')[0])[0]
                 : '021',
             name: this.props.userInfo.username,
             legal: this.props.userInfo.legal ? '1' : '0',
@@ -64,7 +65,7 @@ class Profile extends Component {
             'legal': this.state.legal,
             'name': this.state.name,
             'mobile': this.state.mobile,
-            'phone': this.state.city + '-' + this.state.phone,
+            'phone': this.state.city.value + '-' + this.state.phone,
             'other_info': JSON.stringify({
                 'address': this.state.address,
             }),
@@ -148,7 +149,7 @@ class Profile extends Component {
 
                                 <FormGroup>
                                     <Label>تلفن ثابت:</Label>
-                                    <InputGroup>
+                                    <InputGroup style={{alignItems: 'baseline'}}>
                                         <Input
                                             name="phoneNumber"
                                             dir="ltr"
@@ -158,12 +159,15 @@ class Profile extends Component {
                                                 event.target.value = event.target.value.replace(/\D/, '')
                                             }}
                                             placeholder={'88888888'}
-                                            maxLength={13}
+                                            maxLength={8}
                                             defaultValue={this.state.phone}/>
-                                        <InputGroupAddon addonType="prepend">
-                                            <Select2
-                                                onSelect={(e) => this.setState({city: parseInt(e.target.value)})}
-                                                data={Profile.getCodes()}
+                                        <InputGroupAddon addonType="prepend" style={{width: '100px', paddingRight: '10px'}}>
+                                            <Select
+                                                styles={{container: (provided) => ({...provided, width: '100%'})}}
+                                                isSearchable={true}
+                                                isRtl={true}
+                                                onChange={(e) => this.setState({city: e})}
+                                                options={Profile.getCodes()}
                                                 value={this.state.city}
                                             />
                                         </InputGroupAddon>
@@ -341,37 +345,37 @@ class Profile extends Component {
     }
 
     static getCodes() {
-        return [{text: 'تهران', id: '021'}
-            , {text: 'البرز', id: '026'}
-            , {text: 'قم', id: '025'}
-            , {text: 'مرکزی', id: '086'}
-            , {text: 'زنجان', id: '024'}
-            , {text: 'سمنان', id: '023'}
-            , {text: 'همدان', id: '081'}
-            , {text: 'قزوین', id: '028'}
-            , {text: 'اصفهان', id: '031'}
-            , {text: 'آذربایجان غربی', id: '044'}
-            , {text: 'مازندران', id: '011'}
-            , {text: 'کهگیلویه و بویراحمد', id: '074'}
-            , {text: 'کرمانشاه', id: '083'}
-            , {text: 'خراسان رضوی', id: '051'}
-            , {text: 'اردبیل', id: '045'}
-            , {text: 'گلستان', id: '017'}
-            , {text: 'آذربایجان شرقی', id: '041'}
-            , {text: 'سیستان و بلوچستان', id: '054'}
-            , {text: 'کردستان', id: '087'}
-            , {text: 'فارس', id: '071'}
-            , {text: 'لرستان', id: '066'}
-            , {text: 'کرمان', id: '034'}
-            , {text: 'خراسان جنوبی', id: '056'}
-            , {text: 'گیلان', id: '013'}
-            , {text: 'بوشهر', id: '077'}
-            , {text: 'هرمزگان', id: '076'}
-            , {text: 'خوزستان', id: '061'}
-            , {text: 'چهارمحال و بختیاری', id: '038'}
-            , {text: 'خراسان شمالی', id: '058'}
-            , {text: 'یزد', id: '035'}
-            , {text: 'ایلام', id: '084'}]
+        return [{label: 'تهران', value: '021'}
+            , {label: 'البرز', value: '026'}
+            , {label: 'قم', value: '025'}
+            , {label: 'مرکزی', value: '086'}
+            , {label: 'زنجان', value: '024'}
+            , {label: 'سمنان', value: '023'}
+            , {label: 'همدان', value: '081'}
+            , {label: 'قزوین', value: '028'}
+            , {label: 'اصفهان', value: '031'}
+            , {label: 'آذربایجان غربی', value: '044'}
+            , {label: 'مازندران', value: '011'}
+            , {label: 'کهگیلویه و بویراحمد', value: '074'}
+            , {label: 'کرمانشاه', value: '083'}
+            , {label: 'خراسان رضوی', value: '051'}
+            , {label: 'اردبیل', value: '045'}
+            , {label: 'گلستان', value: '017'}
+            , {label: 'آذربایجان شرقی', value: '041'}
+            , {label: 'سیستان و بلوچستان', value: '054'}
+            , {label: 'کردستان', value: '087'}
+            , {label: 'فارس', value: '071'}
+            , {label: 'لرستان', value: '066'}
+            , {label: 'کرمان', value: '034'}
+            , {label: 'خراسان جنوبی', value: '056'}
+            , {label: 'گیلان', value: '013'}
+            , {label: 'بوشهر', value: '077'}
+            , {label: 'هرمزگان', value: '076'}
+            , {label: 'خوزستان', value: '061'}
+            , {label: 'چهارمحال و بختیاری', value: '038'}
+            , {label: 'خراسان شمالی', value: '058'}
+            , {label: 'یزد', value: '035'}
+            , {label: 'ایلام', value: '084'}]
     }
 
 }
