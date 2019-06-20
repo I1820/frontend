@@ -5,7 +5,6 @@ import Header from '../components/Header'
 import Sidebar from '../components/Sidebar/Sidebar.jsx'
 import Breadcrumb from '../components/Breadcrumb'
 import Footer from '../components/Footer/Footer'
-import Loading from "../components/Loading/Loading";
 
 import Dashboard from '../views/Dashboard/Dashboard.jsx'
 
@@ -60,8 +59,7 @@ class Full extends Component {
                     <Sidebar {...this.props}/>
                     <main className="main">
                         <Breadcrumb/>
-                        <Container fluid>
-                            <Loading display={this.props.loading}/>
+                        <Container fluid style={{visibility: this.props.loading ? 'hidden' : 'visible'}}>
                             <Switch>
                                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                                 <Route path="/profile" name="Profile" component={Profile}/>
