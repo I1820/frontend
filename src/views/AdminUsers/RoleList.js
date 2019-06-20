@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Button, Card, CardBody, CardFooter, CardHeader, CardTitle, Col, Input, Row, Table} from 'reactstrap'
+import {Button, ButtonGroup, FormGroup, Label, Card, CardBody, CardFooter, CardHeader, CardTitle, Col, Input,} from 'reactstrap'
 import {
     addRoleAction,
     deleteRoleAction,
@@ -42,33 +42,36 @@ class RoleList extends Component {
                         <CardTitle className="mb-0 font-weight-bold h6">لیست نقش‌ها</CardTitle>
                     </CardHeader>
                     <CardBody>
-                        <Table outline>
-                            <thead>
-                                <th>#</th>
-                                <th>نام</th>
-                                <th>دسترسی‌ها</th>
-                                <th>امکانات</th>
-                            </thead>
-                            <tbody>
-                                {
-                                    this.state.roles.map((role, i) => {
-                                        let row = {
-                                            _id: role._id,
-                                            name: role.name,
-                                            permissions: role.permissions.map(permission => ({label: permission.name, value: permission._id}))
-                                        }
-                                        return (
-                                            <tr key={i}>
-                                                <td>{i+1}</td>
-                                                <td>
+                        {
+                            this.state.roles.map((role, i) => {
+                                let row = {
+                                    _id: role._id,
+                                    name: role.name,
+                                    permissions: role.permissions.map(permission => ({label: permission.name, value: permission._id}))
+                                }
+                                return (
+                                    <Card key={i}>
+                                        <CardHeader dir='ltr'>
+                                            <CardTitle className="mb-0 font-weight-bold h6">{row._id}</CardTitle>
+                                        </CardHeader>
+
+                                        <CardBody>
+                                            <FormGroup row>
+                                                <Label sm={2}>نام</Label>
+                                                <Col sm={10}>
                                                     <Input
                                                         onChange={(event) => {
                                                             row.name = event.target.value
                                                         }}
                                                         type="text"
                                                         defaultValue={row.name}
-                                                    /></td>
-                                                <td><Select
+                                                    />
+                                                </Col>
+                                            </FormGroup>
+                                            <FormGroup row>
+                                                <Label sm={2}>دسترسی‌ها</Label>
+                                                <Col sm={10}>
+                                                    <Select
                                                         isMulti={true}
                                                         isRtl={true}
                                                         options={this.state.defaultPermissions.map((permission) => ({label: permission.name, value: permission._id}))}
@@ -77,51 +80,50 @@ class RoleList extends Component {
                                                             row.permissions = permissions ? permissions : []
                                                         }}
                                                         placeholder='دسترسی‌های مورد نظر خود را انتخاب کنید'
-                                                    /></td>
-                                                <td><Row>
-                                                        <Col xs={6}>
-                                                            <Button onClick={() => {
-                                                                let permissions = row.permissions.map((permission) => {
-                                                                    return permission.value
-                                                                });
-                                                                this.props.dispatch(updateRoleAction(row._id, JSON.stringify(permissions), row.name, (status, message) => {
-                                                                    toastAlerts(status, message);
-                                                                    this.props.dispatch(getRolesAction((status, roles) => {
-                                                                        if (status) {
-                                                                            this.setState({roles})
-                                                                        } else {
-                                                                            toastAlerts(status, roles)
-                                                                        }
-                                                                    }))
-                                                                }))
-                                                            }}
-                                                            className="ml-1" color="warning"
-                                                            size="sm">بروزرسانی
-                                                        </Button>
-                                                    </Col>
-                                                    <Col xs={6}>
-                                                        <Button onClick={() =>
-                                                                this.props.dispatch(deleteRoleAction(row._id, (status, message) => {
-                                                                    toastAlerts(status, message);
-                                                                    this.props.dispatch(getRolesAction((status, roles) => {
-                                                                        if (status) {
-                                                                            this.setState({roles})
-                                                                        } else {
-                                                                            toastAlerts(status, roles)
-                                                                        }
-                                                                    }));
-                                                                }))
-                                                        } className="ml-1" color="danger"
-                                                        size="sm">حذف
-                                                    </Button>
+                                                    />
                                                 </Col>
-                                        </Row></td>
-                                    </tr>
-                                        )
-                                    })
-                                }
-                            </tbody>
-                        </Table>
+                                            </FormGroup>
+                                        </CardBody>
+                                        <CardFooter>
+                                            <ButtonGroup>
+                                                <Button onClick={() => {
+                                                    let permissions = row.permissions.map((permission) => {
+                                                        return permission.value
+                                                    });
+                                                    this.props.dispatch(updateRoleAction(row._id, JSON.stringify(permissions), row.name, (status, message) => {
+                                                        toastAlerts(status, message);
+                                                        this.props.dispatch(getRolesAction((status, roles) => {
+                                                            if (status) {
+                                                                this.setState({roles})
+                                                            } else {
+                                                                toastAlerts(status, roles)
+                                                            }
+                                                        }))
+                                                    }))
+                                                }}
+                                                className="ml-1" color="warning"
+                                                size="sm">بروزرسانی
+                                            </Button>
+                                            <Button onClick={() =>
+                                                    this.props.dispatch(deleteRoleAction(row._id, (status, message) => {
+                                                        toastAlerts(status, message);
+                                                        this.props.dispatch(getRolesAction((status, roles) => {
+                                                            if (status) {
+                                                                this.setState({roles})
+                                                            } else {
+                                                                toastAlerts(status, roles)
+                                                            }
+                                                        }));
+                                                    }))
+                                            } className="ml-1" color="danger"
+                                            size="sm">حذف
+                                        </Button>
+                                    </ButtonGroup>
+                                </CardFooter>
+                            </Card>
+                                )
+                            })
+                        }
                     </CardBody>
                     <CardFooter>
                         <Button onClick={() => {
@@ -146,9 +148,9 @@ class RoleList extends Component {
                         }
                         } className="ml-1" color="danger"
                         size="sm">افزودن</Button>
-                </CardFooter>
-            </Card>
-        </div>
+                    </CardFooter>
+                </Card>
+            </div>
         )
     }
 }
