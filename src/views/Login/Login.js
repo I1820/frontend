@@ -21,6 +21,7 @@ import {resetPasswordAction} from '../../actions/AppActions'
 import {login} from '../../actions/auth'
 import {toast} from 'react-toastify'
 import {Link} from 'react-router-dom'
+import background from '../../assets/img/login.png'
 
 class Login extends Component {
 
@@ -55,7 +56,7 @@ class Login extends Component {
 
     render() {
         return (
-            <div className="app flex-row align-items-center">
+            <div className="app flex-row align-items-center" style={{background: `url(${background}) center center no-repeat fixed`}}>
                 <Container>
                     <Row className="justify-content-center">
                         <Col md="8">
