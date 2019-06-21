@@ -130,7 +130,28 @@ class ProjectsList extends Component {
 
                 <Row>
                     <Col md={12}>
-                        <Card>
+                        <Card className="text-justify">
+                            <CardHeader>
+                                <CardTitle className="mb-0 font-weight-bold h6">
+                                    درباره پروژه
+                                    <i className="fab fa-readme pull-left"></i>
+                                </CardTitle>
+                            </CardHeader>
+                            <CardBody>
+                                پروژه مفهومی انتزاعی است که در دنیا خارج مشهود نیست.
+                                پروژه در برگیرنده اشیا است و یک واحد محاسباتی برای کدک‌ها و یک سناریو در اختیار
+                                شما قرار می‌دهد.
+                                ساخت پروژه یک عمل زمانبر می‌باشد. در نظر داشته باشید که تعداد پروژه‌های شما
+                                بر اساس بسته‌ای که خریداری کرده‌اید محدود شده است.
+                                برای تضمین ایزوله بودن پروژه‌ها از کانتینرهای داکر استفاده می‌شود.
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col md={12}>
+                        <Card className="text-justify">
                             <CardHeader>
                                 <CardTitle className="mb-0 font-weight-bold h6">لیست پروژه‌ها</CardTitle>
                             </CardHeader>
