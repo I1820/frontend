@@ -129,7 +129,7 @@ class PackageList extends Component {
                 </Modal>
 
                 <Row>
-                    <Col xs="36" sm="18" md="12">
+                    <Col md="12">
                         <Card className="border-success">
                             <CardHeader>
                                 <CardTitle className="mb-0 font-weight-bold h6">اطلاعات حساب کاربری</CardTitle>
@@ -216,7 +216,7 @@ class PackageList extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs="36" sm="18" md="12">
+                    <Col md="12">
                         <Card className="border-success">
                             <CardHeader>
                                 <CardTitle className="mb-0 font-weight-bold h6"> تراکنش‌های کاربر</CardTitle>
