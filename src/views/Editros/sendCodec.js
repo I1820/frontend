@@ -33,9 +33,8 @@ import {
     testCodec
 } from '../../actions/AppActions'
 import connect from 'react-redux/es/connect/connect'
-import Select2 from 'react-select2-wrapper'
+import Select from 'react-select'
 
-import _ from 'underscore'
 class SendCodec extends Component {
 
     constructor(props) {
@@ -46,8 +45,12 @@ class SendCodec extends Component {
         this.state = {
             modal: false,
             global: false,
+            template: null,
             codec: '',
-            templates: [],
+            templates: {
+                codecs: [],
+                globals: [],
+            },
             testType: 0,
             testValue: '',
             lint: [],
@@ -63,26 +66,31 @@ class SendCodec extends Component {
             thing: thingID
         });
         this.props.dispatch(getCodecTemplateListAction(projectID, (status, templates) => {
-            this.props.dispatch(getThingCodecAction(thingID, (status, result) => {
-                if (status && result !== null) {
-                    this.setState({
-                        codec: result.codec
-                    })
-                }
-                if (result.codec_id) {
-                    this.setState({
-                        templateId: result.codec_id,
-                        global: true
-                    })
-                }
-            }));
             if (status) {
                 this.setState({
                     templates
                 })
             }
+            this.props.dispatch(getThingCodecAction(thingID, (status, result) => {
+                if (status && result !== null) {
+                    if (result.codec_id) {
+                        // global codec with private code
+                        this.setState({
+                            template: {
+                                id: result.codec_id,
+                                name: this.state.templates.globals.filter((template) => template._id === result.codec_id).map(template => template.name)[0],
+                            },
+                            codec: '"private global codec ;)"',
+                            global: true
+                        })
+                    } else {
+                        this.setState({
+                            codec: result.codec
+                        })
+                    }
+                }
+            }));
         }))
-
     }
 
     render() {
@@ -142,50 +150,62 @@ class SendCodec extends Component {
                         <Form>
                             <FormGroup row>
                                 <Label sm={2}>قالب Decoder: </Label>
-                                <Col sm={6}>
-                                    <Select2
-                                        style={{width: '70%'}}
-                                        data={this.renderTemplates()}
-                                        value={this.state.templateId}
-                                        onSelect={(template) => {
-                                            let templateId = template.target.selectedOptions[0].value;
+                                <Col sm={8}>
+                                    <Select
+                                        options={this.renderTemplates()}
+                                        value={this.state.template ? {value: this.state.template.id, label: this.state.template.name} : null}
+                                        onChange={(template) => {
+                                            this.state.templates.codecs.forEach((codec) => {
+                                                if (codec._id === template.value) {
+                                                    this.setState({
+                                                        codec: codec.code,
+                                                        global: false,
+                                                        template: {
+                                                            id: template.value,
+                                                            name: template.label,
+                                                        }
+                                                    })
+                                                }
+                                            })
 
-                                            if (_.find(this.state.templates.codecs, {_id: templateId})) {
-                                                this.setState({
-                                                    codec: _.find(this.state.templates.codecs, {_id: templateId}).code,
-                                                    global: false,
-                                                    templateId
-                                                })
-                                            } else if (_.find(this.state.templates.globals, {_id: templateId})) {
-                                                this.setState({
-                                                    global: true,
-                                                    templateId
-                                                })
-                                            }
-
+                                            this.state.templates.globals.forEach((global) => {
+                                                if (global._id === template.value) {
+                                                    this.setState({
+                                                        codec: '"private global codec ;)"',
+                                                        global: true,
+                                                        template: {
+                                                            id: template.value,
+                                                            name: template.label,
+                                                        }
+                                                    })
+                                                }
+                                            })
                                         }}
                                         placeholder='قالب مورد نظر را انتخاب کنید'
                                     />
-                                    <Button style={{width: '20%', marginRight: '10px'}} color={'info'} onClick={() => {
+                                </Col>
+                                <Col sm={2}>
+                                    <Button color={'info'} onClick={() => {
                                         this.setState({
                                             global: false,
-                                            templateId: ''
+                                            template: null
                                         })
                                     }}>{'به صورت دستی'}</Button>
                                 </Col>
                             </FormGroup>
-                            <FormGroup style={{display: this.state.global === false ? 'flex' : 'none'}} row>
+                            <FormGroup row>
                                 <AceEditor
                                     onChange={(code) => this.setState({codec: code})}
                                     mode="python"
                                     theme="monokai"
+                                    readOnly={this.state.global}
                                     className="col-md-12"
                                     name="codec-editor"
                                     value={this.state.codec}
                                     fontSize={14}
-                                    showPrintMargin={true}
+                                    showPrintMargin={false}
                                     showGutter={true}
-                                    highlightActiveLine={true}
+                                    highlightActiveLine={false}
                                     editorProps={{$blockScrolling: true}}
                                     setOptions={{
                                         enableBasicAutocompletion: true,
@@ -251,21 +271,23 @@ class SendCodec extends Component {
     }
 
     renderTemplates() {
-        let templates = [{children: [], text: 'قالب شخصی'}, {children: [], text: 'قالب عمومی'}];
-        this.state.templates && this.state.templates.codecs && this.state.templates.codecs.forEach((template) => {
-                templates[0].children.push({text: template.name, id: template._id, global: false})
+        let options = [
+            {
+                options: [],
+                label: 'قالب شخصی'
+            }, {
+                options: [],
+                label: 'قالب عمومی'
             }
-        );
-        this.state.templates && this.state.templates.globals && this.state.templates.globals.forEach((template) => {
-                templates[1].children.push({text: template.name, id: template._id, global: true})
-            }
-        );
-        return templates
+        ];
+        options[0].options = this.state.templates && this.state.templates.codecs && this.state.templates.codecs.map((template) => ({ label: template.name, value: template._id }));
+        options[1].options = this.state.templates && this.state.templates.globals && this.state.templates.globals.map((template) => ({ label: template.name, value: template._id }));
+        return options
     }
 
     sendCodec() {
         if (this.state.global) {
-            this.props.dispatch(sendCodecAction(this.state.thing, this.state.project, undefined, this.state.templateId, toastAlerts))
+            this.props.dispatch(sendCodecAction(this.state.thing, this.state.project, undefined, this.state.template.id, toastAlerts))
         } else {
             this.props.dispatch(sendCodecAction(this.state.thing, this.state.project, this.state.codec, undefined, toastAlerts))
         }
