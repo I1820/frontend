@@ -1,7 +1,12 @@
 import React from 'react'
 import {matchPath} from 'react-router'
 import {Link, Redirect, Route} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Button,
+    ButtonGroup,
+} from 'reactstrap'
 import routes from '../../routes'
 
 const findRouteName = (url) =>
@@ -62,6 +67,11 @@ const Breadcrumbs = ({location: {pathname}, match, ...rest}) => {
     return (
         <Breadcrumb>
             {items}
+            <div className="breadcrumb-menu">
+                      <ButtonGroup>
+                          <Button color="">بیشتر بدانید</Button>
+                      </ButtonGroup>
+            </div>
         </Breadcrumb>
     )
 };
