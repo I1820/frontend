@@ -183,12 +183,16 @@ class Project extends Component<any, IState> {
                                 <Link to={`/projects/${this.state.project._id}/view`}>
                                     <Button color="warning" className="ml-1">
                                         داده‌ها
+                                        &nbsp;
+                                        <i className="fas fa-database"></i>
                                     </Button>
                                 </Link>
 
                                 <Link to={`/projects/${this.state.project._id}/manage`}>
                                     <Button color="warning" className="ml-1">
                                         مدیریت
+                                        &nbsp;
+                                        <i className="fas fa-tasks"></i>
                                     </Button>
                                 </Link>
                             </CardFooter>
