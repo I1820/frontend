@@ -9,7 +9,7 @@ export default {
         {
             name: 'پروژه ها',
             url: '/projects',
-            icon: 'icon-layers',
+            icon: 'fab fa-docker',
             type: 'user'
         },
         {
@@ -40,18 +40,18 @@ export default {
         {
             name: 'بخش مالی',
             type: 'user',
-            icon: 'icon-diamond',
+            icon: 'fas fa-coins',
             children: [
                 {
                     name: 'تراکنش‌ها',
                     url: '/transactions',
-                    icon: 'icon-grid',
+                    icon: 'far fa-credit-card',
                     type: 'user'
                 },
                 {
                     name: 'بسته‌ها',
                     url: '/packages',
-                    icon: 'icon-grid',
+                    icon: 'fas fa-shopping-cart',
                     type: 'user'
                 }]
         },
@@ -63,7 +63,7 @@ export default {
                 {
                     name: 'مدیریت بسته‌ها',
                     url: '/admin/packages',
-                    icon: 'icon-handbag',
+                    icon: 'fas fa-shopping-cart',
                     type: 'admin'
                 },
                 {
@@ -74,7 +74,7 @@ export default {
                 }, {
                     name: 'تراکنش‌های سیستم',
                     url: '/admin/transactions',
-                    icon: 'icon-credit-card',
+                    icon: 'far fa-credit-card',
                     type: 'admin'
                 },
                 {
