@@ -134,7 +134,7 @@ class ProjectsList extends Component {
                             <CardHeader>
                                 <CardTitle className="mb-0 font-weight-bold h6">
                                     درباره پروژه
-                                    <i className="fab fa-readme pull-left"></i>
+                                    <i className="fab fa-readme float-left"></i>
                                 </CardTitle>
                             </CardHeader>
                             <CardBody>
