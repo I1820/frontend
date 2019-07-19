@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {Container} from 'reactstrap'
+import {ClipLoader} from 'react-spinners'
+
 import Header from '../components/Header'
 import Sidebar from '../components/Sidebar/Sidebar.jsx'
 import Breadcrumb from '../components/Breadcrumb'
@@ -59,7 +61,20 @@ class Full extends Component {
                     <Sidebar {...this.props}/>
                     <main className="main">
                         <Breadcrumb/>
-                        <Container fluid style={{visibility: this.props.loading ? 'hidden' : 'visible'}}>
+                        <Container fluid>
+                            <ClipLoader
+                                sizeUnit={"px"}
+                                css={{
+                                    position: 'absolute',
+                                    display: 'block',
+                                    margin: '0 auto',
+                                    justifyContent: 'center',
+                                    zIndex: 50,
+                                }}
+                                size={150}
+                                color={'#123abc'}
+                                loading={this.props.loading}
+                            />
                             <Switch>
                                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                                 <Route path="/profile" name="Profile" component={Profile}/>
