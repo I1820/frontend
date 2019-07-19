@@ -320,7 +320,7 @@ class ProjectsView extends Component {
                                             since: this.state.since ? this.state.since : Math.floor(Date.now() / 1000) - this.state.window * 60
                                         }
                                     });
-                                    this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
+                                    this.props.dispatch(getThingsMainDataAction(this.state.selectedThing,
                                         this.state.project._id,
                                         0,
                                         this.state.pageSize,
@@ -390,7 +390,7 @@ class ProjectsView extends Component {
                                 });
                                 this.setState({loading: false, tableData: [], pageSize: state.pageSize});
                                 if (this.state.since || this.state.window) {
-                                    this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
+                                    this.props.dispatch(getThingsMainDataAction(this.state.selectedThing,
                                         this.state.project._id,
                                         (state.page) * state.pageSize,
                                         state.pageSize,
@@ -503,7 +503,7 @@ class ProjectsView extends Component {
     }
 
     getData(cb) {
-        this.props.dispatch(getThingsMainDataAction(JSON.stringify(this.state.selectedThing),
+        this.props.dispatch(getThingsMainDataAction(this.state.selectedThing,
             this.state.project._id,
             0,
             0,
