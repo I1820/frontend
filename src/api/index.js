@@ -82,7 +82,7 @@ function fetchData(endpoint = '/404', config = {}, dispatch, admin = false, load
 
                 const {status, message, code} = controller(json);
 
-                if ((code === 701 || code === 401) && endpoint !== endpoints.login) {
+                if (code === 401 && endpoint !== endpoints.login) {
                     if (message === 'token expired') {
                         const promise = fetchData(endpoints.refresh, refreshConfig(), dispatch);
                         promise.then((response) => {
